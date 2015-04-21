@@ -1,0 +1,47 @@
+<?xml version="1.0"?>
+<logic>
+	<group id="productType" displayName="Product type">
+		<item name="bonusCertificate">Bonus certificate</item>
+		<item name="discountCertificate">Discount certificate</item>
+		<item name="expressCertificate">Express certificate</item>
+		<item name="sprintCertificate">Sprint certificate</item>
+		<item name="reverseConvertible">Reverse convertible</item>
+		<item name="turboCertificate">Turbo certificate</item>
+		<item name="warrant">Warrant</item>
+		<item name="callOption">Call option</item>
+		<item name="putOption">Put option</item>
+	</group>
+	<group id="numberOfUnderlyings" displayName="Number of underlyings">
+		<item name="oneUnderlying">One</item>
+		<item name="oneOrMoreUnderlyings">At least one</item>
+		<item name="moreThanOneUnderlying">More than one</item>
+	</group>
+	<group id="underlyingType" displayName="Underlying type">
+		<item name="atLeastOneShare">At least one share</item>
+		<item name="atLeastOneADR">At least one ADR</item>
+		<item name="atLeastOneCertificate">At least one certificate</item>
+		<item name="atLeastOneWarrant">At least one warrant</item>
+		<item name="atLeastOneIndex">At least one index</item>
+		<item name="atLeastOneETF">At least one ETF</item>
+		<item name="atLeastOneCommodity">At least one commodity</item>
+		<item name="onlyShares">Only shares</item>
+		<item name="onlyADRs">Only ADRs</item>
+		<item name="onlyCertificates">Only certificates</item>
+		<item name="onlyWarrants">Only warrants</item>
+		<item name="onlyIndices">Only indices</item>
+		<item name="onlyETFs">Only ETFs</item>
+		<item name="onlyCommodities">Only commodities</item>
+	</group>
+	<group id="quotationType" displayName="Quotation type">
+		<item name="parValue">Par value</item>
+		<item name="nonParValue">Non-par value</item>
+	</group>
+	<group id="fxRisk" displayName="FX risk">
+		<item name="applicable">Applicable</item>
+		<item name="notApplicable">Not applicable</item>
+	</group>
+	<group id="quanto" displayName="Quanto">
+		<item name="applicable">Applicable</item>
+		<item name="notApplicable">Not applicable</item>
+	</group>
+</logic>

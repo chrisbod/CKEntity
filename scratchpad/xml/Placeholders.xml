@@ -1,0 +1,70 @@
+<?xml version="1.0"?>
+<placeholders>
+	<placeholder id="productCurrency" displayName="product currency">
+		<group>
+			<label>Format</label>
+			<radio>
+				<item name="symbol">Symbol (e.g., €)</item>
+				<item name="short">Short-form (e.g., EUR)</item>
+				<item name="long">Long-form (e.g., Euro)</item>
+			</radio>
+		</group>
+	</placeholder>
+	<placeholder id="underlyingCurrency" displayName="underlying currency">
+		<group>
+			<label>Format</label>
+			<radio>
+				<item name="symbol">Symbol (e.g., €)</item>
+				<item name="short">Short-form (e.g., EUR)</item>
+				<item name="long">Long-form (e.g., Euro)</item>
+			</radio>
+		</group>
+	</placeholder>
+	<placeholder id="cap" displayName="cap">
+		<group>
+			<label>Format</label>
+			<radio>
+				<item name="absolute">Currency + absolute amount</item>
+				<item name="absolute">Absolute amount</item>
+				<item name="percentage">Percentage (relative to initial reference price)</item>
+			</radio>
+		</group>
+		<group>
+			<label>Decimals</label>
+			<select>
+				<item name="default">Actual</item>
+				<item name="1">1</item>
+				<item name="2">2</item>
+				<item name="2+">2+</item>
+				<item name="2-4">2-3</item>
+				<item name="2-4">2-4</item>
+				<item name="2-5">2-5</item>
+				<item name="2-5">2-6</item>
+				<item name="2-5">2-7</item>
+				<item name="3">3</item>
+				<item name="4">4</item>
+				<item name="5">5</item>
+				<item name="6">6</item>
+				<item name="6">7</item>
+			</select>
+		</group>
+	</placeholder>
+	<placeholder id="scenarioTable" displayName="scenario table">
+		<group>
+			<label>Columns</label>
+			<checkboxes>
+				<item name="underlyingPrice">Underlying price</item>
+				<item name="underlyingReturn">Underlying return</item>
+				<item name="derivativePrice">Derivative price</item>
+				<item name="derivativeReturnGross">Derivative return (gross)</item>
+				<item name="derivativeReturnNet">Derivative return (net)</item>
+			</checkboxes>
+		</group>
+		<group>
+			<label>Options</label>
+			<checkboxes>
+				<item name="colorDerivativeReturnNet">Color derivative return net (red, yellow, green)</item>
+			</checkboxes>
+		</group>
+	</placeholder>
+</placeholders>
