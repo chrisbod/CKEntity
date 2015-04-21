@@ -1,0 +1,175 @@
+<!doctype html>
+<html>
+	<head>
+
+		<style>
+			span[data-type=placeholder] {
+				color: red;
+			}
+			span[data-type=entity] {
+				
+			}
+
+		</style>
+	</head>
+
+	<body>
+		<script>
+			var keyString = {
+				id: "keyString0",
+				value:
+				"This bonus certificate is protected against foreign exchange risk at maturity[, i.e. the amounts calculated based on [the share, which is quoted in <underlying currency>][the index, which is quoted in <underlying currency>][the commodity, which is quoted in <underlying currency>][the underlying, which is quoted in <underlying currency>], will be converted into <product currency> on a 1 to 1 basis (Quanto)]"
+			}
+			var anotherKeyString = {
+				id: "foo",
+				value: "This booya"
+			}
+			var anotherKeyString1 = {
+				id: "foo",
+				value: "This bonny lad"
+			}
+
+			if (!String.prototype.trim) {
+  (function() {
+    // Make sure we trim BOM and NBSP
+    var rtrim = /^[\s\uFEFF\xA0]+|[\s\uFEFF\xA0]+$/g;
+    String.prototype.trim = function() {
+      return this.replace(rtrim, '');
+    };
+  })();
+}
+
+			function SuggestTokenizer () {
+				this.tokens = {};
+
+			}
+			SuggestTokenizer.prototype.tokenize = function (string) {
+				var split = string.toLowerCase().trim().split(" "),
+					currentToken = this.tokens
+				for (var i=0,existingNode;i<split.length;i++) {
+					existingNode = currentToken[split[i]]
+					if (!existingNode) {
+						existingNode = {}
+					}
+					currentToken = currentToken[split[i]] = existingNode
+				}
+				currentToken._$ = string;
+			}
+			SuggestTokenizer.prototype.getSuggestions = function (string) {
+				string = string.trim().toLowerCase()
+				if (string.indexOf(" ")==-1) {
+					if (this.tokens[string] && this.tokens[string]._$) {
+						return [this.tokens[string]._$];
+					} else {
+						return [];
+					}
+				}
+				var split = string.toLowerCase().trim().split(" "),
+					results = [];
+				
+				function crawl(object) {
+					if (split.length) {
+						var next = split.shift();
+							if (next in object) {
+								crawl(object[next])
+							} else if (!split.length) {
+								complete(object,next)
+							}
+					} else {
+						iterate(object)
+					}
+				}
+				function iterate(object) {
+					for (var i in object) {
+						if (i == "_$") {
+							results.push(object._$)
+						} else {
+							iterate(object[i])
+						}
+					}
+				}
+				function complete(object,string) {
+					for (var i in object) {
+						if (i.indexOf(string)==0) {
+							iterate(object[i])
+						}
+					}
+				}
+				crawl(this.tokens,split);
+				return results;	
+
+			}
+			var tokenizer = new SuggestTokenizer();
+
+			function KeySuggestEntity (key) {
+				this.key = key;
+				this.encodedKey = this.htmlEncode(key.value)
+				var match = key.value.match(/^[^\[]+/),
+					suggestString;
+				if (!match) {
+					suggestString = this.key.value;
+				} else {
+					suggestString = match[0]+'\u2026';
+				}
+				tokenizer.tokenize(match[0])
+				this.suggestString = this.htmlEncode(suggestString);
+			}
+			KeySuggestEntity.prototype.dummyNode = document.createElement("div");
+			KeySuggestEntity.prototype.htmlEncode = function (string) {
+				return this.dummyNode.innerText = string;
+			}
+			KeySuggestEntity.prototype.toElement = function () {
+				var rootNode = document.createElement("span"),
+					key = this.key,
+					value = key.value;
+				rootNode.setAttribute("data-type","keySuggestEntity");
+				rootNode.setAttribute("data-id",key.id);
+				value = value
+						.replace(/</g,'\x02&lt;')
+						.replace(/>/g,'&gt;\x03')
+						.replace(/\[/g,'<span data-type="entity"><strong>[</strong>')
+						.replace(/\]/g,'<strong>]</strong></span>')
+						.replace(/\x02/g,'<span data-type="placeholder">')
+						.replace(/\x03/g,"</span>");
+
+				rootNode.innerHTML = value;
+				return rootNode;
+			}
+			function tryIt() {
+				var keySuggest = new KeySuggestEntity(keyString),
+					keySuggest2 = new KeySuggestEntity(anotherKeyString),
+					keySuggest3 = new KeySuggestEntity(anotherKeyString1),
+					booker = new KeySuggestEntity({
+						value: "This"
+
+					}),
+					node = keySuggest.toElement(),
+					wrapper = document.createElement("div");
+				wrapper.appendChild(node);
+				document.querySelector("textarea").value = wrapper.innerHTML;
+				document.querySelector("input#title").value = node.title;
+				
+				document.querySelector("input#suggestString").value = keySuggest.suggestString;
+				document.querySelector("input#suggestString").title = keySuggest.encodedKey;
+				
+				document.querySelector("div").appendChild(node);
+				console.log(tokenizer.getSuggestions("T"))
+				debugger;
+				console.log(tokenizer.getSuggestions("This"))
+				console.log(tokenizer.getSuggestions("This b"))
+				console.log(tokenizer.getSuggestions("This bo"))
+				console.log(tokenizer.getSuggestions("This bon"))
+			}
+
+		</script>
+		<button onclick="tryIt()">try</button>
+		<textarea style="width:100%; height: 20em"></textarea><br/>
+		<input id="title" style="width:100%"/><br/>
+		<input id="suggestString" style="width:100%"/><br/>
+
+		<div></div>
+
+	</body>
+
+
+</html>
