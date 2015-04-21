@@ -21,7 +21,6 @@ body
 .entity {
 	color: red;
 	font-weight: bold;
-	-webkit-user-select: none;
 }
 /**
  * Core styles.

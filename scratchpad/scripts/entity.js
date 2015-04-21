@@ -77,7 +77,9 @@ Entity.configureEntities = function (editor) {
             ev.preventDefault();
             var entity = Entity.getEntityByDataId(ev.target.getAttribute("data-entityId"))
             try {
-            editor.getSelection().selectElement(new CKEDITOR.dom.element( ev.target ))
+            var element = new CKEDITOR.dom.element( ev.target )
+            element.remove()
+            
             }
             catch (e) {
                console.log("erere")
@@ -90,19 +92,19 @@ Entity.configureEntities = function (editor) {
          
    }
     editor.on("selectionChange", function (event) {
+      //console.log("here")
       if (Entity.isEntityElement(event.data.path.lastElement.$)) {
-         var element = event.data.path.lastElement.$
-         setTimeout(//using a timeout because the editor carries on working with the selections and tries to select and blur etc
-            function () {
-               element.focus()
-            }
-
-         )
+         var sel = editor.getSelection();
+        // console.log(sel.getStartElement())
+        /* var startElement = sel.getStartElement();
+         var endElement =  sel.getEndElement();
+         if (startElement == endElement && Entity.isEntityElement(startElement)) {
+            sel.selectElement(startElement);
+         }*/ 
          
       }
       
    })
-
 }
 
 
@@ -118,9 +120,9 @@ CKEDITOR.plugins.add( 'entity',
       // Gets the list of tags from the settings.
       var tags = []; 
       //this.add('value', 'drop_text', 'drop_label');
-      tags[0]=["[contact_name]", "Name", "Name"];
-      tags[1]=["[contact_email]", "email", "email"];
-      tags[2]=["[contact_user_name]", "User name", "User name"];
+      tags[0]=["contact_name", "Name", "Name"];
+      tags[1]=["contact_email", "email", "email"];
+      tags[2]=["contact_user_name", "User name", "User name"];
 
 //parseInt(("Eniti12").match(/\d+/))
       editor.on("instanceReady", function () {
