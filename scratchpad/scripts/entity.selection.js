@@ -32,33 +32,22 @@ SelectionManager.prototype = {
 }
 
 
-function KeyNodeStore() {
+function EntityStore() {
 	this.templatableNodes = {};
 }
-KeyNodeStore.prototype =  {
-	addKey: function (key,id) {
+EntityStore.prototype =  {
+	addEntity: function (key,id) {
 		var preexists = this.templatableNodes[key];
 		if (!preexists) {
-			this.templatableNodes[key] = this.createTemplatableNodeFromKey(key,id) 
+			this.templatableNodes[key] = this.createTemplatableNodeFromEntity(key,id) 
 		}
 		return this.templatableNodes[key];
 	},
-	hasKey: function (key) {
+	hasEntity: function (key) {
 		return key in this.templatableNodes;
 	},
-	createTemplatableNodeFromKey: function (key,id) {
-		var keyName = "key"+id;
-		var node = document.createElement("div");
-		node.setAttribute("data-key-name",keyName);
-		node.className ="key"
-		node.contentEditable = false;
-		node.innerHTML = this.parseTextMarkup(key);
-		var spans = node.querySelectorAll("span.segment");
-		for (var i=0;i<spans.length;i++) {
-			spans[i].setAttribute("data-key-name",keyName);
-			spans[i].setAttribute("data-segment-name",keyName+"-segment"+(i+1))
-		}
-		return node;
+	createTemplatableNodeFromEntity: function (key,id) {
+		throw new Error("Not implemented")
 	},
 	parseTextMarkup: function (string) {
 		return string
@@ -71,21 +60,71 @@ KeyNodeStore.prototype =  {
 
 
 	},
-	getKeyNode: function (key) {
+	getEntityNode: function (key) {
 		var clonedNode = this.templatableNodes[key].cloneNode(true);
 		return clonedNode;
 	}
 
 }
+
+function KeyNodeStore() {
+	this.templatableNodes = {};
+}
+KeyNodeStore.prototype =  new EntityStore()
+KeyNodeStore.prototype.templatableNodes = null;
+KeyNodeStore.prototype.createTemplatableNodeFromEntity = function (key,id) {
+	var keyName = "key"+id;
+	var node = document.createElement("div");
+	node.setAttribute("data-key-name",keyName);
+	node.className ="key"
+	node.contentEditable = false;
+	node.innerHTML = this.parseTextMarkup(key);
+	var spans = node.querySelectorAll("span.segment");
+	for (var i=0;i<spans.length;i++) {
+		spans[i].setAttribute("data-key-name",keyName);
+		spans[i].setAttribute("data-segment-name",keyName+"-segment"+(i+1))
+	}
+	return node;
+}
+
+function PlaceholderStore() {
+	this.templatableNodes = {};
+}
+PlaceholderStore.prototype =  new EntityStore()
+PlaceholderStore.prototype.templatableNodes = null;
+PlaceholderStore.prototype.createTemplatableNodeFromEntity = function (key,id) {
+	var node = document.createElement("span")
+	node.contentEditable = false;
+	node.className ="placeholder"
+	node.setAttribute("data-placeholder-id",id)
+	node.innerText = key;
+	return node;
+}
+
 	
 
-function PasteManager(element,keyNodeStore) {
+function PasteManager(element,keyNodeStore,placeholderStore) {
 	this.element = element;
 	this.keyNodeStore = keyNodeStore;
+	this.placeholderStore = placeholderStore;
 	document.onpaste = this.pasteHandler.bind(this);
 }
 PasteManager.prototype = {
+	storeTextPosition: function () {
+		var range = document.getSelection().getRangeAt(0);;
+		if (range.endContainer.nodeType == 3) {
+			this.textPosition = range;
+			this.textNode = range.endContainer;
+		}
+		else {
+			this.textPosition = this.textNode = this.dummy =  null
+		}
+	},
+	restoreCaret: function () {
+		console.log(this.storedCaretRange)
+	},
 	pasteHandler: function () {
+		this.storeTextPosition();
 		var elements = this.element.getElementsByTagName("*");
 		for (var i=0;i<elements.length;i++) {
 			elements[i].preexists = {};
@@ -93,7 +132,18 @@ PasteManager.prototype = {
 		setTimeout(this.postPasteHandler.bind(this))
 	},
 	postPasteHandler: function () {
-		var elements = this.element.querySelectorAll("*")
+		if (this.textNode) {
+
+			this.textNode.splitText(this.textPosition.endOffset)
+			
+			var dummy = document.createElement("b");
+			dummy.id = "nonsense"
+			this.textNode.parentNode.replaceChild(dummy,this.textNode)
+			dummy.appendChild(this.textNode)
+			dummy.preexists = {};
+			this.dummy = dummy;
+		}
+		var elements = this.element.querySelectorAll("*");
 		for (var i=0;i<elements.length;i++) {
 			if (!elements[i].preexists) {
 				this.stripData(elements[i]);
@@ -101,6 +151,23 @@ PasteManager.prototype = {
 				elements[i].preexists = null;
 			}
 		}
+		var childNodes = this.element.childNodes;
+		for (var i=0;i<childNodes.length;i++) {
+			if (childNodes[i].nodeType == 3) {
+				this.parseRawText(childNodes[i])
+			}
+		}
+
+	},
+	parseRawText: function (textNode) {
+		var trimmedText = textNode.data.trim();
+			if (this.keyNodeStore.hasEntity(trimmedText)) {
+				newNode = this.keyNodeStore.getEntityNode(trimmedText);
+				textNode.parentNode.replaceChild(newNode,textNode);
+			} else if (this.placeholderStore.hasEntity(trimmedText)) {
+				newNode = this.placeholderStore.getEntityNode(trimmedText);
+				textNode.parentNode.replaceChild(newNode,textNode);
+			}
 	},
 	stripData: function (element) {
 		var text = document.createTextNode(element.innerText),
@@ -113,22 +180,27 @@ PasteManager.prototype = {
 		this.convertRawTextToHtml(element);
 	},
 	convertRawTextToHtml: function (element) {
-		var textNodes = this.getAllTextNodes(this.element);
-		for (var i=0, trimmedText ;i<textNodes.length;i++) {
-			trimmedText = textNodes[i].data.trim()
-			if (this.keyNodeStore.hasKey(trimmedText)) {
-				textNodes[i].parentNode.replaceChild(this.keyNodeStore.getKeyNode(trimmedText),textNodes[i]);
-			} else {
-				var html = parseSegments(textNodes[i].data);//garbage
-				if (html!=textNodes[i].data) {
-					var wrapper = document.createElement("span")
-					wrapper.className = "wrapper";
-					wrapper.contentEditable = true;
-					wrapper.innerHTML = parseSegments(textNodes[i].data)
-					textNodes[i].parentNode.replaceChild(wrapper,textNodes[i])
-				}
-			}
+		var textNodes = this.getAllTextNodes(this.element),
+			newNode;
+
+		for (var i=0, trimmedText, textNode ;i<textNodes.length;i++) {
+			this.parseRawText(textNodes[i]);
 		}
+		if (this.dummy) {
+			var dummy = document.getElementById("nonsense");
+			dummy.parentNode.replaceChild(dummy.childNodes[0],dummy);
+			this.dummy = null;
+		}
+		if (newNode) {
+			this.insertCaretAfter(newNode);
+		}
+	},
+	insertCaretAfter: function (node) {
+		var range = document.createRange();
+		range.setStartAfter(node);
+		var selection = document.getSelection();
+		selection.removeAllRanges()
+		selection.addRange(range);
 	},
 	getAllTextNodes: function (element) {
 		 var allElements = [];
@@ -137,9 +209,6 @@ PasteManager.prototype = {
 		    else allElements = allElements.concat(this.getAllTextNodes(allElements));
 		  }
 		  return allElements;
-	},
-	reinsertCaret: function () {
-
 	}
 
 

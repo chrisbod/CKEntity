@@ -50,9 +50,12 @@
 			
 			onload = function () {
 				var keyStore = new KeyNodeStore()
-				keyStore.addKey("This bonus certificate is protected against foreign exchange risk at maturity [, i.e., the amounts calculated based on [the A, which is quoted in <underlying currency> ] [the B, which is quoted in <underlying currency> ] [the C, which is quoted in<underlying currency> ] [the D, which is quoted in <underlying currency> ], will be converted into <underlying currency> on a 1 to 1 basis (Quanto)] .",1)
+				keyStore.addEntity("This bonus certificate is protected against foreign exchange risk at maturity [, i.e., the amounts calculated based on [the A, which is quoted in <underlying currency> ] [the B, which is quoted in <underlying currency> ] [the C, which is quoted in<underlying currency> ] [the D, which is quoted in <underlying currency> ], will be converted into <underlying currency> on a 1 to 1 basis (Quanto)] .",1)
+				var placeholderStore = new PlaceholderStore ();
+				placeholderStore.addEntity("<product currency>","productCurrency")
+				placeholderStore.addEntity("<underlying currency>","underlyingCurrency")
 				new SelectionManager(document.getElementById("test"))
-				new PasteManager(document.getElementById("test"),keyStore)
+				new PasteManager(document.getElementById("test"),keyStore,placeholderStore)
 			}
 
  /*
