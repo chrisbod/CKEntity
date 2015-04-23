@@ -1,6 +1,6 @@
 //copied from sample file xhtmlstyle.html
 //currently inline after page load
-document.getElementById('editor1').innerHTML = 'some other text <br/><span data-entityId="Entity0" class="entity" contenteditable="false" tabindex="-1">preexisting</span>some text'
+document.getElementById('editor1').innerHTML = 'some other text <br/><span data-entityId="Entity0" class="entity" contenteditable="false" tabindex="-1">[preexisting]</span>some text'
       
 CKEDITOR.replace( 'editor1', {
 					/*
@@ -15,10 +15,10 @@ CKEDITOR.replace( 'editor1', {
 					 * Note: all rules have been written separately so
 					 * it was possible to specify required classes.
 					 */
-					extraAllowedContent: 'span(!FontColor1);span(!FontColor2);span(!FontColor3);' +
+					/*extraAllowedContent: 'span(!FontColor1);span(!FontColor2);span(!FontColor3);' +
 						'span(!FontColor1BG);span(!FontColor2BG);span(!FontColor3BG);' +
 						'span(!FontComic);span(!FontCourier);span(!FontTimes);' +
-						'span(!FontSmaller);span(!FontLarger);span(!FontSmall);span(!FontBig);span(!FontDouble)',
+						'span(!FontSmaller);span(!FontLarger);span(!FontSmall);span(!FontBig);span(!FontDouble)',*/
 					allowedContent: true,
 					/*
 					 * Core styles.
@@ -160,6 +160,6 @@ CKEDITOR.replace( 'editor1', {
       [
          ['entity','Styles', 'Format', 'Bold', 'Italic'],['Undo','Redo']
       ],
-      extraPlugins: 'entity'
+      extraPlugins: 'entity,clipboard'
 });
 

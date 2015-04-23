@@ -17,11 +17,13 @@ function Entity(html,editor) {
 Entity.prototype = {
    html: "",
    toElement: function () {
-      var span = document.createElement("span");
+      var span = document.createElement("ook");
       span.setAttribute("data-entityId",this.id);
-      span.innerHTML = this.html;
+      span.innerText = this.html;
       this.configureElement(span)
-      return span;
+      var outerspan = document.createElement("span")
+      outerspan.appendChild(span)
+      return outerspan;
    },
    configureElement: function (element) {
       element.contentEditable = false;
@@ -54,7 +56,7 @@ Entity.getEntityByDataId = function (id) {
 }
 Entity.isEntityElement = function (element) {
    if (element) {
-      return element.tagName == "SPAN" && element.hasAttribute("data-entityId")
+      return element.tagName == "span" && element.hasAttribute("data-entityId")
    }
    return false
 
@@ -88,14 +90,30 @@ Entity.configureEntities = function (editor) {
          }
 
          }
-
+         editor.document.$.oncopy = function (ev) {
+            console.log(ev)
+         }
          
    }
+   editor.on("paste", function (ev) {
+      var spans = editor.document.$.getElementsByTagName("span")
+      var inlineSpans = [];
+      for (var i=0;i<spans.length;i++) {
+         if (spans) {}
+      }
+      
+   })
     editor.on("selectionChange", function (event) {
       //console.log("here")
       if (Entity.isEntityElement(event.data.path.lastElement.$)) {
          var sel = editor.getSelection();
-        // console.log(sel.getStartElement())
+         //var element = sel.getSelectedElement();
+         //console.log(element)
+         var element = sel.getStartElement();
+         element.$.contentEditable = true
+         sel.selectElement(element.getParent());//not nice
+         element.$.contentEditable = false
+
         /* var startElement = sel.getStartElement();
          var endElement =  sel.getEndElement();
          if (startElement == endElement && Entity.isEntityElement(startElement)) {
@@ -120,9 +138,9 @@ CKEDITOR.plugins.add( 'entity',
       // Gets the list of tags from the settings.
       var tags = []; 
       //this.add('value', 'drop_text', 'drop_label');
-      tags[0]=["contact_name", "Name", "Name"];
-      tags[1]=["contact_email", "email", "email"];
-      tags[2]=["contact_user_name", "User name", "User name"];
+      tags[0]=["<contact_name>", "Name", "Name"];
+      tags[1]=["[contactemail]", "email", "email"];
+      tags[2]=["[contact_user_name]", "User name", "User name"];
 
 //parseInt(("Eniti12").match(/\d+/))
       editor.on("instanceReady", function () {
@@ -164,6 +182,7 @@ CKEDITOR.plugins.add( 'entity',
                var entity = new Entity(value,editor)
                editor.focus();
                editor.fire( 'saveSnapshot' );
+              // console.log(entity.toElement())
                editor.insertElement(new CKEDITOR.dom.element(entity.toElement()));
                editor.fire( 'saveSnapshot' );
             }

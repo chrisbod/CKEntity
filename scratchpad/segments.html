@@ -1,0 +1,159 @@
+<html>
+	<head>
+		<style>
+			div.key,div.segment {
+				display: inline;
+			}
+			.marker {
+				display: inline-block;
+				width: 0;
+				height: 0;
+				overflow:hidden;
+			}
+
+		</style>
+		<script>
+		window.selectedElement = null;
+			function extendSelection(section) {
+				window.selectedElement = null;
+				var sel = window.getSelection(),
+					range,
+					compareRange
+				try {
+					range = sel.getRangeAt(0);
+					compareRange = range.cloneRange()
+				}
+				catch (e) {
+
+				}
+				if (range && !range.collapsed) {
+					if (range.commonAncestorContainer.nodeType == 3) {
+						if (range.anchorNode == range.focusNode) {
+							return
+						}
+					}
+					var startEl = sel.anchorNode;
+					if (startEl != range.commonAncestorContainer) {
+					    while (startEl.parentNode != range.commonAncestorContainer) {
+					        startEl = startEl.parentNode;
+					    }
+					}
+					var endEl = sel.focusNode;
+					if (endEl != range.commonAncestorContainer) {
+					    while (endEl.parentNode != range.commonAncestorContainer) {
+					        endEl = endEl.parentNode;
+					    }
+					}
+					if (section.contains(startEl)||section.contains(endEl)) {
+						if (startEl==endEl) {
+							window.selectedElement = startEl;
+							range.setStartBefore(startEl);
+							range.setEndAfter(endEl);
+							sel.addRange(range)
+						} else {
+							if (startEl.parentNode==endEl.parentNode) {
+								window.selectedElement = startEl.parentNode;
+								range.setStartBefore(startEl.parentNode);
+								range.setEndAfter(startEl.parentNode);
+								sel.addRange(range);
+							}
+						}
+						
+						}
+					}
+				
+			}
+			onload = function () {
+				var section = document.getElementsByTagName("section")[0];
+				var timeout;
+
+				var lastToString = null
+				
+				document.onmsouseup = function (ev) {
+					clearTimeout(timeout)
+					timeout = setTimeout(function () {
+						extendSelection(section)
+
+					},50)
+				}
+				document.onpaste = function (ev) {
+					normalisePaste(ev,section)
+				}
+			}
+
+			function normalisePaste(ev,container) {
+				/*if (container.contains(ev.target)) {
+					var firstChildren = container.querySelectorAll("*[data-first-child]")
+					for (var i=0,firstChild;i!=firstChildren.length;i++) {
+						if (firstChild.parentNode.)
+					}
+				}*/
+			}
+
+		</script>
+
+
+	</head>
+	<body>
+		<textarea style="width: 100%; height: 10em">
+			This bonus certificate is protected against foreign exchange risk at maturity
+			{1:, i.e., the amounts calculated based on
+				{or2:the share, which is quoted in <underlying currency>}
+				{or3:the index, which is quoted in <underlying currency>}
+				{or4:the commodity, which is quoted in <underlying currency>}
+				{or5:the underlying, which is quoted in <underlying currency>}
+			, will be converted into <product currency> on a 1 to 1 basis (Quanto)
+			}
+		.
+		</textarea>
+		<section>
+<div class="key" data-key-name="key1" contenteditable="false" data-key-id="foo">
+	<span class="marker" data-key-element-id="foo">|</span>
+	<span class="phrase" contenteditable="false" data-key-name="key1" data-first-child>This bonus certificate is protected against foreign exchange risk at maturity</span>
+	<span class="segment" data-segment-name="key1-segment1" contenteditable="false" data-key-name="key1">[, i.e., the amounts calculated based on
+		<span class="segment" data-segment-name="key1-segment2" contenteditable="false" data-key-name="key1">[
+			the share, which is quoted in
+			<input type="button" class="placeholder" data-placeholder-type="underlyingCurrency" contenteditable="false" value="&lt;underlying currency&gt;">]
+		</span><span class="segment" data-segment-name="key1-segment3" contenteditable="false" data-key-name="key1">[
+			the share, which is quoted in
+			<input type="button" class="placeholder" data-placeholder-type="underlyingCurrency" contenteditable="false" value="&lt;underlying currency&gt;">]
+		</span><span class="segment" data-segment-name="key1-segment4" contenteditable="false" data-key-name="key1">[
+			the share, which is quoted in
+			<input type="button" class="placeholder" data-placeholder-type="underlyingCurrency" contenteditable="false" value="&lt;underlying currency&gt;">]
+		</span><span class="segment" data-segment-name="key1-segment5" contenteditable="false" data-key-name="key1">[
+			the share, which is quoted in
+			<input type="button" class="placeholder" data-placeholder-type="underlyingCurrency" contenteditable="false" value="&lt;underlying currency&gt;">]
+		</span><span class="phrase" data-key-name="key1">, will be converted into<input type="button" class="placeholder" data-placeholder-type="productCurrency" contenteditable="false" value="&lt;product currency&gt;"> on a 1 to 1 basis (Quanto)]</span>
+	</span>.
+	<span class="marker" data-key-element-id="foo">|</span>
+</div>
+		</section>
+
+
+		<div contenteditable="true" style="border: 1px solid red; height: 10em">
+			<div class="key" data-key-name="key1" contenteditable="false" data-key-id="foo">
+				<span class="marker" data-key-element-id="foo">|</span>
+				<span class="phrase" contenteditable="false" data-key-name="key1" data-first-child>This bonus certificate is protected against foreign exchange risk at maturity</span>
+				<span class="segment" data-segment-name="key1-segment1" contenteditable="false" data-key-name="key1">[, i.e., the amounts calculated based on
+					<span class="segment" data-segment-name="key1-segment2" contenteditable="false" data-key-name="key1">[
+						the share, which is quoted in
+						<input type="button" class="placeholder" data-placeholder-type="underlyingCurrency" contenteditable="false" value="&lt;underlying currency&gt;">]
+					</span><span class="segment" data-segment-name="key1-segment3" contenteditable="false" data-key-name="key1">[
+						the share, which is quoted in
+						<input type="button" class="placeholder" data-placeholder-type="underlyingCurrency" contenteditable="false" value="&lt;underlying currency&gt;">]
+					</span><span class="segment" data-segment-name="key1-segment4" contenteditable="false" data-key-name="key1">[
+						the share, which is quoted in
+						<input type="button" class="placeholder" data-placeholder-type="underlyingCurrency" contenteditable="false" value="&lt;underlying currency&gt;">]
+					</span><span class="segment" data-segment-name="key1-segment5" contenteditable="false" data-key-name="key1">[
+						the share, which is quoted in
+						<input type="button" class="placeholder" data-placeholder-type="underlyingCurrency" contenteditable="false" value="&lt;underlying currency&gt;">]
+					</span><span class="phrase" data-key-name="key1">, will be converted into<input type="button" class="placeholder" data-placeholder-type="productCurrency" contenteditable="false" value="&lt;product currency&gt;"> on a 1 to 1 basis (Quanto)]</span>
+				</span>.
+				<span class="marker" data-key-element-id="foo">|</span>
+			</div>
+
+		</div>
+	</body>
+
+
+</html>

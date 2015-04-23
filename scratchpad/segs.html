@@ -1,0 +1,266 @@
+<html>
+	<head>
+		<style>
+			div.key,div.segment {
+				display: inline;
+			}
+			.marker {
+				display: inline-block;
+				width: 0;
+				height: 0;
+				overflow:hidden;
+			}
+			input { 
+				display: inline;
+				border-width: 0;
+				background-color: transparent;
+				text-align: center;
+				width: auto;
+				outline: 1px solid red;
+			}
+			span.segment:before {
+				scontent:'[';
+			}
+			span.segment:after {
+				scontent:']';
+			}
+			/*div.key:before {
+				content: '{';
+			}
+			div.key:after {
+				content: '}';
+			}*/
+
+			div.key {
+				outline: 1px dotted black;
+				display: inline;
+			}
+			.placeholder{
+				display: inline-block;
+				white-space: nowrap;
+				outline: 1px dotted red;
+			}
+			
+
+
+		</style>
+		<script src="scripts/entity.selection.js"></script>
+		<script>
+		
+			
+			onload = function () {
+				var keyStore = new KeyNodeStore()
+				keyStore.addKey("This bonus certificate is protected against foreign exchange risk at maturity [, i.e., the amounts calculated based on [the A, which is quoted in <underlying currency> ] [the B, which is quoted in <underlying currency> ] [the C, which is quoted in<underlying currency> ] [the D, which is quoted in <underlying currency> ], will be converted into <underlying currency> on a 1 to 1 basis (Quanto)] .",1)
+				new SelectionManager(document.getElementById("test"))
+				new PasteManager(document.getElementById("test"),keyStore)
+			}
+
+ /*
+			document.onpaste = function (ev) {
+				var elements = document.getElementById("test").getElementsByTagName("*");
+				for (var i=0;i<elements.length;i++) {
+					elements[i].preexists = {}
+				}
+				setTimeout(function () {
+					var elements = document.getElementById("test").querySelectorAll("*");
+					for (var i=0;i<elements.length;i++) {
+						if (!elements[i].preexists) {
+							stripData(elements[i]);
+						} else {
+							elements[i].preexists = null;
+						}
+					}
+					promoteText()
+				})
+			}
+
+			function isOrphan(node) {
+				var parentNode = node.parentNode;
+				var className = parentNode.className
+				if (!(/^(key|segment)$/.test(className))) {
+					return true
+				}
+				return false;
+			}
+			function fixPlaceholders () {
+				var placeholders = document.getElementById("test").querySelectorAll("span.placeholder");
+				for (var i=0;i<placeholders.length;i++) {
+					placeholders[i].contentEditable = false;
+				}
+
+			}
+
+			function cleanOrphans() {
+				var orphans = []
+				var keys = document.getElementById("test").querySelectorAll("div.key[data-key-name]");
+				for (var i=0;i<keys.length;i++) {
+					var dummy = document.createElement("dummy");
+					dummy.trueNode = keys[i];
+					keys[i].parentNode.replaceChild(dummy,keys[i])
+				}
+				var orphans = document.getElementById("test").querySelectorAll("span[data-key-name]")
+				for (var i=0;i<orphans.length;i++) {
+					stripData(orphans[i])
+				}
+				var dummies = document.getElementById("test").querySelectorAll("dummy");
+				for (var i=0;i<dummies.length;i++) {
+					dummies[i].parentNode.replaceChild(dummy.trueNode,dummy)
+				}
+				*/
+
+
+				
+
+/*
+<div class="key" data-key-name="key1" contenteditable="false" id="foo">
+	<span class="key-text" data-key-name="key1">This bonus certificate is protected against foreign exchange risk at maturity</span>
+	<span class="segment" data-segment-name="key1-segment1" contenteditable="false" data-key-name="key1">[, i.e., the amounts calculated based on
+		<span class="segment" data-segment-name="key1-segment2" contenteditable="false" data-key-name="key1">
+			[the A, which is quoted in
+			<span class="placeholder" data-placeholder-type="underlyingCurrency" contenteditable="false">&lt;underlying currency&gt;</span>
+		]</span><span class="segment" data-segment-name="key1-segment3" contenteditable="false" data-key-name="key1">
+			[the B, which is quoted in
+			<span class="placeholder" data-placeholder-type="underlyingCurrency" contenteditable="false">&lt;underlying currency&gt;</span>
+		]</span><span class="segment" data-segment-name="key1-segment4" contenteditable="false" data-key-name="key1">
+			[the C, which is quoted in
+			<span class="placeholder" data-placeholder-type="underlyingCurrency" contenteditable="false">&lt;underlying currency&gt;</span>
+		]</span><span class="segment" data-segment-name="key1-segment5" contenteditable="false" data-key-name="key1">
+			[the D, which is quoted in
+			<span class="placeholder" data-placeholder-type="underlyingCurrency" contenteditable="false">&lt;underlying currency&gt;</span>
+		]</span><span class="segment" data-key-name="key1"  contenteditable="false">, will be converted into <span class="placeholder" data-placeholder-type="productCurrency">&lt;underlying currency&gt;</span> on a 1 to 1 basis (Quanto)]</span>
+	</span><span class="key-text" data-key-name="key1">.</span>
+</div>
+
+*/
+
+function parseSegments (string) {
+	return string
+						.replace(/</g,'\x02&lt;')
+						.replace(/>/g,'&gt;\x03')
+						.replace(/\[/g,'<span class="segment" contenteditable="false">[')
+						.replace(/\]/g,']</span>')
+						.replace(/\x02/g,'<span class="placeholder" contenteditable="false">')
+						.replace(/\x03/g,"</span>");
+}
+function parseCustomSegments (string) {
+
+	return string
+						.replace(/</g,'\x02&lt;')
+						.replace(/>/g,'&gt;\x03')
+						.replace(/\[/g,'<span class="segment">[')
+						.replace(/\]/g,']</span>')
+						.replace(/\x02/g,'<span class="placeholder" contenteditable="false">')
+						.replace(/\x03/g,"</span>");
+}
+
+
+
+
+			/*
+
+function stripData(node) {
+				node.removeAttribute("style")
+				if (node.className!="segment") {
+					node.className = ""
+				}
+				var attributes = node.attributes,
+					attributesToStrip = [];
+				for (var i=0;i<attributes.length;i++) {console.log("here")
+					if (/^data/.test(attributes[i].nodeName)) {
+						
+						attributesToStrip.push(attributes[i].nodeName)
+					}
+				}
+				for (i=0;i<attributesToStrip.length;i++) {
+					node.removeAttribute(attributesToStrip[i])
+				}
+			}
+			*/
+
+
+			
+		</script>
+
+
+	</head>
+	<body>
+		<textarea style="width: 100%; height: 10em">
+			This bonus certificate is protected against foreign exchange risk at maturity
+			{1:, i.e., the amounts calculated based on
+				{or2:the share, which is quoted in <underlying currency>}
+				{or3:the index, which is quoted in <underlying currency>}
+				{or4:the commodity, which is quoted in <underlying currency>}
+				{or5:the underlying, which is quoted in <underlying currency>}
+			, will be converted into <product currency> on a 1 to 1 basis (Quanto)
+			}
+		.
+		</textarea>
+		<hr>
+		<section>
+			
+<div class="key" data-key-name="key1" contenteditable="false" id="foo">
+	This bonus certificate is protected against foreign exchange risk at maturity
+	<span class="segment" data-segment-name="key1-segment1" contenteditable="false" data-key-name="key1">[, i.e., the amounts calculated based on
+		<span class="segment" data-segment-name="key1-segment2" contenteditable="false" data-key-name="key1">
+			[the A, which is quoted in
+			<span class="placeholder" data-placeholder-type="underlyingCurrency" contenteditable="false">&lt;underlying currency&gt;</span>
+		]</span><span class="segment" data-segment-name="key1-segment3" contenteditable="false" data-key-name="key1">
+			[the B, which is quoted in
+			<span class="placeholder" data-placeholder-type="underlyingCurrency" contenteditable="false">&lt;underlying currency&gt;</span>
+		]</span><span class="segment" data-segment-name="key1-segment4" contenteditable="false" data-key-name="key1">
+			[the C, which is quoted in
+			<span class="placeholder" data-placeholder-type="underlyingCurrency" contenteditable="false">&lt;underlying currency&gt;</span>
+		]</span><span class="segment" data-segment-name="key1-segment5" contenteditable="false" data-key-name="key1">
+			[the D, which is quoted in
+			<span class="placeholder" data-placeholder-type="underlyingCurrency" contenteditable="false">&lt;underlying currency&gt;</span>
+		]</span>, will be converted into <span class="placeholder" data-placeholder-type="productCurrency">&lt;underlying currency&gt;</span> on a 1 to 1 basis (Quanto)]
+	</span>.
+</div>
+
+		</section>
+	<hr>
+
+		<div id="test" contenteditable="true" style="border: 1px solid red; height: 10em">
+				<div class="key" data-key-name="key1" contenteditable="false" id="foo">
+				This bonus certificate is protected against foreign exchange risk at maturity
+				<span class="segment" data-segment-name="key1-segment1" contenteditable="false" data-key-name="key1">[, i.e., the amounts calculated based on
+					<span class="segment" data-segment-name="key1-segment2" contenteditable="false" data-key-name="key1">
+						[the A, which is quoted in
+						<span class="placeholder" data-placeholder-type="underlyingCurrency" contenteditable="false">&lt;underlying currency&gt;</span>
+					]</span><span class="segment" data-segment-name="key1-segment3" contenteditable="false" data-key-name="key1">
+						[the B, which is quoted in
+						<span class="placeholder" data-placeholder-type="underlyingCurrency" contenteditable="false">&lt;underlying currency&gt;</span>
+					]</span><span class="segment" data-segment-name="key1-segment4" contenteditable="false" data-key-name="key1">
+						[the C, which is quoted in
+						<span class="placeholder" data-placeholder-type="underlyingCurrency" contenteditable="false">&lt;underlying currency&gt;</span>
+					]</span><span class="segment" data-segment-name="key1-segment5" contenteditable="false" data-key-name="key1">
+						[the D, which is quoted in
+						<span class="placeholder" data-placeholder-type="underlyingCurrency" contenteditable="false">&lt;underlying currency&gt;</span>
+					]</span>, will be converted into <span class="placeholder" data-placeholder-type="productCurrency">&lt;underlying currency&gt;</span> on a 1 to 1 basis (Quanto)]
+				</span>.
+			</div>
+			<div class="key" data-key-name="key1" contenteditable="false" id="food">
+				This bonus certificate is protected against foreign exchange risk at maturity
+				<span class="segment" data-segment-name="key1-segment1" contenteditable="false" data-key-name="key1">[, i.e., the amounts calculated based on
+					<span class="segment" data-segment-name="key1-segment2" contenteditable="false" data-key-name="key1">
+						[the A, which is quoted in
+						<span class="placeholder" data-placeholder-type="underlyingCurrency" contenteditable="false">&lt;underlying currency&gt;</span>
+					]</span><span class="segment" data-segment-name="key1-segment3" contenteditable="false" data-key-name="key1">
+						[the B, which is quoted in
+						<span class="placeholder" data-placeholder-type="underlyingCurrency" contenteditable="false">&lt;underlying currency&gt;</span>
+					]</span><span class="segment" data-segment-name="key1-segment4" contenteditable="false" data-key-name="key1">
+						[the C, which is quoted in
+						<span class="placeholder" data-placeholder-type="underlyingCurrency" contenteditable="false">&lt;underlying currency&gt;</span>
+					]</span><span class="segment" data-segment-name="key1-segment5" contenteditable="false" data-key-name="key1">
+						[the D, which is quoted in
+						<span class="placeholder" data-placeholder-type="underlyingCurrency" contenteditable="false">&lt;underlying currency&gt;</span>
+					]</span>, will be converted into <span class="placeholder" data-placeholder-type="productCurrency">&lt;underlying currency&gt;</span> on a 1 to 1 basis (Quanto)]
+				</span>.
+			</div>
+	</div>
+
+
+	</body>
+
+
+</html>

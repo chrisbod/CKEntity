@@ -96,6 +96,7 @@
 					}
 				}
 				crawl(this.tokens,split);
+				results.sort()
 				return results;	
 
 			}
@@ -104,14 +105,19 @@
 			function KeySuggestEntity (key) {
 				this.key = key;
 				this.encodedKey = this.htmlEncode(key.value)
-				var match = key.value.match(/^[^\[]+/),
+				var match = key.value.match(/(^[^\[]+)(.*)$/),
 					suggestString;
-				if (!match) {
-					suggestString = this.key.value;
+				
+				if (match[2]) {//we have conditions
+					suggestString = match[1]+'[]';
+					tokenizer.tokenize(key.value);
+					tokenizer.tokenize(match[1]+'.');
 				} else {
-					suggestString = match[0]+'\u2026';
+					suggestString = key.value;
+					tokenizer.tokenize(key.value);
 				}
-				tokenizer.tokenize(match[0])
+				
+				
 				this.suggestString = this.htmlEncode(suggestString);
 			}
 			KeySuggestEntity.prototype.dummyNode = document.createElement("div");
@@ -154,7 +160,6 @@
 				
 				document.querySelector("div").appendChild(node);
 				console.log(tokenizer.getSuggestions("T"))
-				debugger;
 				console.log(tokenizer.getSuggestions("This"))
 				console.log(tokenizer.getSuggestions("This b"))
 				console.log(tokenizer.getSuggestions("This bo"))
