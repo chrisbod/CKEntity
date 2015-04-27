@@ -1,0 +1,29 @@
+div.autosuggest-container {
+	position: absolute;
+	z-index: 1000;
+	top: 0;
+	visibility: hidden;
+	background-color: white;
+	border: 1px solid black;
+	margin-right: 20px;
+	overflow: auto;
+	padding: 2px;
+	min-height: 200px;
+	max-height: 100%;
+	box-sizing: border-box;
+
+}
+div.autosuggest-container p {
+	color: black;
+	margin: 0ex;
+	border-top: 1px solid silver;
+	text-align: justify;
+	padding: 3px 4px 4px 4px;
+}
+div.autosuggest-container p:first-child {
+	border-top-width: 0;
+} 
+div.autosuggest-container p:hover {
+	color: white;
+	background-color: black
+}
