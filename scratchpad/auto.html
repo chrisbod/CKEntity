@@ -61,12 +61,18 @@ For licensing, see LICENSE.md or http://ckeditor.com/license
 					keyStore.addEntity(dummyKeys[i].def,dummyKeys[i].id);
 				}
 				autoSuggestContainer.build(dummyKeys);
+				var input = document.getElementById("dummy");
+				input.onfocus = function () {
+					autoSuggestContainer.moveToElement(document.getElementById("dummy"));
+					autoSuggestContainer.show()
+				}
+				
 				
 				
 			}})
 
 		})
-
 		</script>
+		<input id="dummy" style="width: 100%">
 </body>
 </html>

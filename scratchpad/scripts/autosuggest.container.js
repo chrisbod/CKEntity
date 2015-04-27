@@ -13,7 +13,7 @@ AutoSuggestContainer.prototype = {
 	},
 	moveToElement: function (element) {
 		var rect =element.getBoundingClientRect();
-		this.moveTo(rect.top,rect.right);
+		this.moveTo(rect.left,rect.top+rect.height);
 		this.configureMetrics();
 	},
 	moveToCursorTopRight: function (cursorContainer) {
@@ -29,7 +29,7 @@ AutoSuggestContainer.prototype = {
 		this.element.style.visibility = "";
 	},
 	show: function () {
-		this.element.style.visibility = "hidden";
+		this.element.style.visibility = "visible";
 	},
 	build: function (data) {
 		this.element.innerHTML = "";
@@ -51,9 +51,14 @@ AutoSuggestContainer.prototype = {
 		console.log(text)
 	},
 	configureMetrics: function () {
+		this.element.style.bottom = "";
 		var viewRect = document.querySelector("html").getBoundingClientRect();
-		var currentElementRect = this.element.getBoundingClientRect()
-		
+		var currentElementRect = this.element.getBoundingClientRect();
+		var viewBottom = Math.max(viewRect.bottom,window.innerHeight);
+		var elementBottom = currentElementRect.bottom;
+		if (elementBottom>viewBottom) {
+			this.element.style.bottom = "0px"
+		}
 
 	}
 }
