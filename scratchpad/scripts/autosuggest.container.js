@@ -62,3 +62,66 @@ AutoSuggestContainer.prototype = {
 
 	}
 }
+
+
+function SuggestTokenizer () {
+	this.tokens = {};
+
+}
+SuggestTokenizer.prototype.tokenize = function (string) {
+	var split = string.toLowerCase().trim().split(" "),
+		currentToken = this.tokens
+	for (var i=0,existingNode;i<split.length;i++) {
+		existingNode = currentToken[split[i]]
+		if (!existingNode) {
+			existingNode = {}
+		}
+		currentToken = currentToken[split[i]] = existingNode
+	}
+	currentToken._$ = string;
+}
+SuggestTokenizer.prototype.getSuggestions = function (string) {
+	string = string.trim().toLowerCase()
+	if (string.indexOf(" ")==-1) {
+		if (this.tokens[string] && this.tokens[string]._$) {
+			return [this.tokens[string]._$];
+		} else {
+			return [];
+		}
+	}
+	var split = string.toLowerCase().trim().split(" "),
+		results = [];
+	
+	function crawl(object) {
+		if (split.length) {
+			var next = split.shift();
+				if (next in object) {
+					crawl(object[next])
+				} else if (!split.length) {
+					complete(object,next)
+				}
+		} else {
+			iterate(object)
+		}
+	}
+	function iterate(object) {
+		for (var i in object) {
+			if (i == "_$") {
+				results.push(object._$)
+			} else {
+				iterate(object[i])
+			}
+		}
+	}
+	function complete(object,string) {
+		for (var i in object) {
+			if (i.indexOf(string)==0) {
+				iterate(object[i])
+			}
+		}
+	}
+	crawl(this.tokens,split);
+	results.sort()
+	return results;	
+
+}
