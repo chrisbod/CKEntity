@@ -11,7 +11,10 @@ div.autosuggest-container {
 	box-sizing: border-box;
 
 }
-div.autosuggest-container p {
+div.autosuggest-container a {
+	cursor: default;
+	text-decoration: none;
+	display: block;
 	color: black;
 	margin: 0ex;
 	border-top: 1px solid silver;
@@ -19,10 +22,11 @@ div.autosuggest-container p {
 	padding: 3px 4px 4px 4px;
 	display: none;
 }
-div.autosuggest-container p:first-child {
+div.autosuggest-container a:first-child {
 	border-top-width: 0;
 } 
-div.autosuggest-container p:hover {
+div.autosuggest-container a:hover,
+div.autosuggest-container a:focus  {
 	color: white;
 	background-color: black
 }

@@ -1,7 +1,10 @@
+
 window.AutoSuggestContainer = function AutoSuggestContainer() {
 	this.element = document.createElement("div")
 	this.element.className = "autosuggest-container";
-	this.element.onclick = this.clickHandler.bind(this);
+	this.element.addEventListener("click", this);
+	//this.element.addEventListener("focus", this);
+	this.element.addEventListener("keydown",this);
 	this.tokenizer = new SuggestTokenizer();
 }
 
@@ -11,12 +14,26 @@ AutoSuggestContainer.prototype = {
 		this.element.style.left = x+"px";
 		this.element.style.top = y+"px";
 		this.configureMetrics();
-
 	},
 	moveToElement: function (element) {
+		if (this.inputElement) {
+			this.inputElement.removeEventListener("keydown",this);
+		}
 		var rect =element.getBoundingClientRect();
 		this.moveTo(rect.left,rect.top+rect.height);
 		this.configureMetrics();
+		this.inputElement = element;
+		
+	},
+	setInputElement: function (inputElement) {
+		if (this.inputElement) {
+			this.inputElement.removeEventListener("input",this)
+		}
+		this.inputElement = inputElement;
+		inputElement.addEventListener("focus",this)
+		inputElement.addEventListener("input",this)
+
+
 	},
 	moveToCursorTopRight: function (cursorContainer) {
 		var selection = cursorContainer.document.getSelection().getRangeAt(0)
@@ -29,10 +46,16 @@ AutoSuggestContainer.prototype = {
 	},
 	hide: function () {
 		this.element.style.visibility = "";
+		this.inputElement.removeEventListener("keydown",this)
 	},
 	show: function () {
 		if (this.visibleCount) {
 			this.element.style.visibility = "visible";
+			this.inputElement.addEventListener("keydown",this)
+			this.inputElement.addEventListener("input",this)
+		} else {
+			this.inputElement.removeEventListener("keydown",this)
+			this.inputElement.removeEventListener("input",this)
 		}
 		this.configureMetrics()
 	},
@@ -47,11 +70,75 @@ AutoSuggestContainer.prototype = {
 		document.body.appendChild(this.element);
 		this.configureMetrics()
 	},
+	handleEvent: function (event) {
+		return this[event.type+"Handler"](event)
+	},
 	clickHandler: function (ev) {
 		var p = (ev.target||event.srcElement);
 		if (p!=this) {
 			this.clicked(p.id,p.innerText,p)
 		}
+	},
+	focusHandler: function (event) {
+		if (event.currentTarget == this.element) {
+
+		} else if (event.currentTarget == this.inputElement) {
+				this.moveToElement(this.inputElement);
+				this.handleValue(this.inputElement.value)
+			}
+	},
+	inputHandler: function () {
+		console.log("here")
+		this.handleValue(this.inputElement.value)
+	},
+	keydownHandler: function (event) {
+		console.log(event.keyCode)
+		switch (event.keyCode) {
+			case 40: return this.arrowDown(event);
+			case 38: return this.arrowUp(event);
+			case 27: return this.hide();
+		}
+	},
+	arrowDown: function (event) {
+		if (event.currentTarget == this.inputElement) {
+			this.firstOption.focus();
+			} else {
+				var nextSibling = event.target.nextSibling;
+				while (nextSibling) {
+					if (nextSibling.offsetHeight) {
+						this.element.removeEventListener("focus",this);
+						nextSibling.focus();
+						this.element.addEventListener("focus",this)
+						break;
+					}
+				}
+				if (!nextSibling) {
+					this.inputElement.focus()
+				}
+			}
+			event.stopPropagation()
+			event.preventDefault()
+	},
+	arrowUp: function () {
+		if (event.currentTarget == this.inputElement) {
+			} else {
+				var previousSibling = event.target.previousSibling;
+				while (previousSibling) {
+					if (previousSibling.offsetHeight) {
+						previousSibling.focus();
+						break;
+					}
+					previousSibling = previousSibling.previousSibling;
+				}
+				if (!previousSibling) {
+					this.inputElement.removeEventListener("focus", this)
+					this.inputElement.focus()
+					this.inputElement.addEventListener("focus", this)
+					
+				}
+			}
+			event.stopPropagation()
+			event.preventDefault()
 	},
 	clicked: function (id,text,element) {
 		console.log(text)
@@ -70,16 +157,19 @@ AutoSuggestContainer.prototype = {
 	showByIds: function (idsArray) {
 		var lookup = {},
 			visibleCount = 0;
-			options = this.element.querySelectorAll("p"),
-			i=0
+			options = this.element.querySelectorAll("a"),
+			i=0,
+			firstOption = null;
 		for (i=0;i!=idsArray.length;i++) {
 			lookup[idsArray[i]] = true;
 		}
+		this.firstChild = null;
 		for (i=options.length-1;i!=-1;i--) {
 			if (!(options[i].id in lookup)) {
 				options[i].style.display = ''
 			} else {
 				options[i].style.display = "block";
+				firstOption = options[i]
 				visibleCount++;
 			}
 		}
@@ -87,7 +177,9 @@ AutoSuggestContainer.prototype = {
 		if (visibleCount == 0) {
 			this.hide();//force a hide?
 		} else {
+			this.firstOption = firstOption;
 			this.show();
+
 		}
 	},
 	showByKeys: function (keysArray) {
