@@ -45,11 +45,15 @@ AutoSuggestContainer.prototype = {
 		this.configureMetrics();
 	},
 	hide: function () {
+		this.firstOption = null;
 		this.element.style.visibility = "";
 		this.inputElement.removeEventListener("keydown",this)
 	},
 	show: function () {
 		if (this.visibleCount) {
+			if (this.firstOption) {
+				this.firstOption.className = "focussed";
+			}
 			this.element.style.visibility = "visible";
 			this.inputElement.addEventListener("keydown",this)
 			this.inputElement.addEventListener("input",this)
@@ -76,7 +80,8 @@ AutoSuggestContainer.prototype = {
 	clickHandler: function (ev) {
 		var p = (ev.target||event.srcElement);
 		if (p!=this) {
-			this.clicked(p.id,p.innerText,p)
+			this.clicked(p.id,p.innerText,p);
+			this.hide()
 		}
 	},
 	focusHandler: function (event) {
@@ -97,10 +102,13 @@ AutoSuggestContainer.prototype = {
 			case 40: return this.arrowDown(event);
 			case 38: return this.arrowUp(event);
 			case 27: return this.hide();
+			case 13: return this.enter(event)
 		}
 	},
 	arrowDown: function (event) {
+
 		if (event.currentTarget == this.inputElement) {
+			this.firstOption.className = '';
 			this.firstOption.focus();
 			} else {
 				var nextSibling = event.target.nextSibling;
@@ -121,7 +129,9 @@ AutoSuggestContainer.prototype = {
 	},
 	arrowUp: function () {
 		if (event.currentTarget == this.inputElement) {
+
 			} else {
+				this.firstOption.className = '';
 				var previousSibling = event.target.previousSibling;
 				while (previousSibling) {
 					if (previousSibling.offsetHeight) {
@@ -140,8 +150,15 @@ AutoSuggestContainer.prototype = {
 			event.stopPropagation()
 			event.preventDefault()
 	},
+	enter: function (event) {
+		if (event.target == this.inputElement && this.firstOption.className == "focussed") {
+			this.clicked(this.firstOption.id,this.firstOption.innerText,this.firstOption);
+			this.hide()
+		}
+	},
 	clicked: function (id,text,element) {
-		console.log(text)
+		this.inputElement.value = text;
+
 	},
 	configureMetrics: function () {
 		this.element.style.bottom = "";

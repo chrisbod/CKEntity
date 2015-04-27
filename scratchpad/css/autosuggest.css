@@ -26,7 +26,8 @@ div.autosuggest-container a:first-child {
 	border-top-width: 0;
 } 
 div.autosuggest-container a:hover,
-div.autosuggest-container a:focus  {
+div.autosuggest-container a:focus,
+div.autosuggest-container a.focussed   {
 	color: white;
 	background-color: black
 }
