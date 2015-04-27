@@ -35,18 +35,27 @@ AutoSuggestContainer.prototype = {
 
 
 	},
-	moveToCursorTopRight: function (cursorContainer) {
+	setEditableElement:function (editableElement) {
+		if (this.editableElement) {
+			this.editableElement.removeEventListener("onkeydown",this)
+		}
+		this.editableElement = editableElement;
+		this.editableElement.addEventListener("keydown", this)
+		this.editableElement.addEventListener("keyup", this)
+	},
+	moveToCursorBottomLeft: function (cursorContainer) {
 		var selection = cursorContainer.document.getSelection().getRangeAt(0)
 		var range = selection.cloneRange()
 		range.collapse();
 		var rect = range.getClientRects()
 		rect = rect[rect.length-1]
-		this.moveTo(rect.top,rect.right);
+		this.moveTo(rect.bottom,rect.left);
 		this.configureMetrics();
 	},
 	hide: function () {
 		this.firstOption = null;
 		this.element.style.visibility = "";
+		this.visible = false;
 		this.inputElement.removeEventListener("keydown",this)
 	},
 	show: function () {
@@ -55,9 +64,11 @@ AutoSuggestContainer.prototype = {
 				this.firstOption.className = "focussed";
 			}
 			this.element.style.visibility = "visible";
+			this.visible = true;
 			this.inputElement.addEventListener("keydown",this)
 			this.inputElement.addEventListener("input",this)
 		} else {
+			this.visible = false;
 			this.inputElement.removeEventListener("keydown",this)
 			this.inputElement.removeEventListener("input",this)
 		}
@@ -90,19 +101,48 @@ AutoSuggestContainer.prototype = {
 		} else if (event.currentTarget == this.inputElement) {
 				this.moveToElement(this.inputElement);
 				this.handleValue(this.inputElement.value)
-			}
+		}
 	},
 	inputHandler: function () {
 		console.log("here")
 		this.handleValue(this.inputElement.value)
 	},
 	keydownHandler: function (event) {
-		console.log(event.keyCode)
 		switch (event.keyCode) {
 			case 40: return this.arrowDown(event);
 			case 38: return this.arrowUp(event);
 			case 27: return this.hide();
 			case 13: return this.enter(event)
+		}
+	},
+	keyupHandler: function (event) {
+		if (this.editableElement) {
+			if (!this.range) {
+				var range = document.getSelection().getRangeAt(0).cloneRange();
+				var node = range.startContainer.splitText(range.startOffset-1);
+				//range.setEnd(range.endContainer,range.endOffset);
+				//range.setStart(range.endContainer,range.endOffset-1);
+				range.selectNodeContents(node);
+				var str = range.toString();
+				if (str.length == 0) {
+					this.textNode = null;
+					this.range = null
+				} else {
+					this.textNode = node;
+					this.range = range
+				}
+			} else {
+				this.range.selectNodeContents(this.textNode);
+				var str = this.range.toString();
+				if (str.length == 0) {
+					this.textNode = null;
+					this.range = null
+				} 
+			}
+				
+			if (this.range) console.log(this.range.toString())
+			//document.getSelection().addRange(range)
+			//console.log(this.tokenizer.isTrigger(event.keyCode))
 		}
 	},
 	arrowDown: function (event) {
@@ -219,7 +259,7 @@ AutoSuggestContainer.prototype = {
 			if (suggestions.length == 1 && suggestions[0].def == value) {
 				suggestions = []
 			}
-			this.showByKeys(suggestions)
+			this.showByKeys(suggestions);
 		}
 
 	}
@@ -228,7 +268,11 @@ AutoSuggestContainer.prototype = {
 
 function SuggestTokenizer () {
 	this.tokens = {};
+	this.triggerLetterCodes = {};
 
+}
+SuggestTokenizer.prototype.isTrigger = function (charCode) {
+	return charCode in this.triggerLetterCodes;
 }
 SuggestTokenizer.prototype.tokenize = function (key) {
 	var split = key.def.trim().split(" "),
@@ -238,7 +282,11 @@ SuggestTokenizer.prototype.tokenize = function (key) {
 		if (!existingNode) {
 			existingNode = {};
 		}
-		currentToken = currentToken[split[i]] = existingNode
+		if (currentToken == this.tokens) {
+			this.triggerLetterCodes[split[i].charCodeAt(0)] = true;
+		}
+		currentToken = currentToken[split[i]] = existingNode;
+
 	}
 	currentToken._$ = key;
 }
