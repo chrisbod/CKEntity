@@ -64,8 +64,22 @@ For licensing, see LICENSE.md or http://ckeditor.com/license
 				var input = document.getElementById("dummy");
 				input.onfocus = function () {
 					autoSuggestContainer.moveToElement(document.getElementById("dummy"));
-					autoSuggestContainer.show()
+					if (this.value) {
+						autoSuggestContainer.handleValue(this.value)
+					}
 				}
+				input.oninput = function () {
+					autoSuggestContainer.handleValue(this.value)
+				}
+				input.onchange = function () {
+					//autoSuggestContainer.hide()
+				}
+				autoSuggestContainer.clicked = function (id,text,container) {
+
+					input.value = text;
+					this.hide()
+				}
+
 				
 				
 				

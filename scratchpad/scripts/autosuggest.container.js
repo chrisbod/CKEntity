@@ -1,10 +1,12 @@
 window.AutoSuggestContainer = function AutoSuggestContainer() {
 	this.element = document.createElement("div")
 	this.element.className = "autosuggest-container";
-	this.element.onclick = this.clickHandler.bind(this)
+	this.element.onclick = this.clickHandler.bind(this);
+	this.tokenizer = new SuggestTokenizer();
 }
 
 AutoSuggestContainer.prototype = {
+	visibleCount: 0,
 	moveTo: function (x,y) {
 		this.element.style.left = x+"px";
 		this.element.style.top = y+"px";
@@ -29,13 +31,17 @@ AutoSuggestContainer.prototype = {
 		this.element.style.visibility = "";
 	},
 	show: function () {
-		this.element.style.visibility = "visible";
+		if (this.visibleCount) {
+			this.element.style.visibility = "visible";
+		}
+		this.configureMetrics()
 	},
 	build: function (data) {
 		this.element.innerHTML = "";
 		var html = []
 		for (var i=0;i<data.length;i++) {
-			html[html.length] = '<p id="'+data[i].id+'">'+data[i].def.replace(/</g,'&lt;').replace(/>/g,'&gt;')+'</p>'
+			html[html.length] = '<a href="javascript:;" id="'+data[i].id+'">'+data[i].def.replace(/</g,'&lt;').replace(/>/g,'&gt;')+'</a>';
+			this.tokenizer.tokenize(data[i])
 		}
 		this.element.innerHTML = html.join('');
 		document.body.appendChild(this.element);
@@ -60,6 +66,53 @@ AutoSuggestContainer.prototype = {
 			this.element.style.bottom = "0px"
 		}
 
+	},
+	showByIds: function (idsArray) {
+		var lookup = {},
+			visibleCount = 0;
+			options = this.element.querySelectorAll("p"),
+			i=0
+		for (i=0;i!=idsArray.length;i++) {
+			lookup[idsArray[i]] = true;
+		}
+		for (i=options.length-1;i!=-1;i--) {
+			if (!(options[i].id in lookup)) {
+				options[i].style.display = ''
+			} else {
+				options[i].style.display = "block";
+				visibleCount++;
+			}
+		}
+		this.visibleCount = visibleCount;
+		if (visibleCount == 0) {
+			this.hide();//force a hide?
+		} else {
+			this.show();
+		}
+	},
+	showByKeys: function (keysArray) {
+		var ids = []
+		for (var i=0;i!=keysArray.length;i++) {
+			ids[ids.length] = keysArray[i].id
+		}
+		this.showByIds(ids)
+	},
+	handleValue: function (value) {
+		value = value.trim();
+		if (!value) {
+			this.hide();
+		}
+		var split = value.split(" ");
+		if (split.length == 1) {
+			this.hide();
+		} else {
+			var suggestions = this.tokenizer.getSuggestions(value);
+			if (suggestions.length == 1 && suggestions[0].def == value) {
+				suggestions = []
+			}
+			this.showByKeys(suggestions)
+		}
+
 	}
 }
 
@@ -68,20 +121,20 @@ function SuggestTokenizer () {
 	this.tokens = {};
 
 }
-SuggestTokenizer.prototype.tokenize = function (string) {
-	var split = string.toLowerCase().trim().split(" "),
+SuggestTokenizer.prototype.tokenize = function (key) {
+	var split = key.def.trim().split(" "),
 		currentToken = this.tokens
-	for (var i=0,existingNode;i<split.length;i++) {
+	for (var i=0,existingToken;i<split.length;i++) {
 		existingNode = currentToken[split[i]]
 		if (!existingNode) {
-			existingNode = {}
+			existingNode = {};
 		}
 		currentToken = currentToken[split[i]] = existingNode
 	}
-	currentToken._$ = string;
+	currentToken._$ = key;
 }
 SuggestTokenizer.prototype.getSuggestions = function (string) {
-	string = string.trim().toLowerCase()
+	string = string.trim()
 	if (string.indexOf(" ")==-1) {
 		if (this.tokens[string] && this.tokens[string]._$) {
 			return [this.tokens[string]._$];
@@ -89,7 +142,7 @@ SuggestTokenizer.prototype.getSuggestions = function (string) {
 			return [];
 		}
 	}
-	var split = string.toLowerCase().trim().split(" "),
+	var split = string.trim().split(" "),
 		results = [];
 	
 	function crawl(object) {
@@ -121,7 +174,15 @@ SuggestTokenizer.prototype.getSuggestions = function (string) {
 		}
 	}
 	crawl(this.tokens,split);
-	results.sort()
+	results.sort(function (a,b) {
+		if (a.def>b.def) {
+			return -1
+		}
+		if (a.def<b.def) {
+			return 1
+		}
+		return 0
+	})
 	return results;	
 
 }

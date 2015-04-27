@@ -8,8 +8,6 @@ div.autosuggest-container {
 	margin-right: 20px;
 	overflow: auto;
 	padding: 2px;
-	min-height: 200px;
-	max-height: 100%;
 	box-sizing: border-box;
 
 }
@@ -19,6 +17,7 @@ div.autosuggest-container p {
 	border-top: 1px solid silver;
 	text-align: justify;
 	padding: 3px 4px 4px 4px;
+	display: none;
 }
 div.autosuggest-container p:first-child {
 	border-top-width: 0;
