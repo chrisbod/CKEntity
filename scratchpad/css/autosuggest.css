@@ -9,7 +9,6 @@ div.autosuggest-container {
 	overflow: auto;
 	padding: 2px;
 	box-sizing: border-box;
-	min-height: 10em;
 	margin-left: -7px;
 
 }
