@@ -10,6 +10,7 @@ div.autosuggest-container {
 	padding: 2px;
 	box-sizing: border-box;
 	min-height: 10em;
+	margin-left: -7px;
 
 }
 div.autosuggest-container a {
@@ -21,13 +22,10 @@ div.autosuggest-container a {
 	border-top: 1px solid silver;
 	text-align: justify;
 	padding: 3px 4px 4px 4px;
-	display: none;
 }
 div.autosuggest-container a:first-child {
 	border-top-width: 0;
 } 
-div.autosuggest-container a:hover,
-div.autosuggest-container a:focus,
 div.autosuggest-container a.focussed   {
 	color: white;
 	background-color: black
