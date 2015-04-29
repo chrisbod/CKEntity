@@ -29,3 +29,10 @@ div.autosuggest-container a.focussed   {
 	color: white;
 	background-color: black
 }
+
+conditional:before {
+	content:"[";
+}
+conditional:after {
+	content:"]";
+}

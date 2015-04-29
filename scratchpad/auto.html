@@ -15,6 +15,8 @@ For licensing, see LICENSE.md or http://ckeditor.com/license
 	<script src="../vendor/ckeditor/ckeditor.js"></script>
 	<script src="scripts/entities.store.js"></script>
 	<script src="scripts/autosuggest.container.js"></script>
+	<script src="scripts/autosuggest.tokenizer.js"></script>
+	<script src="scripts/braceinserter.js"></script>
 	<link href="../vendor/ckeditor/samples/sample.css" rel="stylesheet">
 	<link href="css/autosuggest.css" rel="stylesheet">
 </head>
@@ -64,6 +66,8 @@ For licensing, see LICENSE.md or http://ckeditor.com/license
 				autoSuggestContainer.build(dummyKeys);
 				//autoSuggestContainer.setInputElement(document.getElementById("dummy"))
 				autoSuggestContainer.setEditableElement(document.getElementById("edit"))
+				
+
 				/*input.oninput = function () {
 					autoSuggestContainer.handleValue(this.value)
 				}
@@ -82,5 +86,6 @@ For licensing, see LICENSE.md or http://ckeditor.com/license
 		<div id="edit" contenteditable="true">
 			here we go
 		</div>
+		<conditional>monkey</conditional>
 </body>
 </html>
