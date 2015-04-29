@@ -37,3 +37,6 @@ div.autosuggest-container a.focussed   {
 	background-color: red;
 	color: white;
 }
+token {
+	color: red;
+}

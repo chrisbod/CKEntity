@@ -5,7 +5,8 @@ function SentenceTokenizer () {
 }
 SentenceTokenizer.prototype = {
 	isTrigger: function (text) {
-		var split = text.split(" ")
+		text = text.trim()
+		var split = text.split(" ");
 		if (split.length > 1 && this.tokens[split[0]]) {
 			return true;
 		}

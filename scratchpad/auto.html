@@ -12,7 +12,6 @@ For licensing, see LICENSE.md or http://ckeditor.com/license
 
 
 	</script>
-	<script src="../vendor/ckeditor/ckeditor.js"></script>
 	<script src="scripts/entities.store.js"></script>
 	<script src="scripts/autosuggest.container.js"></script>
 	<script src="scripts/sentencetokenizer.js"></script>
@@ -22,32 +21,9 @@ For licensing, see LICENSE.md or http://ckeditor.com/license
 </head>
 <body>
 	<h1>
-		Scratch pad for plugin development
+		Scratch pad for auto completes
 	</h1>
-			<label for="editor1">
-				Editor 1:
-			</label>
-			<textarea cols="80" id="editor1" name="editor1" rows="10"></textarea>
-	<div id="footer">
-		<hr>
-		<p>
-			CKEditor - The text editor for the Internet - <a class="samples" href="http://ckeditor.com/">http://ckeditor.com</a>
-		</p>
-		<p id="copy">
-			Copyright &copy; 2003-2015, <a class="samples" href="http://cksource.com/">CKSource</a> - Frederico
-			Knabben. All rights reserved.
-		</p>
-	</div>
-	<script>
-
-///CKEDITOR.plugins.addExternal( 'timestamp', 'http://sdk.ckeditor.com/samples/assets/plugins/timestamp/', 'plugin.js' );
-	CKEDITOR.disableAutoInline = true;
-   // CKEDITOR.inline( 'editor1' );
-				CKEDITOR.replace( 'editor1', {
-					extraPlugins: 'autosuggest'
-				} );
-
-	</script>
+			
 
 	
 	
@@ -74,15 +50,10 @@ For licensing, see LICENSE.md or http://ckeditor.com/license
 					dummyKeys[i].id = 'key'+i;
 					translationStore.addEntity(dummyKeys[i].def,dummyKeys[i].id);
 				}
-				translationContainer.build(dummyKeys);
-				//autoSuggestContainer.setInputElement(document.getElementById("dummy"))
+				translationContainer.build(translationStore);
+				
 				translationContainer.setEditableElement(document.getElementById("edit"));
-				tokenContainer.build([
-				{
-					def: "<booYa>",
-					id: "token0"
-				}
-				])
+				tokenContainer.build(tokenStore)
 				tokenContainer.setEditableElement(document.getElementById("edit"))
 
 
@@ -102,10 +73,8 @@ For licensing, see LICENSE.md or http://ckeditor.com/license
 
 		//})
 		</script>
-		<input id="dummy" style="width: 100%">
 		<div id="edit" contenteditable="true">
-			here we go
+			Type in here
 		</div>
-		<conditional>monkey</conditional>
 </body>
 </html>
