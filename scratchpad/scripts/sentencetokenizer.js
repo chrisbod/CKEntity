@@ -1,9 +1,9 @@
 
 //This has NOTHING to do with TOKENS in the documents
-function AutoSuggestTokenizer () {
+function SentenceTokenizer () {
 	this.tokens = {};
 }
-AutoSuggestTokenizer.prototype = {
+SentenceTokenizer.prototype = {
 	isTrigger: function (text) {
 		var split = text.split(" ")
 		if (split.length > 1 && this.tokens[split[0]]) {
@@ -65,6 +65,9 @@ AutoSuggestTokenizer.prototype = {
 		}
 		crawl(this.tokens,split);
 		results.sort(function (a,b) {
+			/*if (a.def.length > b.def.length) {
+				return 1
+			}*/
 			if (a.def>b.def) {
 				return -1
 			}

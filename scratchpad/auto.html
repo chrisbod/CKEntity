@@ -15,8 +15,8 @@ For licensing, see LICENSE.md or http://ckeditor.com/license
 	<script src="../vendor/ckeditor/ckeditor.js"></script>
 	<script src="scripts/entities.store.js"></script>
 	<script src="scripts/autosuggest.container.js"></script>
-	<script src="scripts/autosuggest.tokenizer.js"></script>
-	<script src="scripts/braceinserter.js"></script>
+	<script src="scripts/sentencetokenizer.js"></script>
+	<script src="scripts/tokentokenizer.js"></script>
 	<link href="../vendor/ckeditor/samples/sample.css" rel="stylesheet">
 	<link href="css/autosuggest.css" rel="stylesheet">
 </head>
@@ -53,19 +53,39 @@ For licensing, see LICENSE.md or http://ckeditor.com/license
 	
 		<script>
 		$(function () {
-			var autoSuggestContainer = new AutoSuggestContainer();
-			var keyStore = new KeyNodeStore()
+			var translationContainer = new AutoSuggestContainer("translation-menu",new SentenceTokenizer());
+			var tokenContainer = new AutoSuggestContainer("token-menu",new TokenTokenizer())
+			tokenContainer.getLastSentenceFromRange = function (range) {
+				var token =  range.toString().match(/<[^>]*$/);
+				if (token) {
+					return token[0]
+				}
+				return null;
+			}
+			var translationStore = new TranslationStore();
+			var tokenStore = new TokenStore();
+			tokenStore.addEntity("<booYa>","token0")
+
 			$.ajax("xml/keys.json", {mimeType:"application-x/json", success: 
 
 				function foo(data) {
 				var dummyKeys = data;
 				for (var i=0;i<dummyKeys.length;i++) {
 					dummyKeys[i].id = 'key'+i;
-					keyStore.addEntity(dummyKeys[i].def,dummyKeys[i].id);
+					translationStore.addEntity(dummyKeys[i].def,dummyKeys[i].id);
 				}
-				autoSuggestContainer.build(dummyKeys);
+				translationContainer.build(dummyKeys);
 				//autoSuggestContainer.setInputElement(document.getElementById("dummy"))
-				autoSuggestContainer.setEditableElement(document.getElementById("edit"))
+				translationContainer.setEditableElement(document.getElementById("edit"));
+				tokenContainer.build([
+				{
+					def: "<booYa>",
+					id: "token0"
+				}
+				])
+				tokenContainer.setEditableElement(document.getElementById("edit"))
+
+
 				
 
 				/*input.oninput = function () {

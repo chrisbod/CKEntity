@@ -26,13 +26,14 @@ div.autosuggest-container a:first-child {
 	border-top-width: 0;
 } 
 div.autosuggest-container a.focussed   {
-	color: white;
-	background-color: black
+	background-color: silver;
 }
 
-conditional:before {
-	content:"[";
+
+#token-menu a {
+	color: red;
 }
-conditional:after {
-	content:"]";
+#token-menu a.focussed {
+	background-color: red;
+	color: white;
 }

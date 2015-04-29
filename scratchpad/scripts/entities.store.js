@@ -37,12 +37,12 @@ EntityStore.prototype =  {
 
 }
 
-function KeyNodeStore() {
+function TranslationStore() {
 	this.templatableNodes = {};
 }
-KeyNodeStore.prototype =  new EntityStore()
-KeyNodeStore.prototype.templatableNodes = null;
-KeyNodeStore.prototype.createTemplatableNodeFromEntity = function (key,id) {
+TranslationStore.prototype =  new EntityStore()
+TranslationStore.prototype.templatableNodes = null;
+TranslationStore.prototype.createTemplatableNodeFromEntity = function (key,id) {
 	var keyName = "key"+id;
 	var node = document.createElement("div");
 	node.setAttribute("data-key-name",keyName);
@@ -57,12 +57,12 @@ KeyNodeStore.prototype.createTemplatableNodeFromEntity = function (key,id) {
 	return node;
 }
 
-function PlaceholderStore() {
+function TokenStore() {
 	this.templatableNodes = {};
 }
-PlaceholderStore.prototype =  new EntityStore()
-PlaceholderStore.prototype.templatableNodes = null;
-PlaceholderStore.prototype.createTemplatableNodeFromEntity = function (key,id) {
+TokenStore.prototype =  new EntityStore()
+TokenStore.prototype.templatableNodes = null;
+TokenStore.prototype.createTemplatableNodeFromEntity = function (key,id) {
 	var node = document.createElement("span")
 	node.contentEditable = false;
 	node.className ="placeholder"
