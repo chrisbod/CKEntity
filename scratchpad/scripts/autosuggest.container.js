@@ -7,6 +7,7 @@ function AutoSuggestContainer(id, tokenizer) {
 	this.element.addEventListener("mouseover", this);
 	this.element.addEventListener("keydown",this);
 	this.tokenizer = tokenizer;
+	this.sentenceHelper = new SentenceHelper();
 }
 
 AutoSuggestContainer.prototype = {
@@ -149,13 +150,15 @@ AutoSuggestContainer.prototype = {
 			case 38: return;
 		}
 		if (!this.enterClicked) {
+			if (this.sentenceSensitive) {
 			var selection = document.getSelection(),
 				range = selection.getRangeAt(0),
 				node = range.endContainer,
 				duplicateRange = range.cloneRange(),
 				index;
 			duplicateRange.selectNodeContents(node);
-			var sentence = this.getLastSentenceFromRange(duplicateRange);
+			if (this.sentenceSensitive) {}
+			var sentence = this.sentenceHelper.getLastSentenceFromRange(duplicateRange);
 
 			if (sentence) {
 				if (this.tokenizer.isTrigger(sentence)) {
@@ -191,7 +194,8 @@ AutoSuggestContainer.prototype = {
 			} else {
 				this.hide()
 			}
-		} 
+		}
+	}
 		this.enterClicked = false;
 	},
 	getCurrentNode: function (range) {
@@ -202,15 +206,6 @@ AutoSuggestContainer.prototype = {
 			node = node.parentNode;
 		}
 		return node;
-	},
-	getLastSentenceFromRange: function (range) {
-		var text = ""+range;
-		var sentences = text.split(/\.\s+(?=[A-Z])/)
-		if (sentences) {
-			var lastSentence = sentences[sentences.length-1];
-			return lastSentence;
-		}
-		return "";
 	},
 	focusAnchor: function (anchor) {
 		if (this.focussedElement) {
