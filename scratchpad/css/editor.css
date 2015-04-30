@@ -1,0 +1,14 @@
+span.rules {
+	color: red;
+
+}
+
+token {
+	display: inline-block;
+	color: red;
+}
+translation, marker {
+	border-bottom: 1px dotted black;
+}
+
+

@@ -6,7 +6,7 @@ function SelectionManager(element) {
 
 SelectionManager.prototype = {
 	isSelectableElement: function (element) {
-		return /\b(placeholder|segment|key)\b/.test(element.className)
+		return /TRANSLATION|TOKEN|CONDITIONAL/i.test(element)
 	},
 	doubleClickHandler: function (ev) {
 		ev = ev || event;

@@ -16,6 +16,7 @@ For licensing, see LICENSE.md or http://ckeditor.com/license
 	<script src="scripts/entities.selection.js"></script>
 	<script src="scripts/entities.paste.js"></script>
 	<script src="scripts/autosuggest.container.js"></script>
+	<script src="scripts/sentencehelper.js"></script>
 	<script src="scripts/sentencetokenizer.js"></script>
 	<script src="scripts/tokentokenizer.js"></script>
 	<link href="../vendor/ckeditor/samples/sample.css" rel="stylesheet">
@@ -25,7 +26,15 @@ For licensing, see LICENSE.md or http://ckeditor.com/license
 	<h1>
 		Scratch pad for auto completes
 	</h1>
-			
+			<style>
+				span.rules {
+					display: inline-block;
+					color: rgba(0,0,0,0);
+					width: 0;
+					overflow: hidden;
+				}
+
+			</style>
 
 	
 	

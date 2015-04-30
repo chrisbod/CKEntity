@@ -37,23 +37,28 @@ TranslationStore.prototype.createTemplatableNodeFromEntity = function (key,id) {
 	var keyName = "key"+id;
 	var node = document.createElement("translation");
 	node.setAttribute("data-key-name",keyName);
-	node.className ="key"
 	node.contentEditable = false;
 	node.innerHTML = this.parseTextMarkup(key)+" ";
-	var spans = node.querySelectorAll("sconditional");
+	var conditionals = node.querySelectorAll("conditional");
+	for (var i=0;i<conditionals.length;i++) {
+		var conditional = conditionals[i];
+		conditional.setAttribute("data-conditional-name","conditional-"+i)
+		conditional.firstChild.setAttribute("data-conditional-name","conditional-"+i)
+		conditional.lastElementChild.setAttribute("data-conditional-name","conditional-"+i)
+	}
+	var spans = node.querySelectorAll("conditional,token,span.args");
 	for (var i=0;i<spans.length;i++) {
 		spans[i].setAttribute("data-key-name",keyName);
-		spans[i].setAttribute("data-segment-name",keyName+"-segment"+(i+1))
 	}
 	return node;
 }
 TranslationStore.prototype.parseTextMarkup = function (string) {
-	return string
-		.replace(/</g,'\x02&lt;')
+	return '<span class="args translation">&#8203;</span>'+string
+		.replace(/</g,'\x02')
 		.replace(/>/g,'&gt;\x03')
-		.replace(/\[/g,'<conditional contenteditable="false">[')
-		.replace(/\]/g,']</conditional>')
-		.replace(/\x02/g,'<token contenteditable="false">')
+		.replace(/\[/g,'<conditional contenteditable="false"><span class="args conditional" contenteditable="false">[</span>')
+		.replace(/\]/g,'<span class="args conditional" contenteditable="false">]</span></conditional>')
+		.replace(/\x02/g,'<token contenteditable="false"><span class="args token" contenteditable="false">&lt;</span>')
 		.replace(/\x03/g,"</token>");
 }
 
@@ -71,6 +76,11 @@ TokenStore.prototype.createTemplatableNodeFromEntity = function (key,id) {
 	var node = document.createElement("token")
 	node.contentEditable = false;
 	node.setAttribute("data-conditional-id",id)
-	node.innerText = key;
+	node.innerText = key.replace(/^</,'');
+	var rules = document.createElement("span")
+	rules.className = "args token";
+	rules.innerText = "<";
+	rules.contentEditable = false;
+	node.insertBefore(rules,node.firstChild)
 	return node;
 }
