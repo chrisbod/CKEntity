@@ -1,11 +1,12 @@
 
-window.AutoSuggestContainer = function AutoSuggestContainer() {
+function AutoSuggestContainer(id, tokenizer) {
 	this.element = document.createElement("div")
 	this.element.className = "autosuggest-container";
+	this.element.id = id;
 	this.element.addEventListener("click", this);
 	this.element.addEventListener("mouseover", this);
 	this.element.addEventListener("keydown",this);
-	this.tokenizer = new SuggestTokenizer();
+	this.tokenizer = tokenizer;
 }
 
 AutoSuggestContainer.prototype = {
@@ -32,8 +33,6 @@ AutoSuggestContainer.prototype = {
 		this.inputElement = inputElement;
 		inputElement.addEventListener("focus",this)
 		inputElement.addEventListener("input",this)
-
-
 	},
 	setEditableElement:function (editableElement) {
 		if (this.editableElement) {
@@ -89,8 +88,10 @@ AutoSuggestContainer.prototype = {
 		}
 		this.configureMetrics()
 	},
-	build: function (data) {
+	build: function (store) {
+		this.store = store;
 		this.element.innerHTML = "";
+		var data = store.allNodes;
 		var html = {}
 		for (var i=0;i<data.length;i++) {
 			var a = document.createElement("a")
@@ -118,8 +119,8 @@ AutoSuggestContainer.prototype = {
 		if (event.currentTarget == this.element) {
 
 		} else if (event.currentTarget == this.inputElement) {
-				this.moveToElement(this.inputElement);
-				this.handleValue(this.inputElement.value)
+			this.moveToElement(this.inputElement);
+			this.handleValue(this.inputElement.value)
 		}
 	},
 	inputHandler: function () {
@@ -127,115 +128,89 @@ AutoSuggestContainer.prototype = {
 	},
 	mouseoverHandler: function (event) {
 		if (event.target!=this.element) {
-
 			if (this.focussedElement) {
 				this.focussedElement.className = "";
 			}
 			event.target.className = "focussed";
 			this.focussedElement = event.target
 		}
-		
 	},
 	keydownHandler: function (event) {
-
 		switch (event.keyCode) {
-			case 8: return this.keyupDelete(event);
 			case 40: return this.arrowDown(event);
 			case 38: return this.arrowUp(event);
 			case 27: return this.hide();
-			case 13: return this.enter(event)
+			case 13: return this.enter(event);
 		}
 	},
 	keyupHandler: function (event) {
-		var isDelete = false,
-			isFullStop = false;
 		switch (event.keyCode) {
-			case 8: {
-				isDelete = true;
-				break;
-			}
-			case 13: {
-				this.returnHit = true;
-				return;
-			}
-			case 190: isFullStop = true; break;
+			case 40: return;
+			case 38: return;
 		}
+		if (!this.enterClicked) {
+			var selection = document.getSelection(),
+				range = selection.getRangeAt(0),
+				node = range.endContainer,
+				duplicateRange = range.cloneRange(),
+				index;
+			duplicateRange.selectNodeContents(node);
+			var sentence = this.getLastSentenceFromRange(duplicateRange);
 
-		if (!this.range) {
-			var selection = document.getSelection()
-			var range = document.getSelection().getRangeAt(0).cloneRange();
-			var start =  range.startContainer;
-			if (start.nodeType == 3) {
-				if (this.returnHit) {
-					node = start;
-					this.returnHit = false;
-				} else {
-					node = start.splitText(range.startOffset-1);
-				}
-				range.selectNodeContents(node);
-				this.range = range;
-				this.textNode = node;
-				this.checkRangeForAutoComplete()
-			}
-		} else {
-			if (!isFullStop) {
-				this.range.selectNodeContents(this.textNode);
-				var str = this.range.toString();
-				if (str.length == 0) {
-					this.textNode = null;
-					this.range = null
-				} else {
-					this.checkRangeForAutoComplete()
-				}
-			} else {
-				var node = this.textNode.splitText(this.textNode.data.indexOf(".")+1)
-				this.textNode = node;
-				this.range.selectNodeContents(node)
-				//console.log("["+this.range+"]")
-			}
-		}
-	},
-	keyupDelete: function () {
-		if (!this.textNode || this.textNode.parentNode == null) {//deleted this typing range or no range to speak of
-			this.createCaretRangeFromDelete();
-		}
-		this.checkRangeForAutoComplete()
-	},
-	checkRangeForAutoComplete: function () {
-		if (this.range) {
-			var string = this.range.toString().trim();
-			if (this.range && this.lastString !== string) {
-				this.lastString = string;
-				//var split = string.split(/\s*\.\s+/);
-				if (this.tokenizer.isTrigger(string)) {
-					this.moveToRange(this.range)
-					this.showByKeys(this.tokenizer.getSuggestions(string))
+			if (sentence) {
+				if (this.tokenizer.isTrigger(sentence)) {
+					duplicateRange.endContainer.normalize();
+					node = duplicateRange.endContainer.lastChild;
+					if (node == null) {
+						node = duplicateRange.endContainer;
+					}
+					if (node.data) {
+						index = node.data.length-sentence.length
+						duplicateRange.setStart(node,index);
+						node.splitText(index)
+					} else {
+						return;
+					}
+					
+					this.moveToRange(duplicateRange)
+					var suggestions = this.tokenizer.getSuggestions(sentence);
+					if (suggestions.length == 1) {
+						if (suggestions[0].def.trim() == sentence.trim()) {
+							suggestions = [];
+						}
+					}
+					this.showByKeys(suggestions);
+					if (suggestions.length) {
+						event.stopPropagation()
+					}
+
+
 				} else {
 					this.hide()
 				}
-				
+			} else {
+				this.hide()
 			}
-		}
+		} 
+		this.enterClicked = false;
 	},
-	createCaretRangeFromDelete: function () {
-		var range = document.getSelection().getRangeAt(0).cloneRange();
+	getCurrentNode: function (range) {
 		
-		if (range.startContainer.nodeType == 3) {
-				if (range.toString()=="") {
-					range.selectNodeContents(range.startContainer)
-					console.log("["+range+"]")
-				}
-				this.range = range;
-				this.textNode = range.startContainer;
-		} else {
-			//element now empty
-
-			this.range = null;
-			this.textNode = null;
+		var node = range.commonAncestorContainer;
+		
+		while (node && node.tagName != "DIV" && node.tagName != "P" && node.tagName != "TRANSLATION" && node.tagName != "TOKEN" && node.tagName != "CONDITIONAL") {
+			node = node.parentNode;
 		}
+		return node;
 	},
-	moveCaretAfterNode: function (node) {
-		
+	getLastSentenceFromRange: function (range) {
+		var text = ""+range;
+		var sentences = text.split(/\.\s+(?=[A-Z])/)
+		if (sentences) {
+			var lastSentence = sentences[sentences.length-1];
+			return lastSentence;
+		}
+		return "";
 	},
 	focusAnchor: function (anchor) {
 		if (this.focussedElement) {
@@ -289,23 +264,25 @@ AutoSuggestContainer.prototype = {
 		if (this.visible && this.focussedElement) {
 			this.clicked(this.focussedElement.id,this.focussedElement.innerText,this.focussedElement);
 			this.hide();
-			event.stopPropagation()
-			event.preventDefault()
+			event.stopPropagation();
+			event.preventDefault();
+			this.enterClicked = true;
 		}
 	},
 	clicked: function (id,text,element) {
-		if (this.inputElement) {
-			this.inputElement.value = text;
-		} else {
-			var node = document.createTextNode(text);
-			this.textNode.parentNode.insertBefore(node,this.textNode)
-			this.textNode.data = '\u200B'
-			this.textNode = node;
-			this.range.collapse()
-			this.range.selectNodeContents(node);
-			
-		}
+		var selection = document.getSelection()
+			range = selection.getRangeAt(0),
+			newNode = this.store.getEntityNode(text);//document.createTextNode(text);
+		if (this.editableElement == range.commonAncestorContainer || this.editableElement.contains(range.commonAncestorContainer)) {
+			range.insertNode(newNode);
+			newNode.previousSibling.parentNode.removeChild(newNode.previousSibling);
+			selection.removeAllRanges()
+			selection.addRange(range);
+			selection.collapseToEnd();
+			newNode.parentNode.normalize();
 
+
+		}
 	},
 	configureMetrics: function () {
 		this.element.style.bottom = "";
@@ -360,85 +337,3 @@ AutoSuggestContainer.prototype = {
 	}
 }
 
-
-function SuggestTokenizer () {
-	this.tokens = {};
-	this.triggerLetterCodes = {};
-
-}
-SuggestTokenizer.prototype.isTrigger = function (text) {
-	var split = text.split(" ")
-	if (split.length > 1 && this.tokens[split[0]]) {
-		return true;
-	}
-	return false;
-}
-SuggestTokenizer.prototype.tokenize = function (key) {
-	var split = key.def.trim().split(/\W+/),
-		currentToken = this.tokens
-	for (var i=0,existingToken;i<split.length;i++) {
-		existingNode = currentToken[split[i]]
-		if (!existingNode) {
-			existingNode = {};
-		}
-		if (currentToken == this.tokens) {
-			this.triggerLetterCodes[split[i].charCodeAt(0)] = true;
-		}
-		currentToken = currentToken[split[i]] = existingNode;
-
-	}
-	currentToken._$ = key;
-}
-SuggestTokenizer.prototype.getSuggestions = function (string) {
-	string = string.trim()
-	if (string.indexOf(" ")==-1) {
-		if (this.tokens[string] && this.tokens[string]._$) {
-			return [this.tokens[string]._$];
-		} else {
-			return [];
-		}
-	}
-	var split = string.trim().split(/\W+/),
-		results = [];
-	
-	function crawl(object) {
-		if (split.length) {
-			var next = split.shift();
-				if (next in object) {
-					crawl(object[next])
-				} else if (!split.length) {
-					complete(object,next)
-				}
-		} else {
-			iterate(object)
-		}
-	}
-	function iterate(object) {
-		for (var i in object) {
-			if (i == "_$") {
-				results.push(object._$)
-			} else {
-				iterate(object[i])
-			}
-		}
-	}
-	function complete(object,string) {
-		for (var i in object) {
-			if (i.indexOf(string)==0) {
-				iterate(object[i])
-			}
-		}
-	}
-	crawl(this.tokens,split);
-	results.sort(function (a,b) {
-		if (a.def>b.def) {
-			return -1
-		}
-		if (a.def<b.def) {
-			return 1
-		}
-		return 0
-	})
-	return results;	
-
-}

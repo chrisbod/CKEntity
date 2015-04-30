@@ -40,3 +40,9 @@ div.autosuggest-container a.focussed   {
 token {
 	color: red;
 }
+
+
+
+translation {
+	border-bottom: 1px dotted black;
+}
