@@ -1,5 +1,4 @@
 function EntityPasteManager() {
-	this.sentenceHelper = new SentenceHelper();
 }
 EntityPasteManager.prototype = {
 	init: function (editableElement) {
@@ -62,6 +61,7 @@ EntityPasteManager.prototype = {
 			orphans[i].removeAttribute("style");
 			var token = document.createElement("token"),
 				nextSibling = orphans[i].nextSibling;
+				token.contentEditable = false;
 			nextSibling.removeAttribute("style")
 			orphans[i].parentNode.replaceChild(token,orphans[i])
 			token.appendChild(orphans[i])

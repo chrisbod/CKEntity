@@ -48,7 +48,9 @@ EntitySelectionManager.prototype = {
 		}
 	},
 	dblclickHandler: function (event) {
-		alert("Editing:" + this.currentEntityNode)
+		if (this.currentEntityNode) {
+			alert("Editing:" + this.currentEntityNode.tagName)
+		}
 	},
 	select: function (entityNode) {
 		var selection = document.getSelection(),

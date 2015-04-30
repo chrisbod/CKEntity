@@ -56,8 +56,8 @@ TranslationStore.prototype.parseTextMarkup = function (string) {
 	return '<span class="args translation">&#8203;</span>'+string
 		.replace(/</g,'\x02')
 		.replace(/>/g,'&gt;\x03')
-		.replace(/\[/g,'<conditional contenteditable="false"><span class="args conditional" contenteditable="false">[</span>')
-		.replace(/\]/g,'<span class="args conditional" contenteditable="false">]</span></conditional>')
+		.replace(/\[/g,'<conditional contenteditable="false"><span class="args conditional" contenteditable="false">[</span><span class="contents">')
+		.replace(/\]/g,'</span><span class="args conditional" contenteditable="false">]</span></conditional>')
 		.replace(/\x02/g,'<token contenteditable="false"><span class="args token" contenteditable="false">&lt;</span>')
 		.replace(/\x03/g,"</token>");
 }

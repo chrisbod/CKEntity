@@ -10,6 +10,7 @@ TokenTokenizer.prototype = {
 		this.tokenDefinitions.sort();
 	},
 	isTrigger: function (what) {
+		what = what.trim();
 		if (what.charAt(0) == '<') {
 			return true;
 		}

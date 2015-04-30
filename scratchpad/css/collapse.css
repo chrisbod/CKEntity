@@ -1,0 +1,33 @@
+span.conditional:first-child {
+	position: relative;
+	display: inline-block;
+	box-sizing: border-box;
+	margin-left: 0.5ex;
+	margin-right: 0.5ex;
+}
+span.conditional:first-child::before {
+  position: absolute;
+  width: 1.5ex;
+  background-image: url(../img/minus.png);
+  background-repeat: no-repeat;
+  background-size: 9px;
+  background-position: center center;
+  margin: 0 0 0 -0.5ex;
+  color: rgba(0,0,0,1);
+  overflow: hidden;
+  text-indent: 100%;
+  content: '';
+  height: 100%;
+}
+
+conditional[data-collapsed] span.contents {
+	display: none;
+}
+conditional[data-collapsed] span.conditional {
+	color: white;
+	margin-right: 0.2ex;
+}
+conditional[data-collapsed] span.conditional:first-child::before {
+	background-image: url(../img/plus.png);
+	margin-left: 0;
+}
