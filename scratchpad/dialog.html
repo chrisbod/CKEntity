@@ -1,0 +1,49 @@
+<html>
+	<head>
+		<script src="https://code.jquery.com/jquery-1.11.2.min.js">	</script>
+		<link href="../vendor/ckeditor/samples/sample.css" rel="stylesheet">
+		<link href="css/dialog-form.css" rel="stylesheet">
+
+
+
+	</head>
+
+	<body>
+		<div class="dialog">
+		<form id="test">
+			<fieldset>
+			<ul>
+			    <li><label for="field1">Full Name</label>
+			    	<input id="field1" type="text" name="field1" placeholder="First">
+			    	<input type="text" name="field2" placeholder="Last" />
+			    </li>
+			    <li>
+			        <label for="email">Email</label>
+			        <input id="email" type="email" name="field3" required/>
+			    </li>
+			    <li>
+			        <label for="field4">Subject</label>
+			        <select id="field4" name="field4">
+				        <option value="Advertise">Advertise</option>
+				        <option value="Partnership">Partnership</option>
+				        <option value="General Question">General</option>
+			        </select>
+			    </li>
+			    <li>
+			        <label for="field5">Your Message</label>
+			        <textarea id="field5" name="field5" id="field5" required></textarea>
+			    </li>
+			       
+			</ul>
+				</fieldset>
+				<fieldset>
+					<input type="submit" value="Ok" />
+			        <input type="reset" value="Cancel"/>
+			    </fieldset>
+			</form>
+		</div>
+	</body>
+
+
+
+</html>

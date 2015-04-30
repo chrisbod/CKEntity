@@ -1,0 +1,73 @@
+.dialog form {
+    display: block;
+    margin:10px auto;
+    max-width: 400px;
+    padding: 20px 12px 10px 20px;
+}
+.dialog form li {
+    padding: 0;
+    display: block;
+    list-style: none;
+    margin: 10px 0 0 0;
+}
+.dialog form label{
+    margin:0 0 3px 0;
+    padding:0px;
+    display:block;
+    font-weight: bold;
+}
+.dialog form input[type=text], 
+.dialog form input[type=date],
+.dialog form input[type=datetime],
+.dialog form input[type=number],
+.dialog form input[type=search],
+.dialog form input[type=time],
+.dialog form input[type=url],
+.dialog form input[type=email],
+textarea, 
+select{
+    box-sizing: border-box;
+    -webkit-box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    border:1px solid #BEBEBE;
+    padding: 7px;
+    margin:0px;
+    -webkit-transition: all 0.30s ease-in-out;
+    -moz-transition: all 0.30s ease-in-out;
+    -ms-transition: all 0.30s ease-in-out;
+    -o-transition: all 0.30s ease-in-out;
+    outline: none;  
+}
+.dialog form input[type=text]:focus, 
+.dialog form input[type=date]:focus,
+.dialog form input[type=datetime]:focus,
+.dialog form input[type=number]:focus,
+.dialog form input[type=search]:focus,
+.dialog form input[type=time]:focus,
+.dialog form input[type=url]:focus,
+.dialog form input[type=email]:focus,
+.dialog form textarea:focus, 
+.dialog form select:focus{
+    -moz-box-shadow: 0 0 8px #88D5E9;
+    -webkit-box-shadow: 0 0 8px #88D5E9;
+    box-shadow: 0 0 8px #88D5E9;
+    border: 1px solid #88D5E9;
+}
+.dialog form ul {
+    margin: 0;
+    padding: 0;
+}
+.dialog form li {
+    list-style-type: none;
+    margin:0;
+    padding: 0;
+}
+
+
+.dialog form li textarea,
+.dialog form li input:first-of-type:last-of-type,
+.dialog form li select:first-of-type:last-of-type
+ {
+   width: 100%;
+    }
+
