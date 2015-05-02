@@ -36,8 +36,8 @@ TranslationStore.prototype.templatableNodes = null;
 TranslationStore.prototype.createTemplatableNodeFromEntity = function (key,id) {
 	var keyName = "key"+id;
 	var node = document.createElement("translation");
+	node.setAttribute("contenteditable", false);
 	node.setAttribute("data-key-name",keyName);
-	node.contentEditable = false;
 	node.innerHTML = this.parseTextMarkup(key)+" ";
 	var conditionals = node.querySelectorAll("conditional");
 	for (var i=0;i<conditionals.length;i++) {
@@ -53,10 +53,10 @@ TranslationStore.prototype.createTemplatableNodeFromEntity = function (key,id) {
 	return node;
 }
 TranslationStore.prototype.parseTextMarkup = function (string) {
-	return '<span class="args translation">&#8203;</span>'+string
+	return '<span class="args translation" contenteditable="false">&#8203;</span>'+string
 		.replace(/</g,'\x02')
 		.replace(/>/g,'&gt;\x03')
-		.replace(/\[/g,'<conditional contenteditable="false"><span class="args conditional" contenteditable="false">[</span><span class="contents">')
+		.replace(/\[/g,'<conditional contenteditable="false"><span class="args conditional" contenteditable="false">[</span><span class="contents" contenteditable="false">')
 		.replace(/\]/g,'</span><span class="args conditional" contenteditable="false">]</span></conditional>')
 		.replace(/\x02/g,'<token contenteditable="false"><span class="args token" contenteditable="false">&lt;</span>')
 		.replace(/\x03/g,"</token>");
@@ -74,13 +74,13 @@ TokenStore.prototype.parseTextMarkup = function () {
 }
 TokenStore.prototype.createTemplatableNodeFromEntity = function (key,id) {
 	var node = document.createElement("token")
-	node.contentEditable = false;
+	node.setAttribute("contenteditable", false);
 	node.setAttribute("data-conditional-id",id)
 	node.innerText = key.replace(/^</,'');
 	var rules = document.createElement("span")
 	rules.className = "args token";
 	rules.innerText = "<";
-	rules.contentEditable = false;
+	rules.setAttribute("contenteditable", false);
 	node.insertBefore(rules,node.firstChild)
 	return node;
 }

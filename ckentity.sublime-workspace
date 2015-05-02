@@ -3,31 +3,95 @@
 	{
 		"selected_items":
 		[
+			[
+				"input",
+				"inputElement"
+			],
+			[
+				"in",
+				"inputElement"
+			],
+			[
+				"show",
+				"showByIds"
+			],
+			[
+				"get",
+				"getSuggestions"
+			],
+			[
+				"tok",
+				"tokenizer"
+			],
+			[
+				"ton",
+				"tokenize"
+			],
+			[
+				"to",
+				"tokenizer"
+			],
+			[
+				"token",
+				"tokenize"
+			],
+			[
+				"tokeni",
+				"SuggestTokenizer"
+			],
+			[
+				"visi",
+				"visibleCount"
+			],
+			[
+				"vis",
+				"visibleCount"
+			],
+			[
+				"cur",
+				"currentElementRect"
+			],
+			[
+				"bor",
+				"border-top"
+			],
+			[
+				"auto",
+				"autoSuggestContainer"
+			],
+			[
+				"con",
+				"configureMetrics"
+			],
+			[
+				"backgro",
+				"background-color"
+			]
 		]
 	},
 	"buffers":
 	[
 		{
-			"file": "scratchpad/scripts/entity.js",
+			"file": "scratchpad/scripts/entity_old.js",
 			"settings":
 			{
-				"buffer_size": 4780,
+				"buffer_size": 5459,
 				"line_ending": "Windows"
 			}
 		},
 		{
-			"file": "scratchpad/xml/Translation keys.xml",
+			"file": "scratchpad/scripts/entities.js",
 			"settings":
 			{
-				"buffer_size": 980400,
+				"buffer_size": 2014,
 				"line_ending": "Windows"
 			}
 		},
 		{
-			"file": "scratchpad/xml/keys.xml",
+			"file": "scratchpad/xml/keys.json",
 			"settings":
 			{
-				"buffer_size": 8176,
+				"buffer_size": 779666,
 				"line_ending": "Windows"
 			}
 		},
@@ -35,15 +99,15 @@
 			"file": "scratchpad/xsl/xml2json.xsl",
 			"settings":
 			{
-				"buffer_size": 5984,
-				"line_ending": "Unix"
+				"buffer_size": 0,
+				"line_ending": "Windows"
 			}
 		},
 		{
 			"file": "/C/Users/User/Downloads/config.xml",
 			"settings":
 			{
-				"buffer_size": 5708,
+				"buffer_size": 0,
 				"line_ending": "Windows"
 			}
 		},
@@ -63,15 +127,70 @@
 			"file": "scratchpad/xsl/xml-to-jsonml.xsl",
 			"settings":
 			{
-				"buffer_size": 4125,
-				"line_ending": "Unix"
+				"buffer_size": 4124,
+				"line_ending": "Windows"
 			}
 		},
 		{
 			"file": "scratchpad/scripts/xhtml.js",
 			"settings":
 			{
-				"buffer_size": 4674,
+				"buffer_size": 4690,
+				"line_ending": "Windows"
+			}
+		},
+		{
+			"file": "scratchpad/auto.html",
+			"settings":
+			{
+				"buffer_size": 2225,
+				"line_ending": "Windows"
+			}
+		},
+		{
+			"file": "scratchpad/css/autosuggest.css",
+			"settings":
+			{
+				"buffer_size": 663,
+				"line_ending": "Windows"
+			}
+		},
+		{
+			"file": "scratchpad/scripts/autosuggest.container.js",
+			"settings":
+			{
+				"buffer_size": 7582,
+				"line_ending": "Windows"
+			}
+		},
+		{
+			"file": "scratchpad/scripts/ie8.js",
+			"settings":
+			{
+				"buffer_size": 1292,
+				"line_ending": "Windows"
+			}
+		},
+		{
+			"settings":
+			{
+				"buffer_size": 0,
+				"line_ending": "Windows"
+			}
+		},
+		{
+			"file": "scratchpad/scripts/entity.selection.js",
+			"settings":
+			{
+				"buffer_size": 4230,
+				"line_ending": "Windows"
+			}
+		},
+		{
+			"file": "scratchpad/scripts/entities.store.js",
+			"settings":
+			{
+				"buffer_size": 2061,
 				"line_ending": "Windows"
 			}
 		},
@@ -80,6 +199,13 @@
 			"settings":
 			{
 				"buffer_size": 1138,
+				"line_ending": "Windows"
+			}
+		},
+		{
+			"settings":
+			{
+				"buffer_size": 0,
 				"line_ending": "Windows"
 			}
 		}
@@ -112,6 +238,10 @@
 	},
 	"file_history":
 	[
+		"/C/Users/Chris/Documents/GitHub/CKEntity/scratchpad/xml/keys.xml",
+		"/C/Users/Chris/Documents/GitHub/CKEntity/scratchpad/xml/Placeholders.xml",
+		"/C/Users/Chris/Documents/GitHub/CKEntity/vendor/ckeditor/plugins/autosuggest/plugin.js",
+		"/C/Users/Chris/Documents/GitHub/CKEntity/vendor/ckeditor/plugins/autosuggest/autosuggest.js"
 	],
 	"find":
 	{
@@ -129,6 +259,14 @@
 		"case_sensitive": false,
 		"find_history":
 		[
+			"keypressHandler",
+			"&gt;",
+			"&lt;",
+			"def:",
+			"</key>",
+			"<key>",
+			"}\n",
+			"\n",
 			"]",
 			"[",
 			"&gt;",
@@ -140,6 +278,11 @@
 		"regex": false,
 		"replace_history":
 		[
+			">",
+			"<",
+			"\"def\":",
+			"\"},",
+			"{ def:\"",
 			"]</option>",
 			"<option>[",
 			"&gt;</entity>",
@@ -154,23 +297,23 @@
 	"groups":
 	[
 		{
-			"selected": 2,
+			"selected": 10,
 			"sheets":
 			[
 				{
 					"buffer": 0,
-					"file": "scratchpad/scripts/entity.js",
+					"file": "scratchpad/scripts/entity_old.js",
 					"settings":
 					{
-						"buffer_size": 4780,
+						"buffer_size": 5459,
 						"regions":
 						{
 						},
 						"selection":
 						[
 							[
-								3420,
-								3420
+								0,
+								0
 							]
 						],
 						"settings":
@@ -180,61 +323,61 @@
 							"translate_tabs_to_spaces": true
 						},
 						"translation.x": 0.0,
-						"translation.y": 1575.0,
-						"zoom_level": 1.0
-					},
-					"type": "text"
-				},
-				{
-					"buffer": 1,
-					"file": "scratchpad/xml/Translation keys.xml",
-					"settings":
-					{
-						"buffer_size": 980400,
-						"regions":
-						{
-						},
-						"selection":
-						[
-							[
-								8147,
-								0
-							]
-						],
-						"settings":
-						{
-							"syntax": "Packages/XML/XML.tmLanguage",
-							"translate_tabs_to_spaces": false
-						},
-						"translation.x": 0.0,
 						"translation.y": 0.0,
 						"zoom_level": 1.0
 					},
 					"type": "text"
 				},
 				{
-					"buffer": 2,
-					"file": "scratchpad/xml/keys.xml",
+					"buffer": 1,
+					"file": "scratchpad/scripts/entities.js",
 					"settings":
 					{
-						"buffer_size": 8176,
+						"buffer_size": 2014,
 						"regions":
 						{
 						},
 						"selection":
 						[
 							[
-								310,
-								310
+								0,
+								2014
 							]
 						],
 						"settings":
 						{
-							"syntax": "Packages/XML/XML.tmLanguage",
+							"syntax": "Packages/JavaScript/JavaScript.tmLanguage",
 							"translate_tabs_to_spaces": false
 						},
 						"translation.x": 0.0,
-						"translation.y": 432.0,
+						"translation.y": 198.0,
+						"zoom_level": 1.0
+					},
+					"type": "text"
+				},
+				{
+					"buffer": 2,
+					"file": "scratchpad/xml/keys.json",
+					"settings":
+					{
+						"buffer_size": 779666,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								698,
+								698
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/JavaScript/JSON.tmLanguage",
+							"translate_tabs_to_spaces": false
+						},
+						"translation.x": 0.0,
+						"translation.y": 52048.0,
 						"zoom_level": 1.0
 					},
 					"type": "text"
@@ -244,15 +387,15 @@
 					"file": "scratchpad/xsl/xml2json.xsl",
 					"settings":
 					{
-						"buffer_size": 5984,
+						"buffer_size": 0,
 						"regions":
 						{
 						},
 						"selection":
 						[
 							[
-								1832,
-								1832
+								0,
+								0
 							]
 						],
 						"settings":
@@ -272,7 +415,7 @@
 					"file": "/C/Users/User/Downloads/config.xml",
 					"settings":
 					{
-						"buffer_size": 5708,
+						"buffer_size": 0,
 						"regions":
 						{
 						},
@@ -329,15 +472,15 @@
 					"file": "scratchpad/xsl/xml-to-jsonml.xsl",
 					"settings":
 					{
-						"buffer_size": 4125,
+						"buffer_size": 4124,
 						"regions":
 						{
 						},
 						"selection":
 						[
 							[
-								588,
-								588
+								0,
+								0
 							]
 						],
 						"settings":
@@ -356,15 +499,15 @@
 					"file": "scratchpad/scripts/xhtml.js",
 					"settings":
 					{
-						"buffer_size": 4674,
+						"buffer_size": 4690,
 						"regions":
 						{
 						},
 						"selection":
 						[
 							[
-								240,
-								240
+								0,
+								0
 							]
 						],
 						"settings":
@@ -373,13 +516,200 @@
 							"translate_tabs_to_spaces": false
 						},
 						"translation.x": 0.0,
-						"translation.y": 585.0,
+						"translation.y": 2970.0,
 						"zoom_level": 1.0
 					},
 					"type": "text"
 				},
 				{
 					"buffer": 8,
+					"file": "scratchpad/auto.html",
+					"settings":
+					{
+						"buffer_size": 2225,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								2126,
+								2126
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/HTML/HTML.tmLanguage",
+							"translate_tabs_to_spaces": false
+						},
+						"translation.x": 0.0,
+						"translation.y": 132.0,
+						"zoom_level": 1.0
+					},
+					"type": "text"
+				},
+				{
+					"buffer": 9,
+					"file": "scratchpad/css/autosuggest.css",
+					"settings":
+					{
+						"buffer_size": 663,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								609,
+								609
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/CSS/CSS.tmLanguage",
+							"translate_tabs_to_spaces": false
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"type": "text"
+				},
+				{
+					"buffer": 10,
+					"file": "scratchpad/scripts/autosuggest.container.js",
+					"settings":
+					{
+						"buffer_size": 7582,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								4598,
+								4598
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/JavaScript/JavaScript.tmLanguage",
+							"translate_tabs_to_spaces": false
+						},
+						"translation.x": 0.0,
+						"translation.y": 2557.0,
+						"zoom_level": 1.0
+					},
+					"type": "text"
+				},
+				{
+					"buffer": 11,
+					"file": "scratchpad/scripts/ie8.js",
+					"settings":
+					{
+						"buffer_size": 1292,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								1292,
+								1292
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/JavaScript/JavaScript.tmLanguage",
+							"translate_tabs_to_spaces": false
+						},
+						"translation.x": 0.0,
+						"translation.y": 495.0,
+						"zoom_level": 1.0
+					},
+					"type": "text"
+				},
+				{
+					"buffer": 12,
+					"settings":
+					{
+						"buffer_size": 0,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								0,
+								0
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/Text/Plain text.tmLanguage"
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"type": "text"
+				},
+				{
+					"buffer": 13,
+					"file": "scratchpad/scripts/entity.selection.js",
+					"settings":
+					{
+						"buffer_size": 4230,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								923,
+								923
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/JavaScript/JavaScript.tmLanguage",
+							"translate_tabs_to_spaces": false
+						},
+						"translation.x": 0.0,
+						"translation.y": 264.0,
+						"zoom_level": 1.0
+					},
+					"type": "text"
+				},
+				{
+					"buffer": 14,
+					"file": "scratchpad/scripts/entities.store.js",
+					"settings":
+					{
+						"buffer_size": 2061,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								920,
+								920
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/JavaScript/JavaScript.tmLanguage",
+							"translate_tabs_to_spaces": false
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"type": "text"
+				},
+				{
+					"buffer": 15,
 					"file": "scratchpad/demo.html",
 					"settings":
 					{
@@ -404,6 +734,31 @@
 						"zoom_level": 1.0
 					},
 					"type": "text"
+				},
+				{
+					"buffer": 16,
+					"settings":
+					{
+						"buffer_size": 0,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								0,
+								0
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/Text/Plain text.tmLanguage"
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"type": "text"
 				}
 			]
 		}
@@ -414,7 +769,7 @@
 	},
 	"input":
 	{
-		"height": 0.0
+		"height": 38.0
 	},
 	"layout":
 	{
@@ -464,6 +819,6 @@
 	"show_open_files": true,
 	"show_tabs": true,
 	"side_bar_visible": true,
-	"side_bar_width": 150.0,
+	"side_bar_width": 304.0,
 	"status_bar_visible": true
 }

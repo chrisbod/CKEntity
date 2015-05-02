@@ -17,7 +17,7 @@
 			]
 
 
-		}
+		}<xsl:if test="position() != last()">,</xsl:if>
 
 	</xsl:template>
 

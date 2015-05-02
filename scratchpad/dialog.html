@@ -2,7 +2,82 @@
 	<head>
 		<script src="https://code.jquery.com/jquery-1.11.2.min.js">	</script>
 		<link href="../vendor/ckeditor/samples/sample.css" rel="stylesheet">
+		<script src="../vendor/knockout-3.3.0.js"></script>
 		<link href="css/dialog-form.css" rel="stylesheet">
+
+		<script>
+
+
+
+			function TokenDialogViewModel(tokenDefinition, values) {
+				this.text = tokenDefinition.text;
+				this.tokenText = tokenDefinition.id;
+				this.groups = tokenDefinition.groups;
+				this.values = values || {};
+				window.TOKEN = this
+			}
+			TokenDialogViewModel.prototype.updateToken = function () {
+				console.log(this.values)
+			}
+
+
+
+			function LogicDialogViewModel(logicDefinition, values) {
+				var tableData = this.transpose(logicDefinition);
+				this.headings = tableData.headings;
+				this.rows = tableData.rows;
+				
+			}
+			LogicDialogViewModel.prototype = {
+				transpose: function (logic) {
+					var columnCount = logic.length,
+						rowCount = 0,
+						headings = [],
+						rows = [];
+					for (var i=0;i<logic.length;i++) {
+						headings.push(logic[i])
+						rowCount = Math.max(logic[i].items.length,rowCount)
+					}
+					for (i=0;i<rowCount;i++) {
+						rows[i] = [];
+						for (var j=0;j<columnCount;j++) {
+							rows[i][j] = logic[j].items[i]
+						}
+					}
+					return {
+						headings: headings,
+						rows: rows
+					}
+				},
+				updateLogic: function () {
+
+				}
+			}
+
+
+
+			$(function () {
+				$.ajax("xml/tokens.json", {
+					mimeType: "application-x/json",
+					success: function (tokenDefinitions) {
+						ko.applyBindings(new TokenDialogViewModel(tokenDefinitions[2],{decimals: "3", format: "percentage"}),document.getElementById("test"))
+
+					}
+				})
+				$.ajax("xml/logic.json", {
+					mimeType: "application-x/json",
+					success: function (logicDefinitions) {
+						ko.applyBindings(new LogicDialogViewModel(logicDefinitions,{}),document.getElementById("rules"))
+
+					}
+				})
+
+
+			})
+
+
+
+		</script>
 
 
 
@@ -10,30 +85,48 @@
 
 	<body>
 		<div class="dialog">
-		<form id="test">
+		
+		<form id="test" data-bind="submit: updateToken">
+			
 			<fieldset>
+				<h1>Edit Token</h1>
+				<header><strong data-bind="text: text"></strong> <token contenteditable="false"><span class="args token" contenteditable="false">&lt;</span><span data-bind="text: tokenText"></span>&gt;</token></header>
+				
 			<ul>
-			    <li><label for="field1">Full Name</label>
-			    	<input id="field1" type="text" name="field1" placeholder="First">
-			    	<input type="text" name="field2" placeholder="Last" />
-			    </li>
-			    <li>
-			        <label for="email">Email</label>
-			        <input id="email" type="email" name="field3" required/>
-			    </li>
-			    <li>
-			        <label for="field4">Subject</label>
-			        <select id="field4" name="field4">
-				        <option value="Advertise">Advertise</option>
-				        <option value="Partnership">Partnership</option>
-				        <option value="General Question">General</option>
-			        </select>
-			    </li>
-			    <li>
-			        <label for="field5">Your Message</label>
-			        <textarea id="field5" name="field5" id="field5" required></textarea>
-			    </li>
-			       
+				<li data-bind="foreach: groups">
+					<h3 data-bind="text: label"></h3>
+
+					<span data-bind="foreach: controls">
+						<span data-bind="if: type == 'checkboxes',">
+								<ul data-bind="foreach: boxes" class="checkbox-list">
+									<li>
+										<label>
+											<input type="checkbox" data-bind="value:value, attr:{name:value}, checked: $root.values[value]">
+											<span data-bind="text:text"></span>
+										</label>
+										
+									</li>
+								</ul>
+						</span>
+						<span data-bind="if: type == 'radio'">
+								<ul data-bind="foreach: options" class="radio-list">
+									<li>
+										<label>
+											<input type="radio" data-bind="value:value, attr:{name:$parent.id}, checked: $root.values[$parent.id]">
+											<span data-bind="text:text"></span>
+										</label>
+										
+									</li>
+								</ul>
+						</span>
+						<span data-bind="if: type == 'select'">
+							<select data-bind="attr:{name:id }, options: options, optionsText: 'text', 	optionsValue: 'value', value: $root.values[id]">
+							</select>
+						</span>
+
+					</span>
+					
+				</li>       
 			</ul>
 				</fieldset>
 				<fieldset>
@@ -41,6 +134,44 @@
 			        <input type="reset" value="Cancel"/>
 			    </fieldset>
 			</form>
+
+			<br>
+			<br>
+
+			<div class="dialog">
+		
+		<form id="rules" data-bind="submit: updateLogic">
+			
+			<fieldset>
+				<h1>Edit Rules</h1>
+
+					<p>
+					<conditional contenteditable="false" data-conditional-name="conditional-1" data-key-name="keykey2207"><span class="args conditional" contenteditable="false" data-conditional-name="conditional-1" data-key-name="keykey2207">[</span><span class="contents" contenteditable="false">the share, which is quoted in <token contenteditable="false" data-key-name="keykey2207"><span class="args token" contenteditable="false" data-key-name="keykey2207">&lt;</span>underlying currency&gt;</token></span><span class="args conditional" contenteditable="false" data-conditional-name="conditional-1" data-key-name="keykey2207">]</span></conditional></p>
+				<table>
+					<thead>
+						<tr data-bind="foreach: headings">
+							<th data-bind="text: text">
+							</th>
+						</tr>
+					</thead>
+					<tbody data-bind="foreach: rows">
+						<tr data-bind="foreach: $data">
+							<td><label data-bind="if: $data"><input type="radio" data-bind="attr:{name: $root.headings[$index()].id,value:value}"><span data-bind="text:text"></span></label></td>
+						</tr>
+					</tbody>
+
+
+
+				</table>
+			
+
+				</fieldset>
+				<fieldset>
+					<input type="submit" value="Ok" />
+			        <input type="reset" value="Cancel"/>
+			    </fieldset>
+			</form>
+		</div>
 		</div>
 	</body>
 
