@@ -129,3 +129,35 @@ select{
 .dialog thead td:last-child{
     border-width:0px 0px 0px 1px;
 }
+
+.tooltip {
+    border: 1px solid #999999;
+    float: left;
+    padding: 0.5ex;
+    min-width: 20em;
+    margin: 4em;
+    background-color: #eeeeee;
+}
+.tooltip section {
+    display: table;
+    width: 100%;
+
+
+}
+.tooltip section dl {
+    display: table-row;
+    border-bottom: 1px dotted #999999;
+}
+.tooltip section dl dd,
+.tooltip section dl dt {
+    display: table-cell;
+    padding: 1ex;
+
+}
+.tooltip section dl dt {
+    border-left: 1px solid #ffffff;
+}
+.tooltip section dl dd {
+    text-align: right;
+    background-color: #ffffff
+}

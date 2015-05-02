@@ -9,15 +9,40 @@
 
 
 
-			function TokenDialogViewModel(tokenDefinition, values) {
+			function TokenDialogViewModel(tokenElement) {
+				this.values = this.getValuesFromToken(tokenElement);
+				this.resetValues = this.getValuesFromToken(tokenElement);
+				var tokenDefinition = this.getDefinitionByType(this.values.type)
 				this.text = tokenDefinition.text;
 				this.tokenText = tokenDefinition.id;
 				this.groups = tokenDefinition.groups;
-				this.values = values || {};
-				window.TOKEN = this
+			}
+			TokenDialogViewModel.prototype.getValuesFromToken = function (tokenElement) {
+				this.tokenElement = tokenElement;
+				var args = tokenElement.getAttribute("data-args")
+				var values = (new Function("return {"+(args||'')+"}"))();
+				return values;
+			}
+			TokenDialogViewModel.prototype.getDefinitionByType = function (type) {
+				var definitions = this.definitions;
+					for (var i=0;i<definitions.length;i++) {
+						if (definitions[i].id == type) {
+							return definitions[i]
+						}
+					}
+			}
+			TokenDialogViewModel.prototype.cancel = function (model) {
+				//this.values(this.resetValues)
+				
+
 			}
 			TokenDialogViewModel.prototype.updateToken = function () {
-				console.log(this.values)
+				var values = this.values,
+					args = []
+				for (var i in values) {
+					args.push(i+":'"+values[i]+"'")
+				}
+				this.tokenElement.setAttribute("data-args",args);
 			}
 
 
@@ -60,7 +85,10 @@
 				$.ajax("xml/tokens.json", {
 					mimeType: "application-x/json",
 					success: function (tokenDefinitions) {
-						ko.applyBindings(new TokenDialogViewModel(tokenDefinitions[2],{decimals: "3", format: "percentage"}),document.getElementById("test"))
+						TokenDialogViewModel.prototype.definitions = tokenDefinitions;
+						//ko.applyBindings(new TokenDialogViewModel(tokenDefinitions[2]),document.getElementById("test"))
+						var token = document.getElementsByTagName("token")[0]
+						ko.applyBindings(new TokenDialogViewModel(token),document.getElementById("test"))
 
 					}
 				})
@@ -90,7 +118,7 @@
 			
 			<fieldset>
 				<h1>Edit Token</h1>
-				<header><strong data-bind="text: text"></strong> <token contenteditable="false"><span class="args token" contenteditable="false">&lt;</span><span data-bind="text: tokenText"></span>&gt;</token></header>
+				<header><strong data-bind="text: text"></strong> <token contenteditable="false" data-args="type: 'cap', format: 'absolute', decimals: '2-4'"><span class="args token" contenteditable="false">&lt;</span><span data-bind="text: tokenText"></span>&gt;</token></header>
 				
 			<ul>
 				<li data-bind="foreach: groups">
@@ -131,10 +159,20 @@
 				</fieldset>
 				<fieldset>
 					<input type="submit" value="Ok" />
-			        <input type="reset" value="Cancel"/>
+			        <input type="button" value="Cancel" data-bind="click: cancel"/>
 			    </fieldset>
 			</form>
 
+			<div class="tooltip">
+				<section class="properties">
+					<dl>
+						<dt>Property</dt>
+						<dd>value</dd>
+
+					</dl>
+				</section>
+
+			</div>
 			<br>
 			<br>
 
