@@ -16,6 +16,7 @@ For licensing, see LICENSE.md or http://ckeditor.com/license
 	<script src="scripts/entities.selection.js"></script>
 	<script src="scripts/entities.paste.js"></script>
 	<script src="scripts/entities.conditional.collapser.js"></script>
+	<script src="scripts/entities.markupmanager.js"></script>
 	<script src="scripts/autosuggest.container.js"></script>
 	<script src="scripts/sentencetokenizer.js"></script>
 	<script src="scripts/tokentokenizer.js"></script>
@@ -68,9 +69,11 @@ For licensing, see LICENSE.md or http://ckeditor.com/license
 
 				var entitiesSelection = new EntitySelectionManager()
 				entitiesSelection.init(document.getElementById("edit"))
-				var pasteManager = new EntityPasteManager()
-				pasteManager.init(document.getElementById("edit"))
+				//var pasteManager = new EntityPasteManager()
+				//pasteManager.init(document.getElementById("edit"))
 				conditionalCollapser.init(document.getElementById("edit"))
+				var markupmanager = new EntityMarkupManager()
+				markupmanager.init(document.getElementById("edit"))
 				
 
 				/*input.oninput = function () {
@@ -85,8 +88,9 @@ For licensing, see LICENSE.md or http://ckeditor.com/license
 
 	mimeType:"application-x/json",
 	success: function (tokens) {
+		console.log("success")
 			for (var i=0;i<tokens.length;i++) {
-				tokenStore.addEntity("<"+tokens[i].display+">",tokens[i].id)
+				tokenStore.addEntity("<"+tokens[i].text+">",tokens[i].id)
 			}
 
 				tokenContainer.build(tokenStore)

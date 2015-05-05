@@ -80,6 +80,10 @@ select{
     margin:0;
     padding: 0;
 }
+.dialog header {
+    font-weight: bold;
+    margin: 1ex 0 0.25ex 0;
+}
 
 
 .dialog form li textarea,

@@ -46,16 +46,19 @@ EntityPasteManager.prototype = {
 		this.fixConditionals();
 	},
 	fixTranslations: function () {
+		return 
 		var orphans = this.editableElement.querySelectorAll("div > span.args.translation");
 		for (var i=0,token;i!=orphans.length;i++) {
 			var div = orphans[i].parentNode.cloneNode(true);
 			this.removeStylesAndClean(div.querySelectorAll("*"));
 			var token = document.createElement("translation");
+			token.setAttribute("contenteditable", "false")
 			token.innerHTML = div.innerHTML;
 			orphans[i].parentNode.parentNode.replaceChild(token,orphans[i].parentNode)
 		}
 	},
 	fixTokens: function () {
+		return
 		var orphans = this.editableElement.querySelectorAll("span.args.token[style]")
 		for (var i=0;i<orphans.length; i++) {
 			orphans[i].removeAttribute("style");

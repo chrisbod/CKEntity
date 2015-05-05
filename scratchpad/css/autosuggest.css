@@ -37,12 +37,18 @@ div.autosuggest-container a.focussed   {
 	background-color: red;
 	color: white;
 }
+token, translation, conditional {
+	display: inline;
+}
 token {
 	color: red;
+	
+	
 }
 
 
 
 translation {
+	display: inline;
 	border-bottom: 1px dotted black;
 }

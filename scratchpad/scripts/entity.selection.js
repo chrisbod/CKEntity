@@ -13,7 +13,7 @@ SelectionManager.prototype = {
 		var currentNode = ev.target;
 		while (currentNode!=null && currentNode!=this.element) {
 			if (this.isSelectableElement(currentNode)) {
-				return this.selectNode(currentNode)
+				return this.selectNode(currentNode.parentNode)
 			}
 			currentNode = currentNode.parentNode;
 		}

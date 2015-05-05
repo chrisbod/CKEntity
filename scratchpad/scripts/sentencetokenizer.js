@@ -4,13 +4,22 @@ function SentenceTokenizer () {
 	this.tokens = {};
 }
 SentenceTokenizer.prototype = {
-	isTrigger: function (text) {
-		text = text.trim()
-		var split = text.split(" ");
-		if (split.length > 1 && this.tokens[split[0]]) {
-			return true;
+	getLastSentenceFromRange: function (rangeOrText) {
+		var text = ""+rangeOrText;
+		var sentences = text.split(/\.\s+(?=[A-Z])/)
+		if (sentences) {
+			var lastSentence = sentences[sentences.length-1];
+			return lastSentence;
 		}
-		return false;
+		return "";
+	},
+	getTrigger: function (rangeOrText) {
+		text = this.getLastSentenceFromRange(rangeOrText);
+		var split = text.trim().split(" ");
+		if (split.length > 1 && this.tokens[split[0]]) {
+			return text;
+		}
+		return "";
 	},
 	tokenize: function (key) {
 		var split = key.def.trim().split(/\W+/),
@@ -33,9 +42,8 @@ SentenceTokenizer.prototype = {
 				return [];
 			}
 		}
-		var split = string.trim().split(/\W+/),
+		var split = string.trim().split(/\s+/),
 			results = [];
-		
 		function crawl(object) {
 			if (split.length) {
 				var next = split.shift();

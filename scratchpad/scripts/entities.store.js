@@ -50,6 +50,7 @@ TranslationStore.prototype.createTemplatableNodeFromEntity = function (key,id) {
 	for (var i=0;i<spans.length;i++) {
 		spans[i].setAttribute("data-key-name",keyName);
 	}
+
 	return node;
 }
 TranslationStore.prototype.parseTextMarkup = function (string) {
@@ -57,9 +58,9 @@ TranslationStore.prototype.parseTextMarkup = function (string) {
 		.replace(/</g,'\x02')
 		.replace(/>/g,'&gt;\x03')
 		.replace(/\[/g,'<conditional contenteditable="false"><span class="args conditional" contenteditable="false">[</span><span class="contents" contenteditable="false">')
-		.replace(/\]/g,'</span><span class="args conditional" contenteditable="false">]</span></conditional>')
+		.replace(/\]/g,'</span><span class="conditional end" contenteditable="false">]</span></conditional>')
 		.replace(/\x02/g,'<token contenteditable="false"><span class="args token" contenteditable="false">&lt;</span>')
-		.replace(/\x03/g,"</token>");
+		.replace(/\x03/g,"</token>") + '<span class="translation end" contenteditable="false">&#8203;</span>';
 }
 
 function TokenStore() {

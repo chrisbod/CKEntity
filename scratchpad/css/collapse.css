@@ -1,11 +1,11 @@
-span.conditional:first-child {
+translation span.conditional:first-child {
 	position: relative;
 	display: inline-block;
 	box-sizing: border-box;
 	margin-left: 0.5ex;
 	margin-right: 0.5ex;
 }
-span.conditional:first-child::before {
+translation span.conditional:first-child::before {
   position: absolute;
   width: 1.5ex;
   background-image: url(../img/minus.png);

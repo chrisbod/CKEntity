@@ -155,54 +155,49 @@ AutoSuggestContainer.prototype = {
 				duplicateRange = range.cloneRange(),
 				index;
 			duplicateRange.selectNodeContents(node);
-			var sentence = this.getLastSentenceFromRange(duplicateRange);
-			
-			if (sentence) {
-				if (this.tokenizer.isTrigger(sentence)) {
-					console.log('trigger')
-					duplicateRange.endContainer.normalize();
-					node = duplicateRange.endContainer.lastChild;
-					if (node == null) {
-						node = duplicateRange.endContainer;
-					}
-					if (node.data) {
-						index = node.data.length-sentence.length
+			var trigger = this.tokenizer.getTrigger(""+duplicateRange);
+
+			if (trigger) {
+				duplicateRange.endContainer.normalize();
+				node = duplicateRange.endContainer.lastChild;
+				if (node == null) {
+					node = duplicateRange.endContainer;
+				}
+				if (node.data) {
+					index = node.data.length-trigger.length;
+					try {
 						duplicateRange.setStart(node,index);
 						node.splitText(index)
-					} else {
-						return;
-					}
-					
-					this.moveToRange(duplicateRange)
-					var suggestions = this.tokenizer.getSuggestions(sentence);
-					if (suggestions.length == 1) {
-						if (suggestions[0].def.trim() == sentence.trim()) {
-							suggestions = [];
-						}
-					}
-					this.showByKeys(suggestions);
-					if (suggestions.length) {
+					} catch (e) {
 						event.stopPropagation()
+						return 
+					}
+				} else {
+					return;
+				}
+				
+				this.moveToRange(duplicateRange)
+				var suggestions = this.tokenizer.getSuggestions(trigger);
+				if (suggestions.length == 1) {
+					if (suggestions[0].def.trim() == trigger.trim()) {
+						this.clicked(suggestions[0].id,suggestions[0].def)
+						event.stopPropagation()
+						return
 					}
 
 
-				} else {
-					this.hide()
 				}
+				this.showByKeys(suggestions);
+				if (suggestions.length) {
+					event.stopPropagation()
+				}
+
+
 			} else {
 				this.hide()
 			}
-	}
-		this.enterClicked = false;
-	},
-	getLastSentenceFromRange: function (range) {
-		var text = ""+range;
-		var sentences = text.split(/\.\s+(?=[A-Z])/)
-		if (sentences) {
-			var lastSentence = sentences[sentences.length-1];
-			return lastSentence;
 		}
-		return "";
+		this.enterClicked = false;
 	},
 	getCurrentNode: function (range) {
 		
@@ -270,7 +265,7 @@ AutoSuggestContainer.prototype = {
 			this.enterClicked = true;
 		}
 	},
-	clicked: function (id,text,element) {
+	clicked: function (id,text) {
 		var selection = document.getSelection()
 			range = selection.getRangeAt(0),
 			newNode = this.store.getEntityNode(text);//document.createTextNode(text);
@@ -287,8 +282,6 @@ AutoSuggestContainer.prototype = {
 			selection.removeAllRanges();
 			selection.addRange(range);
 			selection.collapseToEnd()
-
-
 		}
 	},
 	configureMetrics: function () {

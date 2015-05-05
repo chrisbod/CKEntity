@@ -9,12 +9,14 @@ TokenTokenizer.prototype = {
 		this.tokenDefinitions.push(def);
 		this.tokenDefinitions.sort();
 	},
-	isTrigger: function (what) {
-		what = what.trim();
-		if (what.charAt(0) == '<') {
-			return true;
+	getTrigger: function (rangeOrText) {
+		var text = ""+rangeOrText;
+
+		text = text.trim().match(/<[^>]*>?$/m);
+		if (text) {
+			return text[0];
 		}
-		return false;
+		return "";
 	},
 	getSuggestions: function (what) {
 		var suggestions = [];
