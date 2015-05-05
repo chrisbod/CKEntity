@@ -5,15 +5,19 @@ EntityMarkupManager.prototype = {
 	init: function (editableElement) {
 		this.editableElement = editableElement;
 		this.editableElement.addEventListener("input",this);
+		//this.editableElement.onpaste = this.handleEvent.bind(this)
 	},
 	handleEvent: function (event) {
 		return this[event.type+"Handler"]();
 	},
-	inputHandler: function () {
+	inputHandler: function (event) {
 		this.fixOrphanedElements();
 		this.preventEntityEditing();
 		this.fixRedundantMarkup();
 
+	},
+	pasteHandler: function (event) {
+		this.inputHandler(event)
 	},
 	preventEntityEditing: function () {
 		var tokens = this.editableElement.querySelectorAll("token:not([contenteditable]),translation:not([contenteditable]), conditional:not([contenteditable])");
@@ -49,6 +53,7 @@ EntityMarkupManager.prototype = {
 		//return
 		this.fixOrphanedTranslations()
 		this.fixOrphanedConditionals()
+		this.fixOrphanedTokens();
 		
 	},
 	fixOrphanedTranslations: function () {
@@ -89,5 +94,27 @@ EntityMarkupManager.prototype = {
 			node.appendChild(currentNode)
 		}
 	},
+	fixOrphanedTokens: function () {
+		var orphans = this.editableElement.querySelectorAll("div > span.args.token");
+		for (var i=0;i<orphans.length;i++) {
+
+			var currentNode = orphans[i],
+				nextNode = currentNode.nextSibling,
+				nodeText = nextNode.firstChild;
+			var key = currentNode.getAttribute("data-token-name");
+			var node = document.createElement("token");
+			node.setAttribute("data-token-name",key);
+			node.appendChild(currentNode);
+			node.appendChild(nodeText)
+			nextNode.parentNode.insertBefore(node,nextNode)
+			nextNode.removeAttribute("style")
+			//currentNode.parentNode.appendChild(nodeText);
+
+			//node.appendChild(currentNode)
+			//node.appendChild(nodeText);
+			//nextNode.parentNode.replaceChild(node,nextNode)
+			
+		}
+	}
 
 }

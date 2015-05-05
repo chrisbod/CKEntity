@@ -271,17 +271,21 @@ AutoSuggestContainer.prototype = {
 			newNode = this.store.getEntityNode(text);//document.createTextNode(text);
 		if (this.editableElement == range.commonAncestorContainer || this.editableElement.contains(range.commonAncestorContainer)) {
 			range.insertNode(newNode);
-			newNode.previousSibling.parentNode.removeChild(newNode.previousSibling);
+			var dummy = document.createTextNode(" ")
+			newNode.previousSibling.parentNode.replaceChild(dummy,newNode.previousSibling);
+			if (dummy.previousSibling && dummy.previousSibling.data && dummy.previousSibling.data.length == 0) {
+				dummy.previousSibling.parentNode.removeChild(dummy.previousSibling)
+			}
 			selection.removeAllRanges()
 			selection.addRange(range);
 			selection.collapseToEnd();
 			newNode.parentNode.normalize();
 			var cursor = document.createTextNode("\u00A0");
 			newNode.parentNode.insertBefore(cursor,newNode.nextSibling)
-			range.selectNode(newNode);
+			range.selectNode(cursor);
 			selection.removeAllRanges();
 			selection.addRange(range);
-			selection.collapseToEnd()
+			selection.collapseToStart();
 		}
 	},
 	configureMetrics: function () {
