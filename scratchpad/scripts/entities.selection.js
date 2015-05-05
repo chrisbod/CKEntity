@@ -7,6 +7,7 @@ EntitySelectionManager.prototype = {
 		this.editableElement.addEventListener("click", this);
 		this.editableElement.addEventListener("dblclick", this);
 		document.addEventListener("keydown", this, true);
+		document.addEventListener("keyup", this, true);
 		document.addEventListener("paste", this, true);
 
 	},
@@ -53,6 +54,38 @@ EntitySelectionManager.prototype = {
 			case 40: return this.handleArrow(event);
 		}
 	},
+	keyupHandler: function () {
+		if (this.editableElement.contains(event.target)) {
+			switch (event.keyCode) {
+				case 38:
+				case 40: return this.fixVerticalSelectionLocation(event);
+			}
+		}
+	},
+	fixVerticalSelectionLocation: function (event) {
+		var selection = document.getSelection();
+		var node = selection.anchorNode.parentNode,
+			highestEntity = null;
+		while (node!=this.editableElement) {
+			if (this.isEntityElement(node)) {
+				highestEntity = node;
+			}
+			node = node.parentNode;
+		}
+		if (highestEntity) {
+			if (highestEntity == this.currentEntityNode) {
+				if (event.keyCode == 38) {
+					this.handleLeftArrow(event)
+				} else {
+					this.handleRightArrow(event)
+				}
+			} else {
+				this.select(highestEntity)
+			}
+			
+		}
+		
+	},
 	pasteHandler: function () {
 		if (this.currentEntityNode) {
 			this.currentEntityNode.parentNode.removeChild(this.currentEntityNode);
@@ -91,7 +124,7 @@ EntitySelectionManager.prototype = {
 				if (this.isEntityElement(selection.anchorNode.previousSibling)) {
 					this.select(selection.anchorNode.previousSibling);
 				} else {
-					debugger;
+					//debugger;
 				}
 			} else {
 				//this.currentEntityNode = null;
@@ -100,7 +133,7 @@ EntitySelectionManager.prototype = {
 		}
 	},
 	handleUpArrow: function (event) {
-		var selection = document.getSelection();
+		//this.lastKnownRange = document.getSelection().getRangeAt(0)
 
 	},
 	handleRightArrow: function (event) {
@@ -122,7 +155,7 @@ EntitySelectionManager.prototype = {
 		}
 	},
 	handleDownArrow: function (event) {
-		var selection = document.getSelection();
+		//this.lastKnownRange = document.getSelection().getRangeAt(0)
 	},
 	removeCurrentEntityIfAllowed: function () {
 		//you cannot remove tokens or conditionals if they are part of a translation
@@ -150,7 +183,6 @@ EntitySelectionManager.prototype = {
 			var currentNode = this.currentEntityNode.parentNode;
 			while (currentNode!=this.editableElement) {
 				if (this.isEntityElement(currentNode)) {
-					console.log("here")
 					return this.select(currentNode);
 				}
 				currentNode = currentNode.parentNode;
