@@ -45,6 +45,15 @@ For licensing, see LICENSE.md or http://ckeditor.com/license
 
 		
 		$(function () {
+			var editPanel = document.getElementById("edit")
+			editPanel.addEventListener("focusin", function () {
+				//this.className = 'editing'
+			});
+			editPanel.addEventListener("focusout", function () {
+				//this.className = ''
+			});
+
+
 			var translationContainer = new AutoSuggestContainer("translation-menu",new SentenceTokenizer());
 			var tokenContainer = new AutoSuggestContainer("token-menu",new TokenTokenizer())
 			tokenContainer.getLastSentenceFromRange = function (range) {
@@ -72,8 +81,8 @@ For licensing, see LICENSE.md or http://ckeditor.com/license
 				//var pasteManager = new EntityPasteManager()
 				//pasteManager.init(document.getElementById("edit"))
 				conditionalCollapser.init(document.getElementById("edit"))
-				var markupmanager = new EntityMarkupManager()
-				markupmanager.init(document.getElementById("edit"))
+				//var markupmanager = new EntityMarkupManager()
+				//markupmanager.init(document.getElementById("edit"))
 				
 
 				/*input.oninput = function () {
@@ -90,7 +99,7 @@ For licensing, see LICENSE.md or http://ckeditor.com/license
 	success: function (tokens) {
 		console.log("success")
 			for (var i=0;i<tokens.length;i++) {
-				tokenStore.addEntity("<"+tokens[i].text+">",tokens[i].id)
+				tokenStore.addEntity("<"+tokens[i].text+">",tokens[i].id,tokens[i].preview)
 			}
 
 				tokenContainer.build(tokenStore)
@@ -105,7 +114,7 @@ For licensing, see LICENSE.md or http://ckeditor.com/license
 
 		//})
 		</script>
-		<div id="edit" contenteditable="true">
+		<div id="edit" contenteditable="true" class="editing">
 			Type in here
 		</div>
 </body>

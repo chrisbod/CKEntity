@@ -11,19 +11,20 @@ TokenTokenizer.prototype = {
 	},
 	getTrigger: function (rangeOrText) {
 		var text = ""+rangeOrText;
-
-		text = text.trim().match(/<[^>]*>?$/m);
+		text = text.replace(/\u200b/gm,'');
+		text = text.trim().match(/<[^>]*>?$/mg);
 		if (text) {
-			return text[0];
+			return text[text.length-1];
 		}
 		return "";
 	},
 	getSuggestions: function (what) {
 		var suggestions = [];
+		what = what.trim();
 		this.tokenDefinitions.forEach(function (def) {
 			if (def.indexOf(what) == 0) {
 				suggestions[suggestions.length] = this.tokens[def];
-			}
+			} 
 		},this)
 		return suggestions;
 

@@ -3,12 +3,12 @@ function EntityStore() {
 	this.allNodes = [];
 }
 EntityStore.prototype =  {
-	addEntity: function (key,id) {
+	addEntity: function (key,id,preview) {
 		var preexists = this.templatableNodes[key];
 		if (!preexists) {
 			
 			this.allNodes.push(this.templatableNodes[key] = {
-				node: this.createTemplatableNodeFromEntity(key,id),
+				node: this.createTemplatableNodeFromEntity(key,id,preview),
 				def: key,
 				id: id
 			})
@@ -56,11 +56,11 @@ TranslationStore.prototype.createTemplatableNodeFromEntity = function (key,id) {
 TranslationStore.prototype.parseTextMarkup = function (string) {
 	return '<span class="args translation" contenteditable="false">&#8203;</span>'+string
 		.replace(/</g,'\x02')
-		.replace(/>/g,'&gt;\x03')
+		.replace(/>/g,'\x03')
 		.replace(/\[/g,'<conditional contenteditable="false"><span class="args conditional" contenteditable="false">[</span><span class="contents" contenteditable="false">')
 		.replace(/\]/g,'</span><span class="conditional end" contenteditable="false">]</span></conditional>')
 		.replace(/\x02/g,'<token contenteditable="false"><span class="args token" contenteditable="false">&lt;</span>')
-		.replace(/\x03/g,"</token>") + '<span class="translation end" contenteditable="false">&#8203;</span>';
+		.replace(/\x03/g,"<span>&gt;</span><preview></preview></token>") + '<span class="translation end" contenteditable="false">&#8203;</span>';
 }
 
 function TokenStore() {
@@ -73,15 +73,24 @@ TokenStore.prototype.parseTextMarkup = function () {
 		.replace(/</g,'&lt;')
 		.replace(/>/g,'&gt;')
 }
-TokenStore.prototype.createTemplatableNodeFromEntity = function (key,id) {
+TokenStore.prototype.createTemplatableNodeFromEntity = function (key,id,previewHTML) {
 	var node = document.createElement("token")
 	node.setAttribute("contenteditable", false);
 	node.setAttribute("data-conditional-id",id)
-	node.innerText = key.replace(/^</,'');
+	node.innerHTML = '<span>'+key.replace(/(^<)|(>$)/g,'')+'<span>';
 	var rules = document.createElement("span")
 	rules.className = "args token";
 	rules.innerText = "<";
 	rules.setAttribute("contenteditable", false);
+	var end = document.createElement("span")
+	end.innerText = ">";
+	node.appendChild(end)
+	if (previewHTML) {
+		var preview = document.createElement("preview")
+		preview.innerHTML = previewHTML;
+		node.appendChild(preview)
+	}
+	
 	node.insertBefore(rules,node.firstChild)
 	return node;
 }

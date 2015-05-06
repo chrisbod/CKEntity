@@ -40,15 +40,35 @@ div.autosuggest-container a.focussed   {
 token, translation, conditional {
 	display: inline;
 }
-token {
-	color: red;
-	
-	
+token > span {
+	display: none;
 }
+.editing token {
+	color: red;	
+}
+.editing token > span {
+	display: inline;
+}
+
+.editing token preview {
+	display: none;
+}
+token[data-conditional-id=scenarioTable] {
+	display: block;
+}
+
 
 
 
 translation {
 	display: inline;
 	border-bottom: 1px dotted black;
+}
+
+table.scenario-table {
+	border: 1px solid black;
+}
+table.scenario-table th {
+	background-color: black;
+	color: white;
 }

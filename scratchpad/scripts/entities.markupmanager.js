@@ -108,13 +108,9 @@ EntityMarkupManager.prototype = {
 			node.appendChild(nodeText)
 			nextNode.parentNode.insertBefore(node,nextNode)
 			nextNode.removeAttribute("style")
-			//currentNode.parentNode.appendChild(nodeText);
-
-			//node.appendChild(currentNode)
-			//node.appendChild(nodeText);
-			//nextNode.parentNode.replaceChild(node,nextNode)
 			
 		}
 	}
+
 
 }

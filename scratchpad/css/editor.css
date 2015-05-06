@@ -5,7 +5,7 @@ span.rules {
 
 token {
 	display: inline-block;
-	color: red;
+	
 }
 translation, marker {
 	border-bottom: 1px dotted black;
@@ -15,5 +15,14 @@ token,translation,token *, translation * {
 	  -webkit-user-modify: read-only;
 	  -moz-user-modify: read-only;
 	  user-modify: read-only;
+}
+
+.editing token {
+	color: red;
+}
+
+translation {
+	display: inline;
+	border-bottom: 1px dotted black;
 }
 
