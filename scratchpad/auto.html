@@ -17,12 +17,17 @@ For licensing, see LICENSE.md or http://ckeditor.com/license
 	<script src="scripts/entities.paste.js"></script>
 	<script src="scripts/entities.conditional.collapser.js"></script>
 	<script src="scripts/entities.markupmanager.js"></script>
+	<script src="scripts/entities.edit.knockout.viewmodels.js"></script>
+	<script src="scripts/entities.edit.trigger.js"></script>
+
 	<script src="scripts/autosuggest.container.js"></script>
 	<script src="scripts/sentencetokenizer.js"></script>
 	<script src="scripts/tokentokenizer.js"></script>
+	<script src="../vendor/knockout/knockout-3.3.0.js"></script>
 	<link href="../vendor/ckeditor/samples/sample.css" rel="stylesheet">
 	<link href="css/autosuggest.css" rel="stylesheet">
 	<link href="css/collapse.css" rel="stylesheet">
+	<link href="css/dialog-form.css" rel="stylesheet">
 </head>
 <body>
 	<h1>
@@ -63,8 +68,9 @@ For licensing, see LICENSE.md or http://ckeditor.com/license
 				}
 				return null;
 			}
-			var translationStore = new TranslationStore();
 			var tokenStore = new TokenStore();
+			var translationStore = new TranslationStore(tokenStore);
+			
 			var conditionalCollapser = new ConditionalCollapser()
 			
 
@@ -81,8 +87,11 @@ For licensing, see LICENSE.md or http://ckeditor.com/license
 				//var pasteManager = new EntityPasteManager()
 				//pasteManager.init(document.getElementById("edit"))
 				conditionalCollapser.init(document.getElementById("edit"))
-				//var markupmanager = new EntityMarkupManager()
-				//markupmanager.init(document.getElementById("edit"))
+				var markupmanager = new EntityMarkupManager()
+				markupmanager.init(document.getElementById("edit"))
+
+				var editManager = new EntityEditManager();
+				editManager.init(document.getElementById("edit"));
 				
 
 				/*input.oninput = function () {
@@ -97,9 +106,9 @@ For licensing, see LICENSE.md or http://ckeditor.com/license
 
 	mimeType:"application-x/json",
 	success: function (tokens) {
-		console.log("success")
 			for (var i=0;i<tokens.length;i++) {
-				tokenStore.addEntity("<"+tokens[i].text+">",tokens[i].id,tokens[i].preview)
+
+				tokenStore.addEntity('<'+tokens[i].text+'>',tokens[i].id,tokens[i].preview)
 			}
 
 				tokenContainer.build(tokenStore)
@@ -117,5 +126,94 @@ For licensing, see LICENSE.md or http://ckeditor.com/license
 		<div id="edit" contenteditable="true" class="editing">
 			Type in here
 		</div>
+
+
+
+		<div class="dialog hidden" data-bind="attr: {'class': 'dialog' + (active() ? ' active' : ' hidden')}" id="tokenDialog">
+		
+		<form id="test" data-bind="submit: update">
+			
+			<fieldset>
+				<h1>Edit Token</h1>
+				
+				
+			<ul>
+				<li data-bind="foreach: groups">
+					<header data-bind="text: label"></header>
+					<!--tried using a switch here but had scoping issues-->
+					<ul data-bind="foreach: controls">
+						<li data-bind="if: type == 'checkbox'">
+							<label>
+								<input type="checkbox" data-bind="value:value, attr:{name:value}, checked: $root.values()[value]">
+								<span data-bind="text:text"></span>
+							</label>
+						</li>
+						<li data-bind="if: type == 'radio'">
+								<ul data-bind="foreach: options" class="radio-list">
+									<li>
+										<label>
+											<input type="radio" data-bind="value:value, attr:{name:$parent.id}, checked: $root.values()[$parent.id]">
+											<span data-bind="text:text"></span>
+										</label>
+									</li>
+								</ul>
+						</li>
+						<li data-bind="if: type == 'select'">
+							<select data-bind="attr:{name:id }, options: options, optionsText: 'text', 	optionsValue: 'value', value: $root.values()[id]">
+							</select>
+						</li>
+						<li data-bind="if: type == 'text'">
+							<label>
+								<div data-bind="text: (typeof label != 'undefined' ?  label : '')"></div>
+							<input type="text" data-bind="attr:{name:id, placeholder: (typeof placeholder != 'undefined' ?  placeholder : '')}, value: value "/>
+							</label>
+						</li>
+						<li data-bind="if: type == 'textarea'">
+							<label>
+								<div data-bind="text: (typeof label != 'undefined' ?  label : '')"></div>
+							<textarea data-bind="attr:{name:id,placeholder:(typeof placeholder != 'undefined' ?  placeholder : '')}, value: value"></textarea>
+							</label>
+						</li>     
+			</ul>
+				</fieldset>
+				<fieldset>
+					<input type="submit" value="Ok" />
+			        <input type="button" value="Cancel" data-bind="click: cancel"/>
+			    </fieldset>
+			</form>
+		</div>
+		<div class="dialog hidden"  data-bind="attr: {'class': 'dialog' + (active() ? ' active' : ' hidden')}" id="logicDialog">
+		
+		<form id="rules" data-bind="submit: update">
+			
+			<fieldset>
+				<h1>Edit Rules</h1>
+
+					<p data-bind="text:text"></p>
+				<table>
+					<thead>
+						<tr data-bind="foreach: headings">
+							<th data-bind="text: text">
+							</th>
+						</tr>
+					</thead>
+					<tbody data-bind="foreach: rows">
+						<tr data-bind="foreach: $data">
+							<td><label data-bind="if: $data"><input type="radio" data-bind="attr:{name: $root.headings()[$index()].id,value:value},checked: $root.values()[$index()]"><span data-bind="text:text"></span></label></td>
+						</tr>
+					</tbody>
+
+
+
+				</table>
+			
+
+				</fieldset>
+				<fieldset>
+					<input type="submit" value="Ok" />
+			        <input type="reset" value="Cancel" data-bind="click: cancel"/>
+			    </fieldset>
+			</form>
+		</div
 </body>
 </html>

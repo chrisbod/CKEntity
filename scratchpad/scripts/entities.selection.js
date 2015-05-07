@@ -9,7 +9,6 @@ EntitySelectionManager.prototype = {
 		document.addEventListener("keydown", this, true);
 		document.addEventListener("keyup", this, true);
 		document.addEventListener("paste", this, true);
-
 	},
 	isEntityElement: function (element) {
 		if (element) {
@@ -49,9 +48,9 @@ EntitySelectionManager.prototype = {
 		if (this.editableElement.contains(event.target)) {
 			switch (event.keyCode) {
 				case 8: return this.handleDelete(event);
-				case 37:
-				case 38:
-				case 39:
+				case 39: {
+					return this.handleRightArrow(event);
+				}
 				case 40: return this.handleArrow(event);
 			}
 		}
@@ -59,8 +58,8 @@ EntitySelectionManager.prototype = {
 	keyupHandler: function (event) {
 		if (this.editableElement.contains(event.target)) {
 			switch (event.keyCode) {
-				case 37: return this.handleLeftArrow(event)
-				//case 39: return this.fixHorizontalSelectionLocation(event);
+				case 37: return this.handleLeftArrow(event);
+				//case 39: return this.handleRightArrow(event);
 				case 38:
 				case 40: return this.fixVerticalSelectionLocation(event);
 			}
@@ -113,7 +112,7 @@ EntitySelectionManager.prototype = {
 			switch (event.keyCode) {
 				//case 37: return this.handleLeftArrow(event);
 				case 38: return this.handleUpArrow(event);
-				case 39: return this.handleRightArrow(event);
+				//case 39: return this.handleRightArrow(event);
 				case 40: return this.handleDownArrow(event);
 			}
 		}
@@ -121,6 +120,9 @@ EntitySelectionManager.prototype = {
 	handleLeftArrow: function (event) {
 		var selection = document.getSelection(),
 			node = selection.anchorNode;
+		if (node.data && selection.anchorOffset == node.data) {
+				console.log(this.selectedEntityNode)
+		}
 		if (this.selectedEntityNode == node.nextSibling) {
 			this.selectedEntityNode = null;
 			return;
@@ -144,15 +146,19 @@ EntitySelectionManager.prototype = {
 			node = selection.anchorNode;
 		if (this.selectedEntityNode == node.nextSibling) {
 			this.selectedEntityNode = null;
-			return;
-			
+			return
 		}
+
 		if (this.isEntityElement(node.nextSibling)) {
-			this.select(node.nextSibling);
-			event.stopPropagation();
-			event.preventDefault();
-			return 
-		}
+			if (node.data && node.data.length == selection.anchorOffset) {
+					this.select(node.nextSibling);
+					event.stopPropagation();
+					event.preventDefault();
+					return;
+				}
+			}
+		
+		
 		this.selectedEntityNode = null;
 	},
 	handleDownArrow: function (event) {
