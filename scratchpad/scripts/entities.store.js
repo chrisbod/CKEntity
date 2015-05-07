@@ -1,5 +1,6 @@
 function EntityStore() {
 	this.templatableNodes = {};
+
 	this.allNodes = [];
 }
 EntityStore.prototype =  {
@@ -7,7 +8,7 @@ EntityStore.prototype =  {
 		var preexists = this.templatableNodes[key];
 		if (!preexists) {
 			
-			this.allNodes.push(this.templatableNodes[key] = {
+			this.allNodes.push(this.templatableNodes[id] = this.templatableNodes[key] = {
 				node: this.createTemplatableNodeFromEntity(key,id,preview),
 				def: key,
 				id: id
@@ -28,7 +29,44 @@ EntityStore.prototype =  {
 
 }
 
-function TranslationStore() {
+function TokenStore() {
+	this.templatableNodes = {};
+}
+TokenStore.prototype =  new EntityStore()
+TokenStore.prototype.templatableNodes = null;
+TokenStore.prototype.parseTextMarkup = function () {
+	return string
+		.replace(/</g,'&lt;')
+		.replace(/>/g,'&gt;')
+}
+TokenStore.prototype.createTemplatableNodeFromEntity = function (key,id,previewHTML) {
+	var node = document.createElement("token")
+	node.setAttribute("contenteditable", false);
+	node.setAttribute("data-args","type: '"+id+"'")
+	node.setAttribute("class",id)
+	node.innerHTML = '<span>'+key.replace(/(^<)|(>$)/g,'')+'<span>';
+	var rules = document.createElement("span")
+	rules.className = "args token";
+	rules.innerText = "<";
+	rules.setAttribute("contenteditable", false);
+	rules.setAttribute("data-args","type: '"+id+"'")
+	var end = document.createElement("span")
+	end.innerText = ">";
+	node.appendChild(end)
+	if (previewHTML) {
+		var preview = document.createElement("preview")
+		preview.innerHTML = previewHTML;
+		node.appendChild(preview)
+	}
+	
+	node.insertBefore(rules,node.firstChild)
+	return node;
+}
+
+
+
+function TranslationStore(tokenStore) {
+	this.tokenStore = tokenStore;
 	this.templatableNodes = {};
 }
 TranslationStore.prototype =  new EntityStore()
@@ -46,6 +84,10 @@ TranslationStore.prototype.createTemplatableNodeFromEntity = function (key,id) {
 		conditional.firstChild.setAttribute("data-conditional-name","conditional-"+i)
 		conditional.lastElementChild.setAttribute("data-conditional-name","conditional-"+i)
 	}
+	var tokens = node.querySelectorAll("token");
+	for (var i=0;i<tokens.length;i++) {
+		tokens[i].parentNode.replaceChild(this.tokenStore.getEntityNode(tokens[i].getAttribute("data-id")), tokens[i]);
+	}
 	var spans = node.querySelectorAll("conditional,token,span.args");
 	for (var i=0;i<spans.length;i++) {
 		spans[i].setAttribute("data-key-name",keyName);
@@ -59,8 +101,8 @@ TranslationStore.prototype.parseTextMarkup = function (string) {
 		.replace(/>/g,'\x03')
 		.replace(/\[/g,'<conditional contenteditable="false"><span class="args conditional" contenteditable="false">[</span><span class="contents" contenteditable="false">')
 		.replace(/\]/g,'</span><span class="conditional end" contenteditable="false">]</span></conditional>')
-		.replace(/\x02/g,'<token contenteditable="false"><span class="args token" contenteditable="false">&lt;</span>')
-		.replace(/\x03/g,"<span>&gt;</span><preview></preview></token>") + '<span class="translation end" contenteditable="false">&#8203;</span>';
+		.replace(/\x02/g,'<token data-id="')
+		.replace(/\x03/g,'"/>') + '<span class="translation end" contenteditable="false">&#8203;</span>';
 }
 
 function TokenStore() {
@@ -76,12 +118,14 @@ TokenStore.prototype.parseTextMarkup = function () {
 TokenStore.prototype.createTemplatableNodeFromEntity = function (key,id,previewHTML) {
 	var node = document.createElement("token")
 	node.setAttribute("contenteditable", false);
-	node.setAttribute("data-conditional-id",id)
-	node.innerHTML = '<span>'+key.replace(/(^<)|(>$)/g,'')+'<span>';
+	node.setAttribute("data-args","type: '"+id+"'")
+	node.setAttribute("class",id)
+	node.innerHTML = '<span>'+key.replace(/(\<)|(\>)/gm,'')+'<span>';
 	var rules = document.createElement("span")
 	rules.className = "args token";
 	rules.innerText = "<";
 	rules.setAttribute("contenteditable", false);
+	rules.setAttribute("data-args","type: '"+id+"'")
 	var end = document.createElement("span")
 	end.innerText = ">";
 	node.appendChild(end)

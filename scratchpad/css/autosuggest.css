@@ -53,7 +53,7 @@ token > span {
 .editing token preview {
 	display: none;
 }
-token[data-conditional-id=scenarioTable] {
+token.scenarioTable {
 	display: block;
 }
 
