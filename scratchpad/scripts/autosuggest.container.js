@@ -144,6 +144,7 @@ AutoSuggestContainer.prototype = {
 		}
 	},
 	keyupHandler: function (event) {
+		this.rangeToReplace = null;
 		switch (event.keyCode) {
 			case 40: return;
 			case 38: return;
@@ -164,14 +165,8 @@ AutoSuggestContainer.prototype = {
 					node = duplicateRange.endContainer;
 				}
 				if (node.data) {
-					index = node.data.length-trigger.length;
-					try {
-						duplicateRange.setStart(node,index);
-						node.splitText(index)
-					} catch (e) {
-						event.stopPropagation()
-						return 
-					}
+					this.trigger = trigger;
+					
 				} else {
 					return;
 				}
@@ -271,21 +266,40 @@ AutoSuggestContainer.prototype = {
 			newNode = this.store.getEntityNode(text);//document.createTextNode(text);
 		if (this.editableElement == range.commonAncestorContainer || this.editableElement.contains(range.commonAncestorContainer)) {
 			range.insertNode(newNode);
-			var dummy = document.createTextNode(" ")
-			newNode.previousSibling.parentNode.replaceChild(dummy,newNode.previousSibling);
-			if (dummy.previousSibling && dummy.previousSibling.data && dummy.previousSibling.data.length == 0) {
-				dummy.previousSibling.parentNode.removeChild(dummy.previousSibling)
-			}
-			selection.removeAllRanges()
-			selection.addRange(range);
-			selection.collapseToEnd();
-			newNode.parentNode.normalize();
-			var cursor = document.createTextNode("\u00A0");
+			var endText = new RegExp(this.trigger+"\\s*$");
+			newNode.previousSibling.data = newNode.previousSibling.data.replace(endText,'');
+			var cursor = document.createTextNode("\u200b");
 			newNode.parentNode.insertBefore(cursor,newNode.nextSibling)
 			range.selectNode(cursor);
 			selection.removeAllRanges();
 			selection.addRange(range);
 			selection.collapseToStart();
+		}
+	},
+	cleanEndNodes: function (node) {
+		while (node && node.nextSibling) {
+			if (node.nextSibling.nodeType == 3) {
+				if (node.nextSibling.data.indexOf("\u200b")!=-1) {
+					node.nextSibling.data = node.nextSibling.data.replace(/\u200b/g,'');
+					if (!node.previousSibling.data.length) {
+						node.parentNode.removeChild(node.previousSibling)
+					}
+				}
+			}
+			node = node.nextSibling;
+		}
+	},
+	cleanStartNodes: function (node) {
+		while (node && node.previousSibling) {
+			if (node.previousSibling.nodeType == 3) {
+				if (node.previousSibling.data.indexOf("\u200b")!=-1) {
+					node.previousSibling.data = node.previousSibling.data.replace(/\u200b/g,'');
+					if (!node.previousSibling.data.length) {
+						node.parentNode.removeChild(node.previousSibling)
+					}
+				}
+			}
+			node = node.previousSibling;
 		}
 	},
 	configureMetrics: function () {
