@@ -96,13 +96,13 @@ TranslationStore.prototype.createTemplatableNodeFromEntity = function (key,id) {
 	return node;
 }
 TranslationStore.prototype.parseTextMarkup = function (string) {
-	return '<span class="args translation" contenteditable="false">&#8203;</span>'+string
+	return '<span class="args translation" contenteditable="false">{</span>'+string
 		.replace(/</g,'\x02')
 		.replace(/>/g,'\x03')
 		.replace(/\[/g,'<conditional contenteditable="false"><span class="args conditional" contenteditable="false">[</span><span class="contents" contenteditable="false">')
 		.replace(/\]/g,'</span><span class="conditional end" contenteditable="false">]</span></conditional>')
 		.replace(/\x02/g,'<token data-id="')
-		.replace(/\x03/g,'"/>') + '<span class="translation end" contenteditable="false">&#8203;</span>';
+		.replace(/\x03/g,'"/>') + '<span class="translation end" contenteditable="false">}</span>';
 }
 
 function TokenStore() {
