@@ -4,6 +4,7 @@
     left: 50%;
     -webkit-transform: translate(-50%, -50%);
     transform: translate(-50%, -50%);
+
 }
 .dialog.hidden {
     left: -110000px;
@@ -14,8 +15,12 @@
     clear: left;
     margin:10px auto;
     padding: 20px 12px 10px 20px;
-    font-size: 120%;
+    font-size: 100%;
 
+
+}
+.dialog fieldset {
+    background-color: white;
 }
 .dialog form li {
     padding: 0;

@@ -53,8 +53,8 @@ token > span {
 .editing token preview {
 	display: none;
 }
-token.scenarioTable {
-	display: block;
+token {
+	white-space: nowrap;
 }
 
 

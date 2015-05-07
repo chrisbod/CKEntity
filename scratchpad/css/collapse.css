@@ -3,7 +3,7 @@ translation span.conditional:first-child {
 	display: inline-block;
 	box-sizing: border-box;
 	margin-left: 0.5ex;
-	margin-right: 0.5ex;
+	margin-right: 1.5ex;
 }
 translation span.conditional:first-child::before {
   position: absolute;
@@ -12,7 +12,7 @@ translation span.conditional:first-child::before {
   background-repeat: no-repeat;
   background-size: 9px;
   background-position: center center;
-  margin: 0 0 0 -0.5ex;
+  margin: 0 0 0 0.5ex;
   color: rgba(0,0,0,1);
   overflow: hidden;
   text-indent: 100%;
@@ -23,9 +23,16 @@ translation span.conditional:first-child::before {
 conditional[data-collapsed] span.contents {
 	display: none;
 }
+conditional[data-collapsed]:before {
+  content: ' [';
+}
+conditional[data-collapsed]:after {
+  content: ' ]';
+}
 conditional[data-collapsed] span.conditional {
 	color: white;
-	margin-right: 0.2ex;
+  margin: 0;
+  swidth: px;
 }
 conditional[data-collapsed] span.conditional:first-child::before {
 	background-image: url(../img/plus.png);

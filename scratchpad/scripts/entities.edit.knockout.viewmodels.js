@@ -1,18 +1,17 @@
 
 
-		function TokenDialogViewModel(tokenElement,dialogElement) {
+		function TokenDialogViewModel(element,dialogElement) {
 				this.values = new ko.observable();
 				this.dialogElement = dialogElement;
-				
 				this.tokenText =  ko.observable("");
 				this.text = ko.observable("");
 				this.active = ko.observable(true);
 				this.groups = ko.observableArray([]);
-				this.updateFromElement(tokenElement);
+				this.updateFromElement(element);
 			}
-			TokenDialogViewModel.prototype.getValuesFromToken = function (tokenElement) {
-				this.tokenElement = tokenElement;
-				var args = tokenElement.getAttribute("data-args")
+			TokenDialogViewModel.prototype.getValuesFromToken = function (element) {
+				this.element = element;
+				var args = element.getAttribute("data-args")
 				var values = (new Function("return {"+(args||'')+"}"))();
 				return values;
 			}
@@ -24,8 +23,8 @@
 						}
 					}
 			}
-			TokenDialogViewModel.prototype.updateFromElement = function (tokenElement) {
-				this.values(this.getValuesFromToken(tokenElement));
+			TokenDialogViewModel.prototype.updateFromElement = function (element) {
+				this.values(this.getValuesFromToken(element));
 				var tokenDefinition = this.getDefinitionByType(this.values().type);
 				this.text(tokenDefinition.text);
 				this.tokenText(tokenDefinition.id);
@@ -34,15 +33,15 @@
 			TokenDialogViewModel.prototype.cancel = function (model) {
 				this.active(false);
 			}
-			TokenDialogViewModel.prototype.updateToken = function (model) {
+			TokenDialogViewModel.prototype.update = function (model) {
 				this.active(false)
 				var values = this.values(),
 					args = []
 				for (var i in values) {
 					args.push(i+":'"+values[i]+"'")
 				}
-				this.tokenElement.setAttribute("data-args",args);
-				this.tokenElement.firstChild.setAttribute("data-args",args);
+				this.element.setAttribute("data-args",args);
+				this.element.firstChild.setAttribute("data-args",args);
 			}
 
 
@@ -50,17 +49,28 @@
 
 
 
-			function LogicDialogViewModel(element, values) {
-				this.values = this.getValuesFromElement(element)
-				var tableData = this.transpose(logicDefinition);
-				this.headings = tableData.headings;
-				this.rows = tableData.rows;
-				
+			function LogicDialogViewModel(element,dialogElement) {
+				this.values = new ko.observable();
+				this.dialogElement = dialogElement;
+				this.text = ko.observable("");
+				this.active = ko.observable(false);
+				this.headings = ko.observableArray([]);
+				this.rows =  ko.observableArray([]);
+				this.updateFromElement(element);
 			}
 			LogicDialogViewModel.prototype = {
+				updateFromElement: function (element) {
+
+					this.element = element;
+					this.text(element.innerText)
+					this.values(this.getValuesFromElement(element));
+					var tableData = this.transpose(this.definitions);
+					this.headings(tableData.headings);
+					this.rows(tableData.rows);
+				},
 				getValuesFromElement: function (element) {
-					this.element = tokenElement;
-					var args = tokenElement.getAttribute("data-args")
+					this.element = element;
+					var args = element.getAttribute("data-args")||'';
 					var values = (new Function("return {"+(args||'')+"}"))();
 					return values;
 				},
@@ -83,11 +93,22 @@
 						headings: headings,
 						rows: rows
 					}
-				},
-				updateLogic: function () {
-
 				}
 			}
+			LogicDialogViewModel.prototype.cancel = function (model) {
+				this.active(false);
+			}
+			LogicDialogViewModel.prototype.update = function (model) {
+				this.active(false)
+				var values = this.values(),
+					args = []
+				for (var i in values) {
+					args.push(i+":'"+values[i]+"'")
+				}
+				this.element.setAttribute("data-args",args);
+				this.element.firstChild.setAttribute("data-args",args);
+			}
+
 
 
 	$(function () {

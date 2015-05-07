@@ -72,10 +72,10 @@ function TranslationStore(tokenStore) {
 TranslationStore.prototype =  new EntityStore()
 TranslationStore.prototype.templatableNodes = null;
 TranslationStore.prototype.createTemplatableNodeFromEntity = function (key,id) {
-	var keyName = "key"+id;
 	var node = document.createElement("translation");
 	node.setAttribute("contenteditable", false);
-	node.setAttribute("data-key-name",keyName);
+	node.setAttribute("data-key-name",id);
+	node.setAttribute("data-args","key:'"+id+"'")
 	node.innerHTML = this.parseTextMarkup(key)+" ";
 	var conditionals = node.querySelectorAll("conditional");
 	for (var i=0;i<conditionals.length;i++) {
@@ -90,7 +90,7 @@ TranslationStore.prototype.createTemplatableNodeFromEntity = function (key,id) {
 	}
 	var spans = node.querySelectorAll("conditional,token,span.args");
 	for (var i=0;i<spans.length;i++) {
-		spans[i].setAttribute("data-key-name",keyName);
+		spans[i].setAttribute("data-key-name",id);
 	}
 
 	return node;

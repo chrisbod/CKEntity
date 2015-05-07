@@ -46,20 +46,34 @@ EntityEditManager.prototype = {
 	trigger: function (entity,event) {
 		switch (entity.tagName) {
 			case "TOKEN":  return this.triggerTokenEdit(entity);
+			case "TRANSLATION": return this.triggerTranslationEdit(entity);
+			case "CONDITIONAL": return this.triggerConditionalEdit(entity)
 		}
 	},
 	triggerTokenEdit: function (tokenElement) {	
-		if (!this.knockoutModel) {
+		if (!this.tokenModel) {
 			var dialog = document.getElementById("tokenDialog");
-			this.knockoutModel = new TokenDialogViewModel(tokenElement,dialog);
-			ko.applyBindings(this.knockoutModel,dialog)
+			this.tokenModel = new TokenDialogViewModel(tokenElement,dialog);
+			ko.applyBindings(this.tokenModel,dialog)
 		} else {
 
-			this.knockoutModel.updateFromElement(tokenElement)
-			this.knockoutModel.active(true)
+			this.tokenModel.updateFromElement(tokenElement)
+			this.tokenModel.active(true)
 		}
-		
-		
+	},
+	triggerTranslationEdit: function (tokenElement) {
+		if (!this.translationModel) {
+			var dialog = document.getElementById("logicDialog");
+			this.translationModel = new LogicDialogViewModel(tokenElement,dialog);
+			ko.applyBindings(this.translationModel,dialog)
+		} else {
+
+			this.translationModel.updateFromElement(tokenElement)
+			this.translationModel.active(true)
+		}
+	},
+	triggerConditionalEdit: function (tokenElement) {
+
 	},
 	isEntityElement: function (element) {
 		if (element) { 			

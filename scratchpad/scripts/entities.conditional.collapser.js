@@ -15,6 +15,7 @@ ConditionalCollapser.prototype = {
 			if (event.target.hasAttribute("data-collapsed")) {
 				event.target.removeAttribute("data-collapsed")
 				event.target.parentNode.removeAttribute("data-collapsed")
+				
 			} else {
 
 				event.target.parentNode.setAttribute("data-collapsed", "true")
