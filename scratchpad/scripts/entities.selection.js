@@ -59,8 +59,8 @@ EntitySelectionManager.prototype = {
 	keyupHandler: function (event) {
 		if (this.editableElement.contains(event.target)) {
 			switch (event.keyCode) {
-				case 37:
-				case 39: return this.fixHorizontalSelectionLocation(event);
+				case 37: return this.handleLeftArrow(event)
+				//case 39: return this.fixHorizontalSelectionLocation(event);
 				case 38:
 				case 40: return this.fixVerticalSelectionLocation(event);
 			}
@@ -111,7 +111,7 @@ EntitySelectionManager.prototype = {
 	handleArrow: function () {
 		if (this.editableElement.contains(event.target)) {
 			switch (event.keyCode) {
-				case 37: return this.handleLeftArrow(event);
+				//case 37: return this.handleLeftArrow(event);
 				case 38: return this.handleUpArrow(event);
 				case 39: return this.handleRightArrow(event);
 				case 40: return this.handleDownArrow(event);
@@ -121,27 +121,18 @@ EntitySelectionManager.prototype = {
 	handleLeftArrow: function (event) {
 		var selection = document.getSelection(),
 			node = selection.anchorNode;
-		if (this.selectedEntityNode) {
-			this.setCursorBefore(this.selectedEntityNode);
+		if (this.selectedEntityNode == node.nextSibling) {
+			this.selectedEntityNode = null;
+			return;
+
+		}
+		if (this.isEntityElement(node.nextSibling)) {
+			this.select(node.nextSibling);
 			event.stopPropagation();
 			event.preventDefault();
-			return;
+			return
 		}
-		if (this.isEntityElement(node.previousSibling)) {
-			if (selection.anchorOffset == 0) {//end of text node
-					if (!this.selectedEntityNode) {//nothing selected so select
-						this.select(node.previousSibling);
-						this.ignoreKeyUp = true;
-						event.stopPropagation();
-						event.preventDefault();
-						return;
-					} else {//allow the 'normal' behaviour
-						this.setCursorBefore(this.selectedEntityNode);
-						event.preventDefault();
-						event.stopPropagation();
-					}
-			} 
-		}
+		this.selectedEntityNode = null;
 		
 	},
 	handleUpArrow: function (event) {
@@ -151,27 +142,18 @@ EntitySelectionManager.prototype = {
 	handleRightArrow: function (event) {
 		var selection = document.getSelection(),
 			node = selection.anchorNode;
-		if (this.selectedEntityNode) {
-			this.setCursorAfter(this.selectedEntityNode);
-			event.stopPropagation();
-			event.preventDefault();
+		if (this.selectedEntityNode == node.nextSibling) {
+			this.selectedEntityNode = null;
 			return;
+			
 		}
 		if (this.isEntityElement(node.nextSibling)) {
-			if (selection.anchorOffset >= node.data.replace(/\s+$/," ").length) {//end of text node
-					if (!this.selectedEntityNode) {//nothing selected so select
-						this.select(node.nextSibling);
-						this.ignoreKeyUp = true;
-						event.preventDefault();
-						event.stopPropagation();
-						return;
-					} else {//allow the 'normal' behaviour
-						this.setCursorAfter(this.selectedEntityNode);
-						event.stopPropagation();
-						event.preventDefault();
-					}
-			} 
+			this.select(node.nextSibling);
+			event.stopPropagation();
+			event.preventDefault();
+			return 
 		}
+		this.selectedEntityNode = null;
 	},
 	handleDownArrow: function (event) {
 		//this.lastKnownRange = document.getSelection().getRangeAt(0)
@@ -239,7 +221,6 @@ EntitySelectionManager.prototype = {
 		this.selectedEntityNode = null;
 	},
 	getCleanSelection: function () {
-		console.log("CLEAn")
 		var selection = document.getSelection();
 		selection.collapse(true)
 		selection.removeAllRanges();
@@ -249,8 +230,7 @@ EntitySelectionManager.prototype = {
 		  for (element=element.firstChild;element;element=element.nextSibling){
 		    if (element.nodeType==3) {
 		    	if (element.data == "\u200b") {
-		    		console.log("impure")
-		    		element.data = ""
+		    		element.parentNode.removeChild(element)
 		    	}
 		    } else {
 		    	this.removeImpureTextNodes(element);

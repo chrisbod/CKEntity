@@ -148,6 +148,8 @@ AutoSuggestContainer.prototype = {
 		switch (event.keyCode) {
 			case 40: return;
 			case 38: return;
+			case 39: return;
+			case 37: return;
 		}
 		if (!this.enterClicked) {
 			var selection = document.getSelection(),
