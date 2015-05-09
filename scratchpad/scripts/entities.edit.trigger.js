@@ -3,10 +3,10 @@ function EntityEditManager() {
 }
 
 EntityEditManager.prototype = {
-	init: function (editableElement) {
+	init: function (editableElement,editor) {
 		this.editableElement = editableElement;
 		//this.editableElement.addEventListener("click",this,true)
-		this.editableElement.addEventListener("contextmenu",this,true)
+		//this.editableElement.addEventListener("contextmenu",this,true)
 	},
 	handleEvent: function (event) {
 		return this[event.type+"Handler"](event)

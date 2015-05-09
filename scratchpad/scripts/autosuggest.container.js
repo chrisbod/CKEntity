@@ -9,23 +9,15 @@ function AutoSuggestContainer(id, tokenizer) {
 	this.tokenizer = tokenizer;
 }
 
-AutoSuggestContainer.prototype = {
+(function (extend) {
+	var proto = AutoSuggestContainer.prototype = new PositionableContainer();
+	for (var i in extend) {
+		proto[i] = extend[i]
+	}
+})(
+{
 	visibleCount: 0,
-	moveTo: function (x,y) {
-		this.element.style.left = x+"px";
-		this.element.style.top = y+"px";
-		this.configureMetrics();
-	},
-	moveToElement: function (element) {
-		if (this.inputElement) {
-			this.inputElement.removeEventListener("keydown",this);
-		}
-		var rect =element.getBoundingClientRect();
-		this.moveTo(rect.left,rect.top+rect.height);
-		this.configureMetrics();
-		this.inputElement = element;
-		
-	},
+
 	setInputElement: function (inputElement) {
 		if (this.inputElement) {
 			this.inputElement.removeEventListener("input",this)
@@ -42,20 +34,7 @@ AutoSuggestContainer.prototype = {
 		this.editableElement.addEventListener("keydown", this);
 		this.editableElement.addEventListener("keyup", this);
 	},
-	moveToCursorBottomLeft: function (cursorContainer) {
-		var selection = cursorContainer.document.getSelection().getRangeAt(0)
-		var range = selection.cloneRange()
-		range.collapse();
-		var rect = range.getClientRects()
-		rect = rect[rect.length-1]
-		this.moveTo(rect.left,rect.bottom);
-		this.configureMetrics();
-	},
-	moveToRange: function (range) {
-		var rect = range.getClientRects();
-		rect = rect[rect.length-1]
-		this.moveTo(rect.left,rect.bottom);
-	},
+	
 	hide: function () {
 		this.firstOption = null;
 		this.element.style.visibility = "";
@@ -304,17 +283,7 @@ AutoSuggestContainer.prototype = {
 			node = node.previousSibling;
 		}
 	},
-	configureMetrics: function () {
-		this.element.style.bottom = "";
-		var viewRect = document.querySelector("html").getBoundingClientRect();
-		var currentElementRect = this.element.getBoundingClientRect();
-		var viewBottom = Math.max(viewRect.bottom,window.innerHeight);
-		var elementBottom = currentElementRect.bottom;
-		if (elementBottom>viewBottom) {
-			this.element.style.bottom = "0px"
-		}
-
-	},
+	
 	showByIds: function (idsArray) {
 		this.element.innerHTML = "";
 		for (var i=0;i!=idsArray.length;i++) {
@@ -355,5 +324,5 @@ AutoSuggestContainer.prototype = {
 		}
 
 	}
-}
+});
 

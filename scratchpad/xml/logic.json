@@ -1,216 +1,166 @@
-	[
-		{
-			"text": "Product type",
-			"id": "productType",
-			"items": [
-					
-		{
-			"value": "bonusCertificate",
-			"text": "Bonus certificate"
-
-		},
-		{
-			"value": "discountCertificate",
-			"text": "Discount certificate"
-
-		},
-		{
-			"value": "expressCertificate",
-			"text": "Express certificate"
-
-		},
-		{
-			"value": "sprintCertificate",
-			"text": "Sprint certificate"
-
-		},
-		{
-			"value": "reverseConvertible",
-			"text": "Reverse convertible"
-
-		},
-		{
-			"value": "turboCertificate",
-			"text": "Turbo certificate"
-
-		},
-		{
-			"value": "warrant",
-			"text": "Warrant"
-
-		},
-		{
-			"value": "callOption",
-			"text": "Call option"
-
-		},
-		{
-			"value": "putOption",
-			"text": "Put option"
-
-		}
-			]
-
-		}
-		,
-		{
-			"text": "Number of underlyings",
-			"id": "numberOfUnderlyings",
-			"items": [
-					
-		{
-			"value": "oneUnderlying",
-			"text": "One"
-
-		},
-		{
-			"value": "oneOrMoreUnderlyings",
-			"text": "At least one"
-
-		},
-		{
-			"value": "moreThanOneUnderlying",
-			"text": "More than one"
-
-		}
-			]
-
-		}
-		,
-		{
-			"text": "Underlying type",
-			"id": "underlyingType",
-			"items": [
-					
-		{
-			"value": "atLeastOneShare",
-			"text": "At least one share"
-
-		},
-		{
-			"value": "atLeastOneADR",
-			"text": "At least one ADR"
-
-		},
-		{
-			"value": "atLeastOneCertificate",
-			"text": "At least one certificate"
-
-		},
-		{
-			"value": "atLeastOneWarrant",
-			"text": "At least one warrant"
-
-		},
-		{
-			"value": "atLeastOneIndex",
-			"text": "At least one index"
-
-		},
-		{
-			"value": "atLeastOneETF",
-			"text": "At least one ETF"
-
-		},
-		{
-			"value": "atLeastOneCommodity",
-			"text": "At least one commodity"
-
-		},
-		{
-			"value": "onlyShares",
-			"text": "Only shares"
-
-		},
-		{
-			"value": "onlyADRs",
-			"text": "Only ADRs"
-
-		},
-		{
-			"value": "onlyCertificates",
-			"text": "Only certificates"
-
-		},
-		{
-			"value": "onlyWarrants",
-			"text": "Only warrants"
-
-		},
-		{
-			"value": "onlyIndices",
-			"text": "Only indices"
-
-		},
-		{
-			"value": "onlyETFs",
-			"text": "Only ETFs"
-
-		},
-		{
-			"value": "onlyCommodities",
-			"text": "Only commodities"
-
-		}
-			]
-
-		}
-		,
-		{
-			"text": "Quotation type",
-			"id": "quotationType",
-			"items": [
-					
-		{
-			"value": "parValue",
-			"text": "Par value"
-
-		},
-		{
-			"value": "nonParValue",
-			"text": "Non-par value"
-
-		}
-			]
-
-		}
-		,
-		{
-			"text": "FX risk",
-			"id": "fxRisk",
-			"items": [
-					
-		{
-			"value": "applicable",
-			"text": "Applicable"
-
-		},
-		{
-			"value": "notApplicable",
-			"text": "Not applicable"
-
-		}
-			]
-
-		}
-		,
-		{
-			"text": "Quanto",
-			"id": "quanto",
-			"items": [
-					
-		{
-			"value": "applicable",
-			"text": "Applicable"
-
-		},
-		{
-			"value": "notApplicable",
-			"text": "Not applicable"
-
-		}
-			]
-
-		}
-		]
-	
+[
+  {
+    "text": "Product type",
+    "id": "productType",
+    "items": [
+      {
+        "value": "bonusCertificate",
+        "text": "Bonus certificate"
+      },
+      {
+        "value": "discountCertificate",
+        "text": "Discount certificate"
+      },
+      {
+        "value": "expressCertificate",
+        "text": "Express certificate"
+      },
+      {
+        "value": "sprintCertificate",
+        "text": "Sprint certificate"
+      },
+      {
+        "value": "reverseConvertible",
+        "text": "Reverse convertible"
+      },
+      {
+        "value": "turboCertificate",
+        "text": "Turbo certificate"
+      },
+      {
+        "value": "warrant",
+        "text": "Warrant"
+      },
+      {
+        "value": "callOption",
+        "text": "Call option"
+      },
+      {
+        "value": "putOption",
+        "text": "Put option"
+      }
+    ]
+  },
+  {
+    "text": "Number of underlyings",
+    "id": "numberOfUnderlyings",
+    "items": [
+      {
+        "value": "oneUnderlying",
+        "text": "One"
+      },
+      {
+        "value": "oneOrMoreUnderlyings",
+        "text": "At least one"
+      },
+      {
+        "value": "moreThanOneUnderlying",
+        "text": "More than one"
+      }
+    ]
+  },
+  {
+    "text": "Underlying type",
+    "id": "underlyingType",
+    "items": [
+      {
+        "value": "atLeastOneShare",
+        "text": "At least one share"
+      },
+      {
+        "value": "atLeastOneADR",
+        "text": "At least one ADR"
+      },
+      {
+        "value": "atLeastOneCertificate",
+        "text": "At least one certificate"
+      },
+      {
+        "value": "atLeastOneWarrant",
+        "text": "At least one warrant"
+      },
+      {
+        "value": "atLeastOneIndex",
+        "text": "At least one index"
+      },
+      {
+        "value": "atLeastOneETF",
+        "text": "At least one ETF"
+      },
+      {
+        "value": "atLeastOneCommodity",
+        "text": "At least one commodity"
+      },
+      {
+        "value": "onlyShares",
+        "text": "Only shares"
+      },
+      {
+        "value": "onlyADRs",
+        "text": "Only ADRs"
+      },
+      {
+        "value": "onlyCertificates",
+        "text": "Only certificates"
+      },
+      {
+        "value": "onlyWarrants",
+        "text": "Only warrants"
+      },
+      {
+        "value": "onlyIndices",
+        "text": "Only indices"
+      },
+      {
+        "value": "onlyETFs",
+        "text": "Only ETFs"
+      },
+      {
+        "value": "onlyCommodities",
+        "text": "Only commodities"
+      }
+    ]
+  },
+  {
+    "text": "Quotation type",
+    "id": "quotationType",
+    "items": [
+      {
+        "value": "parValue",
+        "text": "Par value"
+      },
+      {
+        "value": "nonParValue",
+        "text": "Non-par value"
+      }
+    ]
+  },
+  {
+    "text": "FX risk",
+    "id": "fxRisk",
+    "items": [
+      {
+        "value": "applicable",
+        "text": "Applicable"
+      },
+      {
+        "value": "notApplicable",
+        "text": "Not applicable"
+      }
+    ]
+  },
+  {
+    "text": "Quanto",
+    "id": "quanto",
+    "items": [
+      {
+        "value": "applicable",
+        "text": "Applicable"
+      },
+      {
+        "value": "notApplicable",
+        "text": "Not applicable"
+      }
+    ]
+  }
+]

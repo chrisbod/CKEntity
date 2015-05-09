@@ -1,0 +1,6 @@
+[
+  {
+    "id": "key0",
+    "def": "This bonus certificate is protected against foreign exchange risk at maturity[c1:, i.e. the amounts calculated based on [c2:the share, which is quoted in <k1:underlyingCurrency>][c3:the index, which is quoted in <k2:underlyingCurrency>][c4:the commodity, which is quoted in <k3:underlyingCurrency>][c4:the underlying, which is quoted in <k4:underlyingCurrency>], will be converted into <k5:productCurrency> on a 1 to 1 basis (Quanto)]."
+  }
+]

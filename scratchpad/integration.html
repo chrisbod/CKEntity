@@ -12,14 +12,19 @@ For licensing, see LICENSE.md or http://ckeditor.com/license
 
 
 	</script>
+	<meta name="ckeditor-sample-required-plugins" content="sourcearea">
+	<script src="../vendor/ckeditor/ckeditor.js"></script>
+	<script src="../vendor/ckeditor/config.js"></script>
+	<script src="../vendor/ckeditor/plugins/wallstreetdocs/plugin.js"></script>
+	<script src="scripts/entities.js"></script>
 	<script src="scripts/entities.store.js"></script>
 	<script src="scripts/entities.selection.js"></script>
 	<script src="scripts/entities.paste.js"></script>
 	<script src="scripts/entities.conditional.collapser.js"></script>
 	<script src="scripts/entities.markupmanager.js"></script>
 	<script src="scripts/entities.edit.knockout.viewmodels.js"></script>
-	<script src="scripts/entities.edit.trigger.js"></script>
-
+	<!--script src="scripts/entities.edit.trigger.js"></script-->
+	<script src="scripts/positionablecontainer.js"></script>
 	<script src="scripts/autosuggest.container.js"></script>
 	<script src="scripts/sentencetokenizer.js"></script>
 	<script src="scripts/tokentokenizer.js"></script>
@@ -46,6 +51,18 @@ For licensing, see LICENSE.md or http://ckeditor.com/license
 	
 	
 		<script>
+
+
+
+		CKEDITOR.editorConfig = function( config ) {
+	// Define changes to default configuration here. For example:
+	// config.language = 'fr';
+	// config.uiColor = '#AADC6E';
+
+		config. extraPlugins = 'entities'
+};
+
+
 
 		function ElementLocalSaver() {
 		}
@@ -108,16 +125,10 @@ For licensing, see LICENSE.md or http://ckeditor.com/license
 				var markupmanager = new EntityMarkupManager()
 				markupmanager.init(document.getElementById("edit"))
 
-				var editManager = new EntityEditManager();
-				editManager.init(document.getElementById("edit"));
+				//var editManager = new EntityEditManager();
+				//editManager.init(document.getElementById("edit"));
 				
 
-				/*input.oninput = function () {
-					autoSuggestContainer.handleValue(this.value)
-				}
-				input.onchange = function () {
-					//autoSuggestContainer.hide()
-				}*/
 			}})
 
 			$.ajax("xml/tokens.json", {
@@ -137,13 +148,13 @@ For licensing, see LICENSE.md or http://ckeditor.com/license
 
 				
 				
-			//}})
+			//})
 
 		//})
 		</script>
 
 		<button onclick="autoSave.load()">Load</button><button onclick="autoSave.save()">Save</button>
-		<div id="edit" contenteditable="true" class="editing">
+		<div id="edit" contenteditable="true" class="editing" style="height:50%; margin-top: 10%">
 			Type in here
 		</div>
 
@@ -234,6 +245,6 @@ For licensing, see LICENSE.md or http://ckeditor.com/license
 			        <input type="reset" value="Cancel" data-bind="click: cancel"/>
 			    </fieldset>
 			</form>
-		</div
+		</div>
 </body>
 </html>
