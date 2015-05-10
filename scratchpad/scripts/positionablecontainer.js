@@ -2,6 +2,7 @@ function PositionableContainer() {
 	
 }
 PositionableContainer.prototype = {
+	visible: false,
 	moveTo: function (x,y) {
 		this.element.style.left = x+"px";
 		this.element.style.top = y+"px";
@@ -27,6 +28,12 @@ PositionableContainer.prototype = {
 		rect = rect[rect.length-1]
 		this.moveTo(rect.left,rect.bottom);
 	},
+	build: function () {
+		this.element = document.createElement("div");
+		this.element.className = this.className;
+		this.hide();
+		document.body.appendChild(this.element)
+	},
 	hide: function () {
 		this.element.style.visibility = "";
 		this.visible = false;
@@ -49,6 +56,11 @@ PositionableContainer.prototype = {
 			this.element.style.bottom = "0px"
 		}
 
+	},
+	setContent: function (elementOrFragment) {
+		this.element.innerHTML = "";
+		this.element.appendChild(elementOrFragment);
+		this.configureMetrics();
 	}
 
 }

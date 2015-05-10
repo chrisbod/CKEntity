@@ -1,6 +1,8 @@
-function Entities() {
+function EntitiesHelper() {
 }
-Entities.prototype = {
+EntitiesHelper.prototype = {
+	tokenDefinitions: null,
+	logicDefinitions: null,
 	isEntityElement: function (element) {
 		if (element) { 			
 			return /TRANSLATION|TOKEN|CONDITIONAL/i.test(element.tagName);
@@ -51,7 +53,6 @@ Entities.prototype = {
 			}
 		}
 		return {rules: true};
-
 	},
 	triggerTokenEdit: function (tokenElement) {	
 		if (!this.tokenModel) {
@@ -77,6 +78,56 @@ Entities.prototype = {
 	},
 	triggerConditionalEdit: function (tokenElement) {
 
+	},
+	setDataArguments: function (element,values) {
+		var args = [];
+		for (var i=0;i<values;i++) {
+			args.push(values[i]+":'"+this[i]+"'");
+		}
+		element.setAttribute("data-args",args);
+	},
+	setDataArgument: function (element,key,value) {
+		var values = this.getElementDataArguments(element);
+		values[key] = value;
+		this.updateElementDataArguments(element,values);
+	},
+	removeDataArgument: function (element,key) {
+		var values = this.getElementDataArguments(element);
+		delete values[key];
+		this.updateElementDataArguments(values);
+	},
+	getDataArguments: function (tokenElement) {
+		var args = tokenElement.getAttribute("data-args");
+		var values = (new Function("return {"+(args||'')+"}"))();
+		for (var i in values) {
+			this[i] = values[i];
+		}
+		return values;
+	},
+	getTokenDefinitionByType: function (type) {
+		var definitions = this.tokenDefinitions;
+		for (var i=0;i<definitions.length;i++) {
+			if (definitions[i].id == type) {
+				return definitions[i]
+			}
+		}
 	}
-
 }
+
+
+$(function () {
+	$.ajax("xml/tokens.json", {
+		mimeType: "application-x/json",
+		success: function (tokenDefinitions) {
+			EntitiesHelper.prototype.tokenDefinitions = tokenDefinitions;
+		}
+	})
+	$.ajax("xml/logic.json", {
+		mimeType: "application-x/json",
+		success: function (logicDefinitions) {
+			EntitiesHelper.prototype.definitions = logicDefinitions;
+		}
+	})
+
+
+});

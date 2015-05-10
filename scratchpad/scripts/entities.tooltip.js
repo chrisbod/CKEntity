@@ -1,9 +1,8 @@
-function EntityToolTip(id, tokenizer) {
-	this.element = document.createElement("div")
-	this.element.className = "tooltip-container";
-	this.element.id = id;
-	this.element.addEventListener("click", this);
-	this.element.addEventListener("mouseover", this);
+
+
+function EntityToolTip() {
+	
+	
 }
 
 (function (extend) {
@@ -12,7 +11,28 @@ function EntityToolTip(id, tokenizer) {
 		proto[i] = extend[i];
 	}
 })({
-
+	className: "entity-tooltip",
+	attachEvents: function () {
+		this.element.addEventListener("click", this);
+		this.element.addEventListener("mouseenter", this);
+		this.element.addEventListener("mouseleave", this);
+	},
+	clickHandler: function () {
+		console.log("click")
+	},
+	mouseenterHandler: function () {
+		this.intent && this.intent.cancel();
+	},
+	mouseleaveHandler: function () {
+		this.intent && this.intent.cancel();
+		this.intent = new Intent()
+		this.intent.request(this.hide.bind(this))
+	},
+	update: function (token) {
+		var content = document.createElement("p")
+		content.innerText = "Click to Edit"
+		this.setContent(content);
+	}
 
 
 })

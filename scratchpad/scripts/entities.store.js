@@ -127,6 +127,7 @@ TokenStore.prototype.createTemplatableNodeFromEntity = function (key,id,previewH
 	rules.setAttribute("contenteditable", false);
 	rules.setAttribute("data-args","type: '"+id+"'")
 	var end = document.createElement("span")
+	end.className = "token end"
 	end.innerText = ">";
 	node.appendChild(end)
 	if (previewHTML) {

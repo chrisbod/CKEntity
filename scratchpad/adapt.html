@@ -14,8 +14,8 @@ For licensing, see LICENSE.md or http://ckeditor.com/license
 	</script>
 	<meta name="ckeditor-sample-required-plugins" content="sourcearea">
 	<script src="../vendor/ckeditor/ckeditor.js"></script>
+	<script src="../vendor/ckeditor/config.js"></script>
 	<script src="../vendor/ckeditor/plugins/wallstreetdocs/plugin.js"></script>
-
 	<script src="scripts/entities.js"></script>
 	<script src="scripts/entities.store.js"></script>
 	<script src="scripts/entities.selection.js"></script>
@@ -53,105 +53,49 @@ For licensing, see LICENSE.md or http://ckeditor.com/license
 	
 		<script>
 
-
-
-		CKEDITOR.editorConfig = function( config ) {
-	// Define changes to default configuration here. For example:
-	// config.language = 'fr';
-	// config.uiColor = '#AADC6E';
-		alert('here')
-		config.extraPlugins = 'wallstreetdocs';
-		config.removePlugins = 'contextmenu, clipboard';
-};
-
-
-
-		function ElementLocalSaver() {
-		}
-		ElementLocalSaver.prototype = {
-			init: function (id,element) {
-				this.id = id;
-				this.element =element;
-			},
-			save: function () {
-				localStorage.setItem(this.id,this.element.innerHTML)
-			},
-			load: function () {
-				this.element.innerHTML = localStorage.getItem(this.id)
-			}
-		}
-
-		autoSave = new ElementLocalSaver()
 		
-		$(function () {
-			var editPanel = document.getElementById("edit")
-			editPanel.addEventListener("focusin", function () {
-				//this.className = 'editing'
-			});
-			editPanel.addEventListener("focusout", function () {
-				//this.className = ''
-			});
-			autoSave.init("edit",editPanel)
+		function EnitityTextLookup(tokens) {
+		}	
+		EnitityTextLookup.prototype = {
+			processTokens: function (tokens) {
+				this.tokens = {}
 
-
-
-
-			var translationContainer = new AutoSuggestContainer("translation-menu",new SentenceTokenizer());
-			var tokenContainer = new AutoSuggestContainer("token-menu",new TokenTokenizer())
-			tokenContainer.getLastSentenceFromRange = function (range) {
-				var token =  range.toString().match(/(?:\s*)(<)[^>]*$/);
-				if (token) {
-					return token[1]
+				tokens.forEach(this.processToken,this)
+			},
+			processToken: function (token) {
+				this.tokens[token.id] = token.text;
+				token.groups.forEach(this.processTokenGroup,this)
+			},
+			processTokenGroup: function (tokenDefinition,group) {
+				group.controls.forEach(this.processTokenControl.bind(this,label),this)
+			},
+			processTokenControl: function (groupLabel,control) {
+				controlLookup = this.controlIds[control.id] = {}
+				if (control.options) {
+					control.options.forEach(this.processTokenOption.bind(this,groupLabel,control,controlLookup),this)
 				}
-				return null;
+			},
+			processTokenOption: function (groupLabel,control,controlLookup,option) {
+				controlLookup[option.value] = option.text;
 			}
-			var tokenStore = new TokenStore();
-			var translationStore = new TranslationStore(tokenStore);
-			
-			var conditionalCollapser = new ConditionalCollapser()
-			var tooltip = new EntityToolTip();
-			tooltip.build()
-			tooltip.attachEvents();
-			tooltip.update();
-			tooltip.show()
-			window.tooltip = tooltip
-			
 
-			$.ajax("xml/keys.json", {mimeType:"application-x/json", success: function (keys) {
-				for (var i=0;i<keys.length;i++) {
-					translationStore.addEntity(keys[i].def,"key"+i)
-				}
-				translationContainer.build(translationStore);
-				
-				translationContainer.setEditableElement(document.getElementById("edit"));
 
-				var entitiesSelection = new EntitySelectionManager()
-				entitiesSelection.init(document.getElementById("edit"))
-				var pasteManager = new EntityPasteManager()
-				pasteManager.init(document.getElementById("edit"))
-				conditionalCollapser.init(document.getElementById("edit"))
-				var markupmanager = new EntityMarkupManager()
-				markupmanager.init(document.getElementById("edit"))
+		}
+		$(function () {
 
-				//var editManager = new EntityEditManager();
-				//editManager.init(document.getElementById("edit"));
-				
 
-			}})
+	
+
 
 			$.ajax("xml/tokens.json", {
 
-	mimeType:"application-x/json",
-	success: function (tokens) {
-			for (var i=0;i<tokens.length;i++) {
+						mimeType:"application-x/json",
+						success: function (tokens) {
+					new TokenTextValues(tokens)
+						}
+					}
 
-				tokenStore.addEntity('<'+tokens[i].text+'>',tokens[i].id,tokens[i].preview)
-			}
-
-				tokenContainer.build(tokenStore)
-				tokenContainer.setEditableElement(document.getElementById("edit"))
-	}
-})
+			)
 			})
 
 				

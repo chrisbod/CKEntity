@@ -72,3 +72,8 @@ table.scenario-table th {
 	background-color: black;
 	color: white;
 }
+
+
+div.entity-tooltip {
+	visibility: hidden;
+}

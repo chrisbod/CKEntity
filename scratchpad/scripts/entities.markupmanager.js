@@ -5,6 +5,7 @@ EntityMarkupManager.prototype = {
 	init: function (editableElement) {
 		this.editableElement = editableElement;
 		this.editableElement.addEventListener("input",this);
+
 		//this.editableElement.onpaste = this.handleEvent.bind(this)
 	},
 	handleEvent: function (event) {
@@ -35,7 +36,7 @@ EntityMarkupManager.prototype = {
 		}
 	},
 	fixRedundantMarkup: function (element) {
-		return
+		
 		var extraneousLineBreaks = this.editableElement.querySelectorAll("div > translation > br:first-child:last-child, div > token > br:first-child:last-child, div > conditional > br:first-child:last-child")
 		for (var i=0;i<extraneousLineBreaks.length;i++) {
 			extraneousLineBreaks[i].parentNode.parentNode.parentNode.removeChild(extraneousLineBreaks[i].parentNode.parentNode)
@@ -57,7 +58,7 @@ EntityMarkupManager.prototype = {
 		
 	},
 	fixOrphanedTranslations: function () {
-		var orphans = this.editableElement.querySelectorAll("div > span.args.translation");
+		var orphans = this.editableElement.querySelectorAll("*:not(translation) > span.args.translation");
 		for (var i=0;i<orphans.length;i++) {
 
 			var currentNode = orphans[i]
@@ -75,7 +76,7 @@ EntityMarkupManager.prototype = {
 		}
 	},
 	fixOrphanedConditionals: function () {
-		var orphans = this.editableElement.querySelectorAll("div > span.args.conditional");
+		var orphans = this.editableElement.querySelectorAll("*:not(conditional) > span.args.conditional");
 		for (var i=0;i<orphans.length;i++) {
 
 			var currentNode = orphans[i]
@@ -88,27 +89,32 @@ EntityMarkupManager.prototype = {
 			while (currentNode && currentNode.className != "conditional end") {
 				currentNode.removeAttribute("style");
 				currentNode.removeAttribute("data-key-name");//purge any translation keys
-				node.appendChild(currentNode)
+				node.appendChild(currentNode);
+				if (currentNode.className == "conditional end") {
+					break;
+				}
 				currentNode = node.nextSibling
 			}
 			node.appendChild(currentNode)
 		}
 	},
 	fixOrphanedTokens: function () {
-		var orphans = this.editableElement.querySelectorAll("div > span.args.token");
+		var orphans = this.editableElement.querySelectorAll("*:not(token) > span.args.token");
 		for (var i=0;i<orphans.length;i++) {
-
-			var currentNode = orphans[i],
-				nextNode = currentNode.nextSibling,
-				nodeText = nextNode.firstChild;
+			var currentNode = orphans[i]
 			var key = currentNode.getAttribute("data-token-name");
 			var node = document.createElement("token");
 			node.setAttribute("data-token-name",key);
-			node.appendChild(currentNode);
-			node.appendChild(nodeText)
-			nextNode.parentNode.insertBefore(node,nextNode)
-			nextNode.removeAttribute("style")
-			
+			currentNode.parentNode.replaceChild(node,currentNode)
+			node.appendChild(currentNode)
+			currentNode = node.nextSibling;
+			while (currentNode && currentNode.className != "token end") {
+				currentNode.removeAttribute("style");
+				currentNode.removeAttribute("data-key-name");//purge any translation keys
+				node.appendChild(currentNode);
+				currentNode = node.nextSibling
+			}
+			node.appendChild(currentNode)
 		}
 	}
 
