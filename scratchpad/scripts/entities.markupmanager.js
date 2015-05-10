@@ -12,10 +12,16 @@ EntityMarkupManager.prototype = {
 		return this[event.type+"Handler"]();
 	},
 	inputHandler: function (event) {
+		//TODO: reinsert flashing cursor if necessary
+
+
 		this.fixOrphanedElements();
 		this.preventEntityEditing();
 		this.fixRedundantMarkup();
-
+		if (CKEDITOR && CKEDITOR.currentInstance) {
+			CKEDITOR.currentInstance.fire("saveSnapshot");
+			//CKEDITOR.currentInstance.focusManager.focus()
+		}
 	},
 	pasteHandler: function (event) {
 		this.inputHandler(event)
@@ -47,11 +53,9 @@ EntityMarkupManager.prototype = {
 			if (div != this.editableElement) {
 				div.parentNode.replaceChild(translationsInDivs[i],div)
 			}
-			
 		}
 	},
 	fixOrphanedElements: function () {
-		//return
 		this.fixOrphanedTranslations()
 		this.fixOrphanedConditionals()
 		this.fixOrphanedTokens();
@@ -73,7 +77,9 @@ EntityMarkupManager.prototype = {
 				currentNode = node.nextSibling
 			}
 			node.appendChild(currentNode)
+			node.parentNode.insertBefore(document.createTextNode(" "),node.nextSibling)
 		}
+		
 	},
 	fixOrphanedConditionals: function () {
 		var orphans = this.editableElement.querySelectorAll("*:not(conditional) > span.args.conditional");
@@ -95,7 +101,8 @@ EntityMarkupManager.prototype = {
 				}
 				currentNode = node.nextSibling
 			}
-			node.appendChild(currentNode)
+			node.appendChild(currentNode);
+			node.parentNode.insertBefore(document.createTextNode(" "),node.nextSibling)
 		}
 	},
 	fixOrphanedTokens: function () {
@@ -114,7 +121,8 @@ EntityMarkupManager.prototype = {
 				node.appendChild(currentNode);
 				currentNode = node.nextSibling
 			}
-			node.appendChild(currentNode)
+			node.appendChild(currentNode);
+			node.parentNode.insertBefore(document.createTextNode(" "),node.nextSibling)
 		}
 	}
 

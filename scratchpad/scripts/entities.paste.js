@@ -35,24 +35,20 @@ EntityPasteManager.prototype = {
 			newRange = document.createRange(),
 			newText;
 
-	
+		newRange.setEnd(range.endContainer,range.endOffset)
 		newRange.setStart(pasteRange.startContainer,pasteRange.startOffset)
-		newRange.setEnd(range.endContainer,range.endOffset);
+		
 		if (newRange.startContainer.nodeType == 3) {
-			//newRange.startContainer.splitText(newRange.startContainer,range.startOffset)
-			newRange.setStartBefore(newRange.startContainer.splitText(range.startOffset))
-		}
+			var newNode = newRange.startContainer.splitText(pasteRange.startOffset)
+			newRange.setStartBefore(newNode)
+		} 
 		if (newRange.endContainer.nodeType == 3) {
-			newRange.setEndAfter(newRange.endContainer.splitText(range.endOffset))
-		}
+			newRange.endContainer.splitText(range.endOffset)
+			newRange.setEndAfter(newRange.endContainer)
+		} 
 		if (this.pasteComplete) {
 			this.pasteComplete(range)
 		}
-		selection.removeAllRanges()
-		selection.addRange(newRange)
-		console.log(newRange.startContainer,newRange.endContainer)
-		
-
 	},
 	pasteComplete: function (range) {
 		this.pasteCompleteHandlers.forEach(function  (handler) {

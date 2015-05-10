@@ -3,9 +3,9 @@ function AutoSuggestContainer(id, tokenizer) {
 	this.element = document.createElement("div")
 	this.element.className = "autosuggest-container";
 	this.element.id = id;
-	this.element.addEventListener("click", this);
+	this.element.addEventListener("click", this, true);
 	this.element.addEventListener("mouseover", this);
-	this.element.addEventListener("keydown",this);
+	this.element.addEventListener("keydown",this, true);
 	this.tokenizer = tokenizer;
 }
 
@@ -31,8 +31,8 @@ function AutoSuggestContainer(id, tokenizer) {
 			this.editableElement.removeEventListener("onkeydown",this)
 		}
 		this.editableElement = editableElement;
-		this.editableElement.addEventListener("keydown", this);
-		this.editableElement.addEventListener("keyup", this);
+		this.editableElement.addEventListener("keydown", this, true);
+		this.editableElement.addEventListener("keyup", this, true);
 	},
 	
 	hide: function () {
@@ -52,6 +52,7 @@ function AutoSuggestContainer(id, tokenizer) {
 				this.focusAnchor(this.element.firstChild)
 			}
 			this.element.style.visibility = "visible";
+			window.addEventListener("keydown",this,true);
 			this.visible = true;
 			if (this.inputElement) {
 				this.inputElement.addEventListener("keydown",this)
@@ -59,6 +60,7 @@ function AutoSuggestContainer(id, tokenizer) {
 			}
 			
 		} else {
+			window.removeEventListener("keydown",this,true)
 			this.visible = false;
 			if (this.inputElement) {
 				this.inputElement.removeEventListener("keydown",this)
@@ -91,7 +93,7 @@ function AutoSuggestContainer(id, tokenizer) {
 		var p = (ev.target||event.srcElement);
 		if (p!=this) {
 			this.clicked(p.id,p.innerText,p);
-			this.hide()
+			this.hide();
 		}
 	},
 	focusHandler: function (event) {
@@ -170,8 +172,13 @@ function AutoSuggestContainer(id, tokenizer) {
 
 
 			} else {
-				this.hide()
+				this.hide();
+				event.stopPropagation();
+				event.preventDefault();
 			}
+		} else {
+			//.stopPropagation();
+			//event.preventDefault();
 		}
 		this.enterClicked = false;
 	},
@@ -233,6 +240,8 @@ function AutoSuggestContainer(id, tokenizer) {
 		}
 	},
 	enter: function (event) {
+		
+
 		if (this.visible && this.focussedElement) {
 			this.clicked(this.focussedElement.id,this.focussedElement.innerText,this.focussedElement);
 			this.hide();
@@ -249,7 +258,7 @@ function AutoSuggestContainer(id, tokenizer) {
 			range.insertNode(newNode);
 			var endText = new RegExp(this.trigger+"\\s*$");
 			newNode.previousSibling.data = newNode.previousSibling.data.replace(endText,'');
-			var cursor = document.createTextNode("\u200b");
+			var cursor = document.createTextNode(" ");
 			newNode.parentNode.insertBefore(cursor,newNode.nextSibling)
 			range.selectNode(cursor);
 			selection.removeAllRanges();
