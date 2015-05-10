@@ -57,6 +57,11 @@ token {
 	white-space: nowrap;
 }
 
+conditional.user {
+	
+	display: inline;
+	color: blue;
+}
 
 
 

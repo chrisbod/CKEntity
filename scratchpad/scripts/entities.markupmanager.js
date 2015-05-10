@@ -27,7 +27,7 @@ EntityMarkupManager.prototype = {
 		this.inputHandler(event)
 	},
 	preventEntityEditing: function () {
-		var tokens = this.editableElement.querySelectorAll("token:not([contenteditable]),translation:not([contenteditable]), conditional:not([contenteditable])");
+		var tokens = this.editableElement.querySelectorAll("token:not([contenteditable]),translation:not([contenteditable]), conditional:not([contenteditable]):not(.user)");
 		for (var i=0;i<tokens.length;i++) {
 			this.makeReadOnlyAndStripStyles(tokens[i])
 		}
