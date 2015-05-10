@@ -59,6 +59,7 @@ EntityMarkupManager.prototype = {
 		this.fixOrphanedTranslations()
 		this.fixOrphanedConditionals()
 		this.fixOrphanedTokens();
+		this.fixPartialConditionals()
 		
 	},
 	fixOrphanedTranslations: function () {
@@ -124,6 +125,13 @@ EntityMarkupManager.prototype = {
 			node.appendChild(currentNode);
 			node.parentNode.insertBefore(document.createTextNode(" "),node.nextSibling)
 		}
+	},
+	fixPartialConditionals: function () {
+		var partials = this.editableElement.querySelectorAll("conditional > span.contents:first-child, conditional > span.contents:last-child")
+		for (var i=0;i<partials.length;i++) {
+			console.log("found")
+		}
+
 	}
 
 

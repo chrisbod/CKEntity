@@ -1,6 +1,7 @@
 function UserConditionalManager() {
 	this.conditionalOpenRanges = [];
 	this.conditionalCloseRanges = [];
+	this.entitiesHelper = new EntitiesHelper();
 }
 UserConditionalManager.prototype = {
 	active: false,
@@ -15,14 +16,17 @@ UserConditionalManager.prototype = {
 	keyupHandler: function (event) {
 		switch (event.keyCode) {
 			case 219: return this.openSquareBrackets(event);
-			case 8: return this.checkDelete(event);
+			//case 8: return this.checkDelete(event);
 		}
 	},
+	inputHandler: function (event) {
+		console.log("here")
+	}, 
 	openSquareBrackets: function (event) {
 		var selection = document.getSelection(),
 			range = selection.getRangeAt(0),
 			conditional = this.conditionalTemplateNode.cloneNode(true);
-			
+		conditional.addEventListener("input", this)
 		if (range.collapsed == true) {
 			var start = selection.baseNode,
 				offset = selection.baseOffset-1;
@@ -47,8 +51,22 @@ UserConditionalManager.prototype = {
 			//overwriting selection....
 		}
 	},
-	checkDelete: function () {
-
+	checkDelete: function (event) {
+		var selection = document.getSelection();
+		var entity = this.entitiesHelper.getEntityElement(selection.baseNode);
+		if (entity && entity.className == "user") {
+			if (entity.firstChild.className!="args conditional") { 
+				var contents = entity.querySelector("span.content");
+				if (!contents) {
+					entity.parentNode.removeChild(entity)
+				} else if (contents.parentNode == entity) {
+					var range = document.createRange()
+					range.selectNodeContents(contents);
+					entity.parentNode.replace()
+				}
+				
+			}
+		}
 	},
 	generateUserConditionalTemplateNode: function () {
 		var conditional = document.createElement("conditional");
