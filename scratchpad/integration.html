@@ -10,7 +10,7 @@ For licensing, see LICENSE.md or http://ckeditor.com/license
 	<meta name="ckeditor-sample-required-plugins" content="sourcearea">
 	<script src="https://code.jquery.com/jquery-1.11.2.min.js">
 
-
+ 
 	</script>
 	<meta name="ckeditor-sample-required-plugins" content="sourcearea">
 	<script src="../vendor/ckeditor/ckeditor.js"></script>
@@ -34,6 +34,7 @@ For licensing, see LICENSE.md or http://ckeditor.com/license
 	<link href="css/autosuggest.css" rel="stylesheet">
 	<link href="css/collapse.css" rel="stylesheet">
 	<link href="css/dialog-form.css" rel="stylesheet">
+	<link href="css/tooltip.css" rel="stylesheet">
 </head>
 <body>
 	<h1>
@@ -109,12 +110,15 @@ For licensing, see LICENSE.md or http://ckeditor.com/license
 			var translationStore = new TranslationStore(tokenStore);
 			
 			var conditionalCollapser = new ConditionalCollapser()
-			var tooltip = new EntityToolTip();
+			/*var tooltip = new EntityToolTip();
 			tooltip.build()
 			tooltip.attachEvents();
 			tooltip.update();
 			tooltip.show()
-			window.tooltip = tooltip
+			window.tooltip = tooltip*/
+
+			var tooltip = new TokenTooltipViewModel(document.querySelector("#entity-edit token"));
+			ko.applyBindings(tooltip,document.querySelector("#entity-edit"))
 			
 
 			$.ajax("xml/keys.json", {mimeType:"application-x/json", success: function (keys) {
@@ -253,6 +257,19 @@ For licensing, see LICENSE.md or http://ckeditor.com/license
 			        <input type="reset" value="Cancel" data-bind="click: cancel"/>
 			    </fieldset>
 			</form>
+		</div>
+
+		<div class="tooltip" id="entity-edit">
+			
+
+				<header data-bind="title">
+					<token contenteditable="false" data-args="type: 'cap'" class="cap"><span class="args token" contenteditable="false" data-args="type: 'cap'">&lt;</span><span>cap<span></span></span><span class="token end">&gt;</span></token>
+				</header>
+				<fieldset>
+					<button data-bind="if: canEditRules()">Rules</button>
+					<button data-bind="if: canEditProperties()">Properties</button>
+				</fieldset>
+			
 		</div>
 </body>
 </html>

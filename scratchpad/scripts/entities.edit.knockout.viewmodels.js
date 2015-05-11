@@ -85,9 +85,9 @@ function TokenTooltipViewModel(element) {
 TokenTooltipViewModel.prototype = new EntityViewModel();
 TokenTooltipViewModel.prototype.updateFromElement = function (element) {
 	this.element = element;
-	var values = this.entitiesHelper.getValuesFromElement(element);
+	var values = this.entitiesHelper.getDataArguments(element);
 	//this.heading();
-	var permissions = this.entitiesHelper.getEditPermissions(this.entitiesHelper.getEntityElement());
+	var permissions = this.entitiesHelper.getEditPermissions(element);
 	this.canEditRules(permissions.rules);
 	this.canEditProperties(permissions.properties)
 }

@@ -43,14 +43,15 @@ token, translation, conditional {
 token > span {
 	display: none;
 }
-.editing token {
+
+token {
 	color: red;	
 }
-.editing token > span {
+token > span {
 	display: inline;
 }
 
-.editing token preview {
+token preview {
 	display: none;
 }
 token {
