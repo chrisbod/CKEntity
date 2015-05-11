@@ -118,8 +118,7 @@ For licensing, see LICENSE.md or http://ckeditor.com/license
 			tooltip.show()
 			window.tooltip = tooltip*/
 
-			var tooltip = new TokenTooltipViewModel(document.querySelector("#entity-edit token"));
-			ko.applyBindings(tooltip,document.querySelector("#entity-edit"))
+			
 			//window.tooltip = tooltip
 			var userConditionalManager = new UserConditionalManager()
 			userConditionalManager.init(document.getElementById("edit"))
@@ -158,6 +157,8 @@ For licensing, see LICENSE.md or http://ckeditor.com/license
 
 				tokenContainer.build(tokenStore)
 				tokenContainer.setEditableElement(document.getElementById("edit"))
+				var tooltip = new TokenTooltipViewModel(document.querySelector("#entity-edit token"));
+			ko.applyBindings(tooltip,document.querySelector("#entity-edit"))
 	}
 })
 			})
@@ -267,11 +268,17 @@ For licensing, see LICENSE.md or http://ckeditor.com/license
 			
 
 				<header data-bind="title">
-					<token contenteditable="false" data-args="type: 'cap'" class="cap"><span class="args token" contenteditable="false" data-args="type: 'cap'">&lt;</span><span>cap<span></span></span><span class="token end">&gt;</span></token>
+					<token contenteditable="false" data-args="type: 'cap',format: 'currency'" class="cap"><span class="args token" contenteditable="false" data-args="type: 'cap',format: 'currency'">&lt;</span><span>cap<span></span></span><span class="token end">&gt;</span></token>
 				</header>
+				<section>
+						<dl data-bind="foreach: setValues()">
+							<dt data-bind="text: text"></dt>
+							<dd data-bind="text:value"></dd>
+						</dl>
+				</section>
 				<fieldset>
-					<button data-bind="if: canEditRules()">Rules</button>
-					<button data-bind="if: canEditProperties()">Properties</button>
+					<button data-bind="if: canEditRules">Edit Rules</button>
+					<button data-bind="if: canEditProperties">Edit Properties</button>
 				</fieldset>
 			
 		</div>

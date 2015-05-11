@@ -75,19 +75,24 @@ LogicDialogViewModel.prototype.transpose = function (logic) {
 
 function TokenTooltipViewModel(element) {
 	this.heading = ko.observable("");
-	this.groups = ko.observableArray([]);
+	this.setValues = ko.observableArray([]);
 	this.canEditRules = ko.observable(false);
 	this.canEditProperties = ko.observable(false);
+	this.values = new ko.observable();
 	if (element) {
 		this.updateFromElement(element);
 	}
 }
 TokenTooltipViewModel.prototype = new EntityViewModel();
 TokenTooltipViewModel.prototype.updateFromElement = function (element) {
+	var entitiesHelper = this.entitiesHelper,
+		values = entitiesHelper.getDataArguments(element);
 	this.element = element;
-	var values = this.entitiesHelper.getDataArguments(element);
-	//this.heading();
-	var permissions = this.entitiesHelper.getEditPermissions(element);
+	this.values(values);
+	var permissions = entitiesHelper.getEditPermissions(element);
+	var setValues = entitiesHelper.getSetValuesFromLookup("token",values)
+	console.log(setValues)
+	this.setValues(setValues)
 	this.canEditRules(permissions.rules);
 	this.canEditProperties(permissions.properties)
 }

@@ -150,7 +150,7 @@ select{
 }
 
 .tooltip {
-    border: 1px solid #999999;
+    border: 1px solid #cccccc;
     float: left;
     padding: 0.5ex;
     min-width: 20em;
@@ -158,25 +158,53 @@ select{
     background-color: #eeeeee;
 }
 .tooltip section {
-    display: table;
-    width: 100%;
-
-
+        display: table;
+        margin: 0.5ex auto;
+        font-size: 80%;
 }
 .tooltip section dl {
     display: table-row;
-    border-bottom: 1px dotted #999999;
 }
 .tooltip section dl dd,
 .tooltip section dl dt {
     display: table-cell;
-    padding: 1ex;
+    padding: 0.25ex 0.5ex;
 
 }
+.tooltip section dl dt:after {
+    content:':';
+}
 .tooltip section dl dt {
-    border-left: 1px solid #ffffff;
+    font-weight: bold;
 }
 .tooltip section dl dd {
     text-align: right;
-    background-color: #ffffff
+}
+.tooltip {
+    position: absolute;
+    min-width: 10em;
+}
+.tooltip header {
+      display: block;
+  max-width: 15em;
+  text-overflow: ellipsis;
+  overflow: hidden;
+    font-size: 100%;
+     margin: 0.5ex;
+     text-align: center;
+}
+
+.tooltip fieldset {
+    border: 0px solid transparent;
+    -webkit-margin-start: 0px;
+    -webkit-margin-end: 0px;
+    -webkit-padding-before: 0em;
+    -webkit-padding-start: 0em;
+    -webkit-padding-end: 0em;
+    -webkit-padding-after: 0em;
+}
+.tooltip ul, .tooltip li{
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
 }

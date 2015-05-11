@@ -1,5 +1,43 @@
 function EntitiesHelper() {
 }
+EntitiesHelper.defineTokens = function (tokenDefinitions) {
+	this.prototype.tokenDefinitions = tokenDefinitions;
+	this.buildTokenMap()
+}
+EntitiesHelper.defineLogic = function (logicDefinitions) {
+	this.prototype.logicDefinitions = logicDefinitions;
+}
+EntitiesHelper.buildTokenMap = function () {
+	var definitions = this.prototype.tokenDefinitions;
+	var tokenMap = this.prototype.tokenMap = {}
+	definitions.forEach(function (definition,index) {
+		tokenMap[definition.id] = this.buildIdOrValueTextLookup(definition)
+		definitions[definition.id] = definitions[index]
+	},this)
+}
+EntitiesHelper.buildIdOrValueTextLookup =  function (definition) {
+	var lookup = {
+		text: definition.text,
+		controls: {}
+	}
+	definition.groups.forEach(function (group) {
+		var controlLookup =  {};
+
+		group.controls.forEach(function (control) {
+			if (control.options) {
+				controlLookup.text = control.text || group.label
+				control.options.forEach(function (option) {
+					controlLookup[option.value] = option.text;
+				})
+				lookup.controls[control.id] = controlLookup
+			} else {
+				lookup.controls[control.id] = control.text;
+			}
+			
+		})
+	},this)
+	return lookup;
+}
 EntitiesHelper.prototype = {
 	tokenDefinitions: null,
 	logicDefinitions: null,
@@ -104,6 +142,25 @@ EntitiesHelper.prototype = {
 		}
 		return values;
 	},
+	getSetValuesFromLookup: function (which,values) {
+		if (which == "token") {
+			return this.getTextAndValue(values,this[which+"Map"][values.type])
+		}
+	
+
+	},
+	getTextAndValue: function (values, map) {
+		var definedControls = [];
+		for (var i in values) {
+			if (i in map.controls) {
+				definedControls.push({
+					text: map.controls[i].text,
+					value: map.controls[i][values[i]]
+				})
+			}
+		}
+		return definedControls;
+	},
 	getTokenDefinitionByType: function (type) {
 		var definitions = this.tokenDefinitions;
 		for (var i=0;i<definitions.length;i++) {
@@ -112,6 +169,7 @@ EntitiesHelper.prototype = {
 			}
 		}
 	}
+
 }
 
 
@@ -119,13 +177,13 @@ $(function () {
 	$.ajax("xml/tokens.json", {
 		mimeType: "application-x/json",
 		success: function (tokenDefinitions) {
-			EntitiesHelper.prototype.tokenDefinitions = tokenDefinitions;
+			EntitiesHelper.defineTokens(tokenDefinitions)
 		}
 	})
 	$.ajax("xml/logic.json", {
 		mimeType: "application-x/json",
 		success: function (logicDefinitions) {
-			EntitiesHelper.prototype.definitions = logicDefinitions;
+			EntitiesHelper.defineLogic(logicDefinitions)
 		}
 	})
 
