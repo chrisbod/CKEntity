@@ -27,7 +27,7 @@ EntityMarkupManager.prototype = {
 		this.inputHandler(event)
 	},
 	preventEntityEditing: function () {
-		var tokens = this.editableElement.querySelectorAll("token:not([contenteditable]),translation:not([contenteditable]), conditional:not([contenteditable])");
+		var tokens = this.editableElement.querySelectorAll("token:not([contenteditable]),translation:not([contenteditable]), conditional:not([contenteditable]):not(.user)");
 		for (var i=0;i<tokens.length;i++) {
 			this.makeReadOnlyAndStripStyles(tokens[i])
 		}
@@ -59,6 +59,7 @@ EntityMarkupManager.prototype = {
 		this.fixOrphanedTranslations()
 		this.fixOrphanedConditionals()
 		this.fixOrphanedTokens();
+		this.fixPartialConditionals()
 		
 	},
 	fixOrphanedTranslations: function () {
@@ -124,6 +125,18 @@ EntityMarkupManager.prototype = {
 			node.appendChild(currentNode);
 			node.parentNode.insertBefore(document.createTextNode(" "),node.nextSibling)
 		}
+	},
+	fixPartialConditionals: function () {
+		return
+		var partials = this.editableElement.querySelectorAll("conditional.user > span.contents:first-child")
+		for (var i=0;i<partials.length;i++) {
+			var range = document.createRange()
+			range.selectNodeContents(partials[i]);
+			console.log(range.extractContents())
+			
+			//partials[i].parentNode.parentNode.replaceChild(partials[i],range.extractContents())
+		}
+
 	}
 
 

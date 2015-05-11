@@ -22,6 +22,7 @@ For licensing, see LICENSE.md or http://ckeditor.com/license
 	<script src="scripts/entities.paste.js"></script>
 	<script src="scripts/entities.conditional.collapser.js"></script>
 	<script src="scripts/entities.markupmanager.js"></script>
+	<script src="scripts/entities.usergenerated.js"></script>
 	<script src="scripts/entities.edit.knockout.viewmodels.js"></script>
 	<script src="scripts/intent.js"></script>
 	<script src="scripts/positionablecontainer.js"></script>
@@ -115,10 +116,16 @@ For licensing, see LICENSE.md or http://ckeditor.com/license
 			tooltip.attachEvents();
 			tooltip.update();
 			tooltip.show()
+<<<<<<< HEAD
 			window.tooltip = tooltip*/
 
 			var tooltip = new TokenTooltipViewModel(document.querySelector("#entity-edit token"));
 			ko.applyBindings(tooltip,document.querySelector("#entity-edit"))
+=======
+			window.tooltip = tooltip
+			var userConditionalManager = new UserConditionalManager()
+			userConditionalManager.init(document.getElementById("edit"))
+>>>>>>> edd8431e7b286cdb0cd51a97bdc628696e686832
 			
 
 			$.ajax("xml/keys.json", {mimeType:"application-x/json", success: function (keys) {

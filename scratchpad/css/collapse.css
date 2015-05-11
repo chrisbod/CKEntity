@@ -1,11 +1,15 @@
-translation span.conditional:first-child {
+ span.conditional:first-child {
 	position: relative;
 	display: inline-block;
 	box-sizing: border-box;
 	margin-left: 0.5ex;
 	margin-right: 1.5ex;
 }
-translation span.conditional:first-child::before {
+
+conditional.user span.conditional.args:first-child {
+  margin-left: -0.5ex;
+}
+span.conditional:first-child::before {
   position: absolute;
   width: 1.5ex;
   background-image: url(../img/minus.png);
@@ -20,6 +24,9 @@ translation span.conditional:first-child::before {
   height: 100%;
 }
 
+conditional.user[data-collapsed] span.conditional.args:first-child {
+  margin: 0 0.3ex 0 0ex;
+}
 conditional[data-collapsed] span.contents {
 	display: none;
 }

@@ -1,48 +1,26 @@
 function EntitySelectionManager() {
-
+	this.entities = new EntitiesHelper();
 }
 EntitySelectionManager.prototype = {
 	init: function (editableElement) {
 		this.editableElement = editableElement;
 		this.editableElement.addEventListener("click", this);
 		this.editableElement.addEventListener("dblclick", this);
-		document.addEventListener("keydown", this, true);
-		document.addEventListener("keyup", this, true);
-		document.addEventListener("paste", this, true);
-	},
-	isEntityElement: function (element) {
-		if (element) {
-			return /TRANSLATION|TOKEN|CONDITIONAL/i.test(element.tagName);
-		} 
-		return false;
-	},
-	getEntityElement: function (startNode,event) {
-		var currentNode = startNode,
-			path = [];
-		if (event && event.path) {
-			path = event.path;
-		} else {
-			path = this.getPath(startNode);
-		}
-		for (var i=0;i!=path.length-3;i++) {
-			if (this.isEntityElement(path[i])) {
-				return path[i]
-			}
-		}
-		return null;
-	} ,
-	getPath: function (startNode) {
-		var currentNode = startNode,
-			path = [];
-		while (currentNode) {
-			path[path.length] = currentNode;
-			currentNode = currentNode.parentNode;
-		}
-		path[path.length] = window;
-		return path;
+		//document.addEventListener("keydown", this, true);
+		//document.addEventListener("keyup", this, true);
+		//document.addEventListener("paste", this, true);
+		//this.editableElement.addEventListener("contextmenu", this, true)
 	},
 	handleEvent: function(event) {
 		return this[event.type+'Handler'](event)
+	},
+	contextmenuHandler: function (event){
+		var entityNode = this.entities.getEntityElement(event.target);
+		if (entityNode) {
+			this.select(entityNode)
+		} else {
+			this.selectedEntityNode = null;
+		}
 	},
 	keydownHandler: function (event) {
 		if (this.editableElement.contains(event.target)) {
@@ -75,7 +53,7 @@ EntitySelectionManager.prototype = {
 		var node = selection.anchorNode.parentNode,
 			highestEntity = null;
 		while (node!=this.editableElement) {
-			if (this.isEntityElement(node)) {
+			if (this.entities.isEntityElement(node)) {
 				highestEntity = node;
 			}
 			node = node.parentNode;
@@ -128,7 +106,7 @@ EntitySelectionManager.prototype = {
 			return;
 
 		}
-		if (this.isEntityElement(node.nextSibling)) {
+		if (this.entities.isEntityElement(node.nextSibling)) {
 			this.select(node.nextSibling);
 			event.stopPropagation();
 			event.preventDefault();
@@ -149,7 +127,7 @@ EntitySelectionManager.prototype = {
 			return
 		}
 
-		if (this.isEntityElement(node.nextSibling)) {
+		if (this.entities.isEntityElement(node.nextSibling)) {
 			if (node.data && node.data.length == selection.anchorOffset) {
 					this.select(node.nextSibling);
 					event.stopPropagation();
@@ -178,7 +156,7 @@ EntitySelectionManager.prototype = {
 		
 	},
 	clickHandler: function (event) {
-		var entityNode = this.getEntityElement(event.target);
+		var entityNode = this.entities.getEntityElement(event.target);
 		if (entityNode) {
 			this.select(entityNode)
 		} else {
@@ -189,7 +167,7 @@ EntitySelectionManager.prototype = {
 		if (this.selectedEntityNode) {
 			var currentNode = this.selectedEntityNode.parentNode;
 			while (currentNode!=this.editableElement) {
-				if (this.isEntityElement(currentNode)) {
+				if (this.entities.isEntityElement(currentNode)) {
 					return this.select(currentNode);
 				}
 				currentNode = currentNode.parentNode;
@@ -197,12 +175,12 @@ EntitySelectionManager.prototype = {
 		}
 	},
 	select: function (entityNode) {
-		this.removeImpureTextNodes(this.editableElement)
+		this.removeImpureTextNodes(this.editableElement);
 		var selection =  this.getCleanSelection(),
 			range = document.createRange();
 		this.selectedEntityNode = entityNode;
-		range.setStartBefore(entityNode)
-		range.setEndAfter(entityNode)
+		range.selectNode(entityNode)
+		
 		selection.addRange(range);
 	},
 	setCursorAfter: function (node) {
