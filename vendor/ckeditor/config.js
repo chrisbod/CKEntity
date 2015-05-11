@@ -7,7 +7,9 @@ CKEDITOR.editorConfig = function( config ) {
 	// Define changes to default configuration here. For example:
 	// config.language = 'fr';
 	 //config.uiColor = '#AADC6E';
+	config.skin = "office2013";
 	config.extraAllowedContent = 'translation token conditional';
+	config.disallowedContent = 'font';
 	config.extraPlugins = 'wallstreetdocs,wordpaste'
 	config.removePlugins = 'magicline, pastetext, pastefromword, clipboard'
 };

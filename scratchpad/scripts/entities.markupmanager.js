@@ -54,6 +54,8 @@ EntityMarkupManager.prototype = {
 				div.parentNode.replaceChild(translationsInDivs[i],div)
 			}
 		}
+		//not sure why but even when we set ckeditor ACF to filter fonts it seems ignore font tags
+		//var fontTags = this.editableElement.querySelectorAll("font")
 	},
 	fixOrphanedElements: function () {
 		this.fixOrphanedTranslations()

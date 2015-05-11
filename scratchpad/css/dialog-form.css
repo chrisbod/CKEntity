@@ -160,7 +160,6 @@ select{
 .tooltip section {
         display: table;
         margin: 0.5ex auto;
-        font-size: 80%;
 }
 .tooltip section dl {
     display: table-row;
@@ -183,15 +182,20 @@ select{
 .tooltip {
     position: absolute;
     min-width: 10em;
+  max-width: 25%;
 }
 .tooltip header {
       display: block;
-  max-width: 15em;
-  text-overflow: ellipsis;
-  overflow: hidden;
+    text-overflow: ellipsis;
+    overflow: hidden;
     font-size: 100%;
      margin: 0.5ex;
      text-align: center;
+}
+.tooltip button {
+    font-weight: normal;
+  min-width: 17ex;
+  margin: 0.5ex;
 }
 
 .tooltip fieldset {
@@ -202,6 +206,7 @@ select{
     -webkit-padding-start: 0em;
     -webkit-padding-end: 0em;
     -webkit-padding-after: 0em;
+    text-align: center;
 }
 .tooltip ul, .tooltip li{
     list-style-type: none;

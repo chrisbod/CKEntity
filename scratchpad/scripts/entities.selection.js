@@ -4,8 +4,8 @@ function EntitySelectionManager() {
 EntitySelectionManager.prototype = {
 	init: function (editableElement) {
 		this.editableElement = editableElement;
-		this.editableElement.addEventListener("click", this);
-		this.editableElement.addEventListener("dblclick", this);
+		//this.editableElement.addEventListener("click", this);
+		//this.editableElement.addEventListener("dblclick", this);
 		//document.addEventListener("keydown", this, true);
 		//document.addEventListener("keyup", this, true);
 		//document.addEventListener("paste", this, true);

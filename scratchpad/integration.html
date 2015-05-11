@@ -32,6 +32,17 @@ For licensing, see LICENSE.md or http://ckeditor.com/license
 	<script src="scripts/tokentokenizer.js"></script>
 	<script src="../vendor/knockout/knockout-3.3.0.js"></script>
 	<link href="../vendor/ckeditor/samples/sample.css" rel="stylesheet">
+	<style>
+	/*WEIRD BUG FROM CHROME...*/
+		font[color] {
+			color: inherit;
+		}
+		.cke_editable.cke_editable_inline.cke_focus{background-color: inherit !important; outline: 1px dashed #cccccc; border-width: 0; box-shadow: none;}
+
+		.cke_button_icon:hover {
+			background-image: none;
+		}
+	</style>
 	<link href="css/autosuggest.css" rel="stylesheet">
 	<link href="css/collapse.css" rel="stylesheet">
 	<link href="css/dialog-form.css" rel="stylesheet">
@@ -57,15 +68,7 @@ For licensing, see LICENSE.md or http://ckeditor.com/license
 
 
 
-		CKEDITOR.editorConfig = function( config ) {
-	// Define changes to default configuration here. For example:
-	// config.language = 'fr';
-	// config.uiColor = '#AADC6E';
-		alert('here')
-		config.extraPlugins = 'wallstreetdocs';
-		config.removePlugins = 'contextmenu, clipboard';
-};
-
+		
 
 
 		function ElementLocalSaver() {

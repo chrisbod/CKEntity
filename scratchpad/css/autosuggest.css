@@ -40,6 +40,9 @@ div.autosuggest-container a.focussed   {
 token, translation, conditional {
 	display: inline;
 }
+token:focus, translation:focus, conditional:focus, .contents:focus {
+	outline: none;
+}
 token > span {
 	display: none;
 }
@@ -58,9 +61,7 @@ token {
 	white-space: nowrap;
 }
 
-conditional.user {
-	
-	display: inline;
+.editing conditional.user {
 	color: blue;
 }
 conditional.user:before {
@@ -69,10 +70,14 @@ conditional.user:before {
 conditional.user:after {
 	content: ']';
 }
-conditional.user .conditional.args {
+conditional.user .conditional.args,
+conditional.user .conditional.end
+ {
 	color: rgba(0,0,0,0);
 	
 }
+
+
 
 translation {
 	display: inline;

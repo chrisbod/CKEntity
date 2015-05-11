@@ -7,7 +7,7 @@ UserConditionalManager.prototype = {
 	active: false,
 	init: function (editableElement) {
 		this.editableElement = editableElement;
-		this.editableElement.addEventListener("keyup", this)
+		this.editableElement.addEventListener("keyup", this,true)
 		//this.editableElement.addEventListener("keydown", this)
 		this.generateUserConditionalTemplateNode()
 	},
@@ -22,17 +22,16 @@ UserConditionalManager.prototype = {
 	},
 	keydownHandler: function (event) {
 		switch (event.keyCode) {
-			case 8: return this.checkDelete(event);
+			//case 8: return this.checkDelete(event);
 		}
 	},
 	inputHandler: function (event) {
-		//console.log("here")
+		console.log("here")
 	}, 
 	openSquareBrackets: function (event) {
 		var selection = document.getSelection(),
 			range = selection.getRangeAt(0),
 			conditional = this.conditionalTemplateNode.cloneNode(true);
-		conditional.addEventListener("input", this)
 		if (range.collapsed == true) {
 			var start = selection.baseNode,
 				offset = selection.baseOffset-1;
@@ -44,9 +43,9 @@ UserConditionalManager.prototype = {
 					sibling.splitText(1)
 				}
 				sibling.parentNode.replaceChild(conditional,sibling)
-				conditional.parentNode.insertBefore(document.createTextNode("\u200b"),conditional.nextSibling)
+				conditional.parentNode.insertBefore(document.createTextNode(" "),conditional.nextSibling)
 				selection.removeAllRanges();
-				selection.selectAllChildren(conditional);
+				selection.selectAllChildren(conditional.querySelector(".contents.conditional"));
 				selection.collapseToEnd()
 				event.preventDefault()
 				event.stopPropagation()
@@ -59,18 +58,47 @@ UserConditionalManager.prototype = {
 	},
 	checkDelete: function (event) {
 		var selection = document.getSelection();
+		//console.log(selection)
+		//console.log(event.currentTarget)
 		
-		//var entity = this.entitiesHelper.getEntityElement(selection.anchorNode);
-		//if (entity && entity.className == "user") {
-			//console.log(entity.innerText == "\u200b")
-		//}
+		var entity = this.entitiesHelper.getEntityElement(selection.anchorNode);
+		
+		if (entity && entity.classList.contains("user")) {
+			if (!this.isValidUserEntity(entity)) {
+				var contentNode = entity.firstChild;
+				var removed = false;
+				while (contentNode) {
+					if (contentNode.nodeType!=3) {
+						if (contentNode.classList.contains("contents")) {
+							contentNode.className = '';
+							entity.parentNode.replaceChild(contentNode,entity);
+							removed = true;
+							break;
+						}
+					} 
+					contentNode = contentNode.nextSibling;
+				}
+				if (!removed) {
+					entity.parentNode.replaceChild(document.createTextNode(" "),entity)
+				}
+			}
+		}
 	},
 	generateUserConditionalTemplateNode: function () {
 		var conditional = document.createElement("conditional");
 		conditional.className = "user"
 		conditional.setAttribute("data-args","type: 'user'");
-		conditional.innerHTML = '<span class="args conditional">[</span><span class="contents conditional" data-args="type:\'user\'">&#8203;</span>'
+		conditional.innerHTML = '<span class="args conditional"  contenteditable="false">[</span><span class="contents conditional"></span><span class="conditional end" contenteditable="false">]</span>'
 		this.conditionalTemplateNode = conditional;
 
+	},
+	isValidUserEntity: function (entity) {
+		if (!entity.firstChild.classList || !entity.firstChild.classList.contains("args")) {
+			return false
+		}
+		if (!entity.lastChild.classList || !entity.lastChild.classList.contains("end")) {
+			return false
+		}
+		return true;
 	}
 }
