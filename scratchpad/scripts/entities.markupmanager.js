@@ -127,9 +127,14 @@ EntityMarkupManager.prototype = {
 		}
 	},
 	fixPartialConditionals: function () {
-		var partials = this.editableElement.querySelectorAll("conditional > span.contents:first-child, conditional > span.contents:last-child")
+		return
+		var partials = this.editableElement.querySelectorAll("conditional.user > span.contents:first-child")
 		for (var i=0;i<partials.length;i++) {
-			console.log("found")
+			var range = document.createRange()
+			range.selectNodeContents(partials[i]);
+			console.log(range.extractContents())
+			
+			//partials[i].parentNode.parentNode.replaceChild(partials[i],range.extractContents())
 		}
 
 	}

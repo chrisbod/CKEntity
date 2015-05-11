@@ -8,6 +8,7 @@ UserConditionalManager.prototype = {
 	init: function (editableElement) {
 		this.editableElement = editableElement;
 		this.editableElement.addEventListener("keyup", this)
+		//this.editableElement.addEventListener("keydown", this)
 		this.generateUserConditionalTemplateNode()
 	},
 	handleEvent: function (event) {
@@ -16,11 +17,16 @@ UserConditionalManager.prototype = {
 	keyupHandler: function (event) {
 		switch (event.keyCode) {
 			case 219: return this.openSquareBrackets(event);
-			//case 8: return this.checkDelete(event);
+			case 8: return this.checkDelete(event);
+		}
+	},
+	keydownHandler: function (event) {
+		switch (event.keyCode) {
+			case 8: return this.checkDelete(event);
 		}
 	},
 	inputHandler: function (event) {
-		console.log("here")
+		//console.log("here")
 	}, 
 	openSquareBrackets: function (event) {
 		var selection = document.getSelection(),
@@ -40,7 +46,7 @@ UserConditionalManager.prototype = {
 				sibling.parentNode.replaceChild(conditional,sibling)
 				conditional.parentNode.insertBefore(document.createTextNode("\u200b"),conditional.nextSibling)
 				selection.removeAllRanges();
-				selection.selectAllChildren(conditional.childNodes[1]);
+				selection.selectAllChildren(conditional);
 				selection.collapseToEnd()
 				event.preventDefault()
 				event.stopPropagation()
@@ -53,26 +59,17 @@ UserConditionalManager.prototype = {
 	},
 	checkDelete: function (event) {
 		var selection = document.getSelection();
-		var entity = this.entitiesHelper.getEntityElement(selection.baseNode);
-		if (entity && entity.className == "user") {
-			if (entity.firstChild.className!="args conditional") { 
-				var contents = entity.querySelector("span.content");
-				if (!contents) {
-					entity.parentNode.removeChild(entity)
-				} else if (contents.parentNode == entity) {
-					var range = document.createRange()
-					range.selectNodeContents(contents);
-					entity.parentNode.replace()
-				}
-				
-			}
-		}
+		
+		//var entity = this.entitiesHelper.getEntityElement(selection.anchorNode);
+		//if (entity && entity.className == "user") {
+			//console.log(entity.innerText == "\u200b")
+		//}
 	},
 	generateUserConditionalTemplateNode: function () {
 		var conditional = document.createElement("conditional");
 		conditional.className = "user"
 		conditional.setAttribute("data-args","type: 'user'");
-		conditional.innerHTML = '<span class="args conditional" data-args="type:\'user\'" contenteditable="false">[</span><span class="contents">&#8203;</span><span class="conditional end" contenteditable="false">]</span>'
+		conditional.innerHTML = '<span class="args conditional">[</span><span class="contents conditional" data-args="type:\'user\'">&#8203;</span>'
 		this.conditionalTemplateNode = conditional;
 
 	}

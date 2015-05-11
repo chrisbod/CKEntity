@@ -5,6 +5,10 @@
 	margin-left: 0.5ex;
 	margin-right: 1.5ex;
 }
+
+conditional.user span.conditional.args:first-child {
+  margin-left: -0.5ex;
+}
 span.conditional:first-child::before {
   position: absolute;
   width: 1.5ex;
@@ -20,6 +24,9 @@ span.conditional:first-child::before {
   height: 100%;
 }
 
+conditional.user[data-collapsed] span.conditional.args:first-child {
+  margin: 0 0.3ex 0 0ex;
+}
 conditional[data-collapsed] span.contents {
 	display: none;
 }
