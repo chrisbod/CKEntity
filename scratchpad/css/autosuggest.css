@@ -1,0 +1,95 @@
+div.autosuggest-container {
+	position: absolute;
+	z-index: 1000;
+	top: 0;
+	visibility: hidden;
+	background-color: white;
+	border: 1px solid black;
+	margin-right: 20px;
+	overflow: auto;
+	padding: 2px;
+	box-sizing: border-box;
+	margin-left: -7px;
+
+}
+div.autosuggest-container a {
+	cursor: default;
+	text-decoration: none;
+	display: block;
+	color: black;
+	margin: 0ex;
+	border-top: 1px solid silver;
+	text-align: justify;
+	padding: 3px 4px 4px 4px;
+}
+div.autosuggest-container a:first-child {
+	border-top-width: 0;
+} 
+div.autosuggest-container a.focussed   {
+	background-color: silver;
+}
+
+
+#token-menu a {
+	color: red;
+}
+#token-menu a.focussed {
+	background-color: red;
+	color: white;
+}
+token, translation, conditional {
+	display: inline;
+}
+token > span {
+	display: none;
+}
+
+token {
+	color: red;	
+}
+token > span {
+	display: inline;
+}
+
+token preview {
+	display: none;
+}
+token {
+	white-space: nowrap;
+}
+
+conditional.user {
+	
+	display: inline;
+	color: blue;
+}
+conditional.user:before {
+	content: '[';
+}
+conditional.user:after {
+	content: ']';
+}
+conditional.user .conditional.args {
+	color: rgba(0,0,0,0);
+}
+conditional > span.contents:focus {
+	outline: none;
+}
+
+translation {
+	display: inline;
+	border-bottom: 1px dotted black;
+}
+
+table.scenario-table {
+	border: 1px solid black;
+}
+table.scenario-table th {
+	background-color: black;
+	color: white;
+}
+
+
+div.entity-tooltip {
+	visibility: hidden;
+}

@@ -1,0 +1,188 @@
+.dialog {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    -webkit-transform: translate(-50%, -50%);
+    transform: translate(-50%, -50%);
+
+}
+.dialog.hidden {
+    left: -110000px;
+}
+.dialog form {
+    display: block;
+    float: left;
+    clear: left;
+    margin:10px auto;
+    padding: 20px 12px 10px 20px;
+    font-size: 100%;
+
+
+}
+.dialog fieldset {
+    background-color: white;
+}
+.dialog form li {
+    padding: 0;
+    display: block;
+    list-style: none;
+    margin: 10px 0 0 0;
+}
+.dialog form label {
+    font-weight: normal;
+    padding: 3px 0px;
+}
+.dialog h1{
+  background-color: #eeeeee;
+  font-size: 100%;
+  padding: 1ex 2ex;
+  margin: -12px -11px 6px -12px;
+  border: 1px solid black;
+  border-bottom-width: 1px;
+}
+.dialog fieldset:last-child {
+    text-align: right;
+    background-color: #eeeeee;
+    border-top-width: 0;
+}
+.dialog form input[type=radio] + label,
+.dialog form input[type=checkbox] + label{
+    display: inline;
+}
+.dialog form input[type=text], 
+.dialog form input[type=date],
+.dialog form input[type=datetime],
+.dialog form input[type=number],
+.dialog form input[type=search],
+.dialog form input[type=time],
+.dialog form input[type=url],
+.dialog form input[type=email],
+textarea, 
+select{
+    box-sizing: border-box;
+    -webkit-box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    border:1px solid #BEBEBE;
+    padding: 7px;
+    margin:0px;
+    -webkit-transition: all 0.30s ease-in-out;
+    -moz-transition: all 0.30s ease-in-out;
+    -ms-transition: all 0.30s ease-in-out;
+    -o-transition: all 0.30s ease-in-out;
+    outline: none;  
+}
+.dialog form input[type=text]:focus, 
+.dialog form input[type=date]:focus,
+.dialog form input[type=datetime]:focus,
+.dialog form input[type=number]:focus,
+.dialog form input[type=search]:focus,
+.dialog form input[type=time]:focus,
+.dialog form input[type=url]:focus,
+.dialog form input[type=email]:focus,
+.dialog form textarea:focus, 
+.dialog form select:focus{
+    -moz-box-shadow: 0 0 8px #88D5E9;
+    -webkit-box-shadow: 0 0 8px #88D5E9;
+    box-shadow: 0 0 8px #88D5E9;
+    border: 1px solid #88D5E9;
+}
+.dialog form ul {
+    margin: 0;
+    padding: 0;
+}
+.dialog form li {
+    list-style-type: none;
+    margin:0;
+    padding: 0;
+}
+.dialog header {
+    font-weight: bold;
+    margin: 1ex 0 0.25ex 0;
+}
+
+
+.dialog form li textarea,
+.dialog form li input[type=text]:first-of-type:last-of-type,
+.dialog form li input[type=email]:first-of-type:last-of-type,
+.dialog form li select:first-of-type:last-of-type
+ {
+   width: 100%;
+    }
+
+.dialog form table label {
+    font-weight: normal
+}
+
+
+
+.dialog table{
+    border-collapse: collapse;
+    border-spacing: 0;
+    width:100%;
+    margin:0px;
+    padding:0px;
+    font-size: 100%;
+}
+
+.dialog table td, .dialog table th{
+    border-spacing: 0;
+    vertical-align:middle;
+    color:#000000;
+    margin:0px;
+    padding: 0.25ex;
+    white-space: nowrap
+}
+
+.dialog thead th{
+    background-color:#eeeeee;
+    border:0px solid #000000;
+    text-align: center;
+    border-width:1px 0px 0px 1px;
+    padding: 1ex;
+
+}
+.dialog thead tr th:first-child
+{
+    border-width:1px 0px 0px 0px;
+}
+.dialog thead td:last-child{
+    border-width:0px 0px 0px 1px;
+}
+
+.tooltip {
+    border: 1px solid #999999;
+    padding: 0.5ex;
+    min-width: 20em;
+    background-color: #eeeeee;
+}
+.tooltip header {
+    max-width: 20em;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    margin: auto;
+    text-align: center;
+}
+.tooltip section {
+    display: table;
+    width: 100%;
+
+
+}
+.tooltip section dl {
+    display: table-row;
+    border-bottom: 1px dotted #999999;
+}
+.tooltip section dl dd,
+.tooltip section dl dt {
+    display: table-cell;
+    padding: 1ex;
+
+}
+.tooltip section dl dt {
+    border-left: 1px solid #ffffff;
+}
+.tooltip section dl dd {
+    text-align: right;
+    background-color: #ffffff
+}

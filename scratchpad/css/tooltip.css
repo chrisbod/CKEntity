@@ -1,0 +1,28 @@
+.tooltip {
+	position: absolute;
+	min-width: 10em;
+	left: -1000px;
+}
+.tooltip header {
+font-size: 100%;
+  margin: 0.5ex;
+ 
+
+}
+.tooltip fieldset {
+	background-color: white;
+	border: 1px solid #999999;
+	smargin: 0.25ex;
+	spadding: 0.25px;
+	-webkit-margin-start: 0px;
+  	-webkit-margin-end: 0px;
+  	-webkit-padding-before: 0em;
+  	-webkit-padding-start: 0em;
+  	-webkit-padding-end: 0em;
+  	-webkit-padding-after: 0em;
+}
+.tooltip fieldset button {
+	display: block;
+	width: 94%;
+	margin: 3%;
+}

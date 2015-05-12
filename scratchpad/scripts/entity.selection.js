@@ -6,14 +6,18 @@ function SelectionManager(element) {
 
 SelectionManager.prototype = {
 	isSelectableElement: function (element) {
+<<<<<<< HEAD
 		return /\b(placeholder|segment|key)\b/.test(element.className)
+=======
+		return /TRANSLATION|TOKEN|CONDITIONAL/i.test(element)
+>>>>>>> d19c44e36751039661f1cfcd3f816b67f6687aa3
 	},
 	doubleClickHandler: function (ev) {
 		ev = ev || event;
 		var currentNode = ev.target;
 		while (currentNode!=null && currentNode!=this.element) {
 			if (this.isSelectableElement(currentNode)) {
-				return this.selectNode(currentNode)
+				return this.selectNode(currentNode.parentNode)
 			}
 			currentNode = currentNode.parentNode;
 		}

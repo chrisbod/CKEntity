@@ -1,0 +1,241 @@
+<html>
+	<head>
+		<script src="https://code.jquery.com/jquery-1.11.2.min.js">	</script>
+		<link href="../vendor/ckeditor/samples/sample.css" rel="stylesheet">
+		<script src="../vendor/knockout/knockout-3.3.0.js"></script>
+		<!--script src="../vendor/knockout/knockout-switch-case.js"></script-->
+		<link href="css/dialog-form.css" rel="stylesheet">
+
+		<script>
+
+
+
+			function TokenDialogViewModel(tokenElement) {
+				this.values = this.getValuesFromToken(tokenElement);
+
+				var tokenDefinition = this.getDefinitionByType(this.values.type)
+				this.text = tokenDefinition.text;
+				this.tokenText = tokenDefinition.id;
+				this.groups =  tokenDefinition.groups;
+			}
+			TokenDialogViewModel.prototype.getValuesFromToken = function (tokenElement) {
+				this.tokenElement = tokenElement;
+				var args = tokenElement.getAttribute("data-args")
+				var values = (new Function("return {"+(args||'')+"}"))();
+				return values;
+			}
+			TokenDialogViewModel.prototype.getDefinitionByType = function (type) {
+				var definitions = this.definitions;
+					for (var i=0;i<definitions.length;i++) {
+						if (definitions[i].id == type) {
+							return definitions[i]
+						}
+					}
+			}
+			TokenDialogViewModel.prototype.cancel = function (model) {
+				//this.values(this.resetValues)
+				
+
+			}
+			TokenDialogViewModel.prototype.updateToken = function () {
+				var values = this.values,
+					args = []
+				for (var i in values) {
+					args.push(i+":'"+values[i]+"'")
+				}
+				this.tokenElement.setAttribute("data-args",args);
+			}
+
+
+
+
+
+
+			function LogicDialogViewModel(logicDefinition, values) {
+				var tableData = this.transpose(logicDefinition);
+				this.headings = tableData.headings;
+				this.rows = tableData.rows;
+				
+			}
+			LogicDialogViewModel.prototype = {
+				transpose: function (logic) {
+					var columnCount = logic.length,
+						rowCount = 0,
+						headings = [],
+						rows = [];
+					for (var i=0;i<logic.length;i++) {
+						headings.push(logic[i])
+						rowCount = Math.max(logic[i].items.length,rowCount)
+					}
+					for (i=0;i<rowCount;i++) {
+						rows[i] = [];
+						for (var j=0;j<columnCount;j++) {
+							rows[i][j] = logic[j].items[i]
+						}
+					}
+					return {
+						headings: headings,
+						rows: rows
+					}
+				},
+				updateLogic: function () {
+
+				}
+			}
+
+
+
+			$(function () {
+				$.ajax("xml/token.dev.json", {
+					mimeType: "application-x/json",
+					success: function (tokenDefinitions) {
+						TokenDialogViewModel.prototype.definitions = tokenDefinitions;
+						
+						//ko.applyBindings(new TokenDialogViewModel(tokenDefinitions[2]),document.getElementById("test"))
+						var token = document.getElementsByTagName("token")[0]
+						ko.applyBindings(new TokenDialogViewModel(token),document.getElementById("test"))
+						ko.applyBindings(new TokenDialogViewModel(token),document.getElementById("tooltip"))
+
+					}
+				})
+				$.ajax("xml/logic.json", {
+					mimeType: "application-x/json",
+					success: function (logicDefinitions) {
+						ko.applyBindings(new LogicDialogViewModel(logicDefinitions,{}),document.getElementById("rules"))
+
+					}
+				})
+
+
+			})
+
+
+
+		</script>
+
+
+
+	</head>
+
+	<body>
+		<div class="dialog">
+		
+		<form id="test" data-bind="submit: updateToken">
+			
+			<fieldset>
+				<h1>Edit Token</h1>
+				<header><strong data-bind="text: text"></strong> <token contenteditable="false" data-args="type: 'dev', format: 'absolute', decimals: '2-4', underlyingReturn: true"><span class="args token" contenteditable="false">&lt;</span><span data-bind="text: tokenText"></span>&gt;</token></header>
+				
+			<ul>
+				<li data-bind="foreach: groups">
+					<header data-bind="text: label"></header>
+					<!--tried using a switch here but had scoping issues-->
+					<ul data-bind="foreach: controls">
+						<li data-bind="if: type == 'checkbox'">
+							<label>
+								<input type="checkbox" data-bind="value:value, attr:{name:value}, checked: $root.values[value]">
+								<span data-bind="text:text"></span>
+							</label>
+						</li>
+						<li data-bind="if: type == 'radio'">
+								<ul data-bind="foreach: options" class="radio-list">
+									<li>
+										<label>
+											<input type="radio" data-bind="value:value, attr:{name:$parent.id}, checked: $root.values[$parent.id]">
+											<span data-bind="text:text"></span>
+										</label>
+									</li>
+								</ul>
+						</li>
+						<li data-bind="if: type == 'select'">
+							<select data-bind="attr:{name:id }, options: options, optionsText: 'text', 	optionsValue: 'value', value: $root.values[id]">
+							</select>
+						</li>
+						<li data-bind="if: type == 'text'">
+							<label>
+								<div data-bind="text: (typeof label != 'undefined' ?  label : '')"></div>
+							<input type="text" data-bind="attr:{name:id, placeholder: (typeof placeholder != 'undefined' ?  placeholder : '')}, value: value "/>
+							</label>
+						</li>
+						<li data-bind="if: type == 'textarea'">
+							<label>
+								<div data-bind="text: (typeof label != 'undefined' ?  label : '')"></div>
+							<textarea data-bind="attr:{name:id,placeholder:(typeof placeholder != 'undefined' ?  placeholder : '')}, value: value"></textarea>
+							</label>
+						</li>     
+			</ul>
+				</fieldset>
+				<fieldset>
+					<input type="submit" value="Ok" />
+			        <input type="button" value="Cancel" data-bind="click: cancel"/>
+			    </fieldset>
+			</form>
+		</div>
+
+			<div id="tooltip" class="tooltip">
+				<section class="properties">
+					<dl>
+
+						<!-- ko foreach: groups -->
+
+							<!-- ko foreach: controls -->
+
+								<!-- ko if: type == 'checkbox' && $root.values[value] -->
+									<dt  data-bind="text:text"></dt>
+									<dd>true</dd>
+								<!-- /ko -->
+								<!-- ko if: type == 'radio' && $root.values[$parent.id] -->
+									<dt  data-bind="text:''"></dt>
+									<dd data-bind="">true</dd>
+								<!-- /ko -->
+								
+							<!-- /ko -->
+						<!-- /ko -->
+					</dl>
+
+				</section>
+
+			</div>
+			<br>
+			<br>
+
+			<div class="dialog">
+		
+		<form id="rules" data-bind="submit: updateLogic">
+			
+			<fieldset>
+				<h1>Edit Rules</h1>
+
+					<p>
+					<conditional contenteditable="false" data-conditional-name="conditional-1" data-key-name="keykey2207"><span class="args conditional" contenteditable="false" data-conditional-name="conditional-1" data-key-name="keykey2207">[</span><span class="contents" contenteditable="false">the share, which is quoted in <token contenteditable="false" data-key-name="keykey2207"><span class="args token" contenteditable="false" data-key-name="keykey2207">&lt;</span>underlying currency&gt;</token></span><span class="args conditional" contenteditable="false" data-conditional-name="conditional-1" data-key-name="keykey2207">]</span></conditional></p>
+				<table>
+					<thead>
+						<tr data-bind="foreach: headings">
+							<th data-bind="text: text">
+							</th>
+						</tr>
+					</thead>
+					<tbody data-bind="foreach: rows">
+						<tr data-bind="foreach: $data">
+							<td><label data-bind="if: $data"><input type="radio" data-bind="attr:{name: $root.headings[$index()].id,value:value}"><span data-bind="text:text"></span></label></td>
+						</tr>
+					</tbody>
+
+
+
+				</table>
+			
+
+				</fieldset>
+				<fieldset>
+					<input type="submit" value="Ok" />
+			        <input type="reset" value="Cancel"/>
+			    </fieldset>
+			</form>
+		</div>
+		</div>
+	</body>
+
+
+
+</html>

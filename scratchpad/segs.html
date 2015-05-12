@@ -75,10 +75,14 @@
 			
 			onload = function () {
 				var keyStore = new KeyNodeStore()
+<<<<<<< HEAD
 				keyStore.addEntity("This bonus certificate is protected against foreign exchange risk at maturity [, i.e., the amounts calculated based on [the A, which is quoted in <underlying currency> ] [the B, which is quoted in <underlying currency> ] [the C, which is quoted in<underlying currency> ] [the D, which is quoted in <underlying currency> ], will be converted into <underlying currency> on a 1 to 1 basis (Quanto)].",1)
+=======
+				keyStore.addEntity("This bonus certificate is protected against foreign exchange risk at maturity [, i.e., the amounts calculated based on [the A, which is quoted in <underlyingCurrency> ] [the B, which is quoted in <underlyingCurrency> ] [the C, which is quoted in<underlyingCurrency> ] [the D, which is quoted in <underlyingCurrency> ], will be converted into <underlyingCurrency> on a 1 to 1 basis (Quanto)].",1)
+>>>>>>> d19c44e36751039661f1cfcd3f816b67f6687aa3
 				var placeholderStore = new PlaceholderStore ();
 				placeholderStore.addEntity("<product currency>","productCurrency")
-				placeholderStore.addEntity("<underlying currency>","underlyingCurrency")
+				placeholderStore.addEntity("<underlyingCurrency>","underlyingCurrency")
 				new SelectionManager(document.getElementById("test"))
 				new PasteManager(document.getElementById("test"),keyStore,placeholderStore)
 				new InputTracker(document.getElementById("test"),placeholderStore)
@@ -207,10 +211,17 @@ function stripData(node) {
 
 				This bonus certificate is protected against foreign exchange risk at maturity
 	{1:, i.e., the amounts calculated based on
+<<<<<<< HEAD
 		{or2:the share, which is quoted in <underlying currency>}
 		{or3:the index, which is quoted in <underlying currency>}
 		{or4:the commodity, which is quoted in <underlying currency>}
 		{or5:the underlying, which is quoted in <underlying currency>}
+=======
+		{or2:the share, which is quoted in <underlyingCurrency>}
+		{or3:the index, which is quoted in <underlyingCurrency>}
+		{or4:the commodity, which is quoted in <underlyingCurrency>}
+		{or5:the underlying, which is quoted in <underlyingCurrency>}
+>>>>>>> d19c44e36751039661f1cfcd3f816b67f6687aa3
 	, will be converted into <product currency> on a 1 to 1 basis (Quanto)
 	}
 .
@@ -278,7 +289,11 @@ PlaceholderEntityModel.prototype = new EntityModel("placeholder");
 
 
 
+<<<<<<< HEAD
 var string = "This bonus certificate is protected against foreign exchange risk at maturity {1:, i.e., the amounts calculated based on {or2:the share, which is quoted in <underlying currency>} {or3:the index, which is quoted in <underlying currency>} {or4:the commodity, which is quoted in <underlying currency>} {or5:the underlying, which is quoted in <underlying currency>}, will be converted into <product currency> on a 1 to 1 basis (Quanto)}."
+=======
+var string = "This bonus certificate is protected against foreign exchange risk at maturity {1:, i.e., the amounts calculated based on {or2:the share, which is quoted in <underlyingCurrency>} {or3:the index, which is quoted in <underlyingCurrency>} {or4:the commodity, which is quoted in <underlyingCurrency>} {or5:the underlying, which is quoted in <underlyingCurrency>}, will be converted into <product currency> on a 1 to 1 basis (Quanto)}."
+>>>>>>> d19c44e36751039661f1cfcd3f816b67f6687aa3
 
 
 
@@ -365,10 +380,10 @@ console.log(k1.node)
 		<textarea style="width: 100%; height: 10em">
 			This bonus certificate is protected against foreign exchange risk at maturity
 			{1:, i.e., the amounts calculated based on
-				{or2:the share, which is quoted in <underlying currency>}
-				{or3:the index, which is quoted in <underlying currency>}
-				{or4:the commodity, which is quoted in <underlying currency>}
-				{or5:the underlying, which is quoted in <underlying currency>}
+				{or2:the share, which is quoted in <underlyingCurrency>}
+				{or3:the index, which is quoted in <underlyingCurrency>}
+				{or4:the commodity, which is quoted in <underlyingCurrency>}
+				{or5:the underlying, which is quoted in <underlyingCurrency>}
 			, will be converted into <product currency> on a 1 to 1 basis (Quanto)
 			}
 		.
