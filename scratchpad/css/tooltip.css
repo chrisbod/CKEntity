@@ -1,6 +1,7 @@
 .tooltip {
 	position: absolute;
 	min-width: 10em;
+	left: -1000px;
 }
 .tooltip header {
 font-size: 100%;

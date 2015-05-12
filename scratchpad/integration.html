@@ -8,7 +8,7 @@ For licensing, see LICENSE.md or http://ckeditor.com/license
 	<meta charset="utf-8">
 	<title>XHTML Compliant Output &mdash; CKEditor Sample</title>
 	<meta name="ckeditor-sample-required-plugins" content="sourcearea">
-	<script src="https://code.jquery.com/jquery-1.11.2.min.js">
+	<script src="../vendor/jquery/jquery-1.11.2.min.js">
 
  
 	</script>
@@ -116,16 +116,15 @@ For licensing, see LICENSE.md or http://ckeditor.com/license
 			tooltip.attachEvents();
 			tooltip.update();
 			tooltip.show()
-<<<<<<< HEAD
 			window.tooltip = tooltip*/
 
-			var tooltip = new TokenTooltipViewModel(document.querySelector("#entity-edit token"));
-			ko.applyBindings(tooltip,document.querySelector("#entity-edit"))
-=======
-			window.tooltip = tooltip
+			var entityTooltip = new EntityTooltip()
+			entityTooltip.init(document.getElementById("edit"),document.querySelector("#entity-edit"));
+
+			//window.tooltip = tooltip
 			var userConditionalManager = new UserConditionalManager()
 			userConditionalManager.init(document.getElementById("edit"))
->>>>>>> edd8431e7b286cdb0cd51a97bdc628696e686832
+
 			
 
 			$.ajax("xml/keys.json", {mimeType:"application-x/json", success: function (keys) {
@@ -173,7 +172,7 @@ For licensing, see LICENSE.md or http://ckeditor.com/license
 		</script>
 
 		<button onclick="autoSave.load()">Load</button><button onclick="autoSave.save()">Save</button><button onclick="tooltip.show()">Tip</button>
-		<div id="edit" contenteditable="true" class="editing" style="height:50%; margin-top: 10%">
+		<div id="edit" title="" contenteditable="true" class="editing" style="height:50%; margin-top: 10%">
 			Type in here
 		</div>
 
@@ -269,12 +268,16 @@ For licensing, see LICENSE.md or http://ckeditor.com/license
 		<div class="tooltip" id="entity-edit">
 			
 
-				<header data-bind="title">
-					<token contenteditable="false" data-args="type: 'cap'" class="cap"><span class="args token" contenteditable="false" data-args="type: 'cap'">&lt;</span><span>cap<span></span></span><span class="token end">&gt;</span></token>
+				<header data-bind="text:title()">
+					
 				</header>
 				<fieldset>
-					<button data-bind="if: canEditRules()">Rules</button>
-					<button data-bind="if: canEditProperties()">Properties</button>
+					<!--ko if: canEditRules() -->
+					<button>Rules</button>
+					<!--/ko-->
+					<!--ko if: canEditProperties() -->
+					<button>Properties</button>
+					<!--/ko-->
 				</fieldset>
 			
 		</div>

@@ -71,7 +71,9 @@ conditional.user:after {
 }
 conditional.user .conditional.args {
 	color: rgba(0,0,0,0);
-	
+}
+conditional > span.contents:focus {
+	outline: none;
 }
 
 translation {

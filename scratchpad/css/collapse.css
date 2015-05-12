@@ -5,6 +5,9 @@
 	margin-left: 0.5ex;
 	margin-right: 1.5ex;
 }
+span.conditional:last-child {
+  color: rgba(0,0,0,0);
+}
 
 conditional.user span.conditional.args:first-child {
   margin-left: -0.5ex;

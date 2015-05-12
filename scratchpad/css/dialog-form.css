@@ -151,11 +151,17 @@ select{
 
 .tooltip {
     border: 1px solid #999999;
-    float: left;
     padding: 0.5ex;
     min-width: 20em;
-    margin: 4em;
     background-color: #eeeeee;
+}
+.tooltip header {
+    max-width: 20em;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    margin: auto;
+    text-align: center;
 }
 .tooltip section {
     display: table;

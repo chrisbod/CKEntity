@@ -1,4 +1,4 @@
-
+/*
 
 function EntityToolTip() {
 	
@@ -35,4 +35,60 @@ function EntityToolTip() {
 	}
 
 
-})
+})*/
+
+function EntityTooltip() {
+	this.entitiesHelper = new EntitiesHelper();
+	this.intent = new Intent(1000);
+}
+EntityTooltip.prototype = {
+	bindingsApplied: false,
+	init: function (editableElement,tooltipElement) {
+		this.editableElement = editableElement;
+		this.editableElement.addEventListener("mouseover", this);
+		this.tooltipElement = tooltipElement;
+		this.tooltipElement.addEventListener("mouseleave", this)
+		this.tooltipElement.addEventListener("mouseenter", this)
+		this.knockoutViewModel = new TokenTooltipViewModel(tooltipElement);
+		ko.applyBindings(this.knockoutViewModel,tooltipElement)
+	},
+	handleEvent: function (event) {
+		return this[event.type+'Handler'](event)
+	},
+	mouseoverHandler: function (event) {
+		var over = event.toElement;
+		if (over!=this.editableElement) {
+			over = this.entitiesHelper.getEntityElement(event.toElement,event);
+			if (over) {
+				if (this.currentlyOver != over) {
+					this.intent.request(this.activateTooltip.bind(this,over,event))
+					this.currentlyOver = over;
+					
+					
+				} 
+			} 
+		} else {
+			this.currentlyOver = null;
+			this.intent.request(this.deactivateTooltip.bind(this))
+		}
+	},
+	mouseleaveHandler: function (event) {
+		this.currentlyOver = null;
+		this.intent.request(this.deactivateTooltip.bind(this))
+	},
+	mouseenterHandler: function (event) {
+		this.intent.cancel()
+	},
+	activateTooltip: function (entity,event) {
+		this.intent.request(this.deactivateTooltip.bind(this),4000)
+		this.knockoutViewModel.updateFromElement(entity);
+		var bounding = entity.getBoundingClientRect();
+		this.tooltipElement.style.left = bounding.left+"px";
+		this.tooltipElement.style.top = bounding.bottom+"px";
+
+	},
+	deactivateTooltip: function () {
+		this.currentlyOver = null;
+		this.tooltipElement.style.left = "";
+	}
+}

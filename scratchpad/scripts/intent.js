@@ -12,10 +12,10 @@ Intent.prototype= {
 		clearTimeout(this.timeout);
 		delete this.timeout;
 	},
-	request: function (action) {
+	request: function (action,delay) {
 		this.cancel();
 		this.action = action;
-		this.timeout = setTimeout(this.fulfill.bind(this),this.delay)
+		this.timeout = setTimeout(this.fulfill.bind(this),delay||this.delay)
 	},	
 	fulfill: function () {
 		this.action.apply(null);
