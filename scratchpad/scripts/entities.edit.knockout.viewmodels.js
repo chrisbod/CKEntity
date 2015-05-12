@@ -10,33 +10,32 @@ EntityViewModel.prototype = {
 	},
 	update: function () {
 		this.active(false);
+		console.log(this.values(),this.element)
 		this.entitiesHelper.setDataArguments(this.element,this.values())
 	}
 }
 
 
-function TokenDialogViewModel(element,dialogElement) {
+function TokenDialogViewModel(element) {
 	this.values = new ko.observable();
-	this.dialogElement = dialogElement;
 	this.tokenText =  ko.observable("");
 	this.text = ko.observable("");
 	this.active = ko.observable(true);
 	this.groups = ko.observableArray([]);
-	this.updateFromElement(element);
 }
 TokenDialogViewModel.prototype = new EntityViewModel();			
 TokenDialogViewModel.prototype.updateFromElement = function (element) {
-	this.values(this.entitiesHelper.getValuesFromToken(element));
-	var tokenDefinition = this.helper.getTokenDefinitionByType(this.values().type);
+	this.element = element;
+	this.values(this.entitiesHelper.getDataArguments(element));
+	var tokenDefinition = this.entitiesHelper.getTokenDefinitionByType(this.values().type);
 	this.text(tokenDefinition.text);
 	this.tokenText(tokenDefinition.id);
 	this.groups(tokenDefinition.groups);
 }
 
 
-function LogicDialogViewModel(element,dialogElement) {
+function LogicDialogViewModel(element) {
 	this.values = new ko.observable();
-	this.dialogElement = dialogElement;
 	this.text = ko.observable("");
 	this.active = ko.observable(false);
 	this.headings = ko.observableArray([]);
@@ -47,7 +46,7 @@ LogicDialogViewModel.prototype = new EntityViewModel();
 LogicDialogViewModel.prototype.updateFromElement = function (element) {
 	this.element = element;
 	this.text(element.innerText)
-	this.values(this.entitiesHelper.getValuesFromElement(element));
+	this.values(this.entitiesHelper.getDataArguments(element));
 	var tableData = this.transpose(this.entitiesHelper.logicDefinitions);
 	this.headings(tableData.headings);
 	this.rows(tableData.rows);
@@ -78,9 +77,7 @@ function TokenTooltipViewModel(element) {
 	this.groups = ko.observableArray([]);
 	this.canEditRules = ko.observable(false);
 	this.canEditProperties = ko.observable(false);
-	if (element) {
-		this.updateFromElement(element);
-	}
+	this.active = ko.observable(false)
 }
 TokenTooltipViewModel.prototype = new EntityViewModel();
 TokenTooltipViewModel.prototype.updateFromElement = function (element) {
@@ -91,3 +88,25 @@ TokenTooltipViewModel.prototype.updateFromElement = function (element) {
 	this.canEditRules(permissions.rules||false);
 	this.canEditProperties(permissions.properties||false)
 }
+TokenTooltipViewModel.prototype.launchRulesDialog = function () {
+		if (!this.rulesModel) {
+			var dialog = document.getElementById("logicDialog");
+			this.rulesModel = new LogicDialogViewModel(this.element);
+			ko.applyBindings(this.rulesModel,dialog)
+		}
+		this.active(false)
+		this.rulesModel.updateFromElement(this.element)
+		
+		this.rulesModel.active(true)
+	}
+TokenTooltipViewModel.prototype.launchPropertiesDialog = function () {
+		if (!this.propertiesModel) {
+			var dialog = document.getElementById("tokenDialog");
+			this.tokenModel = new TokenDialogViewModel(this.element);
+			ko.applyBindings(this.tokenModel,dialog)
+		} 
+		this.active(false)
+		this.tokenModel.updateFromElement(this.element)
+		this.tokenModel.active(true)
+}
+

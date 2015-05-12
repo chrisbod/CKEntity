@@ -2,7 +2,7 @@ function Intent(delay) {
 	this.delay = delay||this.delay;
 }
 Intent.prototype= {
-	delay: 500,
+	delay: 300,
 	cancel: function () {
 		clearTimeout(this.timeout);
 		delete this.timeout;

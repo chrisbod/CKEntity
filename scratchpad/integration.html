@@ -265,18 +265,18 @@ For licensing, see LICENSE.md or http://ckeditor.com/license
 			</form>
 		</div>
 
-		<div class="tooltip" id="entity-edit">
+		<div class="tooltip hidden"   data-bind="attr: {'class': 'tooltip' + (active() ? ' active' : ' hidden')}" id="entity-edit">
 			
 
 				<header data-bind="text:title()">
 					
 				</header>
 				<fieldset>
-					<!--ko if: canEditRules() -->
-					<button>Rules</button>
+					<!--ko if: canEditRules -->
+					<button data-bind="click: launchRulesDialog">Rules</button>
 					<!--/ko-->
-					<!--ko if: canEditProperties() -->
-					<button>Properties</button>
+					<!--ko if: canEditProperties-->
+					<button data-bind="click: launchPropertiesDialog">Properties</button>
 					<!--/ko-->
 				</fieldset>
 			

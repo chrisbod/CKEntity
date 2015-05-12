@@ -41,6 +41,13 @@ function EntityTooltip() {
 	this.entitiesHelper = new EntitiesHelper();
 	this.intent = new Intent(1000);
 }
+EntityTooltip.getInstance = function () {
+	if (!this.instance) {
+		return this.instance = new this();
+	} else {
+		this.instance
+	}
+}
 EntityTooltip.prototype = {
 	bindingsApplied: false,
 	init: function (editableElement,tooltipElement) {
@@ -49,8 +56,12 @@ EntityTooltip.prototype = {
 		this.tooltipElement = tooltipElement;
 		this.tooltipElement.addEventListener("mouseleave", this)
 		this.tooltipElement.addEventListener("mouseenter", this)
-		this.knockoutViewModel = new TokenTooltipViewModel(tooltipElement);
-		ko.applyBindings(this.knockoutViewModel,tooltipElement)
+	},
+	bind: function () {
+		if (!this.knockoutViewModel) {
+			this.knockoutViewModel = new TokenTooltipViewModel(this.tooltipElement);
+			ko.applyBindings(this.knockoutViewModel,this.tooltipElement)
+		}
 	},
 	handleEvent: function (event) {
 		return this[event.type+'Handler'](event)
@@ -63,8 +74,6 @@ EntityTooltip.prototype = {
 				if (this.currentlyOver != over) {
 					this.intent.request(this.activateTooltip.bind(this,over,event))
 					this.currentlyOver = over;
-					
-					
 				} 
 			} 
 		} else {
@@ -80,15 +89,22 @@ EntityTooltip.prototype = {
 		this.intent.cancel()
 	},
 	activateTooltip: function (entity,event) {
+		this.bind()
 		this.intent.request(this.deactivateTooltip.bind(this),4000)
 		this.knockoutViewModel.updateFromElement(entity);
 		var bounding = entity.getBoundingClientRect();
 		this.tooltipElement.style.left = bounding.left+"px";
 		this.tooltipElement.style.top = bounding.bottom+"px";
+		this.knockoutViewModel.active(true)
 
 	},
 	deactivateTooltip: function () {
 		this.currentlyOver = null;
 		this.tooltipElement.style.left = "";
+		this.tooltipElement.style.top = "";
+		if (this.knockoutViewModel) {
+			this.knockoutViewModel.active(false);
+		}
+
 	}
 }

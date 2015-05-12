@@ -7,7 +7,7 @@ EntitySelectionManager.prototype = {
 		//this.editableElement.addEventListener("click", this);
 		//this.editableElement.addEventListener("dblclick", this);
 		//document.addEventListener("keydown", this, true);
-		//document.addEventListener("keyup", this, true);
+		document.addEventListener("keyup", this, true);
 		//document.addEventListener("paste", this, true);
 		//this.editableElement.addEventListener("contextmenu", this, true)
 	},
@@ -34,14 +34,14 @@ EntitySelectionManager.prototype = {
 		}
 	},
 	keyupHandler: function (event) {
-		if (this.editableElement.contains(event.target)) {
-			switch (event.keyCode) {
-				case 37: return this.handleLeftArrow(event);
-				//case 39: return this.handleRightArrow(event);
-				case 38:
-				case 40: return this.fixVerticalSelectionLocation(event);
-			}
+		var selection = document.getSelection();
+		if (selection.baseNode.data == "\u200b") {
+			selection.baseNode.data = "";
 		}
+		selection.baseNode.normalize()
+		selection.baseNode.parentNode.normalize();
+
+		
 	},
 	fixHorizontalSelectionLocation: function (event) {
 		
