@@ -14,14 +14,15 @@ EntityPasteManager.prototype = {
 	init: function (editableElement) {
 		this.editableElement = editableElement;//weird have to add directly
 		var pasteManager = this
-		this.editableElement.onpaste = this.handleEvent.bind(this)
+		this.editableElement.onpaste = this.handleEvent.bind(this);
+		this.editableDocument = this.editableElement.ownerDocument
 	},
 	handleEvent: function (event) {
 		return this[event.type+"Handler"](event);
 	},
 	pasteHandler: function (event) {
 		if (this.editableElement.contains(event.target)) {
-			var selection = document.getSelection();
+			var selection = this.editableDocument.getSelection();
 			var range = selection.getRangeAt(0);
 			setTimeout(this.postPaste.bind(this,range,event))
 		} else {
@@ -30,9 +31,9 @@ EntityPasteManager.prototype = {
 	},
 	postPaste: function (pasteRange,pasteEvent) {
 
-		var selection = document.getSelection(),
+		var selection = this.editableDocument.getSelection(),
 			range = selection.getRangeAt(0),
-			newRange = document.createRange(),
+			newRange = this.editableDocument.createRange(),
 			newText;
 
 		newRange.setEnd(range.endContainer,range.endOffset)

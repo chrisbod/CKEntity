@@ -5,6 +5,7 @@ function EntityEditManager() {
 EntityEditManager.prototype = {
 	init: function (editableElement,editor) {
 		this.editableElement = editableElement;
+		this.editableDocument = editableElement.ownerDocument;
 		//this.editableElement.addEventListener("click",this,true)
 		//this.editableElement.addEventListener("contextmenu",this,true)
 	},

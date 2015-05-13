@@ -10,7 +10,6 @@ EntityViewModel.prototype = {
 	},
 	update: function () {
 		this.active(false);
-		console.log(this.values(),this.element)
 		this.entitiesHelper.setDataArguments(this.element,this.values())
 	}
 }
@@ -38,8 +37,7 @@ function LogicDialogViewModel(element) {
 	this.values = new ko.observable();
 	this.text = ko.observable("");
 	this.active = ko.observable(false);
-	this.headings = ko.observableArray([]);
-	this.rows =  ko.observableArray([]);
+	this.options = ko.observableArray([]);
 	this.updateFromElement(element);
 }
 LogicDialogViewModel.prototype = new EntityViewModel();
@@ -47,29 +45,7 @@ LogicDialogViewModel.prototype.updateFromElement = function (element) {
 	this.element = element;
 	this.text(element.innerText)
 	this.values(this.entitiesHelper.getDataArguments(element));
-	var tableData = this.transpose(this.entitiesHelper.logicDefinitions);
-	this.headings(tableData.headings);
-	this.rows(tableData.rows);
-}
-LogicDialogViewModel.prototype.transpose = function (logic) {
-	var columnCount = logic.length,
-		rowCount = 0,
-		headings = [],
-		rows = [];
-	for (var i=0;i<logic.length;i++) {
-		headings.push(logic[i])
-		rowCount = Math.max(logic[i].items.length,rowCount)
-	}
-	for (i=0;i<rowCount;i++) {
-		rows[i] = [];
-		for (var j=0;j<columnCount;j++) {
-			rows[i][j] = logic[j].items[i]
-		}
-	}
-	return {
-		headings: headings,
-		rows: rows
-	}
+	this.logic = this.entitiesHelper.logicDefinitions;
 }
 
 function TokenTooltipViewModel(element) {
@@ -102,11 +78,11 @@ TokenTooltipViewModel.prototype.launchRulesDialog = function () {
 TokenTooltipViewModel.prototype.launchPropertiesDialog = function () {
 		if (!this.propertiesModel) {
 			var dialog = document.getElementById("tokenDialog");
-			this.tokenModel = new TokenDialogViewModel(this.element);
-			ko.applyBindings(this.tokenModel,dialog)
+			this.propertiesModel = new TokenDialogViewModel(this.element);
+			ko.applyBindings(this.propertiesModel,dialog)
 		} 
 		this.active(false)
-		this.tokenModel.updateFromElement(this.element)
-		this.tokenModel.active(true)
+		this.propertiesModel.updateFromElement(this.element)
+		this.propertiesModel.active(true)
 }
 

@@ -1,0 +1,360 @@
+[
+	{
+		"text": "Product type",
+		"id": "productType",
+		"items": [
+			{
+				"value": "bonusCertificate",
+				"text": "Bonus certificate"
+			},
+			{
+				"value": "discountCertificate",
+				"text": "Discount certificate"
+			},
+			{
+				"value": "expressCertificate",
+				"text": "Express certificate"
+			},
+			{
+				"value": "sprintCertificate",
+				"text": "Sprint certificate"
+			},
+			{
+				"value": "reverseConvertible",
+				"text": "Reverse convertible"
+			},
+			{
+				"value": "turboCertificate",
+				"text": "Turbo certificate"
+			},
+			{
+				"value": "warrant",
+				"text": "Warrant"
+			},
+			{
+				"value": "callOption",
+				"text": "Call option"
+			},
+			{
+				"value": "putOption",
+				"text": "Put option"
+			}
+		]
+	},
+	{
+		"text": "Security type",
+		"id": "securityType",
+		"items": [
+			{
+				"value": "note",
+				"text": "Note"
+			},
+			{
+				"value": "certificate",
+				"text": "Certificate"
+			},
+			{
+				"value": "warrant",
+				"text": "Warrant"
+			}
+		]
+	},
+	{
+		"text": "Number of underlyings",
+		"id": "numberOfUnderlyings",
+		"items": [
+			{
+				"value": "oneUnderlying",
+				"text": "One"
+			},
+			{
+				"value": "oneOrMoreUnderlyings",
+				"text": "At least one"
+			},
+			{
+				"value": "moreThanOneUnderlying",
+				"text": "More than one"
+			}
+		]
+	},
+	{
+		"text": "Underlying type",
+		"id": "underlyingType",
+		"items": [
+			{
+				"value": "atLeastOneShare",
+				"text": "At least one share"
+			},
+			{
+				"value": "atLeastOnePreferenceShare",
+				"text": "At least one preference share"
+			},
+			{
+				"value": "atLeastOneProfitParticipationCertificate",
+				"text": "At least one profit participation certificate"
+			},
+			{
+				"value": "atLeastOneADR",
+				"text": "At least one ADR"
+			},
+			{
+				"value": "atLeastOneCertificate",
+				"text": "At least one certificate"
+			},
+			{
+				"value": "atLeastOneWarrant",
+				"text": "At least one warrant"
+			},
+			{
+				"value": "atLeastOneIndex",
+				"text": "At least one index"
+			},
+			{
+				"value": "atLeastOneETF",
+				"text": "At least one ETF"
+			},
+			{
+				"value": "atLeastOneCommodity",
+				"text": "At least one commodity"
+			},
+			{
+				"value": "onlyShares",
+				"text": "Only shares"
+			},
+			{
+				"value": "onlyPreferenceShares",
+				"text": "Only preference shares"
+			},
+			{
+				"value": "onlyProfitParticipationCertificate",
+				"text": "Only profit participation certificate"
+			},
+			{
+				"value": "onlyADRs",
+				"text": "Only ADRs"
+			},
+			{
+				"value": "onlyCertificates",
+				"text": "Only certificates"
+			},
+			{
+				"value": "onlyWarrants",
+				"text": "Only warrants"
+			},
+			{
+				"value": "onlyIndices",
+				"text": "Only indices"
+			},
+			{
+				"value": "onlyETFs",
+				"text": "Only ETFs"
+			},
+			{
+				"value": "onlyCommodities",
+				"text": "Only commodities"
+			}
+		]
+	},
+	{
+		"text": "Quotation type",
+		"id": "quotationType",
+		"items": [
+			{
+				"value": "parValue",
+				"text": "Par value"
+			},
+			{
+				"value": "nonParValue",
+				"text": "Non-par value"
+			}
+		]
+	},
+	{
+		"text": "FX risk applies",
+		"id": "fxRisk",
+		"items": [
+			{
+				"value": "yes",
+				"text": "Yes"
+			},
+			{
+				"value": "no",
+				"text": "No"
+			}
+		]	
+	},
+	{
+		"text": "Quanto applies",
+		"id": "quanto",
+		"items": [
+			{
+				"value": "yes",
+				"text": "Yes"
+			},
+			{
+				"value": "no",
+				"text": "No"
+			}
+		]
+	},
+	{
+		"text": "Settlement type",
+		"id": "settlementType",
+		"items": [
+			{
+				"value": "cash",
+				"text": "Cash"
+			},
+			{
+				"value": "cashOrPhysical",
+				"text": "Cash or physical"
+			}
+		]
+	},
+	{
+		"text": "Business day convention",
+		"id": "businessDayConvention",
+		"items": [
+			{
+				"value": "following",
+				"text": "Following"
+			},
+			{
+				"value": "modifiedFollowing",
+				"text": "Modified following"
+			},
+			{
+				"value": "preceding",
+				"text": "Preceding"
+			}
+		]
+	},
+	{
+		"text": "Coupon type",
+		"id": "couponType",
+		"items": [
+			{
+				"value": "fixed",
+				"text": "Fixed"
+			},
+			{
+				"value": "floating",
+				"text": "Floating"
+			}
+		]	
+	},
+	{
+		"text": "Contingent coupon applies",
+		"id": "contingentCoupon",
+		"items": [
+			{
+				"value": "yes",
+				"text": "Yes"
+			},
+			{
+				"value": "no",
+				"text": "No"
+			}
+		]	
+	},
+	{
+		"text": "Memory coupon applies",
+		"id": "memoryCoupon",
+		"items": [
+			{
+				"value": "yes",
+				"text": "Yes"
+			},
+			{
+				"value": "no",
+				"text": "No"
+			}
+		]	
+	},
+	{
+		"text": "Upside style",
+		"id": "upsideStyle",
+		"items": [
+			{
+				"value": "digital",
+				"text": "Digital"
+			},
+			{
+				"value": "participationInCall",
+				"text": "Participation in call"
+			},
+			{
+				"value": "participationInCallSpread",
+				"text": "Participation in call spread"
+			}
+		]
+	},
+	{
+		"text": "Downside style",
+		"id": "downsideStyle",
+		"items": [
+			{
+				"value": "kiPutAtMaturityAtTheClose",
+				"text": "KI put at maturity at the close"
+			},
+			{
+				"value": "kiDailyAtTheClose",
+				"text": "KI put daily at the close"
+			},
+			{
+				"value": "kiPutContinuous",
+				"text": "KI put continuous"
+			},
+			{
+				"value": "vanillaPut",
+				"text": "Vanilla put"
+			}
+		]
+	},
+	{
+		"text": "Barrier has been breached",
+		"id": "barrierBreached",
+		"items": [
+			{
+				"value": "yes",
+				"text": "Yes"
+			},
+			{
+				"value": "no",
+				"text": "No"
+			}
+		]
+	},
+	{
+		"text": "Listing",
+		"id": "listing",
+		"items": [
+			{
+				"value": "unlisted",
+				"text": "Unlisted"
+			},
+			{
+				"value": "luxembourg",
+				"text": "Luxembourg"
+			},
+			{
+				"value": "luxembourgEuroMTF",
+				"text": "Luxembourg Euro MTF"
+			}
+		]
+	},
+	{
+		"text": "Secondary market applies",
+		"id": "secondaryMarket",
+		"items": [
+			{
+				"value": "yes",
+				"text": "Yes"
+			},
+			{
+				"value": "no",
+				"text": "No"
+			}
+		]
+	}
+]

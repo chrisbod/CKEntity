@@ -8,6 +8,35 @@ EntitiesHelper.prototype = {
 			return /TRANSLATION|TOKEN|CONDITIONAL/i.test(element.tagName);
   		}
 	},
+	isTokenElement: function (element) {
+		if (element) { 			
+			return /TOKEN/i.test(element.tagName);
+  		}
+	},
+	getEntityType: function (element) {
+		if (!element) {
+			return "";
+		}
+		switch (element.tagName) {
+			case "TOKEN": {
+				return "token";
+			}
+			case "CONDITIONAL": {
+				if (element.classList.contains("user")) {
+					return "userconditional";
+				} else {
+					return "conditional";
+				}
+			}
+			case "TRANSLATION": return "translation";
+			case "SPAN": if (element.classList.contains("end")) {
+				return "endmarker";
+			} else if (element.classList.contains("args")) {
+				return "startmarker"
+			}
+		}
+		return "";
+	},
 	getEntityElement: function (startNode,event) {
 		var currentNode = startNode,
 			path = [];
@@ -81,12 +110,15 @@ EntitiesHelper.prototype = {
 	},
 	setDataArguments: function (element,values) {
 		var args = [];
-		for (var i=0;i<values;i++) {
-			args.push(values[i]+":'"+this[i]+"'");
+		for (var i in values) {
+			args.push(i+":'"+values[i]+"'");
 		}
+		console.log(args)
 		element.setAttribute("data-args",args);
+		element.firstChild.setAttribute("data-args",args);
 	},
 	setDataArgument: function (element,key,value) {
+		console.log(arguments)
 		var values = this.getElementDataArguments(element);
 		values[key] = value;
 		this.updateElementDataArguments(element,values);
@@ -115,19 +147,3 @@ EntitiesHelper.prototype = {
 }
 
 
-$(function () {
-	$.ajax("xml/tokens.json", {
-		mimeType: "application-x/json",
-		success: function (tokenDefinitions) {
-			EntitiesHelper.prototype.tokenDefinitions = tokenDefinitions;
-		}
-	})
-	$.ajax("xml/logic.json", {
-		mimeType: "application-x/json",
-		success: function (logicDefinitions) {
-			EntitiesHelper.prototype.definitions = logicDefinitions;
-		}
-	})
-
-
-});

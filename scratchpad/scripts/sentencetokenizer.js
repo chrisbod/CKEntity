@@ -6,8 +6,9 @@ function SentenceTokenizer () {
 SentenceTokenizer.prototype = {
 	getLastSentenceFromRange: function (rangeOrText) {
 		var text = ""+rangeOrText;
-		//text = text.replace(/\u200b/gm,'')
+		text = text.replace(/\u200b/gm,'')
 		var sentences = text.split(/\.\s+(?=[A-Z])/)
+
 		if (sentences) {
 			var lastSentence = sentences[sentences.length-1];
 			return lastSentence;
@@ -17,14 +18,15 @@ SentenceTokenizer.prototype = {
 	getTrigger: function (rangeOrText) {
 		text = this.getLastSentenceFromRange(rangeOrText);
 		text = text.replace(/\u200b/gm,'');
-		var split = text.trim().split(" ");
-		if (split.length > 1 && this.tokens[split[0]]) {
+		var split = text.trim().split(/\s+/);
+		if (split.length > 0 && this.tokens[split[0]]) {
 			return text;
 		}
 		return "";
 	},
 	tokenize: function (key) {
-		var split = key.def.trim().split(/\W+/),
+		var tidied = key.def.trim().replace(/(<[^\:])|(>)/g,'').replace(/\[.*$/g,' [..]')
+		var split = tidied.split(/\W+/),
 			currentToken = this.tokens
 		for (var i=0,existingToken;i<split.length;i++) {
 			existingNode = currentToken[split[i]]
@@ -37,13 +39,13 @@ SentenceTokenizer.prototype = {
 	},
 	getSuggestions: function (string) {
 		string = string.trim()
-		if (string.indexOf(" ")==-1) {
+		//if (string.indexOf(" ")==-1) {
 			if (this.tokens[string] && this.tokens[string]._$) {
 				return [this.tokens[string]._$];
-			} else {
-				return [];
-			}
-		}
+			} //else {
+				//return [];
+			//}
+		//}
 		var split = string.trim().split(/\s+/),
 			results = [];
 		function crawl(object) {
@@ -51,7 +53,7 @@ SentenceTokenizer.prototype = {
 				var next = split.shift();
 					if (next in object) {
 						crawl(object[next])
-					} else if (!split.length) {
+					} else {
 						complete(object,next)
 					}
 			} else {

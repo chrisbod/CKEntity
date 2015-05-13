@@ -4,10 +4,13 @@
     left: 50%;
     -webkit-transform: translate(-50%, -50%);
     transform: translate(-50%, -50%);
+    max-height: 95%;
+    max-width: 95%;
 
 }
-.dialog.hidden {
+.dialog.hidden,.tooltip.hidden {
     left: -110000px;
+    visibility: hidden;
 }
 .dialog form {
     display: block;
@@ -40,7 +43,7 @@
   border: 1px solid black;
   border-bottom-width: 1px;
 }
-.dialog fieldset:last-child {
+.dialog section:last-child {
     text-align: right;
     background-color: #eeeeee;
     border-top-width: 0;

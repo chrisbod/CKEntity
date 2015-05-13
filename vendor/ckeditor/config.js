@@ -8,7 +8,9 @@ CKEDITOR.editorConfig = function( config ) {
 	// config.language = 'fr';
 	 //config.uiColor = '#AADC6E';
 	 config.title=false;
-	config.extraAllowedContent = 'translation token conditional';
+	 config.disableNativeSpellChecker = false;
+	 config.allowedContent = true;
+	//config.extraAllowedContent = 'translation token conditional';
 	config.extraPlugins = 'wallstreetdocs,wordpaste'
 	config.removePlugins = 'magicline, pastetext, pastefromword, clipboard'
 };

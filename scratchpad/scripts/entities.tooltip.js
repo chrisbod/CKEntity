@@ -39,7 +39,7 @@ function EntityToolTip() {
 
 function EntityTooltip() {
 	this.entitiesHelper = new EntitiesHelper();
-	this.intent = new Intent(1000);
+	this.intent = new Intent(500);
 }
 EntityTooltip.getInstance = function () {
 	if (!this.instance) {
@@ -53,6 +53,7 @@ EntityTooltip.prototype = {
 	init: function (editableElement,tooltipElement) {
 		this.editableElement = editableElement;
 		this.editableElement.addEventListener("mouseover", this);
+		this.editableDocument = this.editableElement.ownerDocument;
 		this.tooltipElement = tooltipElement;
 		this.tooltipElement.addEventListener("mouseleave", this)
 		this.tooltipElement.addEventListener("mouseenter", this)
@@ -93,8 +94,9 @@ EntityTooltip.prototype = {
 		this.intent.request(this.deactivateTooltip.bind(this),4000)
 		this.knockoutViewModel.updateFromElement(entity);
 		var bounding = entity.getBoundingClientRect();
-		this.tooltipElement.style.left = bounding.left+"px";
-		this.tooltipElement.style.top = bounding.bottom+"px";
+		var frameBounding = entity.ownerDocument.defaultView.frameElement.getBoundingClientRect();
+		this.tooltipElement.style.left = (frameBounding.left+bounding.left)+"px";
+		this.tooltipElement.style.top = (frameBounding.top+bounding.bottom)+"px";
 		this.knockoutViewModel.active(true)
 
 	},

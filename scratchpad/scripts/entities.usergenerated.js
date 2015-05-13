@@ -8,7 +8,8 @@ UserConditionalManager.prototype = {
 	init: function (editableElement) {
 		this.editableElement = editableElement;
 		this.editableElement.addEventListener("keyup", this,true)
-		//this.editableElement.addEventListener("keydown", this)
+		this.editableElement.addEventListener("keydown", this);
+		this.editableDocument = this.editableElement.ownerDocument;
 		this.generateUserConditionalTemplateNode()
 	},
 	handleEvent: function (event) {
@@ -29,7 +30,7 @@ UserConditionalManager.prototype = {
 		console.log("here")
 	}, 
 	openSquareBrackets: function (event) {
-		var selection = document.getSelection(),
+		var selection = this.editableDocument.getSelection(),
 			range = selection.getRangeAt(0),
 			conditional = this.conditionalTemplateNode.cloneNode(true);
 		if (range.collapsed == true) {
@@ -43,7 +44,7 @@ UserConditionalManager.prototype = {
 					sibling.splitText(1)
 				}
 				sibling.parentNode.replaceChild(conditional,sibling)
-				conditional.parentNode.insertBefore(document.createTextNode("\u00A0"),conditional.nextSibling)
+				conditional.parentNode.insertBefore(this.editableDocument.createTextNode("\u00A0"),conditional.nextSibling)
 				selection.removeAllRanges();
 				selection.selectAllChildren(conditional.querySelector(".contents.conditional"));
 				selection.collapseToEnd()
@@ -57,7 +58,7 @@ UserConditionalManager.prototype = {
 		}
 	},
 	checkDelete: function (event) {
-		var selection = document.getSelection();
+		var selection = this.editableDocument.getSelection();
 		//console.log(selection)
 		//console.log(event.currentTarget)
 		
@@ -87,8 +88,9 @@ UserConditionalManager.prototype = {
 	generateUserConditionalTemplateNode: function () {
 		var conditional = document.createElement("conditional");
 		conditional.className = "user"
+		conditional.setAttribute("contenteditable","false");
 		conditional.setAttribute("data-args","type: 'user'");
-		conditional.innerHTML = '<span class="args conditional"  contenteditable="false">[</span><span class="contents conditional"></span><span class="conditional end" contenteditable="false">]</span>'
+		conditional.innerHTML = '<span class="args conditional"  contenteditable="false">[</span><span class="contents conditional" contenteditable="true"></span><span class="conditional end" contenteditable="false">]</span>'
 		this.conditionalTemplateNode = conditional;
 
 	},

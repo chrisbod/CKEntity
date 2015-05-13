@@ -1,0 +1,138 @@
+span.rules {
+	color: red;
+
+}
+
+token {
+	display: inline-block;
+	
+}
+translation, marker {
+	border-bottom: 1px dotted black;
+}
+
+token,translation,token *, translation * {
+	  -webkit-user-modify: read-only;
+	  -moz-user-modify: read-only;
+	  user-modify: read-only;
+}
+
+.editing token {
+	color: red;
+}
+
+translation {
+	display: inline;
+	border-bottom: 1px dotted black;
+}
+
+
+
+token, translation, conditional {
+	display: inline;
+}
+token > span {
+	display: none;
+}
+
+token {
+	color: red;	
+}
+token > span {
+	display: inline;
+}
+
+token preview {
+	display: none;
+}
+token {
+	white-space: nowrap;
+}
+
+conditional.user {
+	
+	display: inline;
+	color: blue;
+}
+conditional.user:before {
+	content: '[';
+}
+conditional.user:after {
+	content: ']';
+}
+conditional.user .conditional.args {
+	color: rgba(0,0,0,0);
+}
+conditional > span.contents:focus {
+	outline: none;
+}
+
+translation {
+	display: inline;
+	border-bottom: 1px dotted black;
+}
+
+table.scenario-table {
+	border: 1px solid black;
+}
+table.scenario-table th {
+	background-color: black;
+	color: white;
+}
+
+
+
+
+.conditional:first-child {
+	position: relative;
+	display: inline-block;
+	box-sizing: border-box;
+	margin-left: 0.5ex;
+	margin-right: 1.5ex;
+}
+.conditional:last-child,
+translation > .args,
+translation > .end
+ {
+  color: rgba(0,0,0,0);
+}
+
+translation span.args:first-child {
+  margin-left: -0.5ex;
+}
+span.conditional:first-child::before {
+  position: absolute;
+  width: 1.5ex;
+  background-image: url(../img/minus.png);
+  background-repeat: no-repeat;
+  background-size: 9px;
+  background-position: center center;
+  margin: 0 0 0 0.5ex;
+  color: rgba(0,0,0,1);
+  overflow: hidden;
+  text-indent: 100%;
+  content: '';
+  height: 100%;
+}
+
+conditional.user[data-collapsed] span.conditional.args:first-child {
+  margin: 0 0.3ex 0 0ex;
+}
+conditional[data-collapsed] span.contents {
+	display: none;
+}
+conditional[data-collapsed]:before {
+  content: ' [';
+}
+conditional[data-collapsed]:after {
+  content: ' ]';
+}
+conditional[data-collapsed] span.conditional {
+	color: white;
+  margin: 0;
+  swidth: px;
+}
+conditional[data-collapsed] span.conditional:first-child::before {
+	background-image: url(../img/plus.png);
+	margin-left: 0;
+}

@@ -5,23 +5,29 @@ EntityMarkupManager.prototype = {
 	init: function (editableElement) {
 		this.editableElement = editableElement;
 		this.editableElement.addEventListener("input",this);
-
+		this.editableElement.addEventListener("drop",this,true)
+		this.editableDocument = editableElement.ownerDocument;
 		//this.editableElement.onpaste = this.handleEvent.bind(this)
 	},
 	handleEvent: function (event) {
-		return this[event.type+"Handler"]();
+		return this[event.type+"Handler"](event);
 	},
 	inputHandler: function (event) {
 		//TODO: reinsert flashing cursor if necessary
+		
 
 
-		this.fixOrphanedElements();
-		this.preventEntityEditing();
-		this.fixRedundantMarkup();
+		//this.fixOrphanedElements();
+		//this.preventEntityEditing();
+		//this.fixRedundantMarkup();
 		if (CKEDITOR && CKEDITOR.currentInstance) {
 			CKEDITOR.currentInstance.fire("saveSnapshot");
 			//CKEDITOR.currentInstance.focusManager.focus()
 		}
+	},
+	dropHandler: function () {
+		event.stopPropagation()
+		console.log("here")
 	},
 	pasteHandler: function (event) {
 		this.inputHandler(event)
@@ -56,10 +62,10 @@ EntityMarkupManager.prototype = {
 		}
 	},
 	fixOrphanedElements: function () {
-		this.fixOrphanedTranslations()
-		this.fixOrphanedConditionals()
-		this.fixOrphanedTokens();
-		this.fixPartialConditionals()
+		//this.fixOrphanedTranslations()
+		//this.fixOrphanedConditionals()
+		//this.fixOrphanedTokens();
+		//this.fixPartialConditionals()
 		
 	},
 	fixOrphanedTranslations: function () {
@@ -68,7 +74,7 @@ EntityMarkupManager.prototype = {
 
 			var currentNode = orphans[i]
 			var key = currentNode.getAttribute("data-key-name");
-			var node = document.createElement("translation");
+			var node = this.editableDocument.createElement("translation");
 			node.setAttribute("data-key-name",key);
 			currentNode.parentNode.replaceChild(node,currentNode)
 			node.appendChild(currentNode)
@@ -78,7 +84,7 @@ EntityMarkupManager.prototype = {
 				currentNode = node.nextSibling
 			}
 			node.appendChild(currentNode)
-			node.parentNode.insertBefore(document.createTextNode(" "),node.nextSibling)
+			node.parentNode.insertBefore(this.editableDocument.createTextNode(" "),node.nextSibling)
 		}
 		
 	},
@@ -88,7 +94,7 @@ EntityMarkupManager.prototype = {
 
 			var currentNode = orphans[i]
 			var key = currentNode.getAttribute("data-conditional-name");
-			var node = document.createElement("conditional");
+			var node = this.editableDocument.createElement("conditional");
 			node.setAttribute("data-conditional-name",key);
 			currentNode.parentNode.replaceChild(node,currentNode)
 			node.appendChild(currentNode)
@@ -103,7 +109,7 @@ EntityMarkupManager.prototype = {
 				currentNode = node.nextSibling
 			}
 			node.appendChild(currentNode);
-			node.parentNode.insertBefore(document.createTextNode(" "),node.nextSibling)
+			node.parentNode.insertBefore(this.editableDocument.createTextNode(" "),node.nextSibling)
 		}
 	},
 	fixOrphanedTokens: function () {
@@ -111,7 +117,7 @@ EntityMarkupManager.prototype = {
 		for (var i=0;i<orphans.length;i++) {
 			var currentNode = orphans[i]
 			var key = currentNode.getAttribute("data-token-name");
-			var node = document.createElement("token");
+			var node = this.editableDocument.createElement("token");
 			node.setAttribute("data-token-name",key);
 			currentNode.parentNode.replaceChild(node,currentNode)
 			node.appendChild(currentNode)
@@ -123,14 +129,14 @@ EntityMarkupManager.prototype = {
 				currentNode = node.nextSibling
 			}
 			node.appendChild(currentNode);
-			node.parentNode.insertBefore(document.createTextNode(" "),node.nextSibling)
+			node.parentNode.insertBefore(this.editableDocument.createTextNode(" "),node.nextSibling)
 		}
 	},
 	fixPartialConditionals: function () {
 		return
 		var partials = this.editableElement.querySelectorAll("conditional.user > span.contents:first-child")
 		for (var i=0;i<partials.length;i++) {
-			var range = document.createRange()
+			var range = this.editableDocument.createRange()
 			range.selectNodeContents(partials[i]);
 			console.log(range.extractContents())
 			

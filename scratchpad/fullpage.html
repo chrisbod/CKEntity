@@ -33,7 +33,6 @@ For licensing, see LICENSE.md or http://ckeditor.com/license
 	<script src="../vendor/knockout/knockout-3.3.0.js"></script>
 	<link href="../vendor/ckeditor/samples/sample.css" rel="stylesheet">
 	<link href="css/autosuggest.css" rel="stylesheet">
-	<link href="css/collapse.css" rel="stylesheet">
 	<link href="css/dialog-form.css" rel="stylesheet">
 	<link href="css/tooltip.css" rel="stylesheet">
 </head>
@@ -55,38 +54,10 @@ For licensing, see LICENSE.md or http://ckeditor.com/license
 	
 		<script>
 
-
-
 		
+		function build(editPanel) {
+			//var editPanel = editDocument.body
 
-
-
-		function ElementLocalSaver() {
-		}
-		ElementLocalSaver.prototype = {
-			init: function (id,element) {
-				this.id = id;
-				this.element =element;
-			},
-			save: function () {
-				localStorage.setItem(this.id,this.element.innerHTML)
-			},
-			load: function () {
-				this.element.innerHTML = localStorage.getItem(this.id)
-			}
-		}
-
-		autoSave = new ElementLocalSaver()
-		
-		$(function () {
-			var editPanel = document.getElementById("edit")
-			editPanel.addEventListener("focusin", function () {
-				//this.className = 'editing'
-			});
-			editPanel.addEventListener("focusout", function () {
-				//this.className = ''
-			});
-			autoSave.init("edit",editPanel)
 
 
 
@@ -112,50 +83,104 @@ For licensing, see LICENSE.md or http://ckeditor.com/license
 			window.tooltip = tooltip*/
 
 			var entityTooltip = new EntityTooltip()
-			entityTooltip.init(document.getElementById("edit"),document.querySelector("#entity-edit"));
+			entityTooltip.init(editPanel,document.querySelector("#entity-edit"));
 
 			//window.tooltip = tooltip
 			var userConditionalManager = new UserConditionalManager()
-			userConditionalManager.init(document.getElementById("edit"))
+			userConditionalManager.init(editPanel)
 
 			
 
-			$.ajax("xml/keys.json", {mimeType:"application-x/json", success: function (keys) {
+			
+
+			$(function () {
+				$.ajax("json/tokens.en.json", {
+					mimeType: "application-x/json",
+					success: function (tokenDefinitions) {
+						EntitiesHelper.prototype.tokenDefinitions = tokenDefinitions;
+
+						for (var i=0;i<tokenDefinitions.length;i++) {
+
+				tokenStore.addEntity('<'+tokenDefinitions[i].text+'>',tokenDefinitions[i].id)
+				$.ajax("json/translations.en.json", {mimeType:"application-x/json", success: function (keys) {
 				for (var i=0;i<keys.length;i++) {
-					translationStore.addEntity(keys[i].def,"key"+i)
+					translationStore.addEntity(keys[i].def,keys[i].id)
 				}
 				translationContainer.build(translationStore);
 				
-				translationContainer.setEditableElement(document.getElementById("edit"));
+				translationContainer.setEditableElement(editPanel);
 
 				var entitiesSelection = new EntitySelectionManager()
-				entitiesSelection.init(document.getElementById("edit"))
+				entitiesSelection.init(editPanel)
 				var pasteManager = new EntityPasteManager()
-				pasteManager.init(document.getElementById("edit"))
-				conditionalCollapser.init(document.getElementById("edit"))
+				pasteManager.init(editPanel)
+				conditionalCollapser.init(editPanel)
 				var markupmanager = new EntityMarkupManager()
-				markupmanager.init(document.getElementById("edit"))
+				markupmanager.init(editPanel)
 
-				//var editManager = new EntityEditManager();
-				//editManager.init(document.getElementById("edit"));
+
 				
 
 			}})
-
-			$.ajax("xml/tokens.json", {
-
-	mimeType:"application-x/json",
-	success: function (tokens) {
-			for (var i=0;i<tokens.length;i++) {
-
-				tokenStore.addEntity('<'+tokens[i].text+'>',tokens[i].id,tokens[i].preview)
 			}
 
 				tokenContainer.build(tokenStore)
-				tokenContainer.setEditableElement(document.getElementById("edit"))
+				tokenContainer.setEditableElement(editPanel)
+					}
+				})
+				$.ajax("json/logic.en.json", {
+					mimeType: "application-x/json",
+					success: function (logicDefinitions) {
+						EntitiesHelper.prototype.logicDefinitions = logicDefinitions;
+					}
+				})
+
+
+			});
+
+			$.ajax("json/tokens.en.json", {
+
+	mimeType:"application-x/json",
+	success: function (tokens) {
+			
 	}
 })
+
+
+
+
+
+			}
+			$.ajax('xml/kid.html', {
+				success: function (data) {
+					var editor = CKEDITOR.instances.documentSource
+					editor.on( 'contentDom', function() {
+					    var editable = editor.editable();
+					    build(editable.$);
+					    //entities.css
+					    var doc = editable.$.ownerDocument;
+					    var stylesheet = doc.createElement("link")
+					    stylesheet.setAttribute("rel","stylesheet")
+					    stylesheet.setAttribute("href","css/entities.css")
+					    doc.querySelector("head").appendChild(stylesheet)
+					    
+					});
+					editor.setData(data, function () {
+						//var editDocument = CKEDITOR.instances.documentSource.window.$.document
+
+						//build()
+
+					})
+
+
+
+				}
 			})
+
+
+
+			
+		
 
 				
 				
@@ -164,13 +189,10 @@ For licensing, see LICENSE.md or http://ckeditor.com/license
 		//})
 		</script>
 
-		<button onclick="autoSave.load()">Load</button><button onclick="autoSave.save()">Save</button><button onclick="tooltip.show()">Tip</button>
-		<div id="edit" title="" contenteditable="true" class="editing">
-			<p>
+		<textarea id="documentSource">
 
-				Type in here
-			</p>
-		</div>
+
+		</textarea>
 
 
 
@@ -326,5 +348,16 @@ For licensing, see LICENSE.md or http://ckeditor.com/license
 				</fieldset>
 			
 		</div>
+
+		<script>
+
+
+			CKEDITOR.replace( 'documentSource', {
+				fullPage: true,
+				allowedContent: true,
+				extraPlugins: 'wysiwygarea'
+			});
+
+		</script>
 </body>
 </html>

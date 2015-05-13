@@ -13,6 +13,7 @@ EntityStore.prototype =  {
 				def: key,
 				id: id
 			})
+			console.log(this.templatableNodes)
 		}
 		return this.templatableNodes[key];
 	},
@@ -53,11 +54,6 @@ TokenStore.prototype.createTemplatableNodeFromEntity = function (key,id,previewH
 	var end = document.createElement("span")
 	end.innerText = ">";
 	node.appendChild(end)
-	if (previewHTML) {
-		var preview = document.createElement("preview")
-		preview.innerHTML = previewHTML;
-		node.appendChild(preview)
-	}
 	
 	node.insertBefore(rules,node.firstChild)
 	return node;
@@ -99,10 +95,10 @@ TranslationStore.prototype.parseTextMarkup = function (string) {
 	return '<span class="args translation" contenteditable="false">{</span>'+string
 		.replace(/</g,'\x02')
 		.replace(/>/g,'\x03')
-		.replace(/\[/g,'<conditional contenteditable="false"><span class="args conditional" contenteditable="false">[</span><span class="contents" contenteditable="false">')
+		.replace(/\[([^:]+):/g,'<conditional contenteditable="false" data-conditional-ref="$1"><span class="args conditional" contenteditable="false">[</span><span class="contents" contenteditable="false">')
 		.replace(/\]/g,'</span><span class="conditional end" contenteditable="false">]</span></conditional>')
-		.replace(/\x02/g,'<token data-id="')
-		.replace(/\x03/g,'"/>') + '<span class="translation end" contenteditable="false">}</span>';
+		.replace(/\x02([^:]+):(\w+)/g,'<token data-ref="$1" data-id="$2">$2')
+		.replace(/\x03/g,'"</token>') + '<span class="translation end" contenteditable="false">}</span>';
 }
 
 function TokenStore() {
@@ -117,25 +113,20 @@ TokenStore.prototype.parseTextMarkup = function () {
 }
 TokenStore.prototype.createTemplatableNodeFromEntity = function (key,id,previewHTML) {
 	var node = document.createElement("token")
-	node.setAttribute("contenteditable", false);
+	node.setAttribute("contenteditable", "false");//this seems to trigger a strange drag and drop bug
 	node.setAttribute("data-args","type: '"+id+"'")
 	node.setAttribute("class",id)
-	node.innerHTML = '<span>'+key.replace(/(\<)|(\>)/gm,'')+'<span>';
+	node.innerHTML = '<span contenteditable="false">'+key.replace(/(\<)|(\>)/gm,'')+'<span>';
 	var rules = document.createElement("span")
 	rules.className = "args token";
 	rules.innerText = "<";
 	rules.setAttribute("contenteditable", false);
 	rules.setAttribute("data-args","type: '"+id+"'")
-	var end = document.createElement("span")
+	var end = document.createElement("span");
+	end.setAttribute("contenteditable", false);
 	end.className = "token end"
 	end.innerText = ">";
-	node.appendChild(end)
-	if (previewHTML) {
-		var preview = document.createElement("preview")
-		preview.innerHTML = previewHTML;
-		node.appendChild(preview)
-	}
-	
+	node.appendChild(end);
 	node.insertBefore(rules,node.firstChild)
 	return node;
 }

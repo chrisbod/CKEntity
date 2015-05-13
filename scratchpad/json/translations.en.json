@@ -1,0 +1,146 @@
+[
+  {
+    "id": "key0.1",
+    "def": "Key Information Document"
+  },
+  {
+    "id": "key0.2",
+    "def": "Status"
+  },
+  {
+    "id": "key0.3",
+    "def": "German Securities Code"
+  },
+  {
+    "id": "key0.4",
+    "def": "ISIN"
+  },
+  {
+    "id": "key0.5",
+    "def": "Issuer"
+  },
+  {
+    "id": "key0.6",
+    "def": "Underlying"
+  },
+  {
+    "id": "key0.7",
+    "def": "Product Currency"
+  },
+  {
+    "id": "key0.8",
+    "def": "Underlying Currency"
+  },
+  {
+    "id": "key0.9",
+    "def": "Issue Date"
+  },
+  {
+    "id": "key0.10",
+    "def": "Issue Price"
+  },
+  {
+    "id": "key0.11",
+    "def": "[c1:Specified Denomination][c2:Reference Amount]"
+  },
+  {
+    "id": "key0.12",
+    "def": "Strike [c1:Price][c2:Level]"
+  },
+  {
+    "id": "key0.13",
+    "def": "Initial Reference [c1:Price][c2:Level]"
+  },
+  {
+    "id": "key0.14",
+    "def": "Final Reference [c1:Price][c2:Level]"
+  },
+  {
+    "id": "key0.15",
+    "def": "Final Valuation Date"
+  },
+  {
+    "id": "key0.16",
+    "def": "Maturity Date"
+  },
+  {
+    "id": "key0.17",
+    "def": "Multiplier"
+  },
+  {
+    "id": "key0.18",
+    "def": "Coupon rate p.a."
+  },
+  {
+    "id": "key0.19",
+    "def": "Coupon period"
+  },
+  {
+    "id": "key0.20",
+    "def": "Coupon payment dates"
+  },
+  {
+    "id": "key0.21",
+    "def": "Minimum trading size"
+  },
+  {
+    "id": "key0.22",
+    "def": "Listing"
+  },
+  {
+    "id": "key0.23",
+    "def": "Last trading day"
+  },
+  {
+    "id": "key1.0",
+    "def": "This document provides you with key information about this investment product. It is not marketing material. The information is required by law to help you understand the nature, risks, costs, potential gains and losses of this product and to help you compare it with other products."
+  },
+  {
+    "id": "key2.0",
+    "def": "Reverse Convertible linked to [c1:the shares of <k1:underlyingName>][c2:the <k2:underlyingName> index]"
+  },
+  {
+    "id": "key3.0",
+    "def": "What is this product?"
+  },
+  {
+    "id": "key3.1",
+    "def": "With this reverse convertible, at maturity, the investor will receive either the nominal amount or in the event of negative price performance by [c1:the shares][c2:the index], a fixed number of shares determined at the time the product is issued."
+  },
+  {
+    "id": "key3.2",
+    "def": "Regardless of the price performance of [c1:the shares][c2:the index], the investor will receive above-average interest, the amount of which is determined by the interest rate."
+  },
+  {
+    "id": "key3.3",
+    "def": "At maturity, if [c1:the reference price][c2:the reference level] is equal or greater than the [c3:strike price][c4:strike level], the investor will receive the nominal amount."
+  },
+  {
+    "id": "key3.4",
+    "def": "If the [c1:the reference price][c2:the reference level] is below the [c3:the strike price][c4:the strike level], the investor will receive a predetermined number of shares defined by the multiplier[c5:, taking into account the exchange rate]."
+  },
+  {
+    "id": "key3.5",
+    "def": "Fractional amounts of shares will not be delivered."
+  },
+  {
+    "id": "key3.6",
+    "def": "Statt dessen wird ein entsprechender Geldbetrag je Aktienanleihe in <t1:productCurrency> gezahlt."
+  },
+  {
+    "id": "key3.7",
+    "def": "This reverse convertible is protected against foreign exchange risk at maturity[c1:, i.e., the amounts calculated based on [c2:the share, which is quoted in <k1:underlyingCurrency>][c3:the index, which is quoted in <k2:underlyingCurrency>][c4:the commodity, which is quoted in <k3:underlyingCurrency>][c4:the underlying, which is quoted in <k4:underlyingCurrency>], will be converted into <k5:productCurrency> on a 1 to 1 basis (Quanto)]."
+  },
+  {
+    "id": "key3.8",
+    "def": "Investment objectives and strategy"
+  },
+  {
+    "id": "key3.9",
+    "def": "Market expectations"
+  },
+  {
+    "id": "key3.10",
+    "def": "The reverse convertible is intended for investors who believe that the [c1:the share price][c2:the index level] will move sideways or rise only moderately."
+  }
+]

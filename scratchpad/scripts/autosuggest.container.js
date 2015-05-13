@@ -28,11 +28,15 @@ function AutoSuggestContainer(id, tokenizer) {
 	},
 	setEditableElement:function (editableElement) {
 		if (this.editableElement) {
-			this.editableElement.removeEventListener("onkeydown",this)
+			this.editableElement.removeEventListener("keydown",this)
+			this.editableElement.removeEventListener("keyup",this)
 		}
 		this.editableElement = editableElement;
 		this.editableElement.addEventListener("keydown", this, true);
 		this.editableElement.addEventListener("keyup", this, true);
+		this.editableDocument = editableElement.ownerDocument;
+		this.editableDocument.addEventListener("keydown",this,true);
+
 	},
 	
 	hide: function () {
@@ -52,7 +56,7 @@ function AutoSuggestContainer(id, tokenizer) {
 				this.focusAnchor(this.element.firstChild)
 			}
 			this.element.style.visibility = "visible";
-			window.addEventListener("keydown",this,true);
+			
 			this.visible = true;
 			if (this.inputElement) {
 				this.inputElement.addEventListener("keydown",this)
@@ -60,7 +64,7 @@ function AutoSuggestContainer(id, tokenizer) {
 			}
 			
 		} else {
-			window.removeEventListener("keydown",this,true)
+			//this.editableDocument.defaultView.frameElement.removeEventListener("keydown",this,true)
 			this.visible = false;
 			if (this.inputElement) {
 				this.inputElement.removeEventListener("keydown",this)
@@ -87,6 +91,7 @@ function AutoSuggestContainer(id, tokenizer) {
 		this.configureMetrics()
 	},
 	handleEvent: function (event) {
+
 		return this[event.type+"Handler"](event)
 	},
 	clickHandler: function (ev) {
@@ -117,11 +122,15 @@ function AutoSuggestContainer(id, tokenizer) {
 		}
 	},
 	keydownHandler: function (event) {
+		if (event.keyCode == 13 && event.target.ownerDocument == this.editableDocument) {
+			return this.enter(event);
+		}
+		
 		switch (event.keyCode) {
 			case 40: return this.arrowDown(event);
 			case 38: return this.arrowUp(event);
 			case 27: return this.hide();
-			case 13: return this.enter(event);
+			
 		}
 	},
 	keyupHandler: function (event) {
@@ -133,12 +142,13 @@ function AutoSuggestContainer(id, tokenizer) {
 			case 37: return;
 		}
 		if (!this.enterClicked) {
-			var selection = document.getSelection(),
+			var selection = this.editableDocument.getSelection(),
 				range = selection.getRangeAt(0),
 				node = range.endContainer,
 				duplicateRange = range.cloneRange(),
 				index;
 			duplicateRange.selectNodeContents(node);
+
 			var trigger = this.tokenizer.getTrigger(""+duplicateRange);
 
 			if (trigger) {
@@ -154,7 +164,7 @@ function AutoSuggestContainer(id, tokenizer) {
 					return;
 				}
 				
-				this.moveToRange(duplicateRange)
+				this.moveToRange(this.editableDocument,duplicateRange)
 				var suggestions = this.tokenizer.getSuggestions(trigger);
 				if (suggestions.length == 1) {
 					if (suggestions[0].def.trim() == trigger.trim()) {
@@ -228,7 +238,7 @@ function AutoSuggestContainer(id, tokenizer) {
 			} 
 		}
 	},
-	arrowUp: function () {
+	arrowUp: function (event) {
 		if (this.visible) {
 			var srcElement = this.inputElement||this.editableElement;
 			event.stopPropagation();
@@ -239,9 +249,7 @@ function AutoSuggestContainer(id, tokenizer) {
 			} 
 		}
 	},
-	enter: function (event) {
-		
-
+	enter: function (event) {		
 		if (this.visible && this.focussedElement) {
 			this.clicked(this.focussedElement.id,this.focussedElement.innerText,this.focussedElement);
 			this.hide();
@@ -251,14 +259,21 @@ function AutoSuggestContainer(id, tokenizer) {
 		}
 	},
 	clicked: function (id,text) {
-		var selection = document.getSelection()
+		var selection = this.editableDocument.getSelection()
 			range = selection.getRangeAt(0),
 			newNode = this.store.getEntityNode(text);//document.createTextNode(text);
 		if (this.editableElement == range.commonAncestorContainer || this.editableElement.contains(range.commonAncestorContainer)) {
 			range.insertNode(newNode);
-			var endText = new RegExp(this.trigger+"\\s*$");
-			newNode.previousSibling.data = newNode.previousSibling.data.replace(endText,'');
-			var cursor = document.createTextNode(" ");
+			if (newNode.previousSibling) {
+				if (newNode.previousSibling.data) {
+					var endText = new RegExp(this.trigger+"\\s*$");
+				newNode.previousSibling.data = newNode.previousSibling.data.replace(endText,'');
+					
+				}
+				
+			}
+			var cursor = this.editableDocument.createTextNode(" ");
+			//newNode.parentNode.insertBefore(document.createTextNode(" "),newNode)
 			newNode.parentNode.insertBefore(cursor,newNode.nextSibling)
 			range.selectNode(cursor);
 			selection.removeAllRanges();
@@ -326,7 +341,7 @@ function AutoSuggestContainer(id, tokenizer) {
 			this.hide();
 		} else {
 			var suggestions = this.tokenizer.getSuggestions(value);
-			if (suggestions.length == 1 && suggestions[0].def == value) {
+			if (suggestions[0].def == value) {
 				suggestions = []
 			}
 			this.showByKeys(suggestions);
