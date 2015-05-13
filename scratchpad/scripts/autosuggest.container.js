@@ -74,7 +74,7 @@ function AutoSuggestContainer(id, tokenizer) {
 	},
 	build: function (store,tokenizer) {
 		this.store = store;
-		this.tokenizer = tokenizer;
+		this.tokenizer = tokenizer
 		this.element.innerHTML = "";
 		var data = store.allNodes;
 		var html = {}

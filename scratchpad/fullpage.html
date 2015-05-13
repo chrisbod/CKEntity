@@ -25,6 +25,7 @@ For licensing, see LICENSE.md or http://ckeditor.com/license
 	<script src="scripts/entities.markupmanager.js"></script>
 	<script src="scripts/entities.usergenerated.js"></script>
 	<script src="scripts/entities.edit.knockout.viewmodels.js"></script>
+	<script src="scripts/documenttranslator.js"></script>
 	<script src="scripts/intent.js"></script>
 	<script src="scripts/positionablecontainer.js"></script>
 	<script src="scripts/autosuggest.container.js"></script>
@@ -75,7 +76,7 @@ For licensing, see LICENSE.md or http://ckeditor.com/license
 	var markupManager = new EntityMarkupManager()
 	var entitiesSelection = new EntitySelectionManager()
 
-
+	var translator = new DocumentTranslator(languageStore)
 
 
 function build(editor,editPanel,language)  {
@@ -84,7 +85,6 @@ function build(editor,editPanel,language)  {
 		var path = event.path;
 		for (var i=0;i<path.length;i++) {
 			if (/li|table/i.test(path[i].tagName)) {
-				console.log("there")
 				return
 			}
 		}
@@ -93,9 +93,15 @@ function build(editor,editPanel,language)  {
 
 
 	languageStore.installLanguage(language, function (languageDefinition) {
-		translationContainer.build(languageDefinition.translationStore,new SentenceTokenizer())
-		tokenContainer.build(languageDefinition.tokenStore, new TokenTokenizer())
-		languageStore.currentLanguage = language
+		
+		if (languageDefinition.id != languageStore.currentLanguage) {
+			translator.translate(editPanel,languageDefinition.id)
+			languageStore.currentLanguage = languageDefinition.id
+
+			translationContainer.build(languageDefinition.translationStore,languageStore.getCurrentSentenceTokenizer())
+			tokenContainer.build(languageDefinition.tokenStore,languageStore.getCurrentTokenTokenizer())
+		}
+		
 		
 	});
 

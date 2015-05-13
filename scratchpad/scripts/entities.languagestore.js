@@ -14,20 +14,29 @@ LanguageStore.prototype = {
 		}
 	},
 	getCurrentTokenDefinitions: function () {
-		return this.languages[this.currentLanguage].tokenDefinitions
+	
+		return this.languages[this.currentLanguage].tokenDefinitions;
 	},
 	getCurrentLogicDefinitions: function () {
-		return this.languages[this.currentLanguage].logicDefinitions
+		return this.languages[this.currentLanguage].logicDefinitions;
+	},
+	getCurrentTokenTokenizer: function () {
+		return this.languages[this.currentLanguage].tokenTokenizer;
+	},
+	getCurrentSentenceTokenizer: function () {
+		return this.languages[this.currentLanguage].sentenceTokenizer;
 	},
 	addLanguage: function (id,callback) {
-		var tokenStore =  new TokenStore()
+		var tokenStore =  new TokenStore();
 		this.languages[id] = {
 			id: id,
 			tokenStore:tokenStore,
 			translationStore: new TranslationStore(tokenStore),
 			logicDefinitions: null,
 			tokenDefinitions: null,
-			translationDefinitions: null
+			translationDefinitions: null,
+			sentenceTokenizer: new SentenceTokenizer(),
+			tokenTokenizer:  new TokenTokenizer()
 		};
 		this.loadTokens(id,callback);
 	},
@@ -84,9 +93,5 @@ LanguageStore.prototype = {
 		if (callback) {
 			callback(this.languages[languageId])
 		}
-		
 	}
-
-	
-
 }

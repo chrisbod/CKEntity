@@ -113,7 +113,6 @@ EntitiesHelper.prototype = {
 		for (var i in values) {
 			args.push(i+":'"+values[i]+"'");
 		}
-		console.log(args)
 		element.setAttribute("data-args",args);
 		element.firstChild.setAttribute("data-args",args);
 	},
