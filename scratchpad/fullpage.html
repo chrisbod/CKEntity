@@ -18,6 +18,7 @@ For licensing, see LICENSE.md or http://ckeditor.com/license
 
 	<script src="scripts/entities.js"></script>
 	<script src="scripts/entities.store.js"></script>
+	<script src="scripts/entities.languagestore.js"></script>
 	<script src="scripts/entities.selection.js"></script>
 	<script src="scripts/entities.paste.js"></script>
 	<script src="scripts/entities.conditional.collapser.js"></script>
@@ -55,116 +56,79 @@ For licensing, see LICENSE.md or http://ckeditor.com/license
 		<script>
 
 		
-		function build(editPanel) {
-			//var editPanel = editDocument.body
+	var translationContainer = new AutoSuggestContainer("translation-menu");
+	var tokenContainer = new AutoSuggestContainer("token-menu");
+	tokenContainer.getLastSentenceFromRange = function (range) {
+		var token =  range.toString().match(/(?:\s*)(<)[^>]*$/);
+		if (token) {
+			return token[1]
+		}
+		return null;
+	}
+	var languageStore = new LanguageStore("json/tokens","json/logic","json/translations");
+	EntitiesHelper.prototype.languageStore = languageStore;//NASTY....
+	var conditionalCollapser = new ConditionalCollapser();
+	var entityTooltip = new EntityTooltip()
+	var userConditionalManager = new UserConditionalManager();
+	var pasteManager = new EntityPasteManager()
+
+	var markupManager = new EntityMarkupManager()
+	var entitiesSelection = new EntitySelectionManager()
 
 
 
 
-
-			var translationContainer = new AutoSuggestContainer("translation-menu",new SentenceTokenizer());
-			var tokenContainer = new AutoSuggestContainer("token-menu",new TokenTokenizer())
-			tokenContainer.getLastSentenceFromRange = function (range) {
-				var token =  range.toString().match(/(?:\s*)(<)[^>]*$/);
-				if (token) {
-					return token[1]
-				}
-				return null;
+function build(editor,editPanel,language)  {
+	//allow context menu when appropriate
+	editPanel.addEventListener("contextmenu", function (event) {
+		var path = event.path;
+		for (var i=0;i<path.length;i++) {
+			if (/li|table/i.test(path[i].tagName)) {
+				console.log("there")
+				return
 			}
-			var tokenStore = new TokenStore();
-			var translationStore = new TranslationStore(tokenStore);
-			
-			var conditionalCollapser = new ConditionalCollapser()
-			/*var tooltip = new EntityToolTip();
-			tooltip.build()
-			tooltip.attachEvents();
-			tooltip.update();
-			tooltip.show()
-			window.tooltip = tooltip*/
-
-			var entityTooltip = new EntityTooltip()
-			entityTooltip.init(editPanel,document.querySelector("#entity-edit"));
-
-			//window.tooltip = tooltip
-			var userConditionalManager = new UserConditionalManager()
-			userConditionalManager.init(editPanel)
-
-			
-
-			
-
-			$(function () {
-				$.ajax("json/tokens.en.json", {
-					mimeType: "application-x/json",
-					success: function (tokenDefinitions) {
-						EntitiesHelper.prototype.tokenDefinitions = tokenDefinitions;
-
-						for (var i=0;i<tokenDefinitions.length;i++) {
-
-				tokenStore.addEntity('<'+tokenDefinitions[i].text+'>',tokenDefinitions[i].id)
-				$.ajax("json/translations.en.json", {mimeType:"application-x/json", success: function (keys) {
-				for (var i=0;i<keys.length;i++) {
-					translationStore.addEntity(keys[i].def,keys[i].id)
-				}
-				translationContainer.build(translationStore);
-				
-				translationContainer.setEditableElement(editPanel);
-
-				var entitiesSelection = new EntitySelectionManager()
-				entitiesSelection.init(editPanel)
-				var pasteManager = new EntityPasteManager()
-				pasteManager.init(editPanel)
-				conditionalCollapser.init(editPanel)
-				var markupmanager = new EntityMarkupManager()
-				markupmanager.init(editPanel)
+		}
+		event.stopPropagation()
+	},true);
 
 
-				
+	languageStore.installLanguage(language, function (languageDefinition) {
+		translationContainer.build(languageDefinition.translationStore,new SentenceTokenizer())
+		tokenContainer.build(languageDefinition.tokenStore, new TokenTokenizer())
+		languageStore.currentLanguage = language
+		
+	});
 
-			}})
-			}
 
-				tokenContainer.build(tokenStore)
-				tokenContainer.setEditableElement(editPanel)
-					}
-				})
-				$.ajax("json/logic.en.json", {
-					mimeType: "application-x/json",
-					success: function (logicDefinitions) {
-						EntitiesHelper.prototype.logicDefinitions = logicDefinitions;
-					}
-				})
+	entityTooltip.init(editPanel,document.querySelector("#entity-edit"));
+	userConditionalManager.init(editPanel)
+	conditionalCollapser.init(editPanel)
+	markupManager.init(editPanel)
+	pasteManager.init(editPanel)
+	entitiesSelection.init(editPanel)
+	translationContainer.setEditableElement(editPanel);
+	tokenContainer.setEditableElement(editPanel);
 
+
+
+}
+$(function () {
+
+	CKEDITOR.replace( 'documentSource', {
+				title: false,
+				disableNativeSpellChecker: false,
+				allowedContent: true,
+				fullPage: true,
+				allowedContent: true,
+				extraPlugins: 'wysiwygarea,wallstreetdocs,wordpaste,documentlang',
+				removePlugins: 'elementspath,magicline,pastetext,pastefromword,clipboard',
+				language_list: [ 'en:English', 'de:German']
 
 			});
-
-			$.ajax("json/tokens.en.json", {
-
-	mimeType:"application-x/json",
-	success: function (tokens) {
-			
-	}
-})
-
-
-
-
-
-			}
+			var editor = CKEDITOR.instances.documentSource
 			$.ajax('xml/kid.html', {
 				success: function (data) {
-					var editor = CKEDITOR.instances.documentSource
-					editor.on( 'contentDom', function() {
-					    var editable = editor.editable();
-					    build(editable.$);
-					    //entities.css
-					    var doc = editable.$.ownerDocument;
-					    var stylesheet = doc.createElement("link")
-					    stylesheet.setAttribute("rel","stylesheet")
-					    stylesheet.setAttribute("href","css/entities.css")
-					    doc.querySelector("head").appendChild(stylesheet)
-					    
-					});
+					
 					editor.setData(data, function () {
 						//var editDocument = CKEDITOR.instances.documentSource.window.$.document
 
@@ -178,15 +142,11 @@ For licensing, see LICENSE.md or http://ckeditor.com/license
 			})
 
 
+	
+	
 
-			
-		
 
-				
-				
-			//})
-
-		//})
+})
 		</script>
 
 		<textarea id="documentSource">
@@ -250,62 +210,13 @@ For licensing, see LICENSE.md or http://ckeditor.com/license
 			</form>
 		</div>
 		<style>
-		#logicDialog form#rules {
-			 display: -webkit-flex;
-			 display: flex;
-			  -webkit-flex-direction: column;
-			  flex-direction: column;
-			height: 100%;
-			max-height: 100%;
-		}
-		form#rules > section {
-			flex-grow: 0;
-		}
-			#logicDialog ul {
-			   overflow-y: auto;
-			   display: -webkit-flex;
-			   display: flex;
-			   -webkit-align-items: left;
-			   align-items: left;
-			   -webkit-justify-content: left;
-			   justify-content: left;
-			   /* You can set flex-wrap and flex-direction individually */
-			   -webkit-flex-direction: row;
-			   flex-direction: row;
-			   -webkit-flex-wrap: wrap;
-			   flex-wrap: wrap;
-			   /* Or do it all in one line with flex flow */
-			   -webkit-flex-flow: row wrap;
-			   flex-flow: row wrap;
-			   /* tweak the where items line up on the row */
-			   /* valid values are: flex-start, flex-end, space-between, space-around, stretch */
-			   -webkit-align-content: flex-end;
-			   align-content: flex-end;
-			}
-			#logicDialog ul li {
-
-				margin: 1ex;
-				flex-grow: 1;
-				border: 1px solid white;
-
-			}
-			#logicDialog ul li strong {
-				display: block;
-				background-color: #ccc;
-				font-weight: bold;
-				padding: 1ex;
-			}
-			#logicDialog select {
-				min-width: 30ex;
-				border-top-width: 0;
-
-			}
+		
 
 		</style>
 		<div class="dialog hidden"  data-bind="attr: {'class': 'dialog' + (active() ? ' active' : ' hidden')}" id="logicDialog" style="max-width: 100%">
 		
 		<form id="rules" data-bind="submit: update">
-			<section>
+			<section class="compact">
 				<fieldset>
 					<h1>Edit Rules</h1>
 					<p data-bind="text:text"></p>
@@ -352,11 +263,8 @@ For licensing, see LICENSE.md or http://ckeditor.com/license
 		<script>
 
 
-			CKEDITOR.replace( 'documentSource', {
-				fullPage: true,
-				allowedContent: true,
-				extraPlugins: 'wysiwygarea'
-			});
+			
+					
 
 		</script>
 </body>

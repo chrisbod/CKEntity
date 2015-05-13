@@ -1,3 +1,12 @@
+.cke_button_label.cke_button__documentlanguage_label {
+	display: inline-block;
+	overflow: hidden;
+	width: 1.5em;
+}
+.cke_button_icon.cke_button__documentlanguage_icon {
+	display: none;
+}
+
 div.autosuggest-container {
 	position: absolute;
 	z-index: 1000;

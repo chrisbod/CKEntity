@@ -1,8 +1,8 @@
 function EntitiesHelper() {
 }
 EntitiesHelper.prototype = {
-	tokenDefinitions: null,
-	logicDefinitions: null,
+	currentLanguage: "en",
+	languageStore: null,
 	isEntityElement: function (element) {
 		if (element) { 			
 			return /TRANSLATION|TOKEN|CONDITIONAL/i.test(element.tagName);
@@ -137,12 +137,15 @@ EntitiesHelper.prototype = {
 		return values;
 	},
 	getTokenDefinitionByType: function (type) {
-		var definitions = this.tokenDefinitions;
+		var definitions = this.languageStore.getCurrentTokenDefinitions();
 		for (var i=0;i<definitions.length;i++) {
 			if (definitions[i].id == type) {
 				return definitions[i]
 			}
 		}
+	},
+	getCurrentLogicDefinitions: function () {
+		return this.languageStore.getCurrentLogicDefinitions();
 	}
 }
 

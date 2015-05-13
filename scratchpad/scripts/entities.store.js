@@ -7,13 +7,14 @@ EntityStore.prototype =  {
 	addEntity: function (key,id,preview) {
 		var preexists = this.templatableNodes[key];
 		if (!preexists) {
-			
-			this.allNodes.push(this.templatableNodes[id] = this.templatableNodes[key] = {
+			var text = key.replace(/(\[|\<)[^\:]+\:/g,"$1")
+			this.allNodes.push(this.templatableNodes[id] = this.templatableNodes[key] = this.templatableNodes[text] ={
 				node: this.createTemplatableNodeFromEntity(key,id,preview),
 				def: key,
-				id: id
+				id: id,
+				text: text
 			})
-			console.log(this.templatableNodes)
+
 		}
 		return this.templatableNodes[key];
 	},

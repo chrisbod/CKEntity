@@ -38,6 +38,7 @@ function LogicDialogViewModel(element) {
 	this.text = ko.observable("");
 	this.active = ko.observable(false);
 	this.options = ko.observableArray([]);
+	this.logic = ko.observable();
 	this.updateFromElement(element);
 }
 LogicDialogViewModel.prototype = new EntityViewModel();
@@ -45,7 +46,7 @@ LogicDialogViewModel.prototype.updateFromElement = function (element) {
 	this.element = element;
 	this.text(element.innerText)
 	this.values(this.entitiesHelper.getDataArguments(element));
-	this.logic = this.entitiesHelper.logicDefinitions;
+	this.logic(this.entitiesHelper.getCurrentLogicDefinitions());
 }
 
 function TokenTooltipViewModel(element) {

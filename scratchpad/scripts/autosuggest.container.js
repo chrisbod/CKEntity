@@ -6,7 +6,6 @@ function AutoSuggestContainer(id, tokenizer) {
 	this.element.addEventListener("click", this, true);
 	this.element.addEventListener("mouseover", this);
 	this.element.addEventListener("keydown",this, true);
-	this.tokenizer = tokenizer;
 }
 
 (function (extend) {
@@ -73,8 +72,9 @@ function AutoSuggestContainer(id, tokenizer) {
 		}
 		this.configureMetrics()
 	},
-	build: function (store) {
+	build: function (store,tokenizer) {
 		this.store = store;
+		this.tokenizer = tokenizer;
 		this.element.innerHTML = "";
 		var data = store.allNodes;
 		var html = {}
@@ -82,9 +82,9 @@ function AutoSuggestContainer(id, tokenizer) {
 			var a = document.createElement("a")
 			a.href = "javascript:;"
 			a.id = data[i].id;
-			a.innerText = data[i].def;
+			a.innerText = data[i].text||data[i].def;
 			html[a.id] = a;
-			this.tokenizer.tokenize(data[i])
+			tokenizer.tokenize(data[i])
 		}
 		this.nodes = html;
 		document.body.appendChild(this.element);
