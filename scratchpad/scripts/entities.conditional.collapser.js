@@ -12,15 +12,10 @@ ConditionalCollapser.prototype = {
 	},
 	clickHandler: function (event) {
 		if (event.target.className == "args conditional" && event.target.parentNode.firstChild == event.target) {
-			if (event.target.hasAttribute("data-collapsed")) {
-				event.target.removeAttribute("data-collapsed")
-				event.target.parentNode.removeAttribute("data-collapsed")
+			var args = this.entitiesHelper.getDataArguments(event.target.parentNode)
+			if (args.hidden) {
 				this.entitiesHelper.removeDataArgument(event.target.parentNode,"hidden")
-				
 			} else {
-
-				event.target.parentNode.setAttribute("data-collapsed", "true")
-				event.target.setAttribute("data-collapsed", "true")
 				this.entitiesHelper.setDataArgument(event.target.parentNode,"hidden",true)
 			}
 			event.stopPropagation();

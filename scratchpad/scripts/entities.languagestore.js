@@ -6,6 +6,9 @@ function LanguageStore(tokenPath,logicPath,translationPath) {
 }
 LanguageStore.prototype = {
 	currentLanguage: "",
+	setCurrentLanguage: function (language) {
+		this.currentLanguage = language
+	},
 	installLanguage: function (language,callback) {
 		if (!this.languages[language]) {
 			this.addLanguage(language,callback)
@@ -34,9 +37,14 @@ LanguageStore.prototype = {
 	getSentenceTokenizerByLanguage: function (language) {
 		return this.languages[language].sentenceTokenizer;
 	},
+	getCurrentLogicDefinitions: function () {
+		return this.languages[this.currentLanguage].logicDefinitions;
+	},
+	getCurrentTokenDefinitions: function () {
+		return this.languages[this.currentLanguage].tokenDefinitions;
+	},
 	addLanguage: function (id,callback) {
 		var tokenStore =  new TokenStore();
-		
 		this.languages[id] = {
 			id: id,
 			tokenStore:tokenStore,

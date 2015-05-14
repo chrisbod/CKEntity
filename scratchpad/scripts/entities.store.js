@@ -70,25 +70,32 @@ TranslationStore.prototype.templatableNodes = null;
 TranslationStore.prototype.createTemplatableNodeFromEntity = function (key,id) {
 	var node = document.createElement("translation");
 	node.setAttribute("contenteditable", false);
-	node.setAttribute("data-key-name",id);
 	node.setAttribute("data-args","key:'"+id+"'")
 	node.innerHTML = this.parseTextMarkup(key)+" ";
-	var conditionals = node.querySelectorAll("conditional");
+	var conditionals = node.querySelectorAll("conditional")
 	for (var i=0;i<conditionals.length;i++) {
 		var conditional = conditionals[i];
-		conditional.setAttribute("data-conditional-name","conditional-"+i)
-		conditional.firstChild.setAttribute("data-conditional-name","conditional-"+i)
-		conditional.lastElementChild.setAttribute("data-conditional-name","conditional-"+i)
-	}
-	var tokens = node.querySelectorAll("token");
-	for (var i=0;i<tokens.length;i++) {
-		tokens[i].parentNode.replaceChild(this.tokenStore.getEntityNode(tokens[i].getAttribute("data-id")), tokens[i]);
-	}
-	var spans = node.querySelectorAll("conditional,token,span.args");
-	for (var i=0;i<spans.length;i++) {
-		spans[i].setAttribute("data-key-name",id);
-	}
+		var args = "key:'"+id+"',conditional:'"+conditional.getAttribute("data-conditional-ref")+"'"
 
+		conditional.setAttribute("data-args",args);
+		conditional.firstChild.setAttribute("data-args",args);
+		conditional.lastElementChild.setAttribute("data-args",args);
+	}
+	var tokens = node.querySelectorAll("token"),
+		token;
+	for (var i=0;i<tokens.length;i++) {
+		token = this.tokenStore.getEntityNode(tokens[i].getAttribute("data-id"))
+		if (tokens[i].parentNode.className == "contents") {
+			token.setAttribute(
+				"data-args",
+				token.getAttribute("data-args")+",key:'"+id+"',conditional:'"+tokens[i].parentNode.parentNode.getAttribute("data-conditional-ref")+"'"
+			);
+		} else {
+			token.setAttribute("data-args",token.getAttribute("data-args")+",key:'"+id+"'")
+		}
+		tokens[i].parentNode.replaceChild(token, tokens[i]);
+	}
+	
 	return node;
 }
 TranslationStore.prototype.parseTextMarkup = function (string) {

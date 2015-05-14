@@ -29,21 +29,21 @@ DocumentTranslator.prototype = {
 			args = helper.getDataArguments(keys[i]);
 			newNode = translationStore.getEntityNode(args.key);
 			helper.setDataArguments(newNode,args);
-			this.translateConditionals(newNode,language)
+			this.synchronizeConditionals(newNode,element,language)
 			keys[i].parentNode.replaceChild(newNode,keys[i])
 		}
 	},
-	translateConditionals: function (element, language) {
-		var conditionals = element.querySelectorAll("conditional"),
-			translationStore = this.languageStore.getTranslationStoreByLanguage(language),
-			helper = this.entitiesHelper,
-			args, newNode;
-		for (var i=0;i<conditionals.length;i++) {
-			//args = helper.getDataArguments(keys[i]);
-			//newNode = translationStore.getEntityNode(args.key);
-			//helper.setDataArguments(newNode,args);
-			//keys[i].parentNode.replaceChild(newNode,keys[i])
+	synchronizeConditionals: function (newElement, oldElement, language) {
+		var originalConditionals = oldElement.querySelectorAll("conditional"),
+			newConditionals = newElement.querySelectorAll("conditional"),
+			lookup = {}
+		for (var i = 0;i<newConditionals.length;i++) {
+			lookup[newConditionals[i].getAttribute("data-conditional-ref")] = newConditionals[i];
 		}
+		for (i=0;i<originalConditionals.length;i++) {
+			lookup[originalConditionals[i].getAttribute("data-conditional-ref")].setAttribute("data-args",originalConditionals[i].getAttribute("data-args"))
+		}
+
 	}
 
 

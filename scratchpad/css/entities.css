@@ -54,13 +54,13 @@ conditional.user {
 	display: inline;
 	color: blue;
 }
-conditional.user:before {
+conditional:before {
 	content: '[';
 }
-conditional.user:after {
+conditional:after {
 	content: ']';
 }
-conditional.user .conditional.args {
+conditional .conditional.args {
 	color: rgba(0,0,0,0);
 }
 conditional > span.contents:focus {
@@ -115,24 +115,24 @@ span.conditional:first-child::before {
   height: 100%;
 }
 
-conditional.user[data-collapsed] span.conditional.args:first-child {
+conditional.user[data-args*=hidden] span.conditional.args:first-child {
   margin: 0 0.3ex 0 0ex;
 }
-conditional[data-collapsed] span.contents {
+conditional[data-args*=hidden] span.contents {
 	display: none;
 }
-conditional[data-collapsed]:before {
+conditional[data-args*=hidden]:before {
   content: ' [';
 }
-conditional[data-collapsed]:after {
+conditional[data-args*=hidden]:after {
   content: ' ]';
 }
-conditional[data-collapsed] span.conditional {
+conditional[data-args*=hidden] span.conditional {
 	color: white;
   margin: 0;
   swidth: px;
 }
-conditional[data-collapsed] span.conditional:first-child::before {
+conditional[data-args*=hidden] span.conditional:first-child::before {
 	background-image: url(../img/plus.png);
 	margin-left: 0;
 }

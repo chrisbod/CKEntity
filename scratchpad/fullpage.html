@@ -101,7 +101,7 @@ function build(editor,editPanel,language)  {
 		
 		if (language != languageStore.currentLanguage) {
 			translator.translate(editPanel,languageDefinition.id)
-			languageStore.currentLanguage =  language;
+			languageStore.setCurrentLanguage(languageDefinition.id);
 			updateAutosuggests(languageDefinition.id)
 		}
 		
