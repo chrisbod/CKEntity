@@ -6,15 +6,15 @@ EntitySelectionManager.prototype = {
 		this.editableElement = editableElement;
 		this.editableDocument = editableElement.ownerDocument;
 		
-		//this.editableElement.addEventListener("click", this);
-		//this.editableElement.addEventListener("dblclick", this);
-		//document.addEventListener("keydown", this, true);
-		//document.addEventListener("keyup", this, true);
-		//document.addEventListener("paste", this, true);
+		this.editableElement.addEventListener("click", this);
+		this.editableElement.addEventListener("dblclick", this);
+		document.addEventListener("keydown", this, true);
+		document.addEventListener("keyup", this, true);
+		document.addEventListener("paste", this, true);
 
-		//this.editableElement.addEventListener("contextmenu", this, true)
-		//this.editableElement.addEventListener("mouseup",this)
-		//this.editableElement.addEventListener("keyup", this)
+		this.editableElement.addEventListener("contextmenu", this, true)
+		this.editableElement.addEventListener("mouseup",this)
+		this.editableElement.addEventListener("keyup", this)
 		this.editableElement.addEventListener("keydown", this, true)
 		//this.editableElement.addEventListener("mousedown", this)
 		function blockEditorDisappear(event) {
@@ -33,7 +33,12 @@ EntitySelectionManager.prototype = {
 
 	},
 	handleEvent: function(event) {
+		try {
 		return this[event.type+'Handler'](event)
+		}
+		catch (e) {
+			console.log(event.type)
+		}
 	},
 	selectionHandler: function (event) {
 		console.log("here")

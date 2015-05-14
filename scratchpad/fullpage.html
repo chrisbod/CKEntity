@@ -81,7 +81,7 @@ For licensing, see LICENSE.md or http://ckeditor.com/license
 
 function build(editor,editPanel,language)  {
 	//allow context menu when appropriate
-	
+
 	editPanel.addEventListener("contextmenu", function (event) {
 		/*var path = event.path;
 		for (var i=0;i<path.length;i++) {
@@ -278,8 +278,8 @@ SaveShim.prototype = {
 					<p data-bind="text:text"></p>
 				</fieldset>
 			</section>
-			<section style="flex-grow:10">
-			<fieldset>
+			<section>
+			<fieldset class="container-content">
 				
 					<ul data-bind="foreach: logic">
 						<li>

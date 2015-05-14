@@ -264,7 +264,7 @@ function AutoSuggestContainer(id, tokenizer) {
 				}
 				
 			}
-			var cursor = this.editableDocument.createTextNode(" ");
+			var cursor = this.editableDocument.createTextNode("\u200b");
 			//newNode.parentNode.insertBefore(document.createTextNode(" "),newNode)
 			newNode.parentNode.insertBefore(cursor,newNode.nextSibling)
 			range.selectNode(cursor);
@@ -333,11 +333,12 @@ function AutoSuggestContainer(id, tokenizer) {
 			//this.hide();
 		} else {
 			var suggestions = this.tokenizer.getSuggestions(value);
-			/*if (suggestions[0].def == value) {
-				suggestions = []
-			}*/
 			this.showByKeys(suggestions);
 		}
+
+	},
+	configureMetrics: function () {
+		
 
 	}
 });

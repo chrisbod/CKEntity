@@ -250,3 +250,14 @@ select{
             section.compact p:last-child {
                 margin-bottom: 0;
             }
+
+.container-content {
+  overflow:auto;
+}
+
+select option:checked,
+select option::checked
+ {
+  background-color: -internal-active-list-box-selection;
+  color: -internal-active-list-box-selection-text;
+}

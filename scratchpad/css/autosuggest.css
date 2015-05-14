@@ -90,7 +90,6 @@ conditional > span.contents:focus {
 
 translation {
 	display: inline;
-	border-bottom: 1px dotted black;
 }
 
 table.scenario-table {

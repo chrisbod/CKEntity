@@ -53,7 +53,7 @@ PositionableContainer.prototype = {
 		
 		var viewRect = document.querySelector("html").getBoundingClientRect();
 		var currentElementRect = this.element.getBoundingClientRect();
-		var viewBottom = Math.max(viewRect.bottom,window.innerHeight);
+		var viewBottom = Math.min(viewRect.bottom,window.innerHeight);
 		var elementBottom = currentElementRect.bottom;
 		if (elementBottom>viewBottom) {
 			//this.element.style.bottom = "0px"
