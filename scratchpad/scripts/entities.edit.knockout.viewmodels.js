@@ -9,6 +9,7 @@ EntityViewModel.prototype = {
 		this.active(false);
 	},
 	update: function () {
+		console.log("here")
 		this.active(false);
 		this.entitiesHelper.setDataArguments(this.element,this.values())
 	}

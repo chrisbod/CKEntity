@@ -161,39 +161,39 @@
   },
   {
     "id": "key3.7",
-    "def": "This reverse convertible is protected against foreign exchange risk at maturity[c1:, i.e., the amounts calculated based on [c2:the share, which is quoted in <k1:underlyingCurrency>][c3:the index, which is quoted in <k2:underlyingCurrency>][c4:the commodity, which is quoted in <k3:underlyingCurrency>][c4:the underlying, which is quoted in <k4:underlyingCurrency>], will be converted into <k5:productCurrency> on a 1 to 1 basis (Quanto)]."
+    "def": "This reverse convertible is protected against foreign exchange risk at maturity[c1:, i.e., the amounts calculated based on [c2:the share, which is quoted in <k1:underlyingCurrency>][c3:the index, which is quoted in <k2:underlyingCurrency>][c4:the commodity, which is quoted in <k3:underlyingCurrency>][c5:the underlying, which is quoted in <k4:underlyingCurrency>], will be converted into <k5:productCurrency> on a 1 to 1 basis (Quanto)]."
   },
   {
     "id": "key3.7.1",
-    "def": "This bonus certificate is protected against foreign exchange risk at maturity[c1:, i.e., the amounts calculated based on [c2:the share, which is quoted in <k1:underlyingCurrency>][c3:the index, which is quoted in <k2:underlyingCurrency>][c4:the commodity, which is quoted in <k3:underlyingCurrency>][c4:the underlying, which is quoted in <k4:underlyingCurrency>], will be converted into <k5:productCurrency> on a 1 to 1 basis (Quanto)]."
+    "def": "This bonus certificate is protected against foreign exchange risk at maturity[c1:, i.e., the amounts calculated based on [c2:the share, which is quoted in <k1:underlyingCurrency>][c3:the index, which is quoted in <k2:underlyingCurrency>][c4:the commodity, which is quoted in <k3:underlyingCurrency>][c5:the underlying, which is quoted in <k4:underlyingCurrency>], will be converted into <k5:productCurrency> on a 1 to 1 basis (Quanto)]."
   },
   {
     "id": "key3.7.2",
-    "def": "This discount certificate is protected against foreign exchange risk at maturity[c1:, i.e., the amounts calculated based on [c2:the share, which is quoted in <k1:underlyingCurrency>][c3:the index, which is quoted in <k2:underlyingCurrency>][c4:the commodity, which is quoted in <k3:underlyingCurrency>][c4:the underlying, which is quoted in <k4:underlyingCurrency>], will be converted into <k5:productCurrency> on a 1 to 1 basis (Quanto)]."
+    "def": "This discount certificate is protected against foreign exchange risk at maturity[c1:, i.e., the amounts calculated based on [c2:the share, which is quoted in <k1:underlyingCurrency>][c3:the index, which is quoted in <k2:underlyingCurrency>][c4:the commodity, which is quoted in <k3:underlyingCurrency>][c5:the underlying, which is quoted in <k4:underlyingCurrency>], will be converted into <k5:productCurrency> on a 1 to 1 basis (Quanto)]."
   },
   {
     "id": "key3.7.3",
-    "def": "This express certificate is protected against foreign exchange risk at maturity[c1:, i.e., the amounts calculated based on [c2:the share, which is quoted in <k1:underlyingCurrency>][c3:the index, which is quoted in <k2:underlyingCurrency>][c4:the commodity, which is quoted in <k3:underlyingCurrency>][c4:the underlying, which is quoted in <k4:underlyingCurrency>], will be converted into <k5:productCurrency> on a 1 to 1 basis (Quanto)]."
+    "def": "This express certificate is protected against foreign exchange risk at maturity[c1:, i.e., the amounts calculated based on [c2:the share, which is quoted in <k1:underlyingCurrency>][c3:the index, which is quoted in <k2:underlyingCurrency>][c4:the commodity, which is quoted in <k3:underlyingCurrency>][c5:the underlying, which is quoted in <k4:underlyingCurrency>], will be converted into <k5:productCurrency> on a 1 to 1 basis (Quanto)]."
   },
   {
     "id": "key3.7.4",
-    "def": "This sprint certificate is protected against foreign exchange risk at maturity[c1:, i.e., the amounts calculated based on [c2:the share, which is quoted in <k1:underlyingCurrency>][c3:the index, which is quoted in <k2:underlyingCurrency>][c4:the commodity, which is quoted in <k3:underlyingCurrency>][c4:the underlying, which is quoted in <k4:underlyingCurrency>], will be converted into <k5:productCurrency> on a 1 to 1 basis (Quanto)]."
+    "def": "This sprint certificate is protected against foreign exchange risk at maturity[c1:, i.e., the amounts calculated based on [c2:the share, which is quoted in <k1:underlyingCurrency>][c3:the index, which is quoted in <k2:underlyingCurrency>][c4:the commodity, which is quoted in <k3:underlyingCurrency>][c5:the underlying, which is quoted in <k4:underlyingCurrency>], will be converted into <k5:productCurrency> on a 1 to 1 basis (Quanto)]."
   },
   {
     "id": "key3.7.5",
-    "def": "This turbo certificate is protected against foreign exchange risk at maturity[c1:, i.e., the amounts calculated based on [c2:the share, which is quoted in <k1:underlyingCurrency>][c3:the index, which is quoted in <k2:underlyingCurrency>][c4:the commodity, which is quoted in <k3:underlyingCurrency>][c4:the underlying, which is quoted in <k4:underlyingCurrency>], will be converted into <k5:productCurrency> on a 1 to 1 basis (Quanto)]."
+    "def": "This turbo certificate is protected against foreign exchange risk at maturity[c1:, i.e., the amounts calculated based on [c2:the share, which is quoted in <k1:underlyingCurrency>][c3:the index, which is quoted in <k2:underlyingCurrency>][c4:the commodity, which is quoted in <k3:underlyingCurrency>][c5:the underlying, which is quoted in <k4:underlyingCurrency>], will be converted into <k5:productCurrency> on a 1 to 1 basis (Quanto)]."
   },
   {
     "id": "key3.7.6",
-    "def": "This warrant is protected against foreign exchange risk at maturity[c1:, i.e., the amounts calculated based on [c2:the share, which is quoted in <k1:underlyingCurrency>][c3:the index, which is quoted in <k2:underlyingCurrency>][c4:the commodity, which is quoted in <k3:underlyingCurrency>][c4:the underlying, which is quoted in <k4:underlyingCurrency>], will be converted into <k5:productCurrency> on a 1 to 1 basis (Quanto)]."
+    "def": "This warrant is protected against foreign exchange risk at maturity[c1:, i.e., the amounts calculated based on [c2:the share, which is quoted in <k1:underlyingCurrency>][c3:the index, which is quoted in <k2:underlyingCurrency>][c4:the commodity, which is quoted in <k3:underlyingCurrency>][c5:the underlying, which is quoted in <k4:underlyingCurrency>], will be converted into <k5:productCurrency> on a 1 to 1 basis (Quanto)]."
   },
   {
     "id": "key3.7.7",
-    "def": "This call option is protected against foreign exchange risk at maturity[c1:, i.e., the amounts calculated based on [c2:the share, which is quoted in <k1:underlyingCurrency>][c3:the index, which is quoted in <k2:underlyingCurrency>][c4:the commodity, which is quoted in <k3:underlyingCurrency>][c4:the underlying, which is quoted in <k4:underlyingCurrency>], will be converted into <k5:productCurrency> on a 1 to 1 basis (Quanto)]."
+    "def": "This call option is protected against foreign exchange risk at maturity[c1:, i.e., the amounts calculated based on [c2:the share, which is quoted in <k1:underlyingCurrency>][c3:the index, which is quoted in <k2:underlyingCurrency>][c4:the commodity, which is quoted in <k3:underlyingCurrency>][c5:the underlying, which is quoted in <k4:underlyingCurrency>], will be converted into <k5:productCurrency> on a 1 to 1 basis (Quanto)]."
   },
   {
     "id": "key3.7.8",
-    "def": "This put option is protected against foreign exchange risk at maturity[c1:, i.e., the amounts calculated based on [c2:the share, which is quoted in <k1:underlyingCurrency>][c3:the index, which is quoted in <k2:underlyingCurrency>][c4:the commodity, which is quoted in <k3:underlyingCurrency>][c4:the underlying, which is quoted in <k4:underlyingCurrency>], will be converted into <k5:productCurrency> on a 1 to 1 basis (Quanto)]."
+    "def": "This put option is protected against foreign exchange risk at maturity[c1:, i.e., the amounts calculated based on [c2:the share, which is quoted in <k1:underlyingCurrency>][c3:the index, which is quoted in <k2:underlyingCurrency>][c4:the commodity, which is quoted in <k3:underlyingCurrency>][c5:the underlying, which is quoted in <k4:underlyingCurrency>], will be converted into <k5:productCurrency> on a 1 to 1 basis (Quanto)]."
   },
   {
     "id": "key3.8",
@@ -206,5 +206,21 @@
   {
     "id": "key3.10",
     "def": "The reverse convertible is intended for investors who believe that the [c1:the share price][c2:the index level] will move sideways or rise only moderately."
+  },
+  {
+    "id": "key3.11",
+    "def": "Product type"
+  },
+  {
+    "id": "key3.12",
+    "def": "Reverse convertible"
+  },
+  {
+    "id": "key3.13",
+    "def": "Bearer debt security"
+  },
+  {
+    "id": "key3.14",
+    "def": "General description of the product"
   }
 ]

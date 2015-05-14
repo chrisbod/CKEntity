@@ -14,6 +14,7 @@ DocumentTranslator.prototype = {
 			args, newNode;
 		for (var i=0;i<tokens.length;i++) {
 			args = helper.getDataArguments(tokens[i]);
+			console.log(args)
 			newNode = tokenStore.getEntityNode(args.type);
 			helper.setDataArguments(newNode,args)
 			tokens[i].parentNode.replaceChild(newNode,tokens[i]);
@@ -41,10 +42,17 @@ DocumentTranslator.prototype = {
 			throw new Error("Non matching keys")
 		}
 		for (var i = 0;i<newConditionals.length;i++) {
-			lookup[this.entitiesHelper.getDataArgument(newConditionals[i],"conditional")] = newConditionals[i]; 
+			var args = this.entitiesHelper.getDataArguments(newConditionals[i])
+			console.log("new",args)
+			lookup[args.conditional] = 
+				newConditionals[i]
+			
 		}
 		for (i=0;i<originalConditionals.length;i++) {
-			lookup[this.entitiesHelper.getDataArgument(newConditionals[i],"conditional")].setAttribute("data-args",originalConditionals[i].getAttribute("data-args"))
+			var args = this.entitiesHelper.getDataArguments(originalConditionals[i])
+			console.log("orig",args,originalConditionals[i].getAttribute("data-args"));
+			
+			lookup[args.conditional].setAttribute("data-args",originalConditionals[i].getAttribute("data-args"))
 		}
 
 	}

@@ -232,14 +232,17 @@ SaveShim.prototype = {
 							</label>
 						</li>
 						<li data-bind="if: type == 'radio'">
-								<ul data-bind="foreach: options" class="radio-list">
+							<select size="4" data-bind="attr:{name:$parent.id }, options: options , optionsText: 'text', 	optionsValue: 'value', value: $root.values()[id]">
+							</select>
+								<!--ul data-bind="foreach: options" class="radio-list">
 									<li>
 										<label>
-											<input type="radio" data-bind="value:value, attr:{name:$parent.id}, checked: $root.values()[name] == value">
-											<span data-bind="text:text"></span>
+											<input type="radio" data-bind="value:value, name:$parent.id, checked: $root.values()[$parent.id] == value">
+											<span data-bind="text:text"></span><br>
+											<span data-bind="text:(JSON.stringify($root.values()))"></span>
 										</label>
 									</li>
-								</ul>
+								</ul-->
 						</li>
 						<li data-bind="if: type == 'select'">
 							<select data-bind="attr:{name:id }, options: options, optionsText: 'text', 	optionsValue: 'value', value: $root.values()[id]">

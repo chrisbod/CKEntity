@@ -75,11 +75,11 @@ EntitiesHelper.prototype = {
 	getEditPermissions: function (entityElement) {
 		var path = this.getEntityPathAsText(entityElement);
 		if (path[0] == "TOKEN") {
-			if (path.length == 1) {
-				return {rules: true,properties:true}
-			} else {
+			//if (path.length == 1) {
+				//return {rules: true,properties:true}
+			//} else {
 				return {properties:true}
-			}
+			//}
 		}
 		return {rules: true};
 	},
@@ -109,6 +109,8 @@ EntitiesHelper.prototype = {
 
 	},
 	setDataArguments: function (element,values) {
+		console.log(element)
+		console.log(values)
 		var args = [];
 		for (var i in values) {
 			args.push(i+":'"+values[i]+"'");
@@ -130,8 +132,11 @@ EntitiesHelper.prototype = {
 		return this.getDataArguments(element).key;
 	},
 	getDataArguments: function (tokenElement) {
+
 		var args = tokenElement.getAttribute("data-args");
 		var values = (new Function("return {"+(args||'')+"}"))();
+		console.log("get",args)
+		console.log(values)
 		for (var i in values) {
 			this[i] = values[i];
 		}

@@ -144,7 +144,7 @@ function AutoSuggestContainer(id, tokenizer) {
 		if (!this.enterClicked) {
 			var selection = this.editableDocument.getSelection(),
 				range = selection.getRangeAt(0),
-				node = range.endContainer,
+				node = range.commonAncestorContainer,
 				duplicateRange = range.cloneRange(),
 				index;
 			duplicateRange.selectNodeContents(node);
@@ -264,8 +264,8 @@ function AutoSuggestContainer(id, tokenizer) {
 				}
 				
 			}
-			var cursor = this.editableDocument.createTextNode("\u200b");
-			newNode.parentNode.insertBefore(document.createTextNode("\u200b"),newNode)
+			var cursor = this.editableDocument.createElement("span");
+			newNode.parentNode.insertBefore(document.createElement("span"),newNode)
 			newNode.parentNode.insertBefore(cursor,newNode.nextSibling)
 			range.selectNode(cursor);
 			selection.removeAllRanges();

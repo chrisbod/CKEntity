@@ -64,6 +64,7 @@ EntitySelectionManager.prototype = {
 	},
 	keydownHandler: function (event) {
 		switch (event.keyCode) {
+			case 8: return this.handleDelete(event);
 			case 37: return this.leftArrowDown(event);
 			case 39: return this.rightArrowDown(event);
 		}
