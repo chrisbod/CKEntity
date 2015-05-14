@@ -265,7 +265,7 @@ function AutoSuggestContainer(id, tokenizer) {
 				
 			}
 			var cursor = this.editableDocument.createTextNode("\u200b");
-			//newNode.parentNode.insertBefore(document.createTextNode(" "),newNode)
+			newNode.parentNode.insertBefore(document.createTextNode("\u200b"),newNode)
 			newNode.parentNode.insertBefore(cursor,newNode.nextSibling)
 			range.selectNode(cursor);
 			selection.removeAllRanges();

@@ -8,7 +8,7 @@ token {
 	
 }
 translation .contents {
-	border-bottom: 1px dotted black;
+	border-bottom: 1px dotted green;
 }
 
 token,translation,token *, translation * {
@@ -18,7 +18,7 @@ token,translation,token *, translation * {
 }
 
 .editing token {
-	color: red;
+	color: green;
 }
 
 translation {
@@ -36,7 +36,7 @@ token > span {
 }
 
 token {
-	color: red;	
+	color: green;	
 }
 token > span {
 	display: inline;
@@ -52,7 +52,7 @@ token {
 conditional.user {
 	
 	display: inline;
-	color: blue;
+	color: green;
 }
 conditional:before {
 	content: '[';
@@ -61,6 +61,7 @@ conditional:after {
 	content: ']';
 }
 conditional .conditional.args {
+	min-width: 1.5ex;
 	color: rgba(0,0,0,0);
 }
 conditional > span.contents:focus {
@@ -130,6 +131,7 @@ conditional[data-args*=hidden] span.conditional {
 	color: white;
   margin: 0;
  width: 0;
+ font-size: 1ex;
 }
 conditional[data-args*=hidden] span.conditional:first-child::before {
 	background-image: url(../img/plus.png);

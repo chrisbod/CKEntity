@@ -97,7 +97,39 @@
   },
   {
     "id": "key2.0",
-    "def": "Aktienanleihe linked to [c1:the shares of <k1:underlyingName>][c2:the <k2:underlyingName> index]"
+    "def": "Aktienanleihe bezogen auf [c1:die Aktien der <k1:underlyingName>][c2:den <k2:underlyingName>-Index]"
+  },
+  {
+    "id": "key2.0.1",
+    "def": "Bonus-Zertifikat bezogen auf [c1:die Aktien der <k1:underlyingName>][c2:den <k2:underlyingName>-Index]"
+  },
+  {
+    "id": "key2.0.2",
+    "def": "Discount-Zertifikat bezogen auf [c1:die Aktien der <k1:underlyingName>][c2:den <k2:underlyingName>-Index]"
+  },
+  {
+    "id": "key2.0.3",
+    "def": "Express-Zertifikat bezogen auf [c1:die Aktien der <k1:underlyingName>][c2:den <k2:underlyingName>-Index]"
+  },
+  {
+    "id": "key2.0.4",
+    "def": "Sprint-Zertifikat bezogen auf [c1:die Aktien der <k1:underlyingName>][c2:den <k2:underlyingName>-Index]"
+  },
+  {
+    "id": "key2.0.5",
+    "def": "Turbo-Zertifikat bezogen auf [c1:die Aktien der <k1:underlyingName>][c2:den <k2:underlyingName>-Index]"
+  },
+  {
+    "id": "key2.0.6",
+    "def": "Optionsschein bezogen auf [c1:die Aktien der <k1:underlyingName>][c2:den <k2:underlyingName>-Index]"
+  },
+  {
+    "id": "key2.0.7",
+    "def": "Call-Optionsschein bezogen auf [c1:die Aktien der <k1:underlyingName>][c2:den <k2:underlyingName>-Index]"
+  },
+  {
+    "id": "key2.0.8",
+    "def": "Put-Optionsschein bezogen auf [c1:die Aktien der <k1:underlyingName>][c2:den <k2:underlyingName>-Index]"
   },
   {
     "id": "key3.0",
@@ -130,6 +162,38 @@
   {
     "id": "key3.7",
     "def": "Diese Aktienanleihe ist am Fälligkeitstag gegen Wechselkursschwankungen geschützt[c1:, d.h. die auf Basis [c2:der Aktie, die in <k1:underlyingCurrency> notiert][c3:des Index, der in <k2:underlyingCurrency> notiert][c4:des Rohstoffs, der in <k3:underlyingCurrency> notiert][c4:des Basiswerts, der in <k4:underlyingCurrency> notiert] berechneten Beträge werden auf einer 1 zu 1-Basis in <k5:productCurrency> umgerechnet (Quanto)]."
+  },
+  {
+    "id": "key3.7.1",
+    "def": "Dieses Bonus-Zertifikat ist am Fälligkeitstag gegen Wechselkursschwankungen geschützt[c1:, d.h. die auf Basis [c2:der Aktie, die in <k1:underlyingCurrency> notiert][c3:des Index, der in <k2:underlyingCurrency> notiert][c4:des Rohstoffs, der in <k3:underlyingCurrency> notiert][c4:des Basiswerts, der in <k4:underlyingCurrency> notiert] berechneten Beträge werden auf einer 1 zu 1-Basis in <k5:productCurrency> umgerechnet (Quanto)]."
+  },
+  {
+    "id": "key3.7.2",
+    "def": "Dieses Discount-Zertifikat ist am Fälligkeitstag gegen Wechselkursschwankungen geschützt[c1:, d.h. die auf Basis [c2:der Aktie, die in <k1:underlyingCurrency> notiert][c3:des Index, der in <k2:underlyingCurrency> notiert][c4:des Rohstoffs, der in <k3:underlyingCurrency> notiert][c4:des Basiswerts, der in <k4:underlyingCurrency> notiert] berechneten Beträge werden auf einer 1 zu 1-Basis in <k5:productCurrency> umgerechnet (Quanto)]."
+  },
+  {
+    "id": "key3.7.3",
+    "def": "Dieses Express-Zertifikat ist am Fälligkeitstag gegen Wechselkursschwankungen geschützt[c1:, d.h. die auf Basis [c2:der Aktie, die in <k1:underlyingCurrency> notiert][c3:des Index, der in <k2:underlyingCurrency> notiert][c4:des Rohstoffs, der in <k3:underlyingCurrency> notiert][c4:des Basiswerts, der in <k4:underlyingCurrency> notiert] berechneten Beträge werden auf einer 1 zu 1-Basis in <k5:productCurrency> umgerechnet (Quanto)]."
+  },
+  {
+    "id": "key3.7.4",
+    "def": "Dieses Sprint-Zertifikat ist am Fälligkeitstag gegen Wechselkursschwankungen geschützt[c1:, d.h. die auf Basis [c2:der Aktie, die in <k1:underlyingCurrency> notiert][c3:des Index, der in <k2:underlyingCurrency> notiert][c4:des Rohstoffs, der in <k3:underlyingCurrency> notiert][c4:des Basiswerts, der in <k4:underlyingCurrency> notiert] berechneten Beträge werden auf einer 1 zu 1-Basis in <k5:productCurrency> umgerechnet (Quanto)]."
+  },
+  {
+    "id": "key3.7.5",
+    "def": "Dieses Turbo-Zertifikat ist am Fälligkeitstag gegen Wechselkursschwankungen geschützt[c1:, d.h. die auf Basis [c2:der Aktie, die in <k1:underlyingCurrency> notiert][c3:des Index, der in <k2:underlyingCurrency> notiert][c4:des Rohstoffs, der in <k3:underlyingCurrency> notiert][c4:des Basiswerts, der in <k4:underlyingCurrency> notiert] berechneten Beträge werden auf einer 1 zu 1-Basis in <k5:productCurrency> umgerechnet (Quanto)]."
+  },
+  {
+    "id": "key3.7.6",
+    "def": "Dieser Optionsschein ist am Fälligkeitstag gegen Wechselkursschwankungen geschützt[c1:, d.h. die auf Basis [c2:der Aktie, die in <k1:underlyingCurrency> notiert][c3:des Index, der in <k2:underlyingCurrency> notiert][c4:des Rohstoffs, der in <k3:underlyingCurrency> notiert][c4:des Basiswerts, der in <k4:underlyingCurrency> notiert] berechneten Beträge werden auf einer 1 zu 1-Basis in <k5:productCurrency> umgerechnet (Quanto)]."
+  },
+  {
+    "id": "key3.7.7",
+    "def": "Dieser Call-Optionsschein ist am Fälligkeitstag gegen Wechselkursschwankungen geschützt[c1:, d.h. die auf Basis [c2:der Aktie, die in <k1:underlyingCurrency> notiert][c3:des Index, der in <k2:underlyingCurrency> notiert][c4:des Rohstoffs, der in <k3:underlyingCurrency> notiert][c4:des Basiswerts, der in <k4:underlyingCurrency> notiert] berechneten Beträge werden auf einer 1 zu 1-Basis in <k5:productCurrency> umgerechnet (Quanto)]."
+  },
+  {
+    "id": "key3.7.8",
+    "def": "Dieser Put-Optionsschein ist am Fälligkeitstag gegen Wechselkursschwankungen geschützt[c1:, d.h. die auf Basis [c2:der Aktie, die in <k1:underlyingCurrency> notiert][c3:des Index, der in <k2:underlyingCurrency> notiert][c4:des Rohstoffs, der in <k3:underlyingCurrency> notiert][c4:des Basiswerts, der in <k4:underlyingCurrency> notiert] berechneten Beträge werden auf einer 1 zu 1-Basis in <k5:productCurrency> umgerechnet (Quanto)]."
   },
   {
     "id": "key3.8",

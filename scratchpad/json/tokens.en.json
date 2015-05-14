@@ -26,6 +26,40 @@
 		]
 	},
 	{
+		"id": "currentTime",
+		"text": "current time",
+		"preview": "19:20",
+		"groups": [
+			{
+				"label": "Format",				
+				"controls": [
+					{
+						"type": "radio",
+						"id": "format",
+						"options": [
+							{
+								"value": "HH:mm",
+								"text": "HH:mm"
+							},
+							{
+								"value": "HH:mm:ss",
+								"text": "HH:mm:ss"
+							},
+							{
+								"value": "yyyy-MM-ddTHH:mm",
+								"text": "yyyy-MM-ddTHH:mm"
+							},
+							{
+								"value": "yyyy-MM-ddTHH:mm:ss",
+								"text": "yyyy-MM-ddTHH:mm:ss"
+							}
+						]
+					}
+				]
+			}
+		]
+	},
+	{
 		"id": "finalValuationDate",
 		"text": "final valuation date",
 		"preview": "01/01/2017",

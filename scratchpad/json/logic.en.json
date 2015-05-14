@@ -118,6 +118,42 @@
 				"text": "At least one commodity"
 			},
 			{
+				"value": "oneShare",
+				"text": "One share"
+			},
+			{
+				"value": "onePreferenceShare",
+				"text": "One preference share"
+			},
+			{
+				"value": "oneProfitParticipationCertificate",
+				"text": "One profit participation certificate"
+			},
+			{
+				"value": "oneADR",
+				"text": "One ADR"
+			},
+			{
+				"value": "oneCertificate",
+				"text": "One certificate"
+			},
+			{
+				"value": "oneWarrant",
+				"text": "One warrant"
+			},
+			{
+				"value": "oneIndex",
+				"text": "One index"
+			},
+			{
+				"value": "oneETF",
+				"text": "One ETF"
+			},
+			{
+				"value": "oneCommodity",
+				"text": "One commodity"
+			},
+			{
 				"value": "onlyShares",
 				"text": "Only shares"
 			},

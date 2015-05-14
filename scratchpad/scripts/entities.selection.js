@@ -13,7 +13,7 @@ EntitySelectionManager.prototype = {
 		document.addEventListener("paste", this, true);
 
 		this.editableElement.addEventListener("contextmenu", this, true)
-		this.editableElement.addEventListener("mouseup",this)
+		//this.editableElement.addEventListener("mouseup",this)
 		this.editableElement.addEventListener("keyup", this)
 		this.editableElement.addEventListener("keydown", this, true)
 		//this.editableElement.addEventListener("mousedown", this)
@@ -82,6 +82,7 @@ EntitySelectionManager.prototype = {
 		var selection = this.editableDocument.getSelection();
 		var baseNode = selection.baseNode;
 		var previous;
+		console.log(selection.baseNode)
 		if (baseNode.nodeType!=3) {
 
 			if (selection.baseOffset==0) {
@@ -94,6 +95,7 @@ EntitySelectionManager.prototype = {
 				case "token": {
 					
 					this.simpleSelect(selection,previous);
+					console.log("token")
 					event.preventDefault();
 					return;
 				}
@@ -120,6 +122,7 @@ EntitySelectionManager.prototype = {
 				switch (this.entities.getEntityType(previous)) {
 					case "": return;
 					case "token": {
+						console.log("token")
 						this.simpleSelect(selection,previous)
 						event.preventDefault();
 						return;
@@ -376,16 +379,18 @@ EntitySelectionManager.prototype = {
 		}
 	},
 	select: function (entityNode) {
-		this.removeImpureTextNodes(this.editableElement);
+
+		//this.removeImpureTextNodes(this.editableElement);
 		var selection =  this.getCleanSelection(),
 			range = this.editableDocument.createRange();
 		this.selectedEntityNode = entityNode;
-		range.selectNode(entityNode)
+		range.setStartBefore(entityNode)
+		range.setEndAfter(entityNode)
 		
 		selection.addRange(range);
 	},
 	setCursorAfter: function (node) {
-		this.removeImpureTextNodes(this.editableElement)
+		//this.removeImpureTextNodes(this.editableElement)
 		var selection = this.getCleanSelection();
 		var range = this.editableDocument.createRange()
 		range.setStartAfter(node)
@@ -395,7 +400,7 @@ EntitySelectionManager.prototype = {
 		this.selectedEntityNode = null;
 	},
 	setCursorBefore: function (node) {
-		this.removeImpureTextNodes(this.editableElement)
+		//this.removeImpureTextNodes(this.editableElement)
 		var selection = this.getCleanSelection();
 		var range = this.editableDocument.createRange();
 		range.setStartBefore(node)

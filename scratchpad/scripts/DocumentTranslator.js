@@ -29,14 +29,17 @@ DocumentTranslator.prototype = {
 			args = helper.getDataArguments(keys[i]);
 			newNode = translationStore.getEntityNode(args.key);
 			helper.setDataArguments(newNode,args);
-			this.synchronizeConditionals(newNode,element,language)
+			this.synchronizeConditionals(newNode,keys[i],language)
 			keys[i].parentNode.replaceChild(newNode,keys[i])
 		}
 	},
 	synchronizeConditionals: function (newElement, oldElement, language) {
-		var originalConditionals = oldElement.querySelectorAll("conditional"),
-			newConditionals = newElement.querySelectorAll("conditional"),
-			lookup = {}
+		var originalConditionals = oldElement.querySelectorAll("conditional:not(.user)"),
+			newConditionals = newElement.querySelectorAll("conditional:not(.user)"),
+			lookup = {};
+		if (originalConditionals.length!=newConditionals.length) {
+			throw new Error("Non matching keys")
+		}
 		for (var i = 0;i<newConditionals.length;i++) {
 			lookup[this.entitiesHelper.getDataArgument(newConditionals[i],"conditional")] = newConditionals[i]; 
 		}

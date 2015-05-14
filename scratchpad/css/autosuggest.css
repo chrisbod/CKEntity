@@ -40,10 +40,10 @@ div.autosuggest-container a.focussed   {
 
 
 #token-menu a {
-	color: red;
+	color: green;
 }
 #token-menu a.focussed {
-	background-color: red;
+	background-color: green;
 	color: white;
 }
 #token-menu a {

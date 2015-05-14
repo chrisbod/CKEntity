@@ -118,6 +118,42 @@
 				"text": "Mindestens ein Rohstoff"
 			},
 			{
+				"value": "oneShare",
+				"text": "Eine Aktie"
+			},
+			{
+				"value": "onePreferenceShare",
+				"text": "Eine Vorzugsaktie"
+			},
+			{
+				"value": "oneProfitParticipationCertificate",
+				"text": "Ein Genussschein"
+			},
+			{
+				"value": "oneADR",
+				"text": "Eine ADR"
+			},
+			{
+				"value": "oneCertificate",
+				"text": "Ein Zertifikat"
+			},
+			{
+				"value": "oneWarrant",
+				"text": "Ein Optionsschein"
+			},
+			{
+				"value": "oneIndex",
+				"text": "Ein Index"
+			},
+			{
+				"value": "oneETF",
+				"text": "Ein ETF"
+			},
+			{
+				"value": "oneCommodity",
+				"text": "Ein Rohstoff"
+			},
+			{
 				"value": "onlyShares",
 				"text": "Nur Aktien"
 			},
