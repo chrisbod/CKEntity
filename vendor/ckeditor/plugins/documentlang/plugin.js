@@ -37,7 +37,10 @@
 					  			name = editor.name;
 					  		config.language = languageId
 					  		currentEditorLanguageId = languageId
-					  		editor.destroy()
+					  		editor.destroy();
+					  		config.on = { 
+'instanceReady': function (evt) { evt.editor.execCommand('maximize'); }
+}
 					  		editor = CKEDITOR.replace(name, config);
 
 

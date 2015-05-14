@@ -8,8 +8,8 @@
 }
 
 div.autosuggest-container {
-	position: absolute;
-	z-index: 1000;
+	position: fixed;
+	z-index: 10000;
 	top: 0;
 	visibility: hidden;
 	background-color: white;
@@ -45,6 +45,9 @@ div.autosuggest-container a.focussed   {
 #token-menu a.focussed {
 	background-color: red;
 	color: white;
+}
+#token-menu a {
+	white-space: nowrap;
 }
 token, translation, conditional {
 	display: inline;

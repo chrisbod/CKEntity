@@ -166,15 +166,7 @@ function AutoSuggestContainer(id, tokenizer) {
 				
 				this.moveToRange(this.editableDocument,duplicateRange);
 				var suggestions = this.tokenizer.getSuggestions(trigger);
-				if (suggestions.length == 1) {
-					if (suggestions[0].def.trim() == trigger.trim()) {
-						this.clicked(suggestions[0].id,suggestions[0].def)
-						event.stopPropagation()
-						return
-					}
-
-
-				}
+				
 				this.showByKeys(suggestions);
 				if (suggestions.length) {
 					event.stopPropagation()
@@ -338,12 +330,12 @@ function AutoSuggestContainer(id, tokenizer) {
 		}
 		var split = value.split(" ");
 		if (split.length == 1) {
-			this.hide();
+			//this.hide();
 		} else {
 			var suggestions = this.tokenizer.getSuggestions(value);
-			if (suggestions[0].def == value) {
+			/*if (suggestions[0].def == value) {
 				suggestions = []
-			}
+			}*/
 			this.showByKeys(suggestions);
 		}
 

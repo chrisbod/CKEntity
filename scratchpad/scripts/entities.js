@@ -126,6 +126,9 @@ EntitiesHelper.prototype = {
 		delete values[key];
 		this.setDataArguments(element,values);
 	},
+	getDataArgument: function (element,key) {
+		return this.getDataArguments(element).key;
+	},
 	getDataArguments: function (tokenElement) {
 		var args = tokenElement.getAttribute("data-args");
 		var values = (new Function("return {"+(args||'')+"}"))();

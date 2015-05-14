@@ -38,10 +38,10 @@ DocumentTranslator.prototype = {
 			newConditionals = newElement.querySelectorAll("conditional"),
 			lookup = {}
 		for (var i = 0;i<newConditionals.length;i++) {
-			lookup[newConditionals[i].getAttribute("data-conditional-ref")] = newConditionals[i];
+			lookup[this.entitiesHelper.getDataArgument(newConditionals[i],"conditional")] = newConditionals[i]; 
 		}
 		for (i=0;i<originalConditionals.length;i++) {
-			lookup[originalConditionals[i].getAttribute("data-conditional-ref")].setAttribute("data-args",originalConditionals[i].getAttribute("data-args"))
+			lookup[this.entitiesHelper.getDataArgument(newConditionals[i],"conditional")].setAttribute("data-args",originalConditionals[i].getAttribute("data-args"))
 		}
 
 	}

@@ -1,11 +1,12 @@
 .dialog {
-    position: absolute;
+    position: fixed;
     top: 50%;
     left: 50%;
     -webkit-transform: translate(-50%, -50%);
     transform: translate(-50%, -50%);
     max-height: 95%;
     max-width: 95%;
+    z-index: 10000;
 
 }
 .dialog.hidden,.tooltip.hidden {
@@ -157,6 +158,7 @@ select{
     padding: 0.5ex;
     min-width: 20em;
     background-color: #eeeeee;
+    z-index: 10000;
 }
 .tooltip header {
     max-width: 20em;

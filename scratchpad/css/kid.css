@@ -1,0 +1,133 @@
+body {
+	font-family: Arial, Helvetica, san-serif;
+	counter-reset: section;
+	font-size: 11pt;
+	margin: 1em;
+	padding: 1em 1ex 1ex 3ex;
+}
+
+h1 {
+	color: #1F497D;
+	font-size: 22pt;
+	margin: 1ex 0;
+	padding: 0;
+}
+h2 {
+	color: #1F497D;
+	margin: 1ex 1ex 1ex -2ex;
+}
+.cke_panel_container a h2 {
+	margin-left: 0;
+}
+h2:before {
+	counter-increment: section;
+	content: counter(section) ". ";
+}
+
+h3 {
+	font-size: 11pt;
+	color: #1F497D;
+	margin: 1ex 0;
+}
+p {
+	margin: 1ex 0;
+}
+
+ol {
+	margin: 1ex 0;
+	disc-style-type: square;
+}
+
+ol li {
+
+}
+
+ul {
+	margin: 1ex 1em;
+}
+
+ul li {
+
+
+}
+
+.red {
+ 	color: red;
+ 	margin: 0.5ex 0;
+}
+.green {
+	color: green;
+	margin: 0.5ex 0;
+}
+.blue {
+	color: blue;
+	margin: 0.5ex 0;
+}
+.grey {
+	color: gray;
+	margin: 0.5ex 0;
+}
+
+.description {
+	font-size: 17pt;
+	color: #1F497D;
+	margin: 0.5ex 0;
+}
+.status {
+	font-size: 11pt;
+	color: #1F497D;
+	margin: 1ex 0;
+}
+.subtitle {
+	font-size: 11pt;
+	color: #1F497D;
+	font-weight: bold;
+	margin: 1ex 0;
+}
+.strong-note {
+	background-color: #1F497D;
+	color: #fff;
+	padding: 1ex;
+
+}
+
+.explanatory-statement {
+	background-color: #1F497D;
+	color: #fff;
+	padding: 1ex;
+	text-align: justify;
+
+}
+
+table.definitions {
+
+}
+table tr:nth-child(2n) {
+	background-color: #DADCED;
+}
+table.definitions td:nth-child(2n+1) {
+	color: #1F497D;
+}
+table.definitions td:nth-child(2n) {
+	color: gray;
+}
+
+table th {
+	background-color: #1F497D;
+	color: white;
+
+}
+
+table {
+	border-collapse: collapse;
+	margin: 1ex 0 1ex 0;
+	width: 100%;
+	box-sizing: border-box;
+}
+
+table p {
+	margin: 0.5ex;
+}
+table td {
+	padding: 1ex;
+}
