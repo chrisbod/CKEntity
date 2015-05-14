@@ -92,14 +92,17 @@ function build(editor,editPanel,language)  {
 	},true);
 
 
+	function updateAutosuggests(lang) {
+		translationContainer.build(languageStore.getTranslationStoreByLanguage(lang),languageStore.getSentenceTokenizerByLanguage(lang))
+		tokenContainer.build(languageStore.getTokenStoreByLanguage(lang),languageStore.getTokenTokenizerByLanguage(lang))
+
+	}
 	languageStore.installLanguage(language, function (languageDefinition) {
 		
-		if (languageDefinition.id != languageStore.currentLanguage) {
+		if (language != languageStore.currentLanguage) {
 			translator.translate(editPanel,languageDefinition.id)
-			languageStore.currentLanguage = languageDefinition.id
-
-			translationContainer.build(languageDefinition.translationStore,languageStore.getCurrentSentenceTokenizer())
-			tokenContainer.build(languageDefinition.tokenStore,languageStore.getCurrentTokenTokenizer())
+			languageStore.currentLanguage =  language;
+			updateAutosuggests(languageDefinition.id)
 		}
 		
 		

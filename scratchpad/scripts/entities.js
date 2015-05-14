@@ -117,15 +117,14 @@ EntitiesHelper.prototype = {
 		element.firstChild.setAttribute("data-args",args);
 	},
 	setDataArgument: function (element,key,value) {
-		console.log(arguments)
-		var values = this.getElementDataArguments(element);
+		var values = this.getDataArguments(element);
 		values[key] = value;
-		this.updateElementDataArguments(element,values);
+		this.setDataArguments(element,values);
 	},
 	removeDataArgument: function (element,key) {
-		var values = this.getElementDataArguments(element);
+		var values = this.getDataArguments(element);
 		delete values[key];
-		this.updateElementDataArguments(values);
+		this.setDataArguments(element,values);
 	},
 	getDataArguments: function (tokenElement) {
 		var args = tokenElement.getAttribute("data-args");

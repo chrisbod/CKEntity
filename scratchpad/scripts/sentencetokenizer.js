@@ -1,7 +1,7 @@
-
+var unique = 0
 //This has NOTHING to do with TOKENS in the documents
 function SentenceTokenizer () {
-	this.tokens = {};
+	this.tokens = {id:unique++};
 }
 SentenceTokenizer.prototype = {
 	getLastSentenceFromRange: function (rangeOrText) {

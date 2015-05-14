@@ -13,21 +13,30 @@ LanguageStore.prototype = {
 			callback(this.languages[language])
 		}
 	},
-	getCurrentTokenDefinitions: function () {
-	
-		return this.languages[this.currentLanguage].tokenDefinitions;
+	getTokenDefinitionsByLanguage: function (language) {
+		return this.languages[language].tokenDefinitions;
 	},
-	getCurrentLogicDefinitions: function () {
-		return this.languages[this.currentLanguage].logicDefinitions;
+	getLogicDefinitionsByLanguage: function (language) {
+		return this.languages[language].logicDefinitions;
 	},
-	getCurrentTokenTokenizer: function () {
-		return this.languages[this.currentLanguage].tokenTokenizer;
+	getTokenTokenizerByLanguage: function (language) {
+		return this.languages[language].tokenTokenizer;
 	},
-	getCurrentSentenceTokenizer: function () {
-		return this.languages[this.currentLanguage].sentenceTokenizer;
+	getSentenceTokenizeByLanguager: function (language) {
+		return this.languages[language].sentenceTokenizer;
+	},
+	getTokenStoreByLanguage: function (language) {
+		return this.languages[language].tokenStore;
+	},
+	getTranslationStoreByLanguage: function (language) {
+		return this.languages[language].translationStore;
+	},
+	getSentenceTokenizerByLanguage: function (language) {
+		return this.languages[language].sentenceTokenizer;
 	},
 	addLanguage: function (id,callback) {
 		var tokenStore =  new TokenStore();
+		
 		this.languages[id] = {
 			id: id,
 			tokenStore:tokenStore,

@@ -1,5 +1,5 @@
 function ConditionalCollapser() {
-	
+	this.entitiesHelper =new EntitiesHelper()
 }
 ConditionalCollapser.prototype = {
 	init: function (editableElement) {
@@ -15,11 +15,13 @@ ConditionalCollapser.prototype = {
 			if (event.target.hasAttribute("data-collapsed")) {
 				event.target.removeAttribute("data-collapsed")
 				event.target.parentNode.removeAttribute("data-collapsed")
+				this.entitiesHelper.removeDataArgument(event.target.parentNode,"hidden")
 				
 			} else {
 
 				event.target.parentNode.setAttribute("data-collapsed", "true")
 				event.target.setAttribute("data-collapsed", "true")
+				this.entitiesHelper.setDataArgument(event.target.parentNode,"hidden",true)
 			}
 			event.stopPropagation();
 		}

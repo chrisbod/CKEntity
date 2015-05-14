@@ -1,7 +1,4 @@
 function EntityStore() {
-	this.templatableNodes = {};
-
-	this.allNodes = [];
 }
 EntityStore.prototype =  {
 	addEntity: function (key,id,preview) {
@@ -33,6 +30,7 @@ EntityStore.prototype =  {
 
 function TokenStore() {
 	this.templatableNodes = {};
+	this.allNodes = [];
 }
 TokenStore.prototype =  new EntityStore()
 TokenStore.prototype.templatableNodes = null;
@@ -65,6 +63,7 @@ TokenStore.prototype.createTemplatableNodeFromEntity = function (key,id,previewH
 function TranslationStore(tokenStore) {
 	this.tokenStore = tokenStore;
 	this.templatableNodes = {};
+	this.allNodes = [];
 }
 TranslationStore.prototype =  new EntityStore()
 TranslationStore.prototype.templatableNodes = null;
@@ -104,6 +103,7 @@ TranslationStore.prototype.parseTextMarkup = function (string) {
 
 function TokenStore() {
 	this.templatableNodes = {};
+	this.allNodes = []
 }
 TokenStore.prototype =  new EntityStore()
 TokenStore.prototype.templatableNodes = null;

@@ -9,9 +9,10 @@ PositionableContainer.prototype = {
 		this.configureMetrics();
 	},
 	moveToElement: function (element) {
-		var rect =element.getBoundingClientRect();
+		var rect = element.getBoundingClientRect();
+		
 		this.moveTo(rect.left,rect.top+rect.height);
-		this.configureMetrics();
+		this.configureMetrics(element);
 		this.inputElement = element;
 	},
 	moveToCursorBottomLeft: function (cursorContainer) {
@@ -23,10 +24,11 @@ PositionableContainer.prototype = {
 		this.moveTo(rect.left,rect.bottom);
 		this.configureMetrics();
 	},
-	moveToRange: function (range) {
-		var rect = range.getClientRects();
+	moveToRange: function (ownerDocument,range) {
+		var rect = range.getClientRects(),
+			frameRect = ownerDocument.defaultView.frameElement.getBoundingClientRect();
 		rect = rect[rect.length-1]
-		this.moveTo(rect.left,rect.bottom);
+		this.moveTo(frameRect.left+rect.left,frameRect.top+rect.bottom);
 	},
 	build: function () {
 		this.element = document.createElement("div");
@@ -46,8 +48,9 @@ PositionableContainer.prototype = {
 	handleEvent: function (event) {
 		return this[event.type+"Handler"](event)
 	},
-	configureMetrics: function () {
+	configureMetrics: function (elementOrRange) {
 		this.element.style.bottom = "";
+		
 		var viewRect = document.querySelector("html").getBoundingClientRect();
 		var currentElementRect = this.element.getBoundingClientRect();
 		var viewBottom = Math.max(viewRect.bottom,window.innerHeight);
@@ -55,7 +58,6 @@ PositionableContainer.prototype = {
 		if (elementBottom>viewBottom) {
 			this.element.style.bottom = "0px"
 		}
-
 	},
 	setContent: function (elementOrFragment) {
 		this.element.innerHTML = "";

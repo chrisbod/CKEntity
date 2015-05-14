@@ -74,7 +74,7 @@ function AutoSuggestContainer(id, tokenizer) {
 	},
 	build: function (store,tokenizer) {
 		this.store = store;
-		this.tokenizer = tokenizer
+		this.tokenizer = tokenizer;
 		this.element.innerHTML = "";
 		var data = store.allNodes;
 		var html = {}
@@ -164,7 +164,7 @@ function AutoSuggestContainer(id, tokenizer) {
 					return;
 				}
 				
-				this.moveToRange(this.editableDocument,duplicateRange)
+				this.moveToRange(this.editableDocument,duplicateRange);
 				var suggestions = this.tokenizer.getSuggestions(trigger);
 				if (suggestions.length == 1) {
 					if (suggestions[0].def.trim() == trigger.trim()) {
