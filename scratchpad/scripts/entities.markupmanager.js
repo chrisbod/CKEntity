@@ -25,9 +25,9 @@ EntityMarkupManager.prototype = {
 			//CKEDITOR.currentInstance.focusManager.focus()
 		}
 	},
-	dropHandler: function () {
+	dropHandler: function (event) {
 		event.stopPropagation()
-		console.log("here")
+		console.log(event.dataTransfer)
 	},
 	pasteHandler: function (event) {
 		this.inputHandler(event)

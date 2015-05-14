@@ -85,13 +85,14 @@ TranslationStore.prototype.createTemplatableNodeFromEntity = function (key,id) {
 		token;
 	for (var i=0;i<tokens.length;i++) {
 		token = this.tokenStore.getEntityNode(tokens[i].getAttribute("data-id"))
+		var ref = tokens[i].getAttribute("data-ref")
 		if (tokens[i].parentNode.className == "contents") {
 			token.setAttribute(
 				"data-args",
-				token.getAttribute("data-args")+",key:'"+id+"',conditional:'"+tokens[i].parentNode.parentNode.getAttribute("data-conditional-ref")+"'"
+				token.getAttribute("data-args")+",key:'"+id+"',conditional:'"+tokens[i].parentNode.parentNode.getAttribute("data-conditional-ref")+"',token:'"+ref+"'"
 			);
 		} else {
-			token.setAttribute("data-args",token.getAttribute("data-args")+",key:'"+id+"'")
+			token.setAttribute("data-args",token.getAttribute("data-args")+",key:'"+id+"',token:'"+ref+"'")
 		}
 		tokens[i].parentNode.replaceChild(token, tokens[i]);
 	}

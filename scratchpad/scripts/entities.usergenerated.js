@@ -90,7 +90,7 @@ UserConditionalManager.prototype = {
 		conditional.className = "user"
 		conditional.setAttribute("contenteditable","false");
 		conditional.setAttribute("data-args","type: 'user'");
-		conditional.innerHTML = '<span class="args conditional"  contenteditable="false">[</span><span class="contents conditional" contenteditable="true"></span><span class="conditional end" contenteditable="false">]</span>'
+		conditional.innerHTML = '<span class="args conditional"  contenteditable="false">[</span><span class="contents conditional" contenteditable="true">&nbsp&nbsp;</span><span class="conditional end" contenteditable="false">]</span>'
 		this.conditionalTemplateNode = conditional;
 
 	},

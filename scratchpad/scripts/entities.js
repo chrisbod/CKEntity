@@ -109,8 +109,6 @@ EntitiesHelper.prototype = {
 
 	},
 	setDataArguments: function (element,values) {
-		console.log(element)
-		console.log(values)
 		var args = [];
 		for (var i in values) {
 			args.push(i+":'"+values[i]+"'");
@@ -135,8 +133,6 @@ EntitiesHelper.prototype = {
 
 		var args = tokenElement.getAttribute("data-args");
 		var values = (new Function("return {"+(args||'')+"}"))();
-		console.log("get",args)
-		console.log(values)
 		for (var i in values) {
 			this[i] = values[i];
 		}
