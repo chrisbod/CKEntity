@@ -1,12 +1,14 @@
 function EntityMarkupManager() {
-	
+	this.entitiesHelper = new EntitiesHelper()
 }
 EntityMarkupManager.prototype = {
 	init: function (editableElement) {
 		this.editableElement = editableElement;
 		this.editableElement.addEventListener("input",this);
 		this.editableElement.addEventListener("drop",this,true)
+		//this.editableElement.addEventListener("drag",this,true)
 		this.editableDocument = editableElement.ownerDocument;
+		this.editableDocument.addEventListener("paste", this,true)
 		//this.editableElement.onpaste = this.handleEvent.bind(this)
 	},
 	handleEvent: function (event) {
@@ -20,17 +22,49 @@ EntityMarkupManager.prototype = {
 		//this.fixOrphanedElements();
 		//this.preventEntityEditing();
 		//this.fixRedundantMarkup();
-		if (CKEDITOR && CKEDITOR.currentInstance) {
+		if (typeof CKEDITOR != "undefined" && CKEDITOR.currentInstance) {
 			CKEDITOR.currentInstance.fire("saveSnapshot");
 			//CKEDITOR.currentInstance.focusManager.focus()
 		}
 	},
 	dropHandler: function (event) {
-		event.stopPropagation()
-		console.log(event.dataTransfer)
+		var dropTarget = this.editableDocument.elementFromPoint(event.pageX,event.pageY),
+			caret = this.editableDocument.caretRangeFromPoint(event.pageX,event.pageY);	
+		if (dropTarget) {
+				var selection = dropTarget.ownerDocument.getSelection()
+				var range = selection.getRangeAt(0);
+				var startNode = caret.startContainer,
+					nextTextNode;
+				var fragment = range.extractContents()
+				if (startNode.nodeType == 3) {
+					newTextNode = startNode.splitText(caret.startOffset)
+				} else {
+					startNode = startNode.insertBefore(document.createTextNode(""),startNode.firstChild)
+
+					newTextNode = startNode.parentNode.insertBefore(document.createTextNode(""),startNode.nextSibling);
+
+				}
+				newTextNode.parentNode.insertBefore(fragment,newTextNode);
+				range.setStartAfter(startNode)
+				range.setEndBefore(newTextNode)
+				selection.removeAllRanges()
+				selection.addRange(range)
+
+				event.stopPropagation()
+				event.preventDefault()
+				if (typeof CKEDITOR != "undefined" && CKEDITOR.currentInstance) {
+					//debugger;
+						CKEDITOR.currentInstance.fire("saveSnapshot");
+				}
+		}
+		
+	},
+	postDrop: function (editable,event) {
+		//console.log(document.getSelection())
 	},
 	pasteHandler: function (event) {
-		this.inputHandler(event)
+
+		
 	},
 	preventEntityEditing: function () {
 		var tokens = this.editableElement.querySelectorAll("token:not([contenteditable]),translation:not([contenteditable]), conditional:not([contenteditable]):not(.user)");

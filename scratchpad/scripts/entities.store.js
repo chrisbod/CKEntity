@@ -55,6 +55,9 @@ TokenStore.prototype.createTemplatableNodeFromEntity = function (key,id,previewH
 	node.appendChild(end)
 	
 	node.insertBefore(rules,node.firstChild)
+	var editSpan = document.createElement("span")
+	editSpan.className = "entity-wrapper"
+	editSpan.appendChild(node)
 	return node;
 }
 
@@ -96,8 +99,10 @@ TranslationStore.prototype.createTemplatableNodeFromEntity = function (key,id) {
 		}
 		tokens[i].parentNode.replaceChild(token, tokens[i]);
 	}
-	
-	return node;
+	var editSpan = document.createElement("span")
+	editSpan.className = "entity-wrapper"
+	editSpan.appendChild(node)
+	return editSpan;
 }
 TranslationStore.prototype.parseTextMarkup = function (string) {
 	return '<span class="args translation" contenteditable="false">{</span><span class="contents">'+string
@@ -137,5 +142,8 @@ TokenStore.prototype.createTemplatableNodeFromEntity = function (key,id,previewH
 	end.innerText = ">";
 	node.appendChild(end);
 	node.insertBefore(rules,node.firstChild)
-	return node;
+	var editSpan = document.createElement("span")
+	editSpan.className = "entity-wrapper"
+	editSpan.appendChild(node)
+	return editSpan;
 }

@@ -16,7 +16,7 @@ EntitySelectionManager.prototype = {
 		//this.editableElement.addEventListener("mouseup",this)
 		this.editableElement.addEventListener("keyup", this)
 		this.editableElement.addEventListener("keydown", this, true)
-		//this.editableElement.addEventListener("mousedown", this)
+		//this.editableElement.addEventListener("drop", this)
 		function blockEditorDisappear(event) {
 			var causeElement = event.relatedTarget;
 
@@ -45,8 +45,8 @@ EntitySelectionManager.prototype = {
 	},
 	contextmenuHandler: function (event){
 		var entityNode = this.entities.getEntityElement(event.target);
-		if (entityNode) {
-			this.select(entityNode)
+		if (entityNode && !entityNode.classList.contains("user")) {
+			this.select(entityNode.parentNode)
 		} else {
 			this.selectedEntityNode = null;
 		}
@@ -271,7 +271,7 @@ EntitySelectionManager.prototype = {
 					this.handleRightArrow(event)
 				}
 			} else {
-				this.select(highestEntity)
+				this.select(highestEntity.parentNode)
 			}
 			
 		}
@@ -311,7 +311,7 @@ EntitySelectionManager.prototype = {
 			return;
 
 		}
-		if (this.entities.isEntityElement(node.nextSibling)) {
+		if (this.entities.isEntityWrapper(node.nextSibling)) {
 			this.select(node.nextSibling);
 			event.stopPropagation();
 			event.preventDefault();
@@ -362,7 +362,7 @@ EntitySelectionManager.prototype = {
 	},
 	clickHandler: function (event) {
 		var entityNode = this.entities.getEntityElement(event.target);
-		if (entityNode) {
+		if (entityNode && !entityNode.classList.contains("user")) {
 			this.select(entityNode)
 		} else {
 			this.selectedEntityNode = null;

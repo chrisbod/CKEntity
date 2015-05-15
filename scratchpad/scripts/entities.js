@@ -8,6 +8,9 @@ EntitiesHelper.prototype = {
 			return /TRANSLATION|TOKEN|CONDITIONAL/i.test(element.tagName);
   		}
 	},
+	isEntityWrapper: function (element) {
+		return element.className.contains("entity-wrapper")
+	},
 	isTokenElement: function (element) {
 		if (element) { 			
 			return /TOKEN/i.test(element.tagName);
@@ -36,6 +39,19 @@ EntitiesHelper.prototype = {
 			}
 		}
 		return "";
+	},
+	getEditableEntityElement: function (startNode) {
+		var currentNode = startNode;
+		if (currentNode.nodeType == 3) {
+			currentNode = currentNode.parentNode
+		}
+		while( currentNode.classList) {
+			if (currentNode.classList.contains("contents")) {
+				return currentNode
+			}
+			currentNode =currentNode.parentNode
+		}
+		return null
 	},
 	getEntityElement: function (startNode,event) {
 		var currentNode = startNode,
