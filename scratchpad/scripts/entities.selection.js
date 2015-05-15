@@ -83,7 +83,6 @@ EntitySelectionManager.prototype = {
 		var selection = this.editableDocument.getSelection();
 		var baseNode = selection.baseNode;
 		var previous;
-		console.log(selection.baseNode)
 		if (baseNode.nodeType!=3) {
 
 			if (selection.baseOffset==0) {
