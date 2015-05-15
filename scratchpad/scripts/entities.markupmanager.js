@@ -9,7 +9,6 @@ EntityMarkupManager.prototype = {
 		//this.editableElement.addEventListener("drag",this,true)
 		this.editableDocument = editableElement.ownerDocument;
 		this.editableDocument.addEventListener("paste", this,true)
-		//this.editableElement.onpaste = this.handleEvent.bind(this)
 	},
 	handleEvent: function (event) {
 		return this[event.type+"Handler"](event);
@@ -28,15 +27,24 @@ EntityMarkupManager.prototype = {
 		}
 	},
 	dropHandler: function (event) {
+
 		var dropTarget = this.editableDocument.elementFromPoint(event.pageX,event.pageY),
 			caret = this.editableDocument.caretRangeFromPoint(event.pageX,event.pageY);	
 		if (dropTarget) {
 				var selection = dropTarget.ownerDocument.getSelection()
 				var range = selection.getRangeAt(0);
 				var startNode = caret.startContainer,
-					nextTextNode;
-				var fragment = range.extractContents()
+					nextTextNode,
+					fragment
+				if (event.ctrlKey) {
+					fragment = range.cloneContents()
+				} else {
+					fragment = range.extractContents()
+					
+				}
+				
 				if (startNode.nodeType == 3) {
+					console.log(startNode.data.length,caret.startOffset)
 					newTextNode = startNode.splitText(caret.startOffset)
 				} else {
 					startNode = startNode.insertBefore(document.createTextNode(""),startNode.firstChild)
@@ -59,12 +67,16 @@ EntityMarkupManager.prototype = {
 		}
 		
 	},
-	postDrop: function (editable,event) {
-		//console.log(document.getSelection())
+	postPaste: function (event,range) {
+		console.log(event)
 	},
 	pasteHandler: function (event) {
-
+		var selection = event.target.ownerDocument.getSelection();
+		console.log(selection.rangeCount)
+		var range = selection.getRangeAt(0);
+		setTimeout(this.postPaste.bind(this,event,range))
 		
+
 	},
 	preventEntityEditing: function () {
 		var tokens = this.editableElement.querySelectorAll("token:not([contenteditable]),translation:not([contenteditable]), conditional:not([contenteditable]):not(.user)");
