@@ -50,12 +50,14 @@ PositionableContainer.prototype = {
 	},
 	configureMetrics: function (elementOrRange) {
 		this.element.style.bottom = "";
-		
+		console.log("here")
 		var viewRect = document.querySelector("html").getBoundingClientRect();
 		var currentElementRect = this.element.getBoundingClientRect();
+		console.log(window.innerHeight)
 		var viewBottom = Math.min(viewRect.bottom,window.innerHeight);
 		var elementBottom = currentElementRect.bottom;
 		if (elementBottom>viewBottom) {
+			console.log("here")
 			//this.element.style.bottom = "0px"
 		}
 	},

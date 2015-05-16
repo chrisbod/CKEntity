@@ -1,15 +1,15 @@
 
+
+
 function EntityViewModel() {
 	this.entitiesHelper = new EntitiesHelper();
 }
 
 EntityViewModel.prototype = {
-	
 	cancel: function () {
 		this.active(false);
 	},
 	update: function () {
-		console.log("here")
 		this.active(false);
 		this.entitiesHelper.setDataArguments(this.element,this.values())
 	}
@@ -38,6 +38,7 @@ function LogicDialogViewModel(element) {
 	this.values = new ko.observable();
 	this.text = ko.observable("");
 	this.active = ko.observable(false);
+	//this.active.subscribe(this.fitToScreen.bind(this),null,"change")
 	this.options = ko.observableArray([]);
 	this.logic = ko.observable();
 	this.updateFromElement(element);

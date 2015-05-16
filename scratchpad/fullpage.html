@@ -49,12 +49,37 @@ For licensing, see LICENSE.md or http://ckeditor.com/license
 					overflow: hidden;
 				}
 
+			
+
 			</style>
 
 	
 	
 		<script>
-		window.addEventListener("contextmenu", function (e){event.stopPropagation()},true)
+
+
+		ko.bindingHandlers.fitToScreen = {
+	update: function (element) {
+		setTimeout(ko.bindingHandlers.fitToScreen.positionElement.bind(ko.bindingHandlers.fitToScreen,element,arguments))
+
+	},
+	positionElement: function (element,originalArgs) {
+		var elementRect = element.getBoundingClientRect(),
+			windowRect = {
+				left: 0,
+				top: 0,
+				right: window.innerWidth,
+				bottom: window.innerHeight,
+				width: window.innerWidth,
+				height: window.innerHeight
+			}
+		console.log(elementRect,windowRect)
+	}
+
+
+
+}
+		//window.addEventListener("contextmenu", function (e){event.stopPropagation()},true)
 		
 	var translationContainer = new AutoSuggestContainer("translation-menu");
 	var tokenContainer = new AutoSuggestContainer("token-menu");
@@ -201,6 +226,85 @@ SaveShim.prototype = {
 
 }
 		</script>
+		<script>
+		
+		function DeselectEnabler() {
+
+		}
+		DeselectEnabler.getInstance = function () {
+			if (!this.instance) {
+				this.instance = new this()
+			} 
+			return this.instance;
+		}
+
+		DeselectEnabler.prototype = {
+			watchSelect: function (element) {
+				element.addEventListener("focus",this,true);
+				element.addEventListener("blur",this,true);
+				element.addEventListener("click",this,true);
+				element.addEventListener("change",this,true)
+			},
+			handleEvent: function (event) {
+				this[event.type+"Handler"](event)
+			},
+			focusHandler: function (event) {
+				this.currentSelect = event.target;
+				this.selectedOptions = []
+				for (var i=0;i<event.target.options.length;i++) {
+					if (event.target.options[i].selected) {
+						event.target.options[i].className = "checked"
+						this.selectedOptions[i] = event.target.options[i];
+					} else {
+						event.target.options[i].className = ""
+					}
+				}
+
+			},
+			changeHandler: function (event) {
+				this.changed = true
+				for (var i=0;i<event.target.options.length;i++) {
+					if (event.target.options[i].selected) {
+						event.target.options[i].className = "checked"
+						this.selectedOptions[i] = event.target.options[i];
+					} else {
+						delete this.selectedOptions[i]
+					}
+				}
+			},
+			blurHandler: function (event) {
+				this.currentSelect = null;
+				this.selectedOptions = null;
+				this.changed = false;
+			},
+			clickHandler: function (event) {
+				if (this.changed == false && this.selectedOptions && this.selectedOptions[event.target.index]) {
+					this.selectedOptions[event.target.index].selected = false;
+					this.selectedOptions[event.target.index].className = "";
+				}
+				this.changed = false;
+			}
+
+		}
+		ko.bindingHandlers.minimumSelected = {
+    init: function(element, valueAccessor, allBindings, viewModel, bindingContext) {
+    	DeselectEnabler.getInstance().watchSelect(element) 
+    	//console.log(init)
+    },
+    update: function(element, valueAccessor, allBindings, viewModel, bindingContext) {
+    	//console.log("update")
+    	
+        // This will be called once when the binding is first applied to an element,
+        // and again whenever any observables/computeds that are accessed change
+        // Update the DOM element based on the supplied values here
+        //console.log(arguments)
+       
+    },
+    handleEvent: function (event) {
+    	console.log(event.target)
+    }
+};
+		</script>
 		<form action="javascript:;" method="GET">
 
 		<textarea id="documentSource" style="width: 100%; height: 100ex">
@@ -244,7 +348,7 @@ SaveShim.prototype = {
 								</ul-->
 						</li>
 						<li data-bind="if: type == 'select'">
-							<select data-bind="attr:{name:id }, options: options, optionsText: 'text', 	optionsValue: 'value', value: $root.values()[id]">
+							<select data-bind="minimumSelected: 0, attr:{name:id }, options: options, optionsText: 'text', 	optionsValue: 'value', value: $root.values()[id], onclick: $root.checkSelect()">
 							</select>
 						</li>
 						<li data-bind="if: type == 'text'">
@@ -271,7 +375,7 @@ SaveShim.prototype = {
 		
 
 		</style>
-		<div class="dialog hidden"  data-bind="attr: {'class': 'dialog' + (active() ? ' active' : ' hidden')}" id="logicDialog" style="max-width: 100%">
+		<div class="dialog hidden"  data-bind="attr: {'class': 'dialog' + (active() ? ' active' : ' hidden')}, fitToScreen:active()" id="logicDialog" style="max-width: 100%">
 		
 		<form id="rules" data-bind="submit: update">
 			<section class="compact">
@@ -286,7 +390,7 @@ SaveShim.prototype = {
 					<ul data-bind="foreach: logic">
 						<li>
 							<strong data-bind="text:text"></strong>
-							<select size="4" data-bind="attr:{name:id }, options: items , optionsText: 'text', 	optionsValue: 'value', value: $root.values()[id]">
+							<select size="4" data-bind="minimumSelected: 0,attr:{name:id }, options: items , optionsText: 'text', 	optionsValue: 'value', value: $root.values()[id]">
 							</select>
 						</li>
 					</ul>
