@@ -16,9 +16,24 @@ CKEDITOR.plugins.add( 'knockoutdialog', {
 
 	// The plugin initialization logic goes inside this method.
 	init: function( editor ) {
-
+		
 		// Define an editor command that opens our dialog window.
-		editor.addCommand( 'knockoutdialog', new CKEDITOR.dialogCommand( 'knockoutDialog' ) );
+		var dialog = new CKEDITOR.dialogCommand( 'knockoutDialog' );
+		
+		
+		editor.addCommand( 'knockoutdialog', dialog  );
+		editor.addCommand('launchKnockDialog',{
+                        exec : function(editor,data) {
+                        	editor.execCommand("knockoutdialog")
+                        	editor.getKnockoutDialogArguments = function () {
+                        		return data
+                        	}
+                        	
+
+                        }
+              
+         })
+
 
 		// Create a toolbar button that executes the above command.
 		editor.ui.addButton( 'Knockout', {
@@ -27,7 +42,7 @@ CKEDITOR.plugins.add( 'knockoutdialog', {
 			label: 'Knockout',
 
 			// The command to execute on click.
-			command: 'knockoutdialog',
+			command: 'launchKnockDialog',
 
 			// The button placement in the toolbar (toolbar group name).
 			toolbar: 'insert'

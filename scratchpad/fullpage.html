@@ -58,23 +58,24 @@ For licensing, see LICENSE.md or http://ckeditor.com/license
 		<script>
 
 
-		ko.bindingHandlers.fitToScreen = {
+		ko.bindingHandlers.ckeditorDialog = {
 	update: function (element) {
-		setTimeout(ko.bindingHandlers.fitToScreen.positionElement.bind(ko.bindingHandlers.fitToScreen,element,arguments))
+		setTimeout(ko.bindingHandlers.ckeditorDialog.postRender.bind(ko.bindingHandlers.ckeditorDialog,element))
+		//console.log(element.getBoundingClientRect())
+		
 
 	},
-	positionElement: function (element,originalArgs) {
-		var elementRect = element.getBoundingClientRect(),
-			windowRect = {
-				left: 0,
-				top: 0,
-				right: window.innerWidth,
-				bottom: window.innerHeight,
-				width: window.innerWidth,
-				height: window.innerHeight
-			}
-		console.log(elementRect,windowRect)
+	postRender: function (element) {
+		var rect = element.getBoundingClientRect()
+		/*console.log((rect.width-40)+"px")
+		element.style.width = (rect.width-40)+"px";
+		console.log("foo",element.style.width)*/
+		element.className = "dialog"
+		CKEDITOR.currentInstance.execCommand("launchKnockDialog", {
+			"element": element
+		})
 	}
+	
 
 
 
@@ -153,7 +154,7 @@ $(function () {
 				allowedContent: true,
 				fullPage: true,
 				allowedContent: true,
-				extraPlugins: 'wysiwygarea,wallstreetdocs,wordpaste,documentlang',
+				extraPlugins: 'wysiwygarea,wallstreetdocs,wordpaste,documentlang,knockoutdialog',
 				removePlugins: 'elementspath,magicline,pastetext,pastefromword,clipboard',
 				language_list: [ 'en:English', 'de:German'],
 
@@ -375,15 +376,10 @@ SaveShim.prototype = {
 		
 
 		</style>
-		<div class="dialog hidden"  data-bind="attr: {'class': 'dialog' + (active() ? ' active' : ' hidden')}, fitToScreen:active()" id="logicDialog" style="max-width: 100%">
+		<div class="dialog"  data-bind="ckeditorDialog:active()" id="logicDialog">
 		
 		<form id="rules" data-bind="submit: update">
-			<section class="compact">
-				<fieldset>
-					<h1>Edit Rules</h1>
-					<p data-bind="text:text"></p>
-				</fieldset>
-			</section>
+			
 			<section>
 			<fieldset class="container-content">
 				
@@ -396,12 +392,7 @@ SaveShim.prototype = {
 					</ul>
 				</fieldset>
 			</section>
-			<section>
-				<fieldset>
-					<input type="submit" value="Ok" />
-			        <input type="reset" value="Cancel" data-bind="click: cancel"/>
-			    </fieldset>
-			<section>
+			
 			</form>
 		</div>
 
