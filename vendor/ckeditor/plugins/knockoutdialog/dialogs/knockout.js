@@ -1,14 +1,5 @@
-/**
- * Copyright (c) 2014, CKSource - Frederico Knabben. All rights reserved.
- * Licensed under the terms of the MIT License (see LICENSE.md).
- *
- * The abbr plugin dialog window definition.
- *
- * Created out of the CKEditor Plugin SDK:
- * http://docs.ckeditor.com/#!/guide/plugin_sdk_sample_1
- */
 
-// Our dialog definition.
+
 CKEDITOR.dialog.add( 'knockoutDialog', function( editor ) {
 	//console.log(arguments)
 
@@ -31,7 +22,8 @@ CKEDITOR.dialog.add( 'knockoutDialog', function( editor ) {
 		}
 	}
 	var enterBlocker = new EnterBlocker();
-
+	var knockoutNode;
+	var data;
 	return {
 
 		// Basic properties of the dialog window: title, minimum size.
@@ -53,17 +45,27 @@ CKEDITOR.dialog.add( 'knockoutDialog', function( editor ) {
             ]
         }],
 		onShow: function () {
-			var data = editor.getKnockoutDialogArguments(); //deeply horrific
+			data = editor.getKnockoutDialogArguments(); //deeply horrific
 			if (data) {
 				var wrapper = document.getElementById("knockoutWrapper");
 				enterBlocker.attach(wrapper)
+				knockoutNode = data.element;
 				wrapper.appendChild(data.element)
-				//this.layout()
 			}
 		},
 		// This method is invoked once a user clicks the OK button, confirming the dialog.
 		onOk: function() {
+			enterBlocker.detach();
+			document.body.appendChild(knockoutNode);
 			delete editor.getKnockoutDialogArguments
+			data.onOkay()
+			
+		},
+		onCancel: function () {
+			enterBlocker.detach();
+			document.body.appendChild(knockoutNode);
+			delete editor.getKnockoutDialogArguments
+			data.onCancel()
 		}
 	};
 });

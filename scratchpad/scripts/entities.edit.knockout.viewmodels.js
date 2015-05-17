@@ -11,7 +11,7 @@ EntityViewModel.prototype = {
 	},
 	update: function () {
 		this.active(false);
-		this.entitiesHelper.setDataArguments(this.element,this.values())
+		this.entitiesHelper.setDataArguments(this.element,this.values());
 	}
 }
 
@@ -75,7 +75,6 @@ TokenTooltipViewModel.prototype.launchRulesDialog = function () {
 		}
 		this.active(false)
 		this.rulesModel.updateFromElement(this.element)
-		
 		this.rulesModel.active(true)
 	}
 TokenTooltipViewModel.prototype.launchPropertiesDialog = function () {

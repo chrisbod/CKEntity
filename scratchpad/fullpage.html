@@ -58,28 +58,6 @@ For licensing, see LICENSE.md or http://ckeditor.com/license
 		<script>
 
 
-		ko.bindingHandlers.ckeditorDialog = {
-	update: function (element) {
-		setTimeout(ko.bindingHandlers.ckeditorDialog.postRender.bind(ko.bindingHandlers.ckeditorDialog,element))
-		//console.log(element.getBoundingClientRect())
-		
-
-	},
-	postRender: function (element) {
-		var rect = element.getBoundingClientRect()
-		/*console.log((rect.width-40)+"px")
-		element.style.width = (rect.width-40)+"px";
-		console.log("foo",element.style.width)*/
-		element.className = "dialog"
-		CKEDITOR.currentInstance.execCommand("launchKnockDialog", {
-			"element": element
-		})
-	}
-	
-
-
-
-}
 		//window.addEventListener("contextmenu", function (e){event.stopPropagation()},true)
 		
 	var translationContainer = new AutoSuggestContainer("translation-menu");
@@ -376,11 +354,12 @@ SaveShim.prototype = {
 		
 
 		</style>
-		<div class="dialog"  data-bind="ckeditorDialog:active()" id="logicDialog">
-		
+		<div class="dialog"  data-bind="ckeditorDialog: active" id="logicDialog">
+			
 		<form id="rules" data-bind="submit: update">
 			
 			<section>
+				<input type="submit">
 			<fieldset class="container-content">
 				
 					<ul data-bind="foreach: logic">
