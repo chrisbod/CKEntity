@@ -181,6 +181,16 @@ select{
     background-color: #ffffff
 }
 
+.dialog  select {
+    min-width: 10ex;
+    border-top-width: 0;
+    border: 1px solid black;
+}
+.dialog select option {
+      padding: 0.25ex 1ex;
+      -webkit-appearance: none;
+ }
+
 #logicDialog form#rules {
              display: -webkit-flex;
              display: flex;
@@ -213,6 +223,7 @@ select{
                -webkit-align-content: flex-end;
                align-content: flex-end;
             }
+
             #logicDialog ul li {
 
                 margin: 1ex;
@@ -220,20 +231,16 @@ select{
                 border: 1px solid white;
 
             }
-            #logicDialog ul li strong {
+            #tokenDialog div > strong,
+            .dialog ul li strong {
                  display: block;
                 padding: 1ex;
                 border: 1px solid black;
                 border-bottom-width: 0;
             }
-            #logicDialog select {
-                min-width: 10ex;
-                border-top-width: 0;
-                border: 1px solid black;
-            }
-             #logicDialog select option {
-                  padding: 0.25ex 1ex;
-             }
+            
+             
+             
 
             section.compact fieldset {
                 padding: 5px 10px;
@@ -253,3 +260,44 @@ select option::checked
   background-color: -internal-active-list-box-selection;
   color: -internal-active-list-box-selection-text;
 }
+
+#tokenDialog {
+
+}
+#tokenDialog form {
+             display: -webkit-flex;
+             display: flex;
+              -webkit-flex-direction: column;
+              flex-direction: column;
+            height: 100%;
+            max-height: 100%;
+        }
+        #tokenDialog form > section {
+            flex-grow: 0;
+        }
+            #tokenDialog ul {
+               overflow-y: auto;
+               display: -webkit-flex;
+               display: flex;
+               -webkit-align-items: left;
+               align-items: left;
+               -webkit-justify-content: left;
+               justify-content: left;
+               /* You can set flex-wrap and flex-direction individually */
+               -webkit-flex-direction: row;
+               flex-direction: row;
+               -webkit-flex-wrap: wrap;
+               flex-wrap: wrap;
+               /* Or do it all in one line with flex flow */
+               -webkit-flex-flow: row wrap;
+               flex-flow: row wrap;
+               /* tweak the where items line up on the row */
+               /* valid values are: flex-start, flex-end, space-between, space-around, stretch */
+               -webkit-align-content: flex-end;
+               align-content: flex-end;
+            }
+
+            #tokenDialog ul li {
+                flex-grow: 1;
+  
+            }
