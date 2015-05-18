@@ -14,6 +14,7 @@ EntityTooltip.prototype = {
 	init: function (editableElement,tooltipElement) {
 		this.editableElement = editableElement;
 		this.editableElement.addEventListener("click", this);
+		this.editableElement.addEventListener("keydown", this);
 		this.editableDocument = this.editableElement.ownerDocument;
 		this.tooltipElement = tooltipElement;
 		//this.tooltipElement.addEventListener("mouseleave", this)
@@ -43,6 +44,9 @@ EntityTooltip.prototype = {
 		} else {
 			this.deactivateTooltip(this)
 		}
+	},
+	keydownHandler: function () {
+		this.deactivateTooltip()
 	},
 	activateTooltip: function (entity,event) {
 		this.bind()

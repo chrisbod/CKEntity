@@ -129,7 +129,7 @@ function AutoSuggestContainer(id, tokenizer) {
 		switch (event.keyCode) {
 			case 40: return this.arrowDown(event);
 			case 38: return this.arrowUp(event);
-			case 27: return this.hide();
+			default: return this.hide();
 			
 		}
 	},
