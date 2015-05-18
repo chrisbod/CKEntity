@@ -20,7 +20,7 @@ function TokenDialogViewModel(element) {
 	this.values = new ko.observable();
 	this.tokenText =  ko.observable("");
 	this.text = ko.observable("");
-	this.active = ko.observable(true);
+	this.active = ko.observable(false);
 	this.groups = ko.observableArray([]);
 }
 TokenDialogViewModel.prototype = new EntityViewModel();			
@@ -78,6 +78,7 @@ TokenTooltipViewModel.prototype.launchRulesDialog = function () {
 		this.rulesModel.active(true)
 	}
 TokenTooltipViewModel.prototype.launchPropertiesDialog = function () {
+
 		if (!this.propertiesModel) {
 			var dialog = document.getElementById("tokenDialog");
 			this.propertiesModel = new TokenDialogViewModel(this.element);

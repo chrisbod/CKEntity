@@ -28,6 +28,8 @@ CKEDITOR.dialog.add( 'knockoutDialog', function( editor ) {
 
 		// Basic properties of the dialog window: title, minimum size.
 		title: 'Entity Properties',
+		minWidth: 300,
+		minHeight: 100,
 
 
 		// Dialog window content definition.
@@ -48,23 +50,51 @@ CKEDITOR.dialog.add( 'knockoutDialog', function( editor ) {
 			data = editor.getKnockoutDialogArguments(); //deeply horrific
 			if (data) {
 				var wrapper = document.getElementById("knockoutWrapper");
+				
 				enterBlocker.attach(wrapper)
 				knockoutNode = data.element;
-				wrapper.appendChild(data.element)
+				//console.log(data.element.getBoundingClientRect())
+				wrapper.appendChild(data.element);
+				
+
+
+				var rect = this.parts.dialog.$.getBoundingClientRect();
+				var overspill = rect.bottom-window.innerHeight,
+					windowWidth = window.innerWidth,
+					widthLeft = windowWidth - (rect.width+100)
+				if (overspill>0) {
+	
+					var element = wrapper.parentNode;
+					while (element) {
+						if (element.style.width) {
+
+							console.log(parseInt(element.style.width))
+							element.style.width = 600+"px"
+							break;
+						} else {
+							element = element.parentNode
+						}
+					}
+
+					var rect = this.parts.dialog.$.getBoundingClientRect();
+					var overspill = rect.bottom-window.innerHeight
+					if (overspill>0) {
+
+						wrapper.style.height = (wrapper.offsetHeight - overspill) + "px"
+					}
+				}
 			}
 		},
 		// This method is invoked once a user clicks the OK button, confirming the dialog.
 		onOk: function() {
 			enterBlocker.detach();
 			document.body.appendChild(knockoutNode);
-			delete editor.getKnockoutDialogArguments
 			data.onOkay()
 			
 		},
 		onCancel: function () {
 			enterBlocker.detach();
 			document.body.appendChild(knockoutNode);
-			delete editor.getKnockoutDialogArguments
 			data.onCancel()
 		}
 	};

@@ -1,22 +1,15 @@
-.dialog{
-    position: fixed;
-    top: 50%;
-    left: 50%;
-    min-width: 400px;
-    z-index: 10000;
-
-}
-.dialog.hidden,.tooltip.hidden {
-    position: fixed;
-    left: -110000px;
-    visibility: hidden;
+.dialog {
+  position: absolute;
+  left: -100000px;
 }
 .dialog form {
     display: block;
     font-size: 100%;
 }
-.dialog fieldset {
+div.dialog fieldset {
     background-color: white;
+  padding: 0;
+  border-width: 0;
 }
 .dialog form li {
     padding: 0;

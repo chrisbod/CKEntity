@@ -19,6 +19,7 @@
 			}
 
 			function launchDialog(element,viewModel) {
+				console.log("launch called")
 				CKEDITOR.currentInstance.execCommand("launchKnockDialog", {
 				"element": element,
 				viewModel: viewModel,
@@ -30,11 +31,16 @@
 				if (isActive) {
 					launchDialog(element,viewModel)
 				} else {
-					
+					console.log("active:"+isActive)
 				}
 			}
 		ko.bindingHandlers.ckeditorDialog = {
+			init: function (element, valueAccessor, allBindingsAccessor, viewModel, bindingContext) {
+				console.log(element)
+			},
 		update: function (element, valueAccessor, allBindingsAccessor, viewModel, bindingContext) {
+
+			
 			valueAccessor().subscribe(launchIfNeeded.bind(null,element,viewModel),null,"change")
 		}
 }
@@ -61,6 +67,7 @@ CKEDITOR.plugins.add( 'knockoutdialog', {
                         	
                         	editor.execCommand("knockoutdialog")
                         	editor.getKnockoutDialogArguments = function () {//horrific
+                        		//delete editor.getKnockoutDialogArguments;
                         		return data
                         	}
                         	

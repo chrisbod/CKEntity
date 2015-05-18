@@ -294,12 +294,12 @@ SaveShim.prototype = {
 
 
 
-		<div class="dialog hidden" data-bind="attr: {'class': 'dialog' + (active() ? ' active' : ' hidden')}" id="tokenDialog">
+		<div class="dialog" data-bind="ckeditorDialog: active" id="tokenDialog">
 		
 		<form id="test" data-bind="submit: update">
 			
-			<fieldset>
-				<h1>Edit Token</h1>
+			
+				
 				
 				
 			<ul>
@@ -343,11 +343,6 @@ SaveShim.prototype = {
 							</label>
 						</li>     
 			</ul>
-				</fieldset>
-				<fieldset>
-					<input type="submit" value="Ok" />
-			        <input type="button" value="Cancel" data-bind="click: cancel"/>
-			    </fieldset>
 			</form>
 		</div>
 		<style>
@@ -359,7 +354,6 @@ SaveShim.prototype = {
 		<form id="rules" data-bind="submit: update">
 			
 			<section>
-				<input type="submit">
 			<fieldset class="container-content">
 				
 					<ul data-bind="foreach: logic">
