@@ -6,6 +6,18 @@
     display: block;
     font-size: 100%;
 }
+
+select option::before {
+  
+  content:'';
+  width: 1ex;
+  height: 1ex;
+  display: inline-block;
+
+}
+select option:checked::before {
+  sbackground-image: url(http://designshack.net/images/social/twitter.png);
+}
 div.dialog fieldset {
     background-color: white;
   padding: 0;
