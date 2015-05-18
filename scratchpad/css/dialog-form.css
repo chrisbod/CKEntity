@@ -145,6 +145,10 @@ select{
     background-color: #eeeeee;
     z-index: 10000;
 }
+.tooltip.hidden {
+  visibility: hidden;
+}
+
 .tooltip header {
     max-width: 20em;
     overflow: hidden;
