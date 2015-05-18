@@ -221,16 +221,19 @@ select{
 
             }
             #logicDialog ul li strong {
-                display: block;
-                background-color: #ccc;
-                font-weight: bold;
+                 display: block;
                 padding: 1ex;
+                border: 1px solid black;
+                border-bottom-width: 0;
             }
             #logicDialog select {
                 min-width: 10ex;
                 border-top-width: 0;
-
+                border: 1px solid black;
             }
+             #logicDialog select option {
+                  padding: 0.25ex 1ex;
+             }
 
             section.compact fieldset {
                 padding: 5px 10px;
