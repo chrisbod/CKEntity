@@ -148,7 +148,9 @@ function AutoSuggestContainer(id, tokenizer) {
 				duplicateRange = range.cloneRange(),
 				index;
 			duplicateRange.selectNodeContents(node);
-
+			if (node.nextSibling && node.nextSibling.nodeType==3) {
+				duplicateRange.setEndAfter(node.nextSibling)
+			}
 			var trigger = this.tokenizer.getTrigger(""+duplicateRange);
 
 			if (trigger) {
