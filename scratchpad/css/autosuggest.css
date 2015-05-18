@@ -91,6 +91,11 @@ conditional > span.contents:focus {
 translation {
 	display: inline;
 }
+pagebreak {
+	user-select: all;
+	-webkit-user-select: all;
+}
+
 
 table.scenario-table {
 	border: 1px solid black;

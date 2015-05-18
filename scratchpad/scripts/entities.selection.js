@@ -6,7 +6,7 @@ EntitySelectionManager.prototype = {
 		this.editableElement = editableElement;
 		this.editableDocument = editableElement.ownerDocument;
 		
-		this.editableElement.addEventListener("click", this);
+		this.editableElement.addEventListener("click", this, true);
 		this.editableElement.addEventListener("dblclick", this);
 		document.addEventListener("keydown", this, true);
 		document.addEventListener("keyup", this, true);
@@ -33,12 +33,12 @@ EntitySelectionManager.prototype = {
 
 	},
 	handleEvent: function(event) {
-		try {
+		//try {
 		return this[event.type+'Handler'](event)
-		}
-		catch (e) {
-			console.log(event.type)
-		}
+		//}
+		//catch (e) {
+		//	console.log(event.type)
+		//}
 	},
 	selectionHandler: function (event) {
 		console.log("here")
@@ -365,7 +365,22 @@ EntitySelectionManager.prototype = {
 			this.select(entityNode)
 		} else {
 			this.selectedEntityNode = null;
+			if (event.target.tagName == "PAGEBREAK") {
+
+					CKEDITOR.currentInstance.getSelection().selectElement( new CKEDITOR.dom.element(event.target))
+					/*event.target.contentEditable = true
+					var selection = document.getSelection()
+					var range = document.createRange()
+					range.setStartBefore(event.target);
+					range.setEndAfter(event.target)
+					selection.removeAllRanges()
+					selection.addRange(range)*/
+					//event.stopPropagation()
+					//event.preventDefault()
+
+				}
 		}
+		
 	},
 	dblclickHandler: function (event) {
 		if (this.selectedEntityNode) {

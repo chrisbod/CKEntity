@@ -132,7 +132,7 @@ $(function () {
 				allowedContent: true,
 				fullPage: true,
 				allowedContent: true,
-				extraPlugins: 'wysiwygarea,wallstreetdocs,wordpaste,documentlang,knockoutdialog',
+				extraPlugins: 'wysiwygarea,wallstreetdocs,wordpaste,documentlang,knockoutdialog,pagebreaktag',
 				removePlugins: 'elementspath,magicline,pastetext,pastefromword,clipboard',
 				language_list: [ 'en:English', 'de:German'],
 
@@ -302,18 +302,21 @@ SaveShim.prototype = {
 				
 				
 				
-			<ul>
-				<li data-bind="foreach: groups">
-					<header data-bind="text: label"></header>
+			<div>
+				<div data-bind="foreach: groups">
+					<strong data-bind="text: label"></strong>
 					<!--tried using a switch here but had scoping issues-->
 					<ul data-bind="foreach: controls">
-						<li data-bind="if: type == 'checkbox'">
+						<!--ko if: type == 'checkbox' -->
+						<li>
 							<label>
 								<input type="checkbox" data-bind="value:value, attr:{name:value}, checked: $root.values()[value]">
 								<span data-bind="text:text"></span>
 							</label>
 						</li>
-						<li data-bind="if: type == 'radio'">
+						<!--/ko-->
+						<!--ko if: type == 'radio' -->
+						<li>
 							<select size="4" data-bind="attr:{name:$parent.id }, options: options , optionsText: 'text', 	optionsValue: 'value', value: $root.values()[id]">
 							</select>
 								<!--ul data-bind="foreach: options" class="radio-list">
@@ -326,23 +329,32 @@ SaveShim.prototype = {
 									</li>
 								</ul-->
 						</li>
-						<li data-bind="if: type == 'select'">
+						<!--/ko-->
+						<!--ko if: type == 'select' -->
+						<li>
 							<select data-bind="minimumSelected: 0, attr:{name:id }, options: options, optionsText: 'text', 	optionsValue: 'value', value: $root.values()[id], onclick: $root.checkSelect()">
 							</select>
 						</li>
-						<li data-bind="if: type == 'text'">
+						<!--/ko-->
+						<!--ko if: type == 'text' -->
+						<li>
 							<label>
 								<div data-bind="text: (typeof label != 'undefined' ?  label : '')"></div>
 							<input type="text" data-bind="attr:{name:id, placeholder: (typeof placeholder != 'undefined' ?  placeholder : '')}, value: value "/>
 							</label>
 						</li>
-						<li data-bind="if: type == 'textarea'">
+						<!--/ko-->
+						<!--ko if: type == 'textarea' -->
+						<li>
 							<label>
 								<div data-bind="text: (typeof label != 'undefined' ?  label : '')"></div>
 							<textarea data-bind="attr:{name:id,placeholder:(typeof placeholder != 'undefined' ?  placeholder : '')}, value: value"></textarea>
 							</label>
-						</li>     
-			</ul>
+						</li>
+						<!--/ko-->
+					</ul>
+				</div>     
+			</div>
 			</form>
 		</div>
 		<style>
