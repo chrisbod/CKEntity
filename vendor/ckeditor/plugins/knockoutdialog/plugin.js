@@ -19,7 +19,6 @@
 			}
 
 			function launchDialog(element,viewModel) {
-				console.log("launch called")
 				CKEDITOR.currentInstance.execCommand("launchKnockDialog", {
 				"element": element,
 				viewModel: viewModel,

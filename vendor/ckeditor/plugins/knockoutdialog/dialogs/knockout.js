@@ -1,7 +1,6 @@
 
 
 CKEDITOR.dialog.add( 'knockoutDialog', function( editor ) {
-	//console.log(arguments)
 
 	function EnterBlocker() {
 
@@ -55,6 +54,10 @@ CKEDITOR.dialog.add( 'knockoutDialog', function( editor ) {
 				knockoutNode = data.element;
 				//console.log(data.element.getBoundingClientRect())
 				wrapper.appendChild(data.element);
+
+				if (data.title) {
+					document.querySelector(".cke_dialog_title").innerHTML = data.title
+				}
 				
 
 
