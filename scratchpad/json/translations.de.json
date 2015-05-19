@@ -39,10 +39,6 @@
     "id": "key0.10",
     "def": "Ausgabepreis"
   },
-  {
-    "id": "key0.11",
-    "def": "[c1:Stückelung][c2:Nennbetrag]"
-  },
 	{
     "id": "key0.12",
     "def": "Basispreis[c1:][c2:]"

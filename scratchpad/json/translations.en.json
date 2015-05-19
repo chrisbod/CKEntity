@@ -40,10 +40,6 @@
     "def": "Issue Price"
   },
   {
-    "id": "key0.11",
-    "def": "[c1:Specified Denomination][c2:Reference Amount]"
-  },
-  {
     "id": "key0.12",
     "def": "Strike [c1:Price][c2:Level]"
   },
