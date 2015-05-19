@@ -35,9 +35,9 @@ EntityTooltip.prototype = {
 			target = this.entitiesHelper.getEntityElement(event.target,event);
 			if (target) {
 
-				if (this.currentlyOver != target) {
+				//if (this.currentlyOver != target) {
 					this.activateTooltip(target,event);
-				}
+				//}
 			} else {
 				this.deactivateTooltip(this)
 			}
