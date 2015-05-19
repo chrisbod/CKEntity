@@ -54,27 +54,34 @@ EntitiesHelper.prototype = {
 		return null
 	},
 	getEntityElement: function (startNode,event) {
+		if (startNode) {
 		var currentNode = startNode,
-			path = [];
-		if (event && event.path) {
-			path = event.path;
-		} else {
-			path = this.getPath(startNode);
-		}
-		for (var i=0;i!=path.length-3;i++) {
-			if (this.isEntityElement(path[i])) {
-				return path[i]
+				path = [];
+			if (event && event.path) {
+				path = event.path;
+			} else {
+				path = this.getPath(startNode);
+			}
+			for (var i=0;i!=path.length-3;i++) {
+				if (this.isEntityElement(path[i])) {
+					return path[i]
+				}
 			}
 		}
 		return null;
 	},
 	getPath: function (startNode) {
+		if (!startNode) {
+			return [];
+		}
 		var currentNode = startNode,
-			path = [];
-		while (currentNode) {
+			path = [],
+			doc = startNode.ownerDocument
+		while (currentNode && currentNode != doc) {
 			path[path.length] = currentNode;
 			currentNode = currentNode.parentNode;
 		}
+		path[path.length] = doc
 		path[path.length] = window;
 		return path;
 	},

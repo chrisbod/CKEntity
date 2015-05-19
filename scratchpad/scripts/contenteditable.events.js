@@ -1,5 +1,6 @@
 function ContentEditableEventGenerator() {
-	this.currentDetails = {}
+	this.currentDetails = {};
+	this.entitiesHelper = new EntitiesHelper()
 }
 ContentEditableEventGenerator.prototype = {
 	init: function (element) {
@@ -18,7 +19,7 @@ ContentEditableEventGenerator.prototype = {
 
 	},
 	handleEvent: function (event) {
-		this.extendEvent(event)
+		this.extendEvent(event);
 		return this[event.type+'Handler'](event);
 	},
 	extendEvent: function (event) {
@@ -27,12 +28,15 @@ ContentEditableEventGenerator.prototype = {
 		var details = this.currentDetails;
 		details.selection = selection;
 		details.range = range;
-		var lastKnownElement = details.element;
+		var lastKnownElement = details.element,
+			entityBefore = details.entityBefore,
+			entityAfter = details.entityAfter;
 		details.element = null
 		
 		details.contentSelected = range ? !selection.isCollapsed : false;
-		if (event.type != "click") {
-			if (event.target == this.document.body) {
+			if (event.target == this.document.body || event.target == this.document.documentElement) {
+				details.textNode = selection.baseNode
+				details.element = selection.baseNode.parentNode
 				//mouseupdown etc occurred over whitespace in document
 			} else {
 
@@ -42,20 +46,40 @@ ContentEditableEventGenerator.prototype = {
 				} else {
 					if (selection.baseNode.nodeType == 3) {
 						details.textNode = selection.baseNode
+						details.element = details.textNode.parentNode
 					} else {
 						details.textNode = null;
 						details.element = selection.baseNode;
 					}
 				}
 			}
-		}
+		
 		if (!details.element) {
 			
-			details.element = this.document.elementFromPoint(event.pageX,event.pageY);
-			if (details.element == document.body) {
-				//console.log(selection)
+		//	details.element = this.document.elementFromPoint(event.pageX,event.pageY);
+			
+			
+		}
+		if (details.element  == this.document.body || details.element == this.document.documentElement) {//over a readonly item
+			//debugger;
+			if (event.type == "keyup") {
+				if (event.keyCode == 37) {
+					if (details.entityBefore) {
+						details.element = details.entityBefore.firstChild;
+						details.currentEntityWrapper = details.entityBefore;
+						details.currentEntity = details.entityBefore.firstChild;
+					}
+				}
+				if (event.keyCode == 39) {
+					if (details.entityAfter) {
+						details.element = details.entityAfter.firstChild;
+						details.currentEntityWrapper = details.entityAfter;
+						details.currentEntity = details.entityAfter.firstChild;
+					}
+				}
 			}
 		}
+		
 		if (range) {
 			details.atStartOfElement = false;
 			details.atEndOfElement = false;
@@ -63,6 +87,7 @@ ContentEditableEventGenerator.prototype = {
 			details.atEndOfTextNode = false;
 			details.entityBefore = null;
 			details.entityAfter = null;
+			
 			if (selection.anchorNode.nodeType == 3) {
 				if (selection.anchorOffset == 0) {
 					details.atStartOfTextNode = true;
@@ -97,12 +122,15 @@ ContentEditableEventGenerator.prototype = {
 				
 			}
 		}
-		
+
+		details.currentEntity = this.entitiesHelper.getEntityElement(details.textNode);
+		details.currentEntityWrapper = details.currentEntity ? details.currentEntity.parentNode : null;
 		
 		if (!event.details) {
 			event.details = {};
 		}
 		event.details.selection = this.currentDetails;
+
 		
 	},
 	setEntityStatus: function (details,currentNode) {
