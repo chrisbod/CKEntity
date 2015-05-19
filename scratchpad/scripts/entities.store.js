@@ -60,6 +60,7 @@ TokenStore.prototype.createTemplatableNodeFromEntity = function (key,id,previewH
 	editSpan.className = "entity-wrapper"
 	editSpan.appendChild(node);
 	editSpan.setAttribute("data-entity-node","token")
+	editSpan.setAttribute("contenteditable","false")
 	editSpan.insertBefore(document.createTextNode("\u200b"),editSpan.firstChild);
 	editSpan.appendChild(document.createTextNode("\u200b"))
 	return node;
@@ -106,7 +107,7 @@ TranslationStore.prototype.createTemplatableNodeFromEntity = function (key,id) {
 	var editSpan = document.createElement("span")
 	editSpan.setAttribute("data-entity-node","")
 	editSpan.className = "entity-wrapper"
-
+	editSpan.setAttribute("contenteditable","false")
 	editSpan.appendChild(node)
 	editSpan.insertBefore(document.createTextNode("\u200b"),editSpan.firstChild);
 	editSpan.appendChild(document.createTextNode("\u200b"))
@@ -156,7 +157,8 @@ TokenStore.prototype.createTemplatableNodeFromEntity = function (key,id,previewH
 	var editSpan = document.createElement("span")
 	editSpan.setAttribute("data-entity-node","token")
 	editSpan.className = "entity-wrapper"
-	editSpan.appendChild(node)
+	editSpan.appendChild(node);
+	editSpan.setAttribute("contenteditable","false")
 	editSpan.insertBefore(document.createTextNode("\u200b"),editSpan.firstChild);
 	editSpan.appendChild(document.createTextNode("\u200b"))
 	return editSpan;
