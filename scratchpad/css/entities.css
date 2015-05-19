@@ -49,6 +49,15 @@ token {
 	white-space: nowrap;
 }
 
+span[data-entity-node=conditional]::selection,
+conditional::selection,
+conditional span::selection,
+translation span::selection
+{
+	background-color: #1F497D;
+	color: white;
+}
+
 span[data-entity-node=token]::selection,
 token::selection,
 token span::selection
@@ -56,6 +65,10 @@ token span::selection
 	background-color: green;
 	color: white;
 }
+
+
+
+
 
 conditional.user {
 	
