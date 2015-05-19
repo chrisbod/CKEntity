@@ -41,6 +41,7 @@ TokenStore.prototype.parseTextMarkup = function () {
 }
 TokenStore.prototype.createTemplatableNodeFromEntity = function (key,id,previewHTML) {
 	var node = document.createElement("token")
+	node.setAttribute("data-entity-node","")
 	node.setAttribute("contenteditable", false);
 	node.setAttribute("data-args","type: '"+id+"'")
 	node.setAttribute("class",id)
@@ -100,6 +101,7 @@ TranslationStore.prototype.createTemplatableNodeFromEntity = function (key,id) {
 		tokens[i].parentNode.replaceChild(token, tokens[i]);
 	}
 	var editSpan = document.createElement("span")
+	editSpan.setAttribute("data-entity-node","")
 	editSpan.className = "entity-wrapper"
 	editSpan.appendChild(node)
 	return editSpan;
@@ -128,6 +130,7 @@ TokenStore.prototype.parseTextMarkup = function () {
 TokenStore.prototype.createTemplatableNodeFromEntity = function (key,id,previewHTML) {
 	var node = document.createElement("token")
 	node.setAttribute("contenteditable", "false");//this seems to trigger a strange drag and drop bug
+
 	node.setAttribute("data-args","type: '"+id+"'")
 	node.setAttribute("class",id)
 	node.innerHTML = '<span contenteditable="false">'+key.replace(/(\<)|(\>)/gm,'')+'<span>';
@@ -143,6 +146,7 @@ TokenStore.prototype.createTemplatableNodeFromEntity = function (key,id,previewH
 	node.appendChild(end);
 	node.insertBefore(rules,node.firstChild)
 	var editSpan = document.createElement("span")
+	editSpan.setAttribute("data-entity-node","")
 	editSpan.className = "entity-wrapper"
 	editSpan.appendChild(node)
 	return editSpan;

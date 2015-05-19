@@ -94,6 +94,7 @@ UserConditionalManager.prototype = {
 		var editSpan = document.createElement("span");
 		editSpan.className = "entity-wrapper";
 		editSpan.appendChild(conditional)
+		editSpan.setAttribute("data-entity-node","")
 		this.conditionalTemplateNode = editSpan;
 
 	},
