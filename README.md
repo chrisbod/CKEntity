@@ -6,7 +6,7 @@
 
 **Properties** (**token**) - the user configurable properties of a token e.g. format to display as
 
-**Token** - rendered as <token>, formerly known as placeholder [best get Mathias to specify this more precisely] - tokens can be anything from a table to a currency symbol - their available/configurable properties can therefore be highly variable
+**Token** - rendered as &lt;token&gt;, formerly known as placeholder [best get Mathias to specify this more precisely] - tokens can be anything from a table to a currency symbol - their available/configurable properties can therefore be highly variable
 
 **Translatable** - Christian's term for a Translation so he can differentiate it in his head from the more general english term translation 
 
