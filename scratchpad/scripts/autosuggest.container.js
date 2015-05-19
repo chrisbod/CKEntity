@@ -260,7 +260,7 @@ function AutoSuggestContainer(id, tokenizer) {
 			range.insertNode(newNode);
 			if (newNode.previousSibling) {
 				if (newNode.previousSibling.data) {
-					var endText = new RegExp(this.trigger+"\\s*$");
+					var endText = new RegExp(this.trigger.trim()+"\\s*$");
 				newNode.previousSibling.data = newNode.previousSibling.data.replace(endText,'');
 					
 				}
