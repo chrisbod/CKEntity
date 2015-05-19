@@ -12,7 +12,7 @@ ContentEditableEventGenerator.prototype = {
 		var element = this.element;
 		element.addEventListener("input",this,true);
 		element.addEventListener("drop",this,true);
-		element.addEventListener("mouseup",this,true);
+		//element.addEventListener("mouseup",this,true);
 		element.addEventListener("keyup",this,true);
 		element.addEventListener("contextmenu",this,true);
 		this.document.addEventListener("paste", this,true);

@@ -49,6 +49,14 @@ token {
 	white-space: nowrap;
 }
 
+span[data-entity-node=token]::selection,
+token::selection,
+token span::selection
+{
+	background-color: green;
+	color: white;
+}
+
 conditional.user {
 	
 	display: inline;

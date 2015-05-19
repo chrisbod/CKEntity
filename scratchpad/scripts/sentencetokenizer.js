@@ -7,7 +7,7 @@ SentenceTokenizer.prototype = {
 	getLastSentenceFromRange: function (rangeOrText) {
 		var text = ""+rangeOrText;
 		text = text.replace(/\u200b/gm,'')
-		var sentences = text.split(/[\.\?\!]\s+(?=[A-Z])/)
+		var sentences = text.split(/(?:[\.\?\!])\s+(?=[A-Z])/)
 
 		if (sentences) {
 			var lastSentence = sentences[sentences.length-1];
@@ -19,7 +19,7 @@ SentenceTokenizer.prototype = {
 		text = this.getLastSentenceFromRange(rangeOrText);
 		text = text.replace(/\u200b/gm,'');
 		var split = text.trim().split(/\s+/);
-		if (split.length > 0) {
+		if (split.length > 0 && split[0].length>2) {
 			return text;
 		}
 		return "";
