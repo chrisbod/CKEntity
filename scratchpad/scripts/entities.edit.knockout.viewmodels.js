@@ -63,9 +63,12 @@ TokenTooltipViewModel.prototype.updateFromElement = function (element) {
 	this.element = element;
 	var values = this.entitiesHelper.getDataArguments(element);
 	var permissions = this.entitiesHelper.getEditPermissions(element);
-	this.title(element.innerText)
+	this.title(element.innerText);
 	this.canEditRules(permissions.rules||false);
 	this.canEditProperties(permissions.properties||false)
+	if (!permissions.rules && !permissions.properties) {
+		this.active(false)
+	}
 }
 TokenTooltipViewModel.prototype.launchRulesDialog = function () {
 		if (!this.rulesModel) {
