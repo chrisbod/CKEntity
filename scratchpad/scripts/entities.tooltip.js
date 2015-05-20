@@ -17,6 +17,8 @@ EntityTooltip.prototype = {
 		this.editableElement.addEventListener("keydown", this);
 		this.editableDocument = this.editableElement.ownerDocument;
 		this.tooltipElement = tooltipElement;
+		window.addEventListener("resize", this)
+		this.editableDocument.addEventListener("scroll",this)
 		//this.tooltipElement.addEventListener("mouseleave", this)
 		//this.tooltipElement.addEventListener("mouseenter", this)
 	},
@@ -48,24 +50,31 @@ EntityTooltip.prototype = {
 	keydownHandler: function () {
 		this.deactivateTooltip();
 	},
+	positionTooltip: function (entityElement) {
+		var tooltip = this.tooltipElement,
+			entityBoundingBox = entityElement.getBoundingClientRect(),
+			entityIndentPosition = entityElement.getClientRects()[0],
+			tooltipRect = tooltip.getBoundingClientRect(),
+			viewWidth = window.innerWidth,
+			viewHeight = window.innerHeight,
+			frameBounding = entityElement.ownerDocument.defaultView.frameElement.getBoundingClientRect(),
+			leftPosition = frameBounding.left+entityIndentPosition.left,
+			topPosition = frameBounding.top+entityBoundingBox.bottom;
+		if (leftPosition+tooltipRect.width > viewWidth) {
+			leftPosition = viewWidth-tooltipRect.width;
+		}
+		if (topPosition+tooltipRect.height>viewHeight) {
+			topPosition = (frameBounding.top + entityBoundingBox.top) - tooltipRect.height
+		}
+		this.tooltipElement.style.left = leftPosition+"px";
+		this.tooltipElement.style.top = topPosition+"px";
+
+	},
 	activateTooltip: function (entity,event) {
 		this.bind();
 		this.currentlyOver = entity;
 		this.knockoutViewModel.updateFromElement(entity);
-		var bounding = entity.getBoundingClientRect();
-		var boundings = entity.getClientRects();
-		var tooltipRect = this.tooltipElement.getBoundingClientRect()
-		var viewWidth = window.innerWidth;
-		var frameBounding = entity.ownerDocument.defaultView.frameElement.getBoundingClientRect();
-		var left = frameBounding.left+boundings[0].left;
-		if (left+tooltipRect.width > viewWidth) {
-			left = viewWidth-tooltipRect.width
-		}
-
-		this.tooltipElement.style.left = left+"px";
-		this.tooltipElement.style.top = (frameBounding.top+bounding.bottom)+"px";
-		
-		
+		this.positionTooltip(entity)
 		
 		this.knockoutViewModel.active(true)
 
