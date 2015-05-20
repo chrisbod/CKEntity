@@ -4,7 +4,11 @@ function PositionableContainer() {
 PositionableContainer.prototype = {
 	visible: false,
 	moveTo: function (x,y) {
-		this.element.style.left = x+"px";
+		if (this.element.offsetWidth > window.innerWidth/2) {
+			this.element.style.left = "auto";
+		} else {
+			this.element.style.left = x+"px";
+		}
 		this.element.style.top = y+"px";
 		this.configureMetrics();
 	},
@@ -27,6 +31,7 @@ PositionableContainer.prototype = {
 	moveToRange: function (ownerDocument,range) {
 		var rect = range.getClientRects(),
 			frameRect = ownerDocument.defaultView.frameElement.getBoundingClientRect();
+		console.log(range)
 		rect = rect[rect.length-1]
 		this.moveTo(frameRect.left+rect.left,frameRect.top+rect.bottom);
 	},
@@ -47,19 +52,6 @@ PositionableContainer.prototype = {
 	},
 	handleEvent: function (event) {
 		return this[event.type+"Handler"](event)
-	},
-	configureMetrics: function (elementOrRange) {
-		this.element.style.bottom = "";
-		console.log("here")
-		var viewRect = document.querySelector("html").getBoundingClientRect();
-		var currentElementRect = this.element.getBoundingClientRect();
-		console.log(window.innerHeight)
-		var viewBottom = Math.min(viewRect.bottom,window.innerHeight);
-		var elementBottom = currentElementRect.bottom;
-		if (elementBottom>viewBottom) {
-			console.log("here")
-			//this.element.style.bottom = "0px"
-		}
 	},
 	setContent: function (elementOrFragment) {
 		this.element.innerHTML = "";

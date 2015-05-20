@@ -339,9 +339,14 @@ function AutoSuggestContainer(id, tokenizer) {
 		}
 
 	},
-	configureMetrics: function () {
-		
-
-	}
+	configureMetrics: function (elementOrRange) {
+		var rect = this.element.getBoundingClientRect(),
+			viewBottom = window.innerHeight;
+		if (rect.bottom>viewBottom) {
+			this.element.style.bottom = "0px"
+		} else {
+			this.element.style.bottom = ""
+		}
+	},
 });
 
