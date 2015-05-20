@@ -31,6 +31,16 @@ EntityTooltip.prototype = {
 	handleEvent: function (event) {
 		return this[event.type+'Handler'](event)
 	},
+	resizeHandler: function () {
+		if (this.currentlyOver) {
+			this.positionTooltip(this.currentlyOver);
+		}
+	},
+	scrollHandler: function () {
+		if (this.currentlyOver) {
+			this.positionTooltip(this.currentlyOver);
+		}
+	},
 	clickHandler: function (event) {
 		var target = event.target;
 		if (target!=this.editableElement) {
@@ -66,8 +76,13 @@ EntityTooltip.prototype = {
 		if (topPosition+tooltipRect.height>viewHeight) {
 			topPosition = (frameBounding.top + entityBoundingBox.top) - tooltipRect.height
 		}
-		this.tooltipElement.style.left = leftPosition+"px";
-		this.tooltipElement.style.top = topPosition+"px";
+		if (topPosition<frameBounding.top) {
+			this.tooltipElement.style.left = "";
+			this.tooltipElement.style.top = "";
+		} else {
+			this.tooltipElement.style.left = leftPosition+"px";
+			this.tooltipElement.style.top = topPosition+"px";
+		}
 
 	},
 	activateTooltip: function (entity,event) {
