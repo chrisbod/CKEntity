@@ -97,7 +97,7 @@ EntitiesHelper.prototype = {
 	},
 	getEditPermissions: function (entityElement) {
 		var path = this.getEntityPathAsText(entityElement);
-		if (path[0] == "TOKEN") {
+		if (path[0] == "TOKEN" || path[0] == "TRANSLATION") {
 			//if (path.length == 1) {
 				//return {rules: true,properties:true}
 			//} else {
