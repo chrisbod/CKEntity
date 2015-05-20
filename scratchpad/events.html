@@ -67,6 +67,7 @@ For licensing, see LICENSE.md or http://ckeditor.com/license
 	tokenContainer.getLastSentenceFromRange = function (range) {
 		var token =  range.toString().match(/(?:\s*)(<)[^>]*$/);
 		if (token) {
+			
 			return token[1]
 		}
 		return null;

@@ -50,6 +50,7 @@ function AutoSuggestContainer(id, tokenizer) {
 		}
 	},
 	show: function () {
+
 		if (this.element.childNodes.length) {
 			if (!this.focussedElement || !this.focussedElement.parentNode) {
 				this.focusAnchor(this.element.firstChild)
@@ -122,6 +123,7 @@ function AutoSuggestContainer(id, tokenizer) {
 		}
 	},
 	keydownHandler: function (event) {
+		console.log("hre")
 		if (event.keyCode == 13 && event.target.ownerDocument == this.editableDocument) {
 			return this.enter(event);
 		}
@@ -147,7 +149,12 @@ function AutoSuggestContainer(id, tokenizer) {
 				node = range.commonAncestorContainer,
 				duplicateRange = range.cloneRange(),
 				index;
+				if (node.contentEditable == "false") {
+					return
+				}
 			duplicateRange.selectNodeContents(node);
+
+
 			if (node.nextSibling && node.nextSibling.nodeType==3) {
 				duplicateRange.setEndAfter(node.nextSibling)
 			}

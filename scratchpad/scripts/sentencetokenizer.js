@@ -44,6 +44,7 @@ SentenceTokenizer.prototype = {
 		string = string.trim()
 		//if (string.indexOf(" ")==-1) {
 			if (this.tokens[string] && this.tokens[string]._$) {
+				console.log("here")
 				return [this.tokens[string]._$];
 			} //else {
 				//return [];

@@ -1,5 +1,6 @@
 function EntitySelectionManager() {
 	this.entities = new EntitiesHelper();
+	this.collapser = ConditionalCollapser.getInstance();
 }
 EntitySelectionManager.prototype = {
 	init: function (editableElement) {
@@ -55,6 +56,7 @@ EntitySelectionManager.prototype = {
 		if (entityNode && !entityNode.classList.contains("user")) {
 			this.select(entityNode.parentNode);
 		} else {
+			console.log("null")
 			this.selectedEntityNode = null;
 		}
 	},
@@ -91,6 +93,7 @@ EntitySelectionManager.prototype = {
 	pasteHandler: function () {
 		if (this.selectedEntityNode) {
 			this.selectedEntityNode.parentNode.removeChild(this.selectedEntityNode);
+			console.log("null")
 			this.selectedEntityNode = null;
 		}
 	},
@@ -105,19 +108,37 @@ EntitySelectionManager.prototype = {
 	removeCurrentEntityIfAllowed: function () {
 		//you cannot remove tokens or conditionals if they are part of a translation
 		if (this.selectedEntityNode) {
-		var currentNode = this.selectedEntityNode.parentNode;
-		while (currentNode && currentNode != this.editableElement) {
-			if (currentNode.tagName == "TRANSLATION") {
-				return;
+			var currentNode = this.selectedEntityNode;
+			if (currentNode.tagName == "CONDITIONAL" && !currentNode.classList.contains("user")) {
+				this.collapser.collapse(currentNode);
+			} else {
+				
+				var deleteAllowed = currentNode.nodeName == "TOKEN" ? true : false;
+				if (currentNode.tagName == "TRANSLATION") {
+					deleteAllowed = true;
+				} else{
+					while (currentNode && currentNode != this.editableElement) {
+
+						if (currentNode.tagName == "CONDITIONAL" && !currentNode.classList.contains("user")) {
+							deleteAllowed = false;
+							break;
+						}
+					currentNode = currentNode.parentNode;
+					}
+
+
+				}
+				
+				if (deleteAllowed) {
+					this.selectedEntityNode.parentNode.removeChild(this.selectedEntityNode);
+					this.selectedEntityNode = null;
+				}
 			}
-			currentNode = currentNode.parentNode;
-		}
-		this.selectedEntityNode.parentNode.removeChild(this.selectedEntityNode);
-		this.selectedEntityNode = null;
-		if (typeof CKEDITOR != "undefined" && CKEDITOR.currentInstance) {
+			if (typeof CKEDITOR != "undefined" && CKEDITOR.currentInstance) {
 				CKEDITOR.currentInstance.fire("saveSnapshot");
+			}
+
 		}
-	}
 		
 	},
 	clickHandler: function (event) {
@@ -125,6 +146,7 @@ EntitySelectionManager.prototype = {
 		if (entityNode && !entityNode.classList.contains("user")) {
 			this.select(entityNode)
 		} else {
+			console.log("null")
 			this.selectedEntityNode = null;
 			if (event.target.tagName == "PAGEBREAK") {
 

@@ -1,6 +1,12 @@
 function ConditionalCollapser() {
 	this.entitiesHelper =new EntitiesHelper()
 }
+ConditionalCollapser.getInstance = function () {
+	if (!this.instance) {
+		this.instance = new this()
+	}
+	return this.instance
+}
 ConditionalCollapser.prototype = {
 	init: function (editableElement) {
 		this.editableElement = editableElement;
@@ -14,9 +20,9 @@ ConditionalCollapser.prototype = {
 		if (event.target.className == "args conditional" && event.target.parentNode.firstChild == event.target) {
 			var args = this.entitiesHelper.getDataArguments(event.target.parentNode)
 			if (args.hidden) {
-				this.entitiesHelper.removeDataArgument(event.target.parentNode,"hidden")
+				this.expand(event.target.parentNode,"hidden")
 			} else {
-				this.entitiesHelper.setDataArgument(event.target.parentNode,"hidden",true)
+				this.collapse(event.target.parentNode,"hidden")
 			}
 			event.stopPropagation();
 		}
@@ -27,6 +33,13 @@ ConditionalCollapser.prototype = {
 			event.stopPropagation();
 			event.preventDefault()
 		}
+	},
+	collapse: function (entityElement) {
+		this.entitiesHelper.setDataArgument(entityElement,"hidden",true)
+		
+	},
+	expand: function (entityElement) {
+		this.entitiesHelper.removeDataArgument(entityElement,"hidden")
 	}
 
 

@@ -72,7 +72,7 @@ For licensing, see LICENSE.md or http://ckeditor.com/license
 	}
 	var languageStore = new LanguageStore("json/tokens","json/logic","json/translations");
 	EntitiesHelper.prototype.languageStore = languageStore;//NASTY....
-	var conditionalCollapser = new ConditionalCollapser();
+	var conditionalCollapser = ConditionalCollapser.getInstance()
 	var entityTooltip = new EntityTooltip()
 	var userConditionalManager = new UserConditionalManager();
 	var pasteManager = new EntityPasteManager()

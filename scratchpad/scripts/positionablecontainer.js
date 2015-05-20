@@ -31,7 +31,7 @@ PositionableContainer.prototype = {
 	moveToRange: function (ownerDocument,range) {
 		var rect = range.getClientRects(),
 			frameRect = ownerDocument.defaultView.frameElement.getBoundingClientRect();
-		console.log(range)
+		
 		rect = rect[rect.length-1]
 		this.moveTo(frameRect.left+rect.left,frameRect.top+rect.bottom);
 	},

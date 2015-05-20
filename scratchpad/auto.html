@@ -89,7 +89,7 @@ For licensing, see LICENSE.md or http://ckeditor.com/license
 			var tokenStore = new TokenStore();
 			var translationStore = new TranslationStore(tokenStore);
 			
-			var conditionalCollapser = new ConditionalCollapser()
+			var conditionalCollapser = new ConditionalCollapser.getInstance()
 			
 
 			$.ajax("xml/keys.json", {mimeType:"application-x/json", success: function (keys) {
