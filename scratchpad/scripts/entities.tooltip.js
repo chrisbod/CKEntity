@@ -46,16 +46,27 @@ EntityTooltip.prototype = {
 		}
 	},
 	keydownHandler: function () {
-		this.deactivateTooltip()
+		this.deactivateTooltip();
 	},
 	activateTooltip: function (entity,event) {
-		this.bind()
+		this.bind();
 		this.currentlyOver = entity;
 		this.knockoutViewModel.updateFromElement(entity);
 		var bounding = entity.getBoundingClientRect();
+		var boundings = entity.getClientRects();
+		var tooltipRect = this.tooltipElement.getBoundingClientRect()
+		var viewWidth = window.innerWidth;
 		var frameBounding = entity.ownerDocument.defaultView.frameElement.getBoundingClientRect();
-		this.tooltipElement.style.left = (frameBounding.left+bounding.left)+"px";
+		var left = frameBounding.left+boundings[0].left;
+		if (left+tooltipRect.width > viewWidth) {
+			left = viewWidth-tooltipRect.width
+		}
+
+		this.tooltipElement.style.left = left+"px";
 		this.tooltipElement.style.top = (frameBounding.top+bounding.bottom)+"px";
+		
+		
+		
 		this.knockoutViewModel.active(true)
 
 	},
