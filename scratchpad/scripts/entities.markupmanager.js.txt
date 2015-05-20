@@ -1,14 +1,14 @@
 function EntityMarkupManager() {
-	this.entitiesHelper = new EntitiesHelper()
+	this.entitiesHelper = new EntitiesHelper();
 }
 EntityMarkupManager.prototype = {
 	init: function (editableElement) {
 		this.editableElement = editableElement;
 		this.editableElement.addEventListener("input",this);
-		this.editableElement.addEventListener("drop",this,true)
+		this.editableElement.addEventListener("drop",this,true);
 		//this.editableElement.addEventListener("drag",this,true)
 		this.editableDocument = editableElement.ownerDocument;
-		this.editableDocument.addEventListener("paste", this,true)
+		this.editableDocument.addEventListener("paste", this,true);
 	},
 	handleEvent: function (event) {
 		return this[event.type+"Handler"](event);
@@ -16,82 +16,103 @@ EntityMarkupManager.prototype = {
 	inputHandler: function (event) {
 		if (typeof CKEDITOR != "undefined" && CKEDITOR.currentInstance) {
 			CKEDITOR.currentInstance.fire("saveSnapshot");
-			//CKEDITOR.currentInstance.focusManager.focus()
 		}
 	},
-	dropHandler: function (event) {
-		var selection  = this.editableDocument.getSelection();
-		if (selection.rangeCount) {
-			this.internalDropHandler(event)
+	dropHandler: function (event) { 
+		var  predropSelection = this.editableDocument.getSelection(),
+			 predropRange = null;
+
+		if (predropSelection.rangeCount) {
+			predropRange = predropSelection.getRangeAt(0);
+
+		}
+		this.postDrop(event,predropRange);
+	},
+	postDrop: function (event,predropRange) {
+		if (predropRange) {
+			this.postDropInternal(event,predropRange);
+			
 		} else {
-			setTimeout(this.internalDropHandler.bind(this,event))
-		}
+			this.postDropExternal(event);
+
+		}	
 	},
-	internalDropHandler: function (event) {
-		var dropTarget = this.editableDocument.elementFromPoint(event.pageX,event.pageY),
-			caret = this.editableDocument.caretRangeFromPoint(event.pageX,event.pageY);	
-		if (dropTarget) {
-				var selection = dropTarget.ownerDocument.getSelection();
-				var range = selection.getRangeAt(0);
-				var startNode = caret.startContainer,
-					nextTextNode,
-					fragment;
-				if (event.ctrlKey) {
-					fragment = range.cloneContents();
-				} else {
-					fragment = range.extractContents();
-					
-				}
-				fragment = this.cleanFragment(fragment);
-				
-				if (startNode.nodeType == 3) {
-					newTextNode = startNode.splitText(caret.startOffset);
-				} else {
-					startNode = startNode.insertBefore(document.createTextNode(""),startNode.firstChild);
-
-					newTextNode = startNode.parentNode.insertBefore(document.createTextNode(""),startNode.nextSibling);
-
-				}
-				newTextNode.parentNode.insertBefore(fragment,newTextNode);
-				range.setStartAfter(startNode);
-				range.setEndBefore(newTextNode);
-				selection.removeAllRanges();
-				selection.addRange(range);
-				event.stopPropagation();
-				event.preventDefault();
-				if (typeof CKEDITOR != "undefined" && CKEDITOR.currentInstance) {
-					//debugger;
-						CKEDITOR.currentInstance.fire("saveSnapshot");
-				}
+	postDropInternal: function (event,predropRange) {
+		var isCopyAction = event.ctrlKey,//need to make this mac happy
+			selection = this.editableDocument.getSelection(),
+			range = selection.getRangeAt(0),
+			startNode = predropRange.startContainer,
+			nextTextNode,
+			fragment;
+		if (isCopyAction) {
+			fragment = predropRange.cloneContents();
+		} else {
+			fragment = range.extractContents();
 		}
+		this.cleanFragment(fragment);
+		if (startNode.nodeType == 3) {
+			newTextNode = startNode.splitText(predropRange.startOffset);
+		} else {
+			startNode = startNode.insertBefore(document.createTextNode("{"),startNode.firstChild);
+			newTextNode = startNode.parentNode.insertBefore(document.createTextNode("}"),startNode.nextSibling);
+		}
+		newTextNode.parentNode.insertBefore(fragment,newTextNode);
+		range.setStartAfter(startNode);
+		range.setEndBefore(newTextNode);
+		selection.removeAllRanges();
+		selection.addRange(range);
+		event.stopPropagation()
+		event.preventDefault()
 		
+		if (typeof CKEDITOR != "undefined" && CKEDITOR.currentInstance) {
+				CKEDITOR.currentInstance.fire("saveSnapshot");
+		}
 	},
 	cleanFragment: function (fragment) {
-		console.log(""+fragment.firstChild)
 		return fragment
 	},
+	postDropExternal: function (event) {
+		var selection = this.editableDocument.getSelection(),
+			range = selection.getRangeAt(0),
+			startNode = range.startContainer,
+			nextTextNode,
+			fragment = range.extractContents();
+		this.cleanFragment(fragment);
+		if (startNode.nodeType == 3) {
+			newTextNode = startNode.splitText(range.startOffset);
+		} else {
+			startNode = startNode.insertBefore(document.createTextNode(""),startNode.firstChild);
+			newTextNode = startNode.parentNode.insertBefore(document.createTextNode(""),startNode.nextSibling);
+		}
+		newTextNode.parentNode.insertBefore(fragment,newTextNode);
+		range.setStartAfter(startNode);
+		range.setEndBefore(newTextNode);
+		selection.removeAllRanges();
+		selection.addRange(range);
+		if (typeof CKEDITOR != "undefined" && CKEDITOR.currentInstance) {
+				CKEDITOR.currentInstance.fire("saveSnapshot");
+		}
+	},
 	postPaste: function (event,range) {
-		
+		console.log(event);
 	},
 	pasteHandler: function (event) {
 		var selection = event.target.ownerDocument.getSelection();
 		var range = selection.getRangeAt(0);
-		setTimeout(this.postPaste.bind(this,event,range))
-		
-
+		setTimeout(this.postPaste.bind(this,event,range));
 	},
 	preventEntityEditing: function () {
 		var tokens = this.editableElement.querySelectorAll("token:not([contenteditable]),translation:not([contenteditable]), conditional:not([contenteditable]):not(.user)");
 		for (var i=0;i<tokens.length;i++) {
-			this.makeReadOnlyAndStripStyles(tokens[i])
+			this.makeReadOnlyAndStripStyles(tokens[i]);
 		}
 	},
 	makeReadOnlyAndStripStyles: function (element) {
 		element.setAttribute("contenteditable","false");
-		element.removeAttribute("style")
+		element.removeAttribute("style");
 		var children = element.querySelectorAll("*:not([contenteditable])");
 		for (var i=0;i<children.length;i++) {
-			children[i].removeAttribute("style")
+			children[i].removeAttribute("style");
 			children[i].setAttribute("contenteditable","false");
 		}
 	},

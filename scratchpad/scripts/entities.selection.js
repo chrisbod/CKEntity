@@ -110,6 +110,7 @@ EntitySelectionManager.prototype = {
 	
 	removeCurrentEntityIfAllowed: function () {
 		//you cannot remove tokens or conditionals if they are part of a translation
+		if (this.selectedEntityNode) {
 		var currentNode = this.selectedEntityNode.parentNode;
 		while (currentNode && currentNode != this.editableElement) {
 			if (currentNode.tagName == "TRANSLATION") {
@@ -119,6 +120,7 @@ EntitySelectionManager.prototype = {
 		}
 		this.selectedEntityNode.parentNode.removeChild(this.selectedEntityNode);
 		this.selectedEntityNode = null;
+	}
 		
 	},
 	clickHandler: function (event) {
