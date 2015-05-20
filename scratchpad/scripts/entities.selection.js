@@ -53,7 +53,7 @@ EntitySelectionManager.prototype = {
 	contextmenuHandler: function (event){
 		var entityNode = this.entities.getEntityElement(event.target);
 		if (entityNode && !entityNode.classList.contains("user")) {
-			this.select(entityNode.parentNode)
+			this.select(entityNode.parentNode);
 		} else {
 			this.selectedEntityNode = null;
 		}
@@ -66,13 +66,10 @@ EntitySelectionManager.prototype = {
 		}
 	},
 	simpleSelect: function (selection,node) {
-		selection.removeAllRanges()
-		var range = this.editableDocument.createRange()
-		range.selectNode(node)
-
-		//range.setStartBefore(node)
-		//range.setEndAfter(node)
-		selection.addRange(range)
+		selection.removeAllRanges();
+		var range = this.editableDocument.createRange();
+		range.selectNode(node);
+		selection.addRange(range);
 					
 	},
 	keyupHandler: function (event) {
@@ -86,22 +83,19 @@ EntitySelectionManager.prototype = {
 	},
 	checkSelectionAndCursor: function (selection,event) {
 		if (selection.isCollapsed) {//cursor
-			//console.log("collapsed",selection)
 		} else {//selection
-			//console.log(selection)
-			//console.log("not collapsed",selection)
 			console.log(event.type,selection.getRangeAt(0))
 		}
 	},
 	
 	pasteHandler: function () {
-		if (this.currentEntityNode) {
-			this.currentEntityNode.parentNode.removeChild(this.currentEntityNode);
-			this.currentEntityNode = null;
+		if (this.selectedEntityNode) {
+			this.selectedEntityNode.parentNode.removeChild(this.selectedEntityNode);
+			this.selectedEntityNode = null;
 		}
 	},
 	handleDelete: function (event) {
-		if (this.currentEntityNode && event.keyCode == 8) {
+		if (this.selectedEntityNode && event.keyCode == 8) {
 			this.removeCurrentEntityIfAllowed()
 			event.stopPropagation();
 			event.preventDefault();
@@ -120,6 +114,9 @@ EntitySelectionManager.prototype = {
 		}
 		this.selectedEntityNode.parentNode.removeChild(this.selectedEntityNode);
 		this.selectedEntityNode = null;
+		if (typeof CKEDITOR != "undefined" && CKEDITOR.currentInstance) {
+				CKEDITOR.currentInstance.fire("saveSnapshot");
+		}
 	}
 		
 	},
@@ -159,7 +156,8 @@ EntitySelectionManager.prototype = {
 		range.setEndAfter(entityNode)
 		
 		selection.addRange(range);
-		this.currentEntityNode = entityNode
+		this.selectedEntityNode = entityNode;
+
 	},
 	getCleanSelection: function () {
 		var selection = this.editableDocument.getSelection();
