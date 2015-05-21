@@ -61,11 +61,10 @@ TokenStore.prototype.createTemplatableNodeFromEntity = function (key,id,previewH
 	editSpan.appendChild(node);
 	editSpan.setAttribute("data-entity-node","token")
 	editSpan.setAttribute("contenteditable","false")
-	editSpan.insertBefore(document.createTextNode("\u200b"),editSpan.firstChild);
-	editSpan.appendChild(document.createTextNode("\u200b"))
+//	editSpan.insertBefore(document.createTextNode("\u200b"),editSpan.firstChild);
+//	editSpan.appendChild(document.createTextNode("\u200b"))
 	return node;
 }
-
 
 
 function TranslationStore(tokenStore) {
@@ -109,8 +108,8 @@ TranslationStore.prototype.createTemplatableNodeFromEntity = function (key,id) {
 	editSpan.className = "entity-wrapper"
 	editSpan.setAttribute("contenteditable","false")
 	editSpan.appendChild(node)
-	editSpan.insertBefore(document.createTextNode("\u200b"),editSpan.firstChild);
-	editSpan.appendChild(document.createTextNode("\u200b"))
+//	editSpan.insertBefore(document.createTextNode("\u200b"),editSpan.firstChild);
+//	editSpan.appendChild(document.createTextNode("\u200b"))
 	return editSpan;
 }
 TranslationStore.prototype.parseTextMarkup = function (string) {
@@ -159,7 +158,7 @@ TokenStore.prototype.createTemplatableNodeFromEntity = function (key,id,previewH
 	editSpan.className = "entity-wrapper"
 	editSpan.appendChild(node);
 	editSpan.setAttribute("contenteditable","false")
-	editSpan.insertBefore(document.createTextNode("\u200b"),editSpan.firstChild);
-	editSpan.appendChild(document.createTextNode("\u200b"))
+//	editSpan.insertBefore(document.createTextNode("\u200b"),editSpan.firstChild);
+//	editSpan.appendChild(document.createTextNode("\u200b"))
 	return editSpan;
 }
