@@ -13,7 +13,7 @@ ContentEditableEventGenerator.prototype = {
 		element.addEventListener("input",this,true);
 		element.addEventListener("drop",this,true);
 		element.addEventListener("mouseup",this,true);
-		element.addEventListener("keyup",this,true);
+		
 		this.document.addEventListener("keydown",this,true);
 		this.document.addEventListener("keyup",this,true);
 		element.addEventListener("contextmenu",this,true);
@@ -52,52 +52,19 @@ ContentEditableEventGenerator.prototype = {
 					details.textNode = null;
 					details.element = selection.baseNode;
 				}
-			}
+			} 
 
-		}
-		if (details.textNode) {
-				this.setEntityStatus(details,details.textNode);
-				(event.details = event.details || {}).selection = details
-				return;
-		}
-		
-		
-		
-		if (details.element  == this.document.body || details.element == this.document.documentElement) {//over a readonly itemtype)
-			if (event.type == "keyup") {
-				if (event.keyCode == 37) {
-					if (details.entityBefore) {
-						details.element = details.entityBefore.firstChild;
-						details.currentEntityWrapper = details.entityBefore;
-						details.currentEntity = details.entityBefore.firstChild;
-					}
-				}
-				if (event.keyCode == 39) {
-					if (details.entityAfter) {
-						details.element = details.entityAfter.firstChild;
-						details.currentEntityWrapper = details.entityAfter;
-						details.currentEntity = details.entityAfter.firstChild;
-					}
-				}
-			}
-			
-		}
-		
+		}	
 		if (range) {
-			details.atStartOfElement = false;
-			details.atEndOfElement = false;
-			details.atStartOfTextNode = false;
-			details.atEndOfTextNode = false;
-
-			
 			if (selection.anchorNode.nodeType == 3) {
 				if (selection.anchorOffset == 0) {
+
 					details.atStartOfTextNode = true;
 					if (!selection.anchorNode.previousSibling) {
 						details.atStartOfElement = true;
 					} else {
 						details.atStartOfElement = false;
-						this.setEntityStatus(details,selection.anchorNode)
+						
 					}
 				} else if (selection.anchorOffset == selection.anchorNode.data.length) {
 					details.atEndOfTextNode = true;
@@ -108,6 +75,12 @@ ContentEditableEventGenerator.prototype = {
 					}
 				}
 			} else {
+				
+
+				/*if (selection.anchorNode.childNodes[selection.anchorOffset-1] && selection.anchorNode.childNodes[selection.anchorOffset-1].hasAttribute("data-entity-node")) {
+					details.currentEntity = selection.anchorNode.childNodes[selection.anchorOffset-1];
+					
+				}*/
 				if (range.startContainer.nodeType != 3 && range.startOffset == 0) {
 					var first = range.startContainer.firstChild
 					if (first && first.nodeType != 3 && first.hasAttribute("data-entity-node")) {
@@ -117,30 +90,38 @@ ContentEditableEventGenerator.prototype = {
 				} else {
 					details.atStartOfElement = true;
 					details.atEndOfElement = true;
-					this.setEntityStatus(details,selection.anchorNode)
 				}
 				
-				
+			}
+			
+		} else {
+			
+		}
+		this.setEntityStatus(details,selection.anchorNode);
+
+		(event.details = event.details || {}).selection = details;
+
+		
+		if (selection.anchorNode == details.textNode) {
+			
+			if (details.entityBefore && details.atStartOfTextNode && selection.anchorNode.previousSibling === this.entityBefore) {
+				details.entityBeforeImmediate = true;
 				
 			}
+			if (details.atEndOfTextNode && selection.nextSibling === this.entityAfter) {
+				details.entityAfterImmediate == true;
+				
+			}
+		} else {
+			console.log(details.entityBefore,details.atStartOfTextNode,selection.anchorNode.previousSibling === this.entityBefore)
 		}
-
-		details.currentEntity = this.entitiesHelper.getEntityElement(details.textNode);
-		details.currentEntityWrapper = details.currentEntity ? details.currentEntity.parentNode : null;
-		
-		if (!event.details) {
-			event.details = {};
-		}
-		event.details.selection = this.currentDetails;
-
-		
+		//details.currentEntity = this.entitiesHelper.getEntityElement(details.textNode)
 	},
 	setEntityStatus: function (details,currentNode) {
-
+		//console.log(currentNode,currentNode.previousSibling)
 		if (currentNode.previousSibling && currentNode.previousSibling.nodeType != 3 && currentNode.previousSibling.hasAttribute("data-entity-node")) {
 			details.entityBefore = currentNode.previousSibling
 		} else {
-
 			details.entityBefore = null;
 		}
 		if (currentNode.nextSibling && currentNode.nextSibling.nodeType != 3 && currentNode.nextSibling.hasAttribute("data-entity-node")) {
@@ -148,6 +129,13 @@ ContentEditableEventGenerator.prototype = {
 		} else {
 			details.entityAfter = null;
 		}
+		
+	},
+	focusHandler: function () {
+		console.log("focus")
+	},
+	blurHandler: function () {
+		console.log("blur")
 	},
 	inputHandler: function () {},
 	dropHandler: function () {},
