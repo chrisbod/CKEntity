@@ -3,6 +3,9 @@
 // Prevent from DOM clobbering.
 if ( typeof window.opener._wsd_htmlToLoad == 'string' ) {
 	var doc = document;
+	window.onload = function () {
+		alert('here')
+	}
 	doc.open();
 	doc.write( window.opener._wsd_htmlToLoad );
 	doc.close();
