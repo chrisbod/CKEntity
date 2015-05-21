@@ -203,7 +203,7 @@ select{
       -webkit-appearance: none;
  }
 
-#logicDialog form#rules {
+.logicDialog form#rules {
              display: -webkit-flex;
              display: flex;
               -webkit-flex-direction: column;
@@ -214,7 +214,7 @@ select{
         form#rules > section {
             flex-grow: 0;
         }
-            #logicDialog ul {
+            .logicDialog ul {
                overflow-y: auto;
                display: -webkit-flex;
                display: flex;
@@ -236,7 +236,7 @@ select{
                align-content: flex-end;
             }
 
-            #logicDialog ul li {
+            .logicDialog ul li {
 
                 margin: 1ex;
                 flex-grow: 1;
