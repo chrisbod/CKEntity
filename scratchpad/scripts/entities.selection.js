@@ -63,11 +63,9 @@ EntitySelectionManager.prototype = {
 			case 39: return this.rightArrowUp(event);
 		}
 		var selection = this.editableDocument.getSelection();
-		if (selection.baseNode.data == "\u200b") {
-			selection.baseNode.data = "";
-		}
+	
 		this.previousEntity = null;
-		//event.stopPropagation()
+		event.stopPropagation()
 		
 	},
 	keydownHandler: function (event) {
@@ -81,34 +79,68 @@ EntitySelectionManager.prototype = {
 		}
 		this.nextEntity = null;
 		event.stopPropagation()
-
 	},
 	leftArrowDown: function (event) {
-		this.previousEntity = event.details.selection.entityBefore
+		if (event.details.selection.textNode && event.details.selection.selection.anchorOffset == 0 ) {
+			if (event.details.selection.entityBefore) {
+				this.select(event.details.selection.entityBefore)
+				event.preventDefault();
+				return;
+			}
+		}
+		this.selectedEntityNode = null;
 		event.stopPropagation()
 	},
 	rightArrowDown: function (event) {
-		console.log(event.details.selection.entityAfter)
-		if (this.nextEntity) {
-			this.select(this.nextEntity);
-			event.preventDefault();
+		
+
+		if (this.selectedEntityNode) {
+			this.setCursorAfter(this.selectedEntityNode)
+			this.selectedEntityNode = null;
+			this.ignoreUp = true;
+			event.preventDefault()
+			return;
+		}
+		var range = event.details.selection.range;
+		if (range.endContainer.nodeType == 3 && range.endContainer.endOffset == range.endContainer.data.length-1) {
+			console.log("here")
 		}
 		event.stopPropagation()
 	},
 	leftArrowUp: function (event) {
-		if (this.previousEntity) {
-			this.select(this.previousEntity)
-		}
+
+		
+	
+		
+		
+		
 		event.stopPropagation()
 	},
 	rightArrowUp: function (event) {
-		if (this.nextEntity && this.selectedEntityNode==this.nextEntity) {
-			this.selectedEntityNode = this.nextEntity = null;
-			event.stopPropagation()
-			return;
+		if (this.ignoreUp) {
+			this.ignoreUp = false;
+			return
 		}
+		var range = event.details.selection.range;
+		if (range.startContainer.nodeType!=3 && range.startOffset == 0) {
+			var element = range.startContainer.firstChild
+			if (element.hasAttribute && element.hasAttribute("data-entity-node")) {
+				this.select(element)
+				event.preventDefault()
+			}
+		} else {
 
-		this.nextEntity = event.details.selection.entityAfter;
+			console.log(range.startContainer)
+
+
+		}
+		
+		
+		/*if (this.selectedEntityNode && this.selectedEntityNode == event.details.currentEntity) {
+			this.setCursorAfter(this.selectedEntityNode)
+			this.selectedEntityNode = null
+
+		}*/
 	},
 	simpleSelect: function (selection,node) {
 		selection.removeAllRanges();
@@ -119,7 +151,7 @@ EntitySelectionManager.prototype = {
 	},
 	
 	mouseupHandler: function (event) {
-		this.entityBefore = event.details.selection.entityBefore;
+		//this.entityBefore = event.details.selection.entityBefore;
 		//console.log(this.entityBefore)
 		//this.checkSelectionAndCursor(this.editableDocument.getSelection(),event)
 	},
@@ -213,6 +245,22 @@ EntitySelectionManager.prototype = {
 		selection.addRange(range);
 		this.selectedEntityNode = entityNode;
 
+	},
+	setCursorAfter: function (node) {
+		var selection = this.getCleanSelection();
+		var range = document.createRange()
+		range.setStartAfter(node)
+		range.setEndAfter(node)
+		this.selectedEntityNode = null;
+		selection.addRange(range)
+	},
+	setCursorBefore: function (node) {
+		var selection = this.getCleanSelection();
+		var range = document.createRange()
+		range.setStartBefore(node);
+		range.setEndBefore(node);
+		selection.addRange(range);
+		this.selectedEntityNode = null;
 	},
 	getCleanSelection: function () {
 		var selection = this.editableDocument.getSelection();

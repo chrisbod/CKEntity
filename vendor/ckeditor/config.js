@@ -11,7 +11,7 @@ CKEDITOR.editorConfig = function( config ) {
 	 config.disableNativeSpellChecker = false;
 	 config.allowedContent = true;
 	//config.extraAllowedContent = 'translation token conditional';
-	config.extraPlugins = 'wallstreetdocs,wordpaste,menub,pagebreaktag'
+	config.extraPlugins = 'wallstreetdocs,wordpaste,menub,pagebreaktag,wsdpreview'
 	config.removePlugins = 'magicline, pastetext, pastefromword, clipboard'
 	config.contentsCss = 'css/kid.css';
 };

@@ -90,3 +90,13 @@ TokenTooltipViewModel.prototype.launchPropertiesDialog = function () {
 		this.propertiesModel.active(true)
 }
 
+function DocumentPreviewViewModel() {
+	this.logic = ko.observable(this.entitiesHelper.getCurrentLogicDefinitions());
+	this.values = new ko.observable({});
+	this.active = ko.observable(false);
+}
+DocumentPreviewViewModel.prototype = new EntityViewModel();
+DocumentPreviewViewModel.prototype.update = function () {
+	this.active(false);
+	console.log(this.values())
+}

@@ -127,13 +127,15 @@ function build(editor,editPanel,language)  {
 }
 $(function () {
 
+
+
 	CKEDITOR.replace( 'documentSource', {
 				title: false,
 				disableNativeSpellChecker: false,
 				allowedContent: true,
 				fullPage: true,
 				allowedContent: true,
-				extraPlugins: 'wysiwygarea,wallstreetdocs,wordpaste,documentlang,knockoutdialog,pagebreaktag',
+				extraPlugins: 'wysiwygarea,wallstreetdocs,wordpaste,documentlang,knockoutdialog,pagebreaktag,wsdpreview',
 				removePlugins: 'elementspath,magicline,pastetext,pastefromword,clipboard',
 				language_list: [ 'en:English', 'de:German'],
 
@@ -362,7 +364,7 @@ SaveShim.prototype = {
 		
 
 		</style>
-		<div class="dialog"  data-bind="ckeditorDialog: active" id="logicDialog">
+		<div class="dialog logicDialog"  data-bind="ckeditorDialog: active" id="logicDialog">
 			
 		<form id="rules" data-bind="submit: update">
 			
@@ -397,6 +399,27 @@ SaveShim.prototype = {
 					<!--/ko-->
 				</fieldset>
 			
+		</div>
+
+
+		<div class="dialog logicDialog"  data-bind="ckeditorDialog: active" id="previewDialog">
+			
+		<form id="rules" data-bind="submit: update">
+			
+			<section>
+			<fieldset class="container-content">
+				
+					<ul data-bind="foreach: logic">
+						<li>
+							<strong data-bind="text:text"></strong>
+							<select size="4" data-bind="minimumSelected: 0,attr:{name:id }, options: items , optionsText: 'text', 	optionsValue: 'value', value: $root.values()[id]">
+							</select>
+						</li>
+					</ul>
+				</fieldset>
+			</section>
+			
+			</form>
 		</div>
 
 		<script>

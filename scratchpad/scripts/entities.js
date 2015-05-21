@@ -126,7 +126,6 @@ EntitiesHelper.prototype = {
 			this.translationModel = new LogicDialogViewModel(tokenElement,dialog);
 			ko.applyBindings(this.translationModel,dialog)
 		} else {
-
 			this.translationModel.updateFromElement(tokenElement)
 			this.translationModel.active(true)
 		}
