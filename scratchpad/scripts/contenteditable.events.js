@@ -14,6 +14,8 @@ ContentEditableEventGenerator.prototype = {
 		element.addEventListener("drop",this,true);
 		element.addEventListener("mouseup",this,true);
 		element.addEventListener("keyup",this,true);
+		this.document.addEventListener("keydown",this,true);
+		this.document.addEventListener("keyup",this,true);
 		element.addEventListener("contextmenu",this,true);
 		this.document.addEventListener("paste", this,true);
 
@@ -25,43 +27,43 @@ ContentEditableEventGenerator.prototype = {
 	extendEvent: function (event) {
 		var selection = this.document.getSelection(),
 			range = selection.rangeCount ? selection.getRangeAt(0) : null;
-		var details = this.currentDetails;
+		var details = {};
 		details.selection = selection;
 		details.range = range;
-		var lastKnownElement = details.element,
-			entityBefore = details.entityBefore,
-			entityAfter = details.entityAfter;
 		details.element = null
+		details.entityBefore = null;
+		details.entityAfter = null;
 		
 		details.contentSelected = range ? !selection.isCollapsed : false;
-			if (event.target == this.document.body || event.target == this.document.documentElement) {
-				details.textNode = selection.baseNode
-				details.element = selection.baseNode.parentNode
-				//mouseupdown etc occurred over whitespace in document
-			} else {
+		if (event.target == this.document.body || event.target == this.document.documentElement) {
+			details.textNode = selection.baseNode
+			details.element = selection.baseNode.parentNode
+			//mouseupdown etc occurred over whitespace in document
+		} else {
 
-				if (!selection.baseNode) {
-					details.textNode = event.target.lastChild;
-					details.element = event.target;
+			if (!selection.baseNode) {
+				details.textNode = event.target.lastChild;
+				details.element = event.target;
+			} else {
+				if (selection.baseNode.nodeType == 3) {
+					details.textNode = selection.baseNode
+					details.element = details.textNode.parentNode
 				} else {
-					if (selection.baseNode.nodeType == 3) {
-						details.textNode = selection.baseNode
-						details.element = details.textNode.parentNode
-					} else {
-						details.textNode = null;
-						details.element = selection.baseNode;
-					}
+					details.textNode = null;
+					details.element = selection.baseNode;
 				}
 			}
-		
-		if (!details.element) {
-			
-		//	details.element = this.document.elementFromPoint(event.pageX,event.pageY);
-			
-			
+
 		}
-		if (details.element  == this.document.body || details.element == this.document.documentElement) {//over a readonly item
-			//debugger;
+		if (details.textNode) {
+				this.setEntityStatus(details,details.textNode);
+				(event.details = event.details || {}).selection = details
+				return;
+		}
+		
+		
+		
+		/*if (details.element  == this.document.body || details.element == this.document.documentElement) {//over a readonly itemtype)
 			if (event.type == "keyup") {
 				if (event.keyCode == 37) {
 					if (details.entityBefore) {
@@ -78,6 +80,7 @@ ContentEditableEventGenerator.prototype = {
 					}
 				}
 			}
+			
 		}
 		
 		if (range) {
@@ -85,8 +88,7 @@ ContentEditableEventGenerator.prototype = {
 			details.atEndOfElement = false;
 			details.atStartOfTextNode = false;
 			details.atEndOfTextNode = false;
-			details.entityBefore = null;
-			details.entityAfter = null;
+
 			
 			if (selection.anchorNode.nodeType == 3) {
 				if (selection.anchorOffset == 0) {
@@ -129,11 +131,12 @@ ContentEditableEventGenerator.prototype = {
 		if (!event.details) {
 			event.details = {};
 		}
-		event.details.selection = this.currentDetails;
+		event.details.selection = this.currentDetails;*/
 
 		
 	},
 	setEntityStatus: function (details,currentNode) {
+
 		if (currentNode.previousSibling && currentNode.previousSibling.nodeType != 3 && currentNode.previousSibling.hasAttribute("data-entity-node")) {
 			details.entityBefore = currentNode.previousSibling
 		} else {

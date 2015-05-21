@@ -1,6 +1,3 @@
-
-
-
 function EntityViewModel() {
 	this.entitiesHelper = new EntitiesHelper();
 }
@@ -67,6 +64,7 @@ TokenTooltipViewModel.prototype.updateFromElement = function (element) {
 	this.canEditRules(permissions.rules||false);
 	this.canEditProperties(permissions.properties||false)
 	if (!permissions.rules && !permissions.properties) {
+		
 		this.active(false)
 	}
 }

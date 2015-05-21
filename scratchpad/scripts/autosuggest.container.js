@@ -123,7 +123,6 @@ function AutoSuggestContainer(id, tokenizer) {
 		}
 	},
 	keydownHandler: function (event) {
-		console.log("hre")
 		if (event.keyCode == 13 && event.target.ownerDocument == this.editableDocument) {
 			return this.enter(event);
 		}

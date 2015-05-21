@@ -9,15 +9,13 @@ EntitySelectionManager.prototype = {
 		
 		this.editableElement.addEventListener("click", this, true);
 		this.editableElement.addEventListener("dblclick", this);
-		document.addEventListener("keydown", this, true);
-		document.addEventListener("keyup", this, true);
 		document.addEventListener("paste", this, true);
 
 		this.editableElement.addEventListener("contextmenu", this, true)
-		//this.editableElement.addEventListener("mouseup",this)
-		this.editableElement.addEventListener("keyup", this)
-		this.editableElement.addEventListener("keydown", this, true)
-		this.editableElement.addEventListener("dragstart", this)
+		this.editableDocument.addEventListener("mouseup",this)
+		this.editableDocument.addEventListener("keyup", this,true)
+		this.editableDocument.addEventListener("keydown", this, true)
+		this.editableDocument.addEventListener("dragstart", this)
 		function blockEditorDisappear(event) {
 			var causeElement = event.relatedTarget;
 
@@ -56,16 +54,61 @@ EntitySelectionManager.prototype = {
 		if (entityNode && !entityNode.classList.contains("user")) {
 			this.select(entityNode.parentNode);
 		} else {
-			console.log("null")
 			this.selectedEntityNode = null;
 		}
 	},
+	keyupHandler: function (event) {
+		switch (event.keyCode) {
+			case 37: return this.leftArrowUp(event);
+			case 39: return this.rightArrowUp(event);
+		}
+		var selection = this.editableDocument.getSelection();
+		if (selection.baseNode.data == "\u200b") {
+			selection.baseNode.data = "";
+		}
+		this.previousEntity = null;
+		//event.stopPropagation()
+		
+	},
 	keydownHandler: function (event) {
 		switch (event.keyCode) {
-			case 8: return this.handleDelete(event);
-			//case 37: return this.leftArrowDown(event);
-			//case 39: return this.rightArrowDown(event);
+			case 8: {
+				this.nextEntity = null;
+				return this.handleDelete(event);
+			}
+			case 37: return this.leftArrowDown(event);
+			case 39: return this.rightArrowDown(event);
 		}
+		this.nextEntity = null;
+		event.stopPropagation()
+
+	},
+	leftArrowDown: function (event) {
+		this.previousEntity = event.details.selection.entityBefore
+		event.stopPropagation()
+	},
+	rightArrowDown: function (event) {
+		console.log(event.details.selection.entityAfter)
+		if (this.nextEntity) {
+			this.select(this.nextEntity);
+			event.preventDefault();
+		}
+		event.stopPropagation()
+	},
+	leftArrowUp: function (event) {
+		if (this.previousEntity) {
+			this.select(this.previousEntity)
+		}
+		event.stopPropagation()
+	},
+	rightArrowUp: function (event) {
+		if (this.nextEntity && this.selectedEntityNode==this.nextEntity) {
+			this.selectedEntityNode = this.nextEntity = null;
+			event.stopPropagation()
+			return;
+		}
+
+		this.nextEntity = event.details.selection.entityAfter;
 	},
 	simpleSelect: function (selection,node) {
 		selection.removeAllRanges();
@@ -74,13 +117,10 @@ EntitySelectionManager.prototype = {
 		selection.addRange(range);
 					
 	},
-	keyupHandler: function (event) {
-		var selection = this.editableDocument.getSelection();
-		if (selection.baseNode.data == "\u200b") {
-			selection.baseNode.data = "";
-		}
-	},
+	
 	mouseupHandler: function (event) {
+		this.entityBefore = event.details.selection.entityBefore;
+		//console.log(this.entityBefore)
 		//this.checkSelectionAndCursor(this.editableDocument.getSelection(),event)
 	},
 	checkSelectionAndCursor: function (selection,event) {
@@ -93,7 +133,6 @@ EntitySelectionManager.prototype = {
 	pasteHandler: function () {
 		if (this.selectedEntityNode) {
 			this.selectedEntityNode.parentNode.removeChild(this.selectedEntityNode);
-			console.log("null")
 			this.selectedEntityNode = null;
 		}
 	},
@@ -125,10 +164,7 @@ EntitySelectionManager.prototype = {
 						}
 					currentNode = currentNode.parentNode;
 					}
-
-
-				}
-				
+				}	
 				if (deleteAllowed) {
 					this.selectedEntityNode.parentNode.removeChild(this.selectedEntityNode);
 					this.selectedEntityNode = null;
@@ -137,16 +173,13 @@ EntitySelectionManager.prototype = {
 			if (typeof CKEDITOR != "undefined" && CKEDITOR.currentInstance) {
 				CKEDITOR.currentInstance.fire("saveSnapshot");
 			}
-
 		}
-		
 	},
 	clickHandler: function (event) {
 		var entityNode = this.entities.getEntityElement(event.target);
 		if (entityNode && !entityNode.classList.contains("user")) {
 			this.select(entityNode)
 		} else {
-			console.log("null")
 			this.selectedEntityNode = null;
 			if (event.target.tagName == "PAGEBREAK") {
 

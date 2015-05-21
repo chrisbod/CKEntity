@@ -91,7 +91,7 @@ EntityTooltip.prototype = {
 		this.knockoutViewModel.updateFromElement(entity);
 		this.positionTooltip(entity)
 		
-		
+		this.knockoutViewModel.active(true)
 
 	},
 	deactivateTooltip: function () {

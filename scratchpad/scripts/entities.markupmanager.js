@@ -71,7 +71,7 @@ EntityMarkupManager.prototype = {
 		return fragment
 	},
 	postPaste: function (event,range) {
-		
+		console.log(""+range)
 	},
 	pasteHandler: function (event) {
 		var selection = event.target.ownerDocument.getSelection();
