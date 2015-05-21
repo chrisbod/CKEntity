@@ -63,7 +63,7 @@ ContentEditableEventGenerator.prototype = {
 		
 		
 		
-		/*if (details.element  == this.document.body || details.element == this.document.documentElement) {//over a readonly itemtype)
+		if (details.element  == this.document.body || details.element == this.document.documentElement) {//over a readonly itemtype)
 			if (event.type == "keyup") {
 				if (event.keyCode == 37) {
 					if (details.entityBefore) {
@@ -131,7 +131,7 @@ ContentEditableEventGenerator.prototype = {
 		if (!event.details) {
 			event.details = {};
 		}
-		event.details.selection = this.currentDetails;*/
+		event.details.selection = this.currentDetails;
 
 		
 	},
