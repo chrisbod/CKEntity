@@ -88,10 +88,12 @@ EntityTooltip.prototype = {
 	activateTooltip: function (entity,event) {
 		this.bind();
 		this.currentlyOver = entity;
+		this.knockoutViewModel.active(true)
 		this.knockoutViewModel.updateFromElement(entity);
+
 		this.positionTooltip(entity)
 		
-		this.knockoutViewModel.active(true)
+		
 
 	},
 	deactivateTooltip: function () {
