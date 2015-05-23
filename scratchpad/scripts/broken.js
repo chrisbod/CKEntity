@@ -5,7 +5,7 @@ function AutoSuggestContainer(id, tokenizer) {
 	this.element.id = id;
 	this.element.addEventListener("click", this);
 	this.element.addEventListener("mouseover", this);
-	this.element.addEventListener("keydown",this);
+	this.element.addEventListener("akeydown",this);
 	this.tokenizer = tokenizer;
 }
 
@@ -18,7 +18,7 @@ AutoSuggestContainer.prototype = {
 	},
 	moveToElement: function (element) {
 		if (this.inputElement) {
-			this.inputElement.removeEventListener("keydown",this);
+			this.inputElement.removeEventListener("akeydown",this);
 		}
 		var rect =element.getBoundingClientRect();
 		this.moveTo(rect.left,rect.top+rect.height);
@@ -39,7 +39,7 @@ AutoSuggestContainer.prototype = {
 			this.editableElement.removeEventListener("onkeydown",this)
 		}
 		this.editableElement = editableElement;
-		this.editableElement.addEventListener("keydown", this);
+		this.editableElement.addEventListener("akeydown", this);
 		this.editableElement.addEventListener("keyup", this);
 	},
 	moveToCursorBottomLeft: function (cursorContainer) {
@@ -64,7 +64,7 @@ AutoSuggestContainer.prototype = {
 		}
 		this.visible = false;
 		if (this.inputElement) {
-			this.inputElement.removeEventListener("keydown",this)
+			this.inputElement.removeEventListener("akeydown",this)
 		}
 	},
 	show: function () {
@@ -75,14 +75,14 @@ AutoSuggestContainer.prototype = {
 			this.element.style.visibility = "visible";
 			this.visible = true;
 			if (this.inputElement) {
-				this.inputElement.addEventListener("keydown",this)
+				this.inputElement.addEventListener("akeydown",this)
 				this.inputElement.addEventListener("input",this)
 			}
 			
 		} else {
 			this.visible = false;
 			if (this.inputElement) {
-				this.inputElement.removeEventListener("keydown",this)
+				this.inputElement.removeEventListener("akeydown",this)
 				this.inputElement.removeEventListener("input",this)
 			}
 		}

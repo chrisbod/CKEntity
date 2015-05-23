@@ -80,7 +80,7 @@ EntitySelectionManager.prototype = {
 			case 39: return this.rightArrowDown(event);
 		}
 		this.nextEntity = null;
-		event.stopPropagation()
+		
 
 	},
 	leftArrowDown: function (event) {
