@@ -25,7 +25,7 @@ TokenDialogViewModel.prototype.updateFromElement = function (element) {
 	this.element = element;
 	this.values(this.entitiesHelper.getDataArguments(element));
 	var tokenDefinition = this.entitiesHelper.getTokenDefinitionByType(this.values().type);
-	this.text(tokenDefinition.text);
+	this.text(tokenDefinition.text.replace(/\&lt\;|\&gt\;|\<|\>/g,''));
 	this.tokenText(tokenDefinition.id);
 	this.groups(tokenDefinition.groups);
 }
@@ -60,7 +60,7 @@ TokenTooltipViewModel.prototype.updateFromElement = function (element) {
 	this.element = element;
 	var values = this.entitiesHelper.getDataArguments(element);
 	var permissions = this.entitiesHelper.getEditPermissions(element);
-	this.title(element.innerText);
+	this.title(element.innerText.replace(/[\<\>\[\]]/g,''));
 	this.canEditRules(permissions.rules||false);
 	this.canEditProperties(permissions.properties||false)
 	if (!permissions.rules && !permissions.properties) {
