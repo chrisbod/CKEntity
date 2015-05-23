@@ -20,6 +20,17 @@ CKEDITOR.dialog.add( 'knockoutDialog', function( editor ) {
 			}
 		}
 	}
+
+
+	function reflowDialog(dialogContentsElement,dialogContainer) {
+		dialogContentsElement.style.maxWidth = "";
+		var naturalFlowedContentsRect = dialogContentsElement.getBoundingClientRect();
+		var newWidth = Math.min(naturalFlowedContentsRect.width,window.innerWidth)-40;
+		dialogContentsElement.style.maxWidth = newWidth+"px";
+		dialogContentsElement.style.maxHeight = (dialogContentsElement.offsetHeight-40)+"px"
+		dialogContentsElement.style.minWidth = ((dialogContentsElement.offsetWidth/2)-40)+"px"
+		return parseInt(dialogContentsElement.style.minWidth);
+	}
 	var enterBlocker = new EnterBlocker();
 	var knockoutNode;
 	var data;
@@ -27,8 +38,8 @@ CKEDITOR.dialog.add( 'knockoutDialog', function( editor ) {
 
 		// Basic properties of the dialog window: title, minimum size.
 		title: 'Entity Properties',
-		minWidth: 300,
-		minHeight: 100,
+		minWidth: 200,
+		minHeight: 120,
 
 
 		// Dialog window content definition.
@@ -46,47 +57,36 @@ CKEDITOR.dialog.add( 'knockoutDialog', function( editor ) {
             ]
         }],
 		onShow: function () {
+
 			data = editor.getKnockoutDialogArguments(); //deeply horrific
 			if (data) {
 				var wrapper = document.getElementById("knockoutWrapper");
 				
 				enterBlocker.attach(wrapper)
 				knockoutNode = data.element;
-				//console.log(data.element.getBoundingClientRect())
+
+				var minWidth = reflowDialog(data.element)
+
 				wrapper.appendChild(data.element);
+				
 
 				if (data.title) {
 					document.querySelector(".cke_dialog_title").innerHTML = data.title
 				}
 				
 
-
-				var rect = this.parts.dialog.$.getBoundingClientRect();
-				var overspill = rect.bottom-window.innerHeight,
-					windowWidth = window.innerWidth,
-					widthLeft = windowWidth - (rect.width+100)
-				if (overspill>0) {
-	
-					var element = wrapper.parentNode;
-					while (element) {
-						if (element.style.width) {
-
-							console.log(parseInt(element.style.width))
-							element.style.width = 600+"px"
-							break;
-						} else {
-							element = element.parentNode
-						}
-					}
-
-					var rect = this.parts.dialog.$.getBoundingClientRect();
-					var overspill = rect.bottom-window.innerHeight
-					if (overspill>0) {
-
-						wrapper.style.height = (wrapper.offsetHeight - overspill) + "px"
+				
+			}
+			this.layout()
+			//remove horizontal scrollbar
+			for (var currentElement = wrapper; currentElement; currentElement=currentElement.parentNode) {
+					if (currentElement.style.width == "200px") {
+						
+						currentElement.style.minWidth = (minWidth+10)+"px";
+						console.log(currentElement)
+						break;
 					}
 				}
-			}
 		},
 		// This method is invoked once a user clicks the OK button, confirming the dialog.
 		onOk: function() {
