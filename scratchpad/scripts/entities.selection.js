@@ -119,7 +119,9 @@ EntitySelectionManager.prototype = {
 	},
 	
 	mouseupHandler: function (event) {
-		this.entityBefore = event.details.selection.entityBefore;
+		if (event.details) {
+			this.entityBefore = event.details.selection.entityBefore;
+		}
 		//console.log(this.entityBefore)
 		//this.checkSelectionAndCursor(this.editableDocument.getSelection(),event)
 	},

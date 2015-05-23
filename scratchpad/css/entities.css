@@ -81,6 +81,10 @@ conditional:before {
 conditional:after {
 	content: ']';
 }
+conditional[data-not-present] {
+  display: none;
+}
+
 conditional .conditional.args {
 	min-width: 1.5ex;
 	color: rgba(0,0,0,0);

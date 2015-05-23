@@ -4,7 +4,8 @@ EntityStore.prototype =  {
 	addEntity: function (key,id,preview) {
 		var preexists = this.templatableNodes[key];
 		if (!preexists) {
-			var text = key.replace(/(\[|\<)[^\:]+\:/g,"$1")
+			var text = key.replace(/(\[|\<)[^\:]+\:/g,"$1");
+			var text = key.replace(/\[[^:]+\:\s*\]/g,'')
 			this.allNodes.push(this.templatableNodes[id] = this.templatableNodes[key] = this.templatableNodes[text] ={
 				node: this.createTemplatableNodeFromEntity(key,id,preview),
 				def: key,
@@ -87,6 +88,9 @@ TranslationStore.prototype.createTemplatableNodeFromEntity = function (key,id) {
 		conditional.setAttribute("data-args",args);
 		conditional.firstChild.setAttribute("data-args",args);
 		conditional.lastElementChild.setAttribute("data-args",args);
+		if (!conditional.innerText || conditional.innerText == "[]") {
+			conditional.setAttribute("data-not-present","true")
+		}
 	}
 	var tokens = node.querySelectorAll("token"),
 		token;
