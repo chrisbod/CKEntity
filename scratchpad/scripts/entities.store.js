@@ -14,6 +14,7 @@ EntityStore.prototype =  {
 			})
 
 		}
+		console.log(key)
 		return this.templatableNodes[key];
 	},
 	hasEntity: function (key) {
@@ -41,31 +42,13 @@ TokenStore.prototype.parseTextMarkup = function () {
 		.replace(/>/g,'&gt;')
 }
 TokenStore.prototype.createTemplatableNodeFromEntity = function (key,id,previewHTML) {
-	var node = document.createElement("token")
-	node.setAttribute("data-entity-node","token")
-	node.setAttribute("contenteditable", false);
-	node.setAttribute("data-args","type: '"+id+"'")
-	node.setAttribute("class",id)
-	node.innerHTML = '<span>'+key.replace(/(^<)|(>$)/g,'')+'<span>';
-	var rules = document.createElement("span")
-	rules.className = "args token";
-	rules.innerText = "<";
-	rules.setAttribute("contenteditable", false);
-	rules.setAttribute("data-args","type: '"+id+"'")
-	var end = document.createElement("span")
-	end.innerText = ">";
-	node.appendChild(end)
-	
-	node.insertBefore(rules,node.firstChild)
-	var editSpan = document.createElement("span")
-	editSpan.className = "entity-wrapper"
-	editSpan.appendChild(node);
-	editSpan.setAttribute("data-entity-node","token")
-	editSpan.setAttribute("contenteditable","false")
-//	editSpan.insertBefore(document.createTextNode("\u200b"),editSpan.firstChild);
-//	editSpan.appendChild(document.createTextNode("\u200b"))
-	return node;
+	var tokenNode = document.createElement("token")
+	tokenNode.setAttribute("data-args","type: '"+id+"'")
+	tokenNode.setAttribute("class",id);
+	tokenNode.innerText = key;
+	return tokenNode;
 }
+
 
 
 function TranslationStore(tokenStore) {
@@ -76,93 +59,22 @@ function TranslationStore(tokenStore) {
 TranslationStore.prototype =  new EntityStore()
 TranslationStore.prototype.templatableNodes = null;
 TranslationStore.prototype.createTemplatableNodeFromEntity = function (key,id) {
-	var node = document.createElement("translation");
-	node.setAttribute("contenteditable", false);
-	node.setAttribute("data-args","key:'"+id+"'")
-	node.innerHTML = this.parseTextMarkup(key);
-	var conditionals = node.querySelectorAll("conditional")
-	for (var i=0;i<conditionals.length;i++) {
-		var conditional = conditionals[i];
-		var args = "key:'"+id+"',conditional:'"+conditional.getAttribute("data-conditional-ref")+"'"
-
-		conditional.setAttribute("data-args",args);
-		conditional.firstChild.setAttribute("data-args",args);
-		conditional.lastElementChild.setAttribute("data-args",args);
-		if (!conditional.innerText || conditional.innerText == "[]") {
-			conditional.setAttribute("data-not-present","true")
-		}
+	var translation = document.createElement("translation");
+	translation.setAttribute("data-args","");
+	translation.setAttribute("data-key-id",id);
+	translation.innerHTML = this.parseTextMarkup(key);
+	var subEntities = translation.querySelectorAll("token,conditional");
+	for (var i=0;i<subEntities.length;i++) {
+		subEntities[i].setAttribute("data-key-id",id)
 	}
-	var tokens = node.querySelectorAll("token"),
-		token;
-	for (var i=0;i<tokens.length;i++) {
-		token = this.tokenStore.getEntityNode(tokens[i].getAttribute("data-id"))
-		var ref = tokens[i].getAttribute("data-ref")
-		if (tokens[i].parentNode.className == "contents") {
-			token.setAttribute(
-				"data-args",
-				token.getAttribute("data-args")+",key:'"+id+"',conditional:'"+tokens[i].parentNode.parentNode.getAttribute("data-conditional-ref")+"',token:'"+ref+"'"
-			);
-		} else {
-			token.setAttribute("data-args",token.getAttribute("data-args")+",key:'"+id+"',token:'"+ref+"'")
-		}
-		tokens[i].parentNode.replaceChild(token, tokens[i]);
-	}
-	var editSpan = document.createElement("span")
-	editSpan.setAttribute("data-entity-node","")
-	editSpan.className = "entity-wrapper"
-	editSpan.setAttribute("contenteditable","false")
-	editSpan.appendChild(node)
-//	editSpan.insertBefore(document.createTextNode("\u200b"),editSpan.firstChild);
-//	editSpan.appendChild(document.createTextNode("\u200b"))
-	return editSpan;
+	return translation;
 }
 TranslationStore.prototype.parseTextMarkup = function (string) {
-	return '<span class="args translation" contenteditable="false">{</span><span class="contents">'+string
+	return '<span class="contents">'+string
 		.replace(/</g,'\x02')
 		.replace(/>/g,'\x03')
-		.replace(/\[([^:]+):/g,'<span class="entity-wrapper" data-entity-node="conditional">&#8203;<conditional contenteditable="false" data-conditional-ref="$1"><span class="args conditional" contenteditable="false">[</span><span class="contents" contenteditable="false">')
-		.replace(/\]/g,'</span><span class="conditional end" contenteditable="false">]</span></conditional>&#8203;</span>')
-		.replace(/\x02([^:]+):(\w+)/g,'<span class="entity-wrapper" data-entity-node="token">&#8203;<token data-ref="$1" data-id="$2">$2')
-		.replace(/\x03/g,'"</token></span>') + '</span><span class="translation end" contenteditable="false">}</span>';
-}
-
-function TokenStore() {
-	this.templatableNodes = {};
-	this.allNodes = []
-}
-TokenStore.prototype =  new EntityStore()
-TokenStore.prototype.templatableNodes = null;
-TokenStore.prototype.parseTextMarkup = function () {
-	return string
-		.replace(/</g,'&lt;')
-		.replace(/>/g,'&gt;')
-}
-TokenStore.prototype.createTemplatableNodeFromEntity = function (key,id,previewHTML) {
-	var node = document.createElement("token")
-	node.setAttribute("contenteditable", "false");//this seems to trigger a strange drag and drop bug
-	
-	node.setAttribute("data-args","type: '"+id+"'")
-	node.setAttribute("class",id)
-	node.innerHTML = '<span contenteditable="false">'+key.replace(/(\<)|(\>)/gm,'')+'<span>';
-	var rules = document.createElement("span")
-	rules.className = "args token";
-	rules.innerText = "<";
-	rules.setAttribute("contenteditable", false);
-	rules.setAttribute("data-args","type: '"+id+"'")
-	var end = document.createElement("span");
-	end.setAttribute("contenteditable", false);
-	end.className = "token end"
-	end.innerText = ">";
-	node.appendChild(end);
-	
-	node.insertBefore(rules,node.firstChild)
-	
-	var editSpan = document.createElement("span")
-	editSpan.setAttribute("data-entity-node","token")
-	editSpan.className = "entity-wrapper"
-	editSpan.appendChild(node);
-	editSpan.setAttribute("contenteditable","false")
-//	editSpan.insertBefore(document.createTextNode("\u200b"),editSpan.firstChild);
-//	editSpan.appendChild(document.createTextNode("\u200b"))
-	return editSpan;
+		.replace(/\[([^:]+):/g,'<conditional data-conditional-ref="$1" data-args=""><span class="contents">')
+		.replace(/\]/g,'</conditional>')
+		.replace(/\x02([^:]+):(\w+)/g,'<token data-ref="$1" data-id="$2" data-args="">$2')
+		.replace(/\x03/g,'"</token>') + '</span>';
 }

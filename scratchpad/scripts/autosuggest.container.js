@@ -272,6 +272,7 @@ function AutoSuggestContainer(id, tokenizer) {
 				}
 				
 			}
+			console.log(newNode)
 			var cursor = this.editableDocument.createElement("span");
 			newNode.parentNode.insertBefore(document.createElement("span"),newNode)
 			newNode.parentNode.insertBefore(cursor,newNode.nextSibling)
