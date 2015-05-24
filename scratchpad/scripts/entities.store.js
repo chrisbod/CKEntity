@@ -14,7 +14,6 @@ EntityStore.prototype =  {
 			})
 
 		}
-		console.log(key)
 		return this.templatableNodes[key];
 	},
 	hasEntity: function (key) {
@@ -45,7 +44,10 @@ TokenStore.prototype.createTemplatableNodeFromEntity = function (key,id,previewH
 	var tokenNode = document.createElement("token")
 	tokenNode.setAttribute("data-args","type: '"+id+"'")
 	tokenNode.setAttribute("class",id);
-	tokenNode.innerText = key;
+	var contents = document.createElement("span")
+	contents.className = "contents"
+	contents.innerText = key;
+	tokenNode.appendChild(contents)
 	return tokenNode;
 }
 

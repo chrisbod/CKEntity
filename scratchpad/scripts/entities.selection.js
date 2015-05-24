@@ -13,8 +13,8 @@ EntitySelectionManager.prototype = {
 
 		//this.editableElement.addEventListener("contextmenu", this, true)
 		//this.editableDocument.addEventListener("mouseup",this)
-		//this.editableDocument.addEventListener("keyup", this,true)
-		//this.editableDocument.addEventListener("keydown", this, true)
+		this.editableDocument.addEventListener("keyup", this,true)
+		this.editableDocument.addEventListener("keydown", this, true)
 		//this.editableDocument.addEventListener("dragstart", this)
 		function blockEditorDisappear(event) {
 			var causeElement = event.relatedTarget;
@@ -56,6 +56,7 @@ EntitySelectionManager.prototype = {
 		
 	},
 	keydownHandler: function (event) {
+
 		switch (event.keyCode) {
 			case 8: {
 				return this.handleDelete(event);
@@ -64,27 +65,117 @@ EntitySelectionManager.prototype = {
 			case 39: return this.rightArrowDown(event);
 		}
 
+
 	},
 	leftArrowDown: function (event) {
-		event.stopPropagation()
+		//var previous = this.getPreviousElement()
+		var selection = this.editableDocument.getSelection();
+		var anchorNode = selection.anchorNode;
+		var previous = anchorNode.previousSibling;
+		if (previous && previous.hasAttribute && previous.hasAttribute("data-cursor")) {
+			previous = previous.previousSibling;
+		}
+		if (this.entities.isEntityElement(previous)) {
+			this.elementToSelect = previous;
+			event.stopPropagation()
+		}
+	},
+	getNextImmediateEntityNode: function () {
+		var selection = this.editableDocument.getSelection();
+		var anchorNode = selection.anchorNode;
+		if (anchorNode.nodeType!=3) {
+			//console.log(selection.anchorOffset)
+		}
+		
+		var next = anchorNode.nextSibling;
+		if (next && next.hasAttribute && next.hasAttribute("data-cursor")) {
+			next = next.nextSibling;
+		}
+		return next;
 	},
 	rightArrowDown: function (event) {
+		if (!this.selectedEntityNode) {
+
+			var selection = this.editableDocument.getSelection();
+			var baseNode = selection.baseNode
+			if (baseNode.nodeType!=3 && selection.baseOffset == 0) {
+				//at start of node;
+				baseNode = baseNode.firstChild;
+			}
+			var next = baseNode.nextSibling;
+			if (next && next.hasAttribute && next.hasAttribute("data-cursor")) {
+				next = next.nextSibling;
+			}
+			if (this.entities.isEntityElement(next)) {
+				this.beforeEntity = selection.getRangeAt(0);
+			}
+		} else {
+			
+			this.beforeEntity = null;
+		}
 		
-		event.stopPropagation()
 	},
 	leftArrowUp: function (event) {
-		
+
+		if (this.elementToSelect) {
+			this.selectEntityNode(this.elementToSelect)
+			this.elementToSelect = null;
+		} else if (this.selectedEntityNode) {
+				this.setCursorBeforeEntity(this.selectedEntityNode);
+				this.elementToSelect = null;	
+				event.stopPropagation();
+		}
 		event.stopPropagation()
 	},
 	rightArrowUp: function (event) {
-		
+		if (this.beforeEntity) {
+			var selection = this.editableDocument.getSelection();
+			var anchorNode = selection.anchorNode;
+			var previous = anchorNode.previousSibling;
+			if (previous && previous.hasAttribute && previous.hasAttribute("data-cursor")) {
+				previous = previous.previousSibling;
+			}
+			if (this.entities.isEntityElement(previous)) {
+				this.selectEntityNode(previous)
+				event.stopPropagation()
+			}
+		} else {
+			if (this.selectedEntityNode) {
+				this.setCursorAfterEntity(this.selectedEntityNode);
+				event.stopPropagation()
+			}
+		}
 	},
-	simpleSelect: function (selection,node) {
+	selectEntityNode: function (node) {
+		delete this.cursorAfterEntity;
+		delete this.cursorBeforeEntity;
+		var selection = this.editableDocument.getSelection();
+		var range = document.createRange()
+		range.setStartBefore(node.firstChild)
+		range.setEndAfter(node.lastChild)
 		selection.removeAllRanges();
-		var range = this.editableDocument.createRange();
-		range.selectNode(node);
 		selection.addRange(range);
-					
+		this.selectedEntityNode = node;
+	},
+	setCursorBeforeEntity: function (entityNode) {
+		delete this.cursorAfterEntity;
+		var selection = this.editableDocument.getSelection();
+		var range = this.editableDocument.createRange();
+		range.setStartBefore(entityNode)
+		range.setEndBefore(entityNode)
+		selection.removeAllRanges()
+		selection.addRange(range)
+		this.selectedEntityNode = null;
+	},
+	setCursorAfterEntity: function (entityNode) {
+		var selection = this.editableDocument.getSelection();
+		var range = this.editableDocument.createRange();
+		range.setStartAfter(entityNode)
+		range.setEndAfter(entityNode)
+		selection.removeAllRanges()
+		selection.addRange(range)
+		this.selectedEntityNode = null;
+		this.cursorAfterEntity = entityNode;
 	},
 	
 	mouseupHandler: function (event) {

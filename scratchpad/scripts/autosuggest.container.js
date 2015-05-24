@@ -272,9 +272,12 @@ function AutoSuggestContainer(id, tokenizer) {
 				}
 				
 			}
-			console.log(newNode)
-			var cursor = this.editableDocument.createElement("span");
-			newNode.parentNode.insertBefore(document.createElement("span"),newNode)
+
+			var cursor = this.editableDocument.createElement("span")
+			cursor.setAttribute("data-cursor","");
+			var preCursor = this.editableDocument.createElement("span");
+			preCursor.setAttribute("data-cursor","");
+			newNode.parentNode.insertBefore(preCursor,newNode)
 			newNode.parentNode.insertBefore(cursor,newNode.nextSibling)
 			range.selectNode(cursor);
 			selection.removeAllRanges();
