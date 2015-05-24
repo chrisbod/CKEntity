@@ -9,7 +9,7 @@ EntitiesHelper.prototype = {
   		}
 	},
 	isEntityWrapper: function (element) {
-		return element.className.contains("entity-wrapper")
+		return element && element.hasAttribute && element.hasAttribute("data-select")
 	},
 	isTokenElement: function (element) {
 		if (element) { 			
@@ -174,6 +174,24 @@ EntitiesHelper.prototype = {
 	},
 	getCurrentLogicDefinitions: function () {
 		return this.languageStore.getCurrentLogicDefinitions();
+	},
+	isDeletable: function (entityNode) {
+		if (entityNode.tagName == "TRANSLATION") {
+			return true;
+		}
+		var currentNode = entityNode.parentNode;
+		while (currentNode && currentNode.tagName) {
+			if (this.isEntityElement(currentNode)) {
+				if (currentNode.hasAttribute("data-user-generated")) {
+					return true
+				}
+				if (currentNode.tagName == "TRANSLATION") {
+					return false;
+				}
+			}
+			currentNode = currentNode.parentNode;
+		}
+		return true;
 	}
 }
 

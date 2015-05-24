@@ -25,6 +25,12 @@ EntityStore.prototype =  {
 	getEntityNode: function (key) {
 		var clonedNode = this.templatableNodes[key].node.cloneNode(true);
 		return clonedNode;
+	},
+	wrapForSelectCopyPasteAndDrag: function (entityNode) {
+		//var element = document.createElement("span");
+		//element.setAttribute("data-select",entityNode.tagName);
+		//element.appendChild(entityNode)
+		return entityNode;
 	}
 
 }
@@ -48,7 +54,7 @@ TokenStore.prototype.createTemplatableNodeFromEntity = function (key,id,previewH
 	contents.className = "contents"
 	contents.innerText = key;
 	tokenNode.appendChild(contents)
-	return tokenNode;
+	return this.wrapForSelectCopyPasteAndDrag(tokenNode);
 }
 
 
@@ -69,7 +75,7 @@ TranslationStore.prototype.createTemplatableNodeFromEntity = function (key,id) {
 	for (var i=0;i<subEntities.length;i++) {
 		subEntities[i].setAttribute("data-key-id",id)
 	}
-	return translation;
+	return this.wrapForSelectCopyPasteAndDrag(translation);
 }
 TranslationStore.prototype.parseTextMarkup = function (string) {
 	return '<span class="contents">'+string

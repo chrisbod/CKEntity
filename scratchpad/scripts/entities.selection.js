@@ -7,8 +7,8 @@ EntitySelectionManager.prototype = {
 		this.editableElement = editableElement;
 		this.editableDocument = editableElement.ownerDocument;
 		
-		//this.editableElement.addEventListener("click", this, true);
-		//this.editableElement.addEventListener("dblclick", this);
+		this.editableElement.addEventListener("click", this, true);
+		this.editableElement.addEventListener("dblclick", this);
 		//document.addEventListener("paste", this, true);
 
 		//this.editableElement.addEventListener("contextmenu", this, true)
@@ -48,6 +48,7 @@ EntitySelectionManager.prototype = {
 		
 	},
 	keyupHandler: function (event) {
+
 		switch (event.keyCode) {
 			case 37: return this.leftArrowUp(event);
 			case 39: return this.rightArrowUp(event);
@@ -68,19 +69,9 @@ EntitySelectionManager.prototype = {
 
 	},
 	leftArrowDown: function (event) {
-		//var previous = this.getPreviousElement()
-		var selection = this.editableDocument.getSelection();
-		var anchorNode = selection.anchorNode;
-		var previous = anchorNode.previousSibling;
-		if (previous && previous.hasAttribute && previous.hasAttribute("data-cursor")) {
-			previous = previous.previousSibling;
-		}
-		if (this.entities.isEntityElement(previous)) {
-			this.elementToSelect = previous;
-			event.stopPropagation()
-		}
+		
 	},
-	getNextImmediateEntityNode: function () {
+	getNextImmediateEntityWrapperNode: function () {
 		var selection = this.editableDocument.getSelection();
 		var anchorNode = selection.anchorNode;
 		if (anchorNode.nodeType!=3) {
@@ -94,90 +85,68 @@ EntitySelectionManager.prototype = {
 		return next;
 	},
 	rightArrowDown: function (event) {
-		if (!this.selectedEntityNode) {
-
-			var selection = this.editableDocument.getSelection();
-			var baseNode = selection.baseNode
-			if (baseNode) {
-				if (baseNode.nodeType!=3 && selection.baseOffset == 0) {
-					//at start of node;
-					baseNode = baseNode.firstChild;
-				}
-				var next = baseNode.nextSibling;
-				if (next && next.hasAttribute && next.hasAttribute("data-cursor")) {
-					next = next.nextSibling;
-				}
-				if (this.entities.isEntityElement(next)) {
-					this.beforeEntity = selection.getRangeAt(0);
-				}
-			}
-		} else {
-			
-			this.beforeEntity = null;
-		}
+		
 		
 	},
 	leftArrowUp: function (event) {
-
-		if (this.elementToSelect) {
-			this.selectEntityNode(this.elementToSelect)
-			this.elementToSelect = null;
-		} else if (this.selectedEntityNode) {
-				this.setCursorBeforeEntity(this.selectedEntityNode);
-				this.elementToSelect = null;	
-				event.stopPropagation();
+		var selection  = this.editableDocument.getSelection();
+		this.selectedEntityNode = null;
+		if (selection.baseNode.nodeType == 3) {
+			if (selection.baseOffset != 0) {
+				var entity = this.entities.getEntityElement(selection.baseNode)
+				if (entity) {
+					this.selectEntityNode(entity);
+				}
+			}
+			
 		}
-		event.stopPropagation()
 	},
 	rightArrowUp: function (event) {
-		if (this.beforeEntity) {
-			var selection = this.editableDocument.getSelection();
-			var anchorNode = selection.anchorNode;
-			var previous = anchorNode.previousSibling;
-			if (previous && previous.hasAttribute && previous.hasAttribute("data-cursor")) {
-				previous = previous.previousSibling;
+		this.selectedEntityNode = null;
+		var selection  = this.editableDocument.getSelection();
+		if (selection.baseNode.nodeType == 3) {
+			if (selection.baseOffset != selection.baseNode.data.length) {
+				var entity = this.entities.getEntityElement(selection.baseNode)
+				if (entity) {
+					this.selectEntityNode(entity);
+					return;
+				}
 			}
-			if (this.entities.isEntityElement(previous)) {
-				this.selectEntityNode(previous)
-				event.stopPropagation()
-			}
-		} else {
-			if (this.selectedEntityNode) {
-				this.setCursorAfterEntity(this.selectedEntityNode);
-				event.stopPropagation()
-			}
+			
 		}
 	},
-	selectEntityNode: function (node) {
+	selectEntityNode: function (entityNode) {
 		delete this.cursorAfterEntity;
 		delete this.cursorBeforeEntity;
+
+
 		var selection = this.editableDocument.getSelection();
 		var range = document.createRange()
-		range.setStartBefore(node.firstChild)
-		range.setEndAfter(node.lastChild)
+		range.selectNode(entityNode)
 		selection.removeAllRanges();
 		selection.addRange(range);
-		this.selectedEntityNode = node;
+		this.selectedEntityNode = entityNode;
 	},
-	setCursorBeforeEntity: function (entityNode) {
+	setCursorBeforeEntityWrapper: function (wrapperNode) {
 		delete this.cursorAfterEntity;
 		var selection = this.editableDocument.getSelection();
-		var range = this.editableDocument.createRange();
-		range.setStartBefore(entityNode)
-		range.setEndBefore(entityNode)
 		selection.removeAllRanges()
+		var range = this.editableDocument.createRange();
+		range.setStartBefore(wrapperNode)
+		range.setEndBefore(wrapperNode)
+		
 		selection.addRange(range)
-		this.selectedEntityNode = null;
+		this.selectedEntityWrapper = null;
 	},
-	setCursorAfterEntity: function (entityNode) {
+	setCursorAfterEntityWrapper: function (wrapperNode) {
 		var selection = this.editableDocument.getSelection();
 		var range = this.editableDocument.createRange();
-		range.setStartAfter(entityNode)
-		range.setEndAfter(entityNode)
+		range.setStartAfter(wrapperNode)
+		range.setEndAfter(wrapperNode)
 		selection.removeAllRanges()
 		selection.addRange(range)
-		this.selectedEntityNode = null;
-		this.cursorAfterEntity = entityNode;
+		this.selectedEntityWrapper = null;
+		this.cursorAfterEntity = wrapperNode;
 	},
 	
 	mouseupHandler: function (event) {
@@ -191,7 +160,22 @@ EntitySelectionManager.prototype = {
 		
 	},
 	handleDelete: function (event) {
-		
+		var node = this.selectedEntityNode
+		if (node) {
+			if (!this.entities.isDeletable(node)) {
+				event.preventDefault()
+				event.stopPropagation()
+			}
+		} else {
+			var selection  = this.editableDocument.getSelection();
+			var node = this.entities.getEntityElement(selection.baseNode)
+			if (node && this.entities.isDeletable(node)) {
+				this.selectEntityNode(node)
+			} else {
+				event.preventDefault()
+			}
+
+		}
 	},
 	
 	removeCurrentEntityIfAllowed: function () {
