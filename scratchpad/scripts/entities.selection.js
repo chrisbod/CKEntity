@@ -98,16 +98,18 @@ EntitySelectionManager.prototype = {
 
 			var selection = this.editableDocument.getSelection();
 			var baseNode = selection.baseNode
-			if (baseNode.nodeType!=3 && selection.baseOffset == 0) {
-				//at start of node;
-				baseNode = baseNode.firstChild;
-			}
-			var next = baseNode.nextSibling;
-			if (next && next.hasAttribute && next.hasAttribute("data-cursor")) {
-				next = next.nextSibling;
-			}
-			if (this.entities.isEntityElement(next)) {
-				this.beforeEntity = selection.getRangeAt(0);
+			if (baseNode) {
+				if (baseNode.nodeType!=3 && selection.baseOffset == 0) {
+					//at start of node;
+					baseNode = baseNode.firstChild;
+				}
+				var next = baseNode.nextSibling;
+				if (next && next.hasAttribute && next.hasAttribute("data-cursor")) {
+					next = next.nextSibling;
+				}
+				if (this.entities.isEntityElement(next)) {
+					this.beforeEntity = selection.getRangeAt(0);
+				}
 			}
 		} else {
 			
