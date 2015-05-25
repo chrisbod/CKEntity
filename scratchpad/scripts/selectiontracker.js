@@ -39,7 +39,7 @@ function SelectionTracker() {
 			if (cursorDetails.atStartOfElement) {
 				if (cursorDetails.textNode && cursorDetails.textNode.parentNode.hasAttribute("data-deletable")) {
 					event.preventDefault()
-				} else if (cursorDetails.baseNode && cursorDetails.baseNode.hasAttribute("data-deletable")) {
+				} else if (cursorDetails.baseNode && cursorDetails.baseNode.hasAttribute && cursorDetails.baseNode.hasAttribute("data-deletable")) {
 					event.preventDefault()
 				}
 			}
@@ -68,12 +68,17 @@ function SelectionTracker() {
 			var cursorDetails = this.getCursorDetails()
 			if (cursorDetails.baseNode.parentNode.hasAttribute("data-deletable")) {
 				this.readOnlyEnter = true;
-			}
+			} 
 		},
 		keyEnterUpHandler: function (event) {
 			if (this.readOnlyEnter) {
-				var cursorDetails = this.getCursorDetails()
-				cursorDetails.baseNode.removeAttribute("data-deletable")
+				var cursorDetails = this.getCursorDetails();
+
+				if (cursorDetails.baseNode.removeAttribute) {
+					cursorDetails.baseNode.removeAttribute("data-deletable")
+				} else if (cursorDetails.baseNode.nodeType == 3) {
+					cursorDetails.baseNode.parentNode.removeAttribute("data-deletable")
+				}
 				this.readOnlyEnter = false;
 			}
 			
