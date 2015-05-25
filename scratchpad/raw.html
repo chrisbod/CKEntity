@@ -1,0 +1,202 @@
+<!doctype html>
+
+<html>
+
+
+<head>
+	<style>
+	token {
+		display: inline block;
+	}
+
+	</style>
+
+<script>
+
+
+
+	function SelectionTracker() {
+
+	}
+	SelectionTracker.prototype = {
+		init: function (element) {
+			this.element = element;
+			this.document = element.ownerDocument;
+			this.document.addEventListener("mouseup",this,true);
+
+			this.document.addEventListener("keyup",this,true);
+			this.document.addEventListener("keydown",this,true);
+		},
+		handleEvent: function (event) {
+			return this[event.type+"Handler"](event)
+		},
+		mouseupHandler: function (event) {
+			var cursorDetails = this.getCursorDetails(event);
+			var baseNode = cursorDetails.baseNode;
+			if (baseNode && cursorDetails.inTextNode && baseNode.parentNode.contentEditable == "false") {
+				this.selectNode(baseNode.parentNode);
+			}
+		},
+		keydownHandler: function (event) {
+			
+			switch (event.keyCode) {
+				case 39 : return this.keyRightDownHandler();
+				case 37: return this.keyLeftDownHandler();
+			}
+
+		},
+		keyLeftDownHandler: function (cursorDetails) {
+			var cursorDetails = this.getCursorDetails(event)
+			this.getSurroundingNodes(cursorDetails)
+			if (cursorDetails.nodeToLeft) {
+				this.selectNode(cursorDetails.nodeToLeft);
+				event.preventDefault()
+			} else {
+				this.selectedNode = false;
+			}
+		},
+		keyRightDownHandler: function (cursorDetails) {
+
+		},
+		keyupHandler: function (event) {
+			switch (event.keyCode) {
+				case 39 : return this.keyRightUpHandler(event);
+				//case 37: return this.keyLeftUpHandler(event,cursorDetails,nodeToLeft,nodeToRight, selectedNode);
+			}
+			
+		},
+		keyLeftUpHandler: function (event,cursorDetails,nodeToLeft,nodeToRight,selectedNode) {
+			
+			
+		},
+		keyRightUpHandler: function (event) {
+			var cursorDetails = this.getCursorDetails(event)
+			this.getSurroundingNodes(cursorDetails)
+			
+			if (!this.selectedNode) {
+				if (cursorDetails.nodeToLeft) {
+					this.selectNode(cursorDetails.nodeToLeft);
+					event.preventDefault()
+				} else {
+					if (cursorDetails.atEndOfElement && cursorDetails.nodeToRight) {
+						this.selectNode(cursorDetails.nodeToRight);
+						event.preventDefault()
+					}
+				}
+			} else {
+				this.selectedNode = false;
+			}
+		},
+		getSurroundingNodes: function (cursorDetails) {
+			var baseNode = cursorDetails.baseNode;
+			var currentSelected = this.selectedNode;
+			if (baseNode) {
+				if (cursorDetails.atStartOfTextNode && baseNode.previousSibling && baseNode.previousSibling.contentEditable == "false") {
+					cursorDetails.nodeToLeft = baseNode.previousSibling
+				}
+				if (cursorDetails.atEndOfTextNode && baseNode.nextSibling && baseNode.nextSibling.contentEditable == "false") {
+					
+					if (currentSelected!=baseNode.nextSibling) {
+						cursorDetails.nodeToRight = baseNode.nextSibling;
+					}
+				}
+
+				if (cursorDetails.atEndOfElement ) {
+					if (baseNode.lastChild && baseNode.lastChild.nodeType == 3) {
+						if (!baseNode.lastChild.data.trim().length) {
+
+							var previous = baseNode.lastChild.previousSibling
+							if (previous.contentEditable == "false") {
+								cursorDetails.nodeToRight = cursorDetails.nodeToLeft = previous;
+							}
+							//console.log(cursorDetails.nodeToRight)
+						}
+						
+					}
+					if (currentSelected!=baseNode.lastChild) {
+						//cursorDetails.nodeToRight = baseNode.lastChild
+						//this.selectNode(baseNode.lastChild);
+					}
+					return
+				}
+
+				if (cursorDetails.atEndOfTextNode && baseNode.nextSibling && baseNode.nextSibling.contentEditable == "false") {
+					//console.log(cursorDetails)
+					if (currentSelected!=baseNode.nextSibling) {
+						cursorDetails.nodeToRight = baseNode.nextSibling
+						//this.selectNode(baseNode.nextSibling);
+					}
+				}
+			}
+		},
+		getCursorDetails: function (event) {
+			var currentSelected = this.selectedNode;
+			var selection = document.getSelection();
+			var cursorDetails = {
+				baseNode: selection.baseNode
+				
+			}
+			var baseNode = selection.baseNode;
+			if (baseNode && baseNode.nodeType==3) {
+				if (selection.baseOffset==0) {
+					cursorDetails.atStartOfTextNode = true;
+					if (!baseNode.previousSibling) {
+						
+						cursorDetails.atStartOfElement = true;
+					}
+				} else if (selection.baseOffset == selection.baseNode.data.length){
+					cursorDetails.atEndOfTextNode = true;
+					if (!baseNode.nextSibling) {
+						cursorDetails.atEndOfElement = true;
+					}
+				} else {
+					cursorDetails.inTextNode = true;
+				}
+				cursorDetails.textNode = baseNode
+			} else if (baseNode) {
+				if (baseNode.childNodes[selection.baseOffset-1]) {
+					cursorDetails.atEndOfElement = true;
+				} else {
+
+					if (!baseNode.firstChild || !baseNode.innerText.trim() || baseNode.firstChild.tagName == "BR" ) {
+					cursorDetails.atEndofElement = true;
+					cursorDetails.atStartOfElement = true;
+					cursorDetails.atStartOfTextNode = true;
+					cursorDetails.atEndOfTextNode = true;
+					cursorDetails.inEmptyElement = true;
+				}
+				}
+			}
+			console.log(cursorDetails)
+			//cursorDetails.selectedNode = this.selectedNode
+			
+			return cursorDetails
+		},
+		selectNode: function (node) {
+			var selection = document.getSelection();
+			selection.removeAllRanges();
+			var range = document.createRange();
+			range.selectNode(node)
+			selection.removeAllRanges()
+			selection.addRange(range);
+			this.selectedNode = node;
+		}
+	}
+	onload = function () {
+		var st = new SelectionTracker();
+		st.init(document.body)
+	}
+
+</script>
+
+</head>
+
+<body contenteditable="true">
+	<p>Plain paragraph</p>
+	<p><br></p>
+	<p>asdja<token contenteditable="false">{{table}}</token>sdlas<token contenteditable="false">[[table]]</token>  </p>
+
+
+</body>
+
+</html>

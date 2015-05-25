@@ -64,6 +64,7 @@ EntitySelectionManager.prototype = {
 			}
 			case 37: return this.leftArrowDown(event);
 			case 39: return this.rightArrowDown(event);
+			default: return this.handleEdit(event)
 		}
 
 
@@ -102,6 +103,9 @@ EntitySelectionManager.prototype = {
 		}
 	},
 	rightArrowUp: function (event) {
+		if (this.selectedEntityNode) {
+			this.selectedEntityNode.contentEditable = "false"
+		}
 		this.selectedEntityNode = null;
 		var selection  = this.editableDocument.getSelection();
 		if (selection.baseNode.nodeType == 3) {
@@ -110,22 +114,32 @@ EntitySelectionManager.prototype = {
 				if (entity) {
 					this.selectEntityNode(entity);
 					return;
-				}
+				} 
+			} else {
+				console.log(selection.baseOffset,selection.baseNode)
 			}
-			
+		} else {
+			console.log("not text")
+		}
+
+	},
+	handleEdit: function (event) {
+		if (this.selectedEntityNode) {
+			event.preventDefault()
 		}
 	},
 	selectEntityNode: function (entityNode) {
 		delete this.cursorAfterEntity;
 		delete this.cursorBeforeEntity;
 
-
+		//entityNode.firstChild.contentEditable = "true"
 		var selection = this.editableDocument.getSelection();
 		var range = document.createRange()
 		range.selectNode(entityNode)
 		selection.removeAllRanges();
 		selection.addRange(range);
 		this.selectedEntityNode = entityNode;
+		entityNode.firstChild.contentEditable = "false"
 	},
 	setCursorBeforeEntityWrapper: function (wrapperNode) {
 		delete this.cursorAfterEntity;
@@ -134,19 +148,18 @@ EntitySelectionManager.prototype = {
 		var range = this.editableDocument.createRange();
 		range.setStartBefore(wrapperNode)
 		range.setEndBefore(wrapperNode)
-		
 		selection.addRange(range)
-		this.selectedEntityWrapper = null;
+		this.selectedEntity = null;
 	},
-	setCursorAfterEntityWrapper: function (wrapperNode) {
+	setCursorAfterEntity: function (entityNode) {
 		var selection = this.editableDocument.getSelection();
 		var range = this.editableDocument.createRange();
-		range.setStartAfter(wrapperNode)
-		range.setEndAfter(wrapperNode)
+		range.setStartAfter(entityNode)
+		range.setEndAfter(entityNode)
 		selection.removeAllRanges()
 		selection.addRange(range)
-		this.selectedEntityWrapper = null;
-		this.cursorAfterEntity = wrapperNode;
+		this.selectedEntity = null;
+		this.cursorAfterEntity = entityNode;
 	},
 	
 	mouseupHandler: function (event) {
@@ -171,6 +184,7 @@ EntitySelectionManager.prototype = {
 			var node = this.entities.getEntityElement(selection.baseNode)
 			if (node && this.entities.isDeletable(node)) {
 				this.selectEntityNode(node)
+				this.selectedEntityNode = null;
 			} else {
 				event.preventDefault()
 			}
@@ -182,7 +196,10 @@ EntitySelectionManager.prototype = {
 		
 	},
 	clickHandler: function (event) {
-		
+		var entityNode = this.entities.getEntityElement(event.target);
+		if (entityNode) {
+			this.selectEntityNode(entityNode)
+		}
 		
 	},
 	dblclickHandler: function (event) {

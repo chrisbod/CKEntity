@@ -272,17 +272,13 @@ function AutoSuggestContainer(id, tokenizer) {
 				}
 				
 			}
-
-			var cursor = this.editableDocument.createElement("span")
-			cursor.setAttribute("data-cursor","");
-			var preCursor = this.editableDocument.createElement("span");
-			preCursor.setAttribute("data-cursor","");
-			newNode.parentNode.insertBefore(preCursor,newNode)
-			newNode.parentNode.insertBefore(cursor,newNode.nextSibling)
-			range.selectNode(cursor);
+			var textNode = document.createTextNode(" ")
+			newNode.parentNode.insertBefore(textNode,newNode.nextSibling)
+			range.selectNode(textNode)
 			selection.removeAllRanges();
 			selection.addRange(range);
-			selection.collapseToStart();
+			selection.collapseToEnd()
+			
 		}
 	},
 	cleanEndNodes: function (node) {

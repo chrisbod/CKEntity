@@ -52,6 +52,7 @@ TokenStore.prototype.createTemplatableNodeFromEntity = function (key,id,previewH
 	tokenNode.setAttribute("class",id);
 	var contents = document.createElement("span")
 	contents.className = "contents"
+	//contents.contentEditable = "false"
 	contents.innerText = key;
 	tokenNode.appendChild(contents)
 	return this.wrapForSelectCopyPasteAndDrag(tokenNode);
