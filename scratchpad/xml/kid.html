@@ -3,11 +3,53 @@
 <head>
     <link href="css/kid.css" rel="stylesheet"/>
 
+    
 
 
 </head>
 
 <body>
+    <div id="header-data" contenteditable="false" data-deletable="false">
+        <freeText id="firstPageHeader" extent="5mm">
+            <root>
+                    <header contenteditable="true" data-deletable="false">
+                        First page of your document.
+                    </header>
+                
+
+            </root>
+        </freeText>
+        <freeText id="header" extent="5mm">
+            <root>
+                <header contenteditable="true" data-deletable="false">
+                    Every other page header.
+                </header>
+            </root>
+        </freeText>
+    </div>
+    <div id="footer-data" contenteditable="false" data-deletable="false">
+        <freeText id="firstPageFooter" extent="22mm">
+        <root>
+            <footer contenteditable="true" data-deletable="false">
+
+            </footer>
+        </root>
+    </freeText>
+    
+    
+    <freeText id="footer" extent="32mm">
+        <root>
+            <footer contenteditable="true" data-deletable="false">
+                Argububble
+                <pageNumber contenteditable="false" data-deletable="false">#</pageNumber>
+                Argumubble
+            </footer>
+        </root>
+    </freeText>
+    </div>
+    
+    
+
     <header class="description">
         Key Information Document
     </header>
@@ -239,5 +281,7 @@ Investors are exposed to the risk of insolvency and thus a default by the issuer
         Bank or can be downloaded free of charge at www.xybank.de.
     </p>
 </div>
+
+
 </body>
 </html>

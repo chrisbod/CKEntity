@@ -32,6 +32,7 @@ For licensing, see LICENSE.md or http://ckeditor.com/license
 	<script src="scripts/entities.tooltip.js"></script>
 	<script src="scripts/sentencetokenizer.js"></script>
 	<script src="scripts/tokentokenizer.js"></script>
+	<script src="scripts/headerandfooterhandler.js"></script>
 	<script src="../vendor/knockout/knockout-3.3.0.js"></script>
 	<link href="css/autosuggest.css" rel="stylesheet">
 	<link href="css/dialog-form.css" rel="stylesheet">
@@ -81,6 +82,7 @@ For licensing, see LICENSE.md or http://ckeditor.com/license
 	var entitiesSelection = new EntitySelectionManager()
 
 	var translator = new DocumentTranslator(languageStore)
+	var headersAndFooters = new HeaderAndFooterHandler();
 
 
 function build(editor,editPanel,language)  {
@@ -121,6 +123,7 @@ function build(editor,editPanel,language)  {
 	entitiesSelection.init(editPanel)
 	translationContainer.setEditableElement(editPanel);
 	tokenContainer.setEditableElement(editPanel);
+	headersAndFooters.init(editPanel)
 
 
 

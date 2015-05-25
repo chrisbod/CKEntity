@@ -1,6 +1,13 @@
 function EntityMarkupManager() {
 	this.entitiesHelper = new EntitiesHelper()
 }
+EntityMarkupManager.getInstance = function (element) {
+	if (!this._instance) {
+		this._instance = new EntityMarkupManager()
+
+	}
+	return this._instance;
+}
 EntityMarkupManager.prototype = {
 	init: function (editableElement) {
 		this.editableElement = editableElement;

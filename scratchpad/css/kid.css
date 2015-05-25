@@ -131,3 +131,16 @@ table p {
 table td {
 	padding: 1ex;
 }
+
+#header-data {
+	position: relative;
+}
+#header-data header {
+	outline: 1px dashed #000;
+	background-color: white;
+	width: 100%;
+}
+#header header {
+	position: absolute;
+	visibility: hidden
+}

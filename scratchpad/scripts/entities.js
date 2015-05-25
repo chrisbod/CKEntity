@@ -3,6 +3,9 @@ function EntitiesHelper() {
 EntitiesHelper.prototype = {
 	currentLanguage: "en",
 	languageStore: null,
+	getBrokenEntities: function (element) {
+		return element.querySelectorAll("token:not([contenteditable]),translation:not(contenteditable),conditional:not(.user):not([contenteditable]")
+	},
 	isEntityElement: function (element) {
 		if (element) { 			
 			return /TRANSLATION|TOKEN|CONDITIONAL/i.test(element.tagName);
