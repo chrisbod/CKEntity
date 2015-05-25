@@ -6,17 +6,18 @@
 <head>
 	<style>
 	token {
-		display: inline block;
+		display: inline;
 	}
 
 	</style>
+	<script src="scripts/entities.js"></script>
 
 <script>
 
 
 
 	function SelectionTracker() {
-
+		this.helper = new EntitiesHelper();
 	}
 	SelectionTracker.prototype = {
 		init: function (element) {
@@ -26,6 +27,7 @@
 
 			this.document.addEventListener("keyup",this,true);
 			this.document.addEventListener("keydown",this,true);
+			this.document.addEventListener("paste",this,true)
 		},
 		handleEvent: function (event) {
 			return this[event.type+"Handler"](event)
@@ -33,13 +35,12 @@
 		mouseupHandler: function (event) {
 			var cursorDetails = this.getCursorDetails(event);
 			var baseNode = cursorDetails.baseNode;
-			if (baseNode && cursorDetails.inTextNode && baseNode.parentNode.contentEditable == "false") {
+			if (baseNode && cursorDetails.inTextNode && this.helper.isEntityElement(baseNode.parentNode)) {
 				this.selectNode(baseNode.parentNode);
 			}
 		},
 		keydownHandler: function (event) {
 			switch (event.keyCode) {
-				case 39 : return this.keyRightDownHandler();
 				case 37: return this.keyLeftDownHandler();
 			}
 		},
@@ -77,14 +78,32 @@
 				this.selectedNode = false;
 			}
 		},
+		pasteHandler: function () {
+			var selection = this.document.getSelection(),
+				nodeBefore,
+				nodeAfter
+			if (selection.baseNode.nodeType==3) {
+				nodeBefore = selection.baseNode
+				nodeAfter = selection.baseNode.splitText(selection.baseOffset)
+			}
+			var range = selection.getRangeAt(0)
+			setTimeout(this.postpaste.bind(this,range,nodeBefore,nodeAfter))
+		},
+		postpaste: function (originalRange,nodeBefore,nodeAfter) {
+			console.log(nodeBefore,nodeAfter)
+			var tokens = this.document.querySelectorAll("token:not([contenteditable]");
+			for (var i=0;i<tokens.length;i++) {
+				tokens[i].contentEditable = "false";
+			}
+		},
 		getSurroundingNodes: function (cursorDetails) {
 			var baseNode = cursorDetails.baseNode;
 			var currentSelected = this.selectedNode;
 			if (baseNode) {
-				if (cursorDetails.atStartOfTextNode && baseNode.previousSibling && baseNode.previousSibling.contentEditable == "false") {
+				if (cursorDetails.atStartOfTextNode && baseNode.previousSibling && this.helper.isEntityElement(baseNode.previousSibling)) {
 					cursorDetails.nodeToLeft = baseNode.previousSibling
 				}
-				if (cursorDetails.atEndOfTextNode && baseNode.nextSibling && baseNode.nextSibling.contentEditable == "false") {
+				if (cursorDetails.atEndOfTextNode && baseNode.nextSibling && this.helper.isEntityElement(baseNode.nextSibling)) {
 					
 					if (currentSelected!=baseNode.nextSibling) {
 						cursorDetails.nodeToRight = baseNode.nextSibling;
@@ -95,11 +114,10 @@
 					if (baseNode.lastChild && baseNode.lastChild.nodeType == 3) {
 						if (!baseNode.lastChild.data.trim().length) {
 
-							var previous = baseNode.lastChild.previousSibling
-							if (previous.contentEditable == "false") {//weird end of node behaviour
+							var previous = baseNode.lastChild.previousSibling;
+							if (this.helper.isEntityElement(previous)) {//weird end of node behaviour
 								cursorDetails.nodeToRight = cursorDetails.nodeToLeft = previous;
 							}
-							//console.log(cursorDetails.nodeToRight)
 						}
 						
 					}
@@ -110,7 +128,7 @@
 					return
 				}
 
-				if (cursorDetails.atEndOfTextNode && baseNode.nextSibling && baseNode.nextSibling.contentEditable == "false") {
+				if (cursorDetails.atEndOfTextNode && baseNode.nextSibling && this.helper.isEntityElement(baseNode.nextSibling)) {
 					//console.log(cursorDetails)
 					if (currentSelected!=baseNode.nextSibling) {
 						cursorDetails.nodeToRight = baseNode.nextSibling
@@ -157,16 +175,23 @@
 				}
 				}
 			}
-			console.log(cursorDetails)
+			
 			//cursorDetails.selectedNode = this.selectedNode
 			
 			return cursorDetails
 		},
 		selectNode: function (node) {
+
 			var selection = document.getSelection();
 			selection.removeAllRanges();
 			var range = document.createRange();
-			range.selectNode(node)
+			if (node.nextSibling == null || node.nextSibling.data.trim() == "") {
+				var expander = this.document.createTextNode("\u00a0")
+				
+				node.parentNode.replaceChild(expander,node.nextSibling)
+			}
+			range.selectNode(node);
+			
 			selection.removeAllRanges()
 			selection.addRange(range);
 			this.selectedNode = node;
