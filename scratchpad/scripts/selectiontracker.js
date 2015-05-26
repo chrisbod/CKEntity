@@ -41,7 +41,12 @@ function SelectionTracker() {
 			}
 		},
 		keydownHandler: function (event) {
-			
+			var baseNode = this.document.getSelection().baseNode
+			if (baseNode.data == "\u200b") {
+				if (baseNode.nextSibling) {
+					baseNode.data = ""
+				} 
+			}
 			switch (event.keyCode) {
 				case 13: return this.keyEnterDownHandler(event);
 				case 8 : return this.deleteHandler(event);
@@ -70,6 +75,15 @@ function SelectionTracker() {
 		keyLeftDownHandler: function (event) {
 
 			var cursorDetails = this.getCursorDetails(event)
+			if (cursorDetails.baseNode && cursorDetails.baseNode.data == "\u200b") {
+				if (cursorDetails.baseNode.previousSibling) {
+					this.selectNode(cursorDetails.baseNode.previousSibling);
+					
+					event.preventDefault();
+					event.stopPropagation();
+					return
+				}
+			}
 			this.getSurroundingNodes(cursorDetails);
 
 			if (cursorDetails.nodeToLeft) {
@@ -97,6 +111,9 @@ function SelectionTracker() {
 			
 		},
 		keyupHandler: function (event) {
+
+			
+			
 			switch (event.keyCode) {
 				case 37: return this.keyLeftUpHandler(event);	
 				case 13 : return this.keyEnterUpHandler(event)
