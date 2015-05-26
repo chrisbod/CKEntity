@@ -70,6 +70,18 @@ function SelectionTracker() {
 			
 		},
 		keyRightDownHandler: function (event) {
+			
+			if (this.selectedNode) {
+				//var selection = this.document.getSelection();
+				//selection.collapseToEnd();
+				//var range = document.createRange()
+				//range.selectNode(this.selectedNode.nextSibling);
+				//range.collapse()
+				//selection.removeAllRanges()
+				//selection.addRange(range)
+				
+				
+			}
 			event.stopPropagation()
 		},
 		keyLeftDownHandler: function (event) {
@@ -395,13 +407,10 @@ function SelectionTracker() {
 
 		},
 		insertCursorBefore: function (node) {
-			var cursor = this.document.createElement("span"),
-
-				range = this.document.createRange(),
+			var range = this.document.createRange(),
 				selection = this.document.getSelection();
-				cursor.innerText = ""
+				cursor = this.getZeroWidthSpace()
 			node.parentNode.insertBefore(cursor,node)
-			//node.parentNode.insertBefore(cursor,newNode.nextSibling)
 			range.selectNode(cursor);
 			selection.removeAllRanges();
 			selection.addRange(range);
