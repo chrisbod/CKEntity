@@ -19,7 +19,7 @@ For licensing, see LICENSE.md or http://ckeditor.com/license
 	<script src="scripts/entities.js"></script>
 	<script src="scripts/entities.store.js"></script>
 	<script src="scripts/entities.languagestore.js"></script>
-	<script src="scripts/entities.selection.js"></script>
+	<script src="scripts/selectiontracker.js"></script>
 	<script src="scripts/entities.paste.js"></script>
 	<script src="scripts/entities.conditional.collapser.js"></script>
 	<script src="scripts/entities.markupmanager.js"></script>
@@ -78,8 +78,8 @@ For licensing, see LICENSE.md or http://ckeditor.com/license
 	var userConditionalManager = new UserConditionalManager();
 	var pasteManager = new EntityPasteManager()
 
-	var markupManager = new EntityMarkupManager()
-	var entitiesSelection = new EntitySelectionManager()
+	//var markupManager = new EntityMarkupManager()
+	var entitiesSelection = new SelectionTracker()
 
 	var translator = new DocumentTranslator(languageStore)
 	var headersAndFooters = new HeaderAndFooterHandler();
@@ -118,7 +118,7 @@ function build(editor,editPanel,language)  {
 	entityTooltip.init(editPanel,document.querySelector("#entity-edit"));
 	userConditionalManager.init(editPanel)
 	conditionalCollapser.init(editPanel)
-	markupManager.init(editPanel)
+	//markupManager.init(editPanel)
 	pasteManager.init(editPanel)
 	entitiesSelection.init(editPanel)
 	translationContainer.setEditableElement(editPanel);

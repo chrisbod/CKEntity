@@ -108,7 +108,7 @@ TranslationStore.prototype.createTemplatableNodeFromEntity = function (key,id) {
 		tokens[i].parentNode.replaceChild(token, tokens[i]);
 	}
 	var editSpan = document.createElement("span")
-	editSpan.setAttribute("data-entity-node","")
+	editSpan.setAttribute("data-entity-node","translation")
 	editSpan.className = "entity-wrapper"
 	editSpan.setAttribute("contenteditable","false")
 	editSpan.appendChild(node)

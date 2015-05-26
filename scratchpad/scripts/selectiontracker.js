@@ -1,11 +1,12 @@
 function SelectionTracker() {
 		this.helper = new EntitiesHelper();
+		this.zeroWidthSpaces = [];
 	}
 	SelectionTracker.prototype = {
 		init: function (element) {
 			this.element = element;
 			this.document = element.ownerDocument;
-			this.document.addEventListener("mouseup",this,true);
+			this.document.addEventListener("click",this,true);
 			this.document.addEventListener("mousedown",this,true);
 			this.document.addEventListener("keyup",this,true);
 			this.document.addEventListener("keydown",this,true);
@@ -14,23 +15,38 @@ function SelectionTracker() {
 		handleEvent: function (event) {
 			return this[event.type+"Handler"](event)
 		},
-		mousedownHandler: function () {
-			//var cursorDetails = this.getCursorDetails()
-			//console.log(cursorDetails)
+		mousedownHandler: function (event) {
+			var cursorDetails = this.getCursorDetails(event)
+			if (cursorDetails.withoutTextEnd) {
+				cursorDetails.withoutTextEnd.appendChild(this.getZeroWidthSpace())
+
+			}
+			//event.stopPropagation();
 		},
-		mouseupHandler: function (event) {
+		clickHandler: function (event) {
+			
+			
 			var cursorDetails = this.getCursorDetails(event);
 			var baseNode = cursorDetails.baseNode;
-			if (baseNode && cursorDetails.inTextNode && this.helper.isEntityElement(baseNode.parentNode)) {
-				this.selectNode(baseNode.parentNode);
+			if (baseNode) {
+					var entity = this.getEntityElement(baseNode.parentNode);
+					if (entity) {
+
+							this.selectNode(entity)
+							event.stopPropagation()
+						
+						
+						
+					} 
 			}
 		},
 		keydownHandler: function (event) {
-
+			
 			switch (event.keyCode) {
 				case 13: return this.keyEnterDownHandler(event);
 				case 8 : return this.deleteHandler(event);
 				case 37: return this.keyLeftDownHandler(event);	
+				case 39: return this.keyRightDownHandler(event);
 
 			}
 		},
@@ -38,31 +54,60 @@ function SelectionTracker() {
 			var cursorDetails = this.getCursorDetails(event)
 			if (cursorDetails.atStartOfElement) {
 				if (cursorDetails.textNode && cursorDetails.textNode.parentNode.hasAttribute("data-deletable")) {
-					event.preventDefault()
+					event.preventDefault();
 				} else if (cursorDetails.baseNode && cursorDetails.baseNode.hasAttribute && cursorDetails.baseNode.hasAttribute("data-deletable")) {
 					event.preventDefault()
 				}
 			}
 
+
 			
 			
 		},
-		keyLeftDownHandler: function (cursorDetails) {
+		keyRightDownHandler: function (event) {
+			event.stopPropagation()
+		},
+		keyLeftDownHandler: function (event) {
+
 			var cursorDetails = this.getCursorDetails(event)
-			this.getSurroundingNodes(cursorDetails)
+			this.getSurroundingNodes(cursorDetails);
+
 			if (cursorDetails.nodeToLeft) {
 				this.selectNode(cursorDetails.nodeToLeft);
-				event.preventDefault()
+
+				event.preventDefault();
+				event.stopPropagation();
+				return
+				
 			} else {
+				if (this.selectedNode && cursorDetails.entityNode) {
+					this.insertCursorBefore(cursorDetails.entityNode)
+					event.preventDefault()
+					
+				}
+				else if (cursorDetails.beforeElementWithNoWhiteSpace) {
+
+					cursorDetails.beforeElementWithNoWhiteSpace.appendChild(this.getZeroWidthSpace())
+
+				}
+				
 				this.selectedNode = false;
 			}
+			event.stopPropagation()
+			
 		},
 		keyupHandler: function (event) {
 			switch (event.keyCode) {
+				case 37: return this.keyLeftUpHandler(event);	
 				case 13 : return this.keyEnterUpHandler(event)
 				case 39 : return this.keyRightUpHandler(event);
 			}
+
 			
+		},
+		keyLeftUpHandler: function (event) {
+
+			event.stopPropagation()
 		},
 		keyEnterDownHandler: function () {
 			var cursorDetails = this.getCursorDetails()
@@ -92,17 +137,24 @@ function SelectionTracker() {
 				if (cursorDetails.nodeToLeft) {
 					this.selectNode(cursorDetails.nodeToLeft);
 					event.preventDefault()
+					event.stopPropagation();
 				} else {
 					if (cursorDetails.atEndOfElement && cursorDetails.nodeToRight) {
 						this.selectNode(cursorDetails.nodeToRight);
-						event.preventDefault()
+						event.preventDefault();
+						event.stopPropagation();
 					}
 				}
 			} else {
+				this.moveCursorAfter(this.selectedNode)
+				event.preventDefault()
 				this.selectedNode = false;
 			}
+			event.stopPropagation()
 		},
-		pasteHandler: function () {
+		pasteHandler: function (event) {
+			
+			event.stopPropagation()
 			var selection = this.document.getSelection(),
 				nodeBefore;
 			
@@ -115,6 +167,15 @@ function SelectionTracker() {
 			this.markNodes(this.element)
 			setTimeout(this.postpaste.bind(this,range,nodeBefore,selection.baseOffset))
 		},
+		getEntityElement: function (element) {//slightly different to entities helper method
+			if (element) {
+				while (element && element!=this.element) {
+					if (element.hasAttribute && element.hasAttribute("data-entity-node")) return element;
+					element = element.parentNode;
+				}
+			}
+			return false 
+		},
 		postpaste: function (originalRange,nodeBefore,offset,nodeAfter) {
 			
 			var selection = this.document.getSelection();
@@ -124,9 +185,7 @@ function SelectionTracker() {
 				return;
 			}
 			var newCursorContainer = (selection.getRangeAt(0).commonAncestorContainer)
-			if (!newCursorContainer.childNodes.length) {
-				console.log("here")
-			}
+			
 			var brokenEntities = this.helper.getBrokenEntities(this.document);
 			for (var i=0,enitity;i<brokenEntities.length;i++) {
 				entity = brokenEntities[i]
@@ -186,11 +245,11 @@ function SelectionTracker() {
 			var baseNode = cursorDetails.baseNode;
 			var currentSelected = this.selectedNode;
 			if (baseNode) {
-				
-				if (cursorDetails.atStartOfTextNode && baseNode.previousSibling && this.helper.isEntityElement(baseNode.previousSibling)) {
+				cursorDetails.entityNode = this.getEntityElement(baseNode)
+				if (cursorDetails.atStartOfTextNode && baseNode.previousSibling && this.getEntityElement(baseNode.previousSibling)) {
 					cursorDetails.nodeToLeft = baseNode.previousSibling
 				}
-				if (cursorDetails.atEndOfTextNode && baseNode.nextSibling && this.helper.isEntityElement(baseNode.nextSibling)) {
+				if (cursorDetails.atEndOfTextNode && baseNode.nextSibling && this.getEntityElement(baseNode.nextSibling)) {
 					
 					if (currentSelected!=baseNode.nextSibling) {
 						cursorDetails.nodeToRight = baseNode.nextSibling;
@@ -202,7 +261,7 @@ function SelectionTracker() {
 						if (!baseNode.lastChild.data.trim().length) {
 
 							var previous = baseNode.lastChild.previousSibling;
-							if (this.helper.isEntityElement(previous)) {//weird end of node behaviour
+							if (this.getEntityElement(previous)) {//weird end of node behaviour
 								cursorDetails.nodeToRight = cursorDetails.nodeToLeft = previous;
 							}
 						}
@@ -214,7 +273,7 @@ function SelectionTracker() {
 					return
 				}
 
-				if (cursorDetails.atEndOfTextNode && baseNode.nextSibling && this.helper.isEntityElement(baseNode.nextSibling)) {
+				if (cursorDetails.atEndOfTextNode && baseNode.nextSibling && this.getEntityElement(baseNode.nextSibling)) {
 					//console.log(cursorDetails)
 					if (currentSelected!=baseNode.nextSibling) {
 						cursorDetails.nodeToRight = baseNode.nextSibling
@@ -225,20 +284,33 @@ function SelectionTracker() {
 		},
 		getCursorDetails: function (event) {
 			var currentSelected = this.selectedNode;
-			var selection = document.getSelection();
+			var selection = this.document.getSelection();
 			var cursorDetails = {
-				baseNode: selection.baseNode
+				baseNode: selection.baseNode,
+				isCaret: selection.isCollapsed
 				
 			}
+
+			
+			if (selection.baseNode === null && /mouse/.test(event.type)) {
+					cursorDetails.entityNode = this.getEntityElement(event.target)
+				if (event.target.lastChild.nodeType !== 3) {
+					cursorDetails.withoutTextEnd = event.target;
+				}
+
+			}
+
 			var baseNode = selection.baseNode;
 			if (baseNode && baseNode.nodeType==3) {
 				if (selection.baseOffset==0) {
+
 					cursorDetails.atStartOfTextNode = true;
 					if (!baseNode.previousSibling) {
 						
 						cursorDetails.atStartOfElement = true;
 					}
 				} else if (selection.baseOffset == selection.baseNode.data.length){
+
 					cursorDetails.atEndOfTextNode = true;
 					if (!baseNode.nextSibling) {
 						cursorDetails.atEndOfElement = true;
@@ -248,6 +320,7 @@ function SelectionTracker() {
 				}
 				cursorDetails.textNode = baseNode
 			} else if (baseNode) {
+
 				if (baseNode.childNodes[selection.baseOffset-1]) {
 					cursorDetails.atEndOfElement = true;
 				} else {
@@ -261,19 +334,93 @@ function SelectionTracker() {
 				}
 				}
 			}
+			if (cursorDetails.atStartOfElement) {
+			var currentNode = baseNode;
+			while (currentNode && !currentNode.previousSibling) {
+				currentNode = currentNode.parentNode
+			}
+			if (currentNode.previousSibling && currentNode.previousSibling.nodeType!=3 && currentNode.previousSibling.lastChild) {
+				if (currentNode.previousSibling.lastChild.nodeType!=3) {
+					cursorDetails.beforeElementWithNoWhiteSpace = currentNode.previousSibling;
+				}
+			}
+
+
+			}
+			if (baseNode && baseNode.nodeType==3 && baseNode.data === "\u00a0" && !baseNode.nextSibling) {
+			   cursorDetails.atFinalNbsp = true;
+			}
 			
 			return cursorDetails
 		},
 		selectNode: function (node) {
-
-			var selection = document.getSelection();
+			var selection = this.document.getSelection();
 			selection.removeAllRanges();
-			var range = document.createRange();
+			var range = this.document.createRange();
+
+			if (!node.nextSibling) {
+				node.parentNode.appendChild(this.getZeroWidthSpace())
+			}
+			if (!node.previousSibling) {
+				node.parentNode.insertBefore(this.getZeroWidthSpace(),node)
+			}
+			
 			
 			range.selectNode(node);
+			range.setStartBefore(node.previousSibling)
+			range.setEndAfter(node.nextSibling)
+
 			
 			selection.removeAllRanges()
 			selection.addRange(range);
 			this.selectedNode = node;
+			//this.cleanZeroWidthSpaces()
+
+		},
+		insertCursorBefore: function (node) {
+			var cursor = this.document.createElement("span"),
+
+				range = this.document.createRange(),
+				selection = this.document.getSelection();
+				cursor.innerText = ""
+			node.parentNode.insertBefore(cursor,node)
+			//node.parentNode.insertBefore(cursor,newNode.nextSibling)
+			range.selectNode(cursor);
+			selection.removeAllRanges();
+			selection.addRange(range);
+			selection.collapseToStart();
+		},
+		moveCursorAfter: function (node) {
+			
+			/*var selection = this.document.getSelection();
+			selection.removeAllRanges();
+			var range = document.createRange();
+			range.selectNode(node.nextSibling)
+			selection.addRange(range)
+			var cursor = this.document.createElement("span"),
+				range = this.document.createRange(),
+				selection = this.document.getSelection();
+			cursor.innerText = "sdasd"
+			cursor.tabIndex = -1,
+			node.parentNode.insertBefore(cursor,node.nextSibling)
+			cursor.focus()
+			//node.parentNode.insertBefore(cursor,newNode.nextSibling)
+			range.selectNode(cursor);
+			selection.removeAllRanges();
+			selection.addRange(range);
+			selection.collapseToStart();*/
+		},
+		getZeroWidthSpace: function () {
+			var space = this.document.createTextNode("\u200b")
+			this.zeroWidthSpaces.push(space)
+			return space;
+		},
+		cleanZeroWidthSpaces: function () {
+			this.zeroWidthSpaces.forEach(function (space) {
+				if (space.parentNode) {
+					space.parentNode.removeChild(space)
+				}
+			})
+			this.zeroWidthSpaces = [];
 		}
 	}

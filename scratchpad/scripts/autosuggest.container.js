@@ -143,8 +143,11 @@ function AutoSuggestContainer(id, tokenizer) {
 			case 37: return;
 		}
 		if (!this.enterClicked) {
-			var selection = this.editableDocument.getSelection(),
-				range = selection.getRangeAt(0),
+			var selection = this.editableDocument.getSelection();
+				if (!selection.rangeCount) {
+					return
+				}
+			var	range = selection.getRangeAt(0),
 				node = range.commonAncestorContainer,
 				duplicateRange = range.cloneRange(),
 				index;

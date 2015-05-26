@@ -10,6 +10,7 @@ EntityMarkupManager.getInstance = function (element) {
 }
 EntityMarkupManager.prototype = {
 	init: function (editableElement) {
+		return
 		this.editableElement = editableElement;
 		this.editableElement.addEventListener("input",this);
 		this.editableElement.addEventListener("drop",this,true)
