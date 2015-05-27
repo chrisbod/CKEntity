@@ -162,7 +162,7 @@ TokenStore.prototype.createTemplatableNodeFromEntity = function (key,id,previewH
 	editSpan.className = "entity-wrapper"
 	editSpan.appendChild(node);
 	editSpan.setAttribute("contenteditable","false")
-//	editSpan.insertBefore(document.createTextNode("\u200b"),editSpan.firstChild);
-//	editSpan.appendChild(document.createTextNode("\u200b"))
+	editSpan.insertBefore(document.createTextNode("   "),editSpan.firstChild);
+	editSpan.appendChild(document.createTextNode("   "))
 	return editSpan;
 }

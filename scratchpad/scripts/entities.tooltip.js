@@ -98,7 +98,6 @@ EntityTooltip.prototype = {
 	},
 	deactivateTooltip: function () {
 		this.currentlyOver = null;
-		
 		if (this.knockoutViewModel) {
 			this.knockoutViewModel.active(false);
 		}

@@ -269,16 +269,24 @@ function AutoSuggestContainer(id, tokenizer) {
 			range.insertNode(newNode);
 			if (newNode.previousSibling) {
 				if (newNode.previousSibling.data) {
-					var endText = new RegExp(this.trigger.trim()+"\\s*$");
+					var endText = new RegExp(this.trigger.trim()+"(\\s|\\u200b\\u00a0)*$");
 				newNode.previousSibling.data = newNode.previousSibling.data.replace(endText,'');
 					
 				}
 				
 			}
-			var cursor = this.editableDocument.createElement("span");
-			newNode.parentNode.insertBefore(document.createElement("span"),newNode)
-			newNode.parentNode.insertBefore(cursor,newNode.nextSibling)
-			range.selectNode(cursor);
+			var afterNode;
+			
+			if (newNode.nextSibling && newNode.nextSibling.nodeType == 3) {
+				if (newNode.nextSibling.data.length == 0) {
+					newNode.nextSibling.data = "\u00a0"
+				}
+				afterNode = newNode.nextSibling;
+
+			} else {
+				newNode.parentNode.appendChild(document.createTextNode("\u200b"))
+			}	
+			range.selectNode(newNode.nextSibling);
 			selection.removeAllRanges();
 			selection.addRange(range);
 			selection.collapseToStart();
