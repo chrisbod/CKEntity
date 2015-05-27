@@ -13,9 +13,16 @@ function SelectionTracker() {
 			this.document.addEventListener("paste",this,true)
 			this.document.addEventListener("cut",this,true)
 			this.document.addEventListener("drop",this,true)
+			this.document.addEventListener("copy",this,true);
 		},
 		handleEvent: function (event) {
 			return this[event.type+"Handler"](event)
+		},
+		copyHandler: function (event) {
+			var selection  = this.document.getSelection();
+			var range = selection.getRangeAt(0).cloneContents()
+			console.log(range.childNodes.length)
+			this.copyRange = range;
 		},
 		dropHandler: function (event) {
 		var selection  = this.document.getSelection();
@@ -24,8 +31,41 @@ function SelectionTracker() {
 		} else {
 			setTimeout(this.internalDropHandler.bind(this,event))
 		}
+		
 	},
+	pasteHandler: function (event) {
+		var selection = this.document.getSelection();
+		console.log(this.copyRange,this.copyRange.childNodes.length)
+		if (selection.rangeCount) {//internal copy so all good...
+			var range = selection.getRangeAt(0);
+			var copiedFragment= range.cloneContents();
+			event.stopPropagation();
+			event.preventDefault();
+ 			setTimeout(this.postpasteHandler.bind(this,event,range,copiedFragment))
+		}
+		
+	},
+	postpasteHandler: function (event,range,copiedFragment) {
+		if (!this.copyRange) {
+			return this.attemptToGetPastedInfo(event,range,copiedFragment)
+		}
+		var startNode = range.startContainer;
+		var newTextNode;
+			if (startNode.nodeType == 3) {
+				newTextNode = startNode.splitText(range.startOffset);
+			} else {
+				startNode = startNode.insertBefore(document.createTextNode("sdfsdf"),startNode.firstChild);
+
+				newTextNode = startNode.parentNode.insertBefore(document.createTextNode("sdfsdfsd"),startNode.nextSibling);
+			}
+			newTextNode.parentNode.insertBefore(this.copyRange,newTextNode);
+		if (typeof CKEDITOR != "undefined" && CKEDITOR.currentInstance) {
+			CKEDITOR.currentInstance.fire("saveSnapshot");
+		}
+	},
+	attemptToGetPastedInfo: 
 	internalDropHandler: function (event) {
+
 		var dropTarget = this.document.elementFromPoint(event.pageX,event.pageY),
 			caret = this.document.caretRangeFromPoint(event.pageX,event.pageY);	
 		if (dropTarget) {
@@ -344,21 +384,7 @@ function SelectionTracker() {
 				}
 			}	
 		},
-		pasteHandler: function (event) {
-			
-			event.stopPropagation()
-			var selection = this.document.getSelection(),
-				nodeBefore;
-			
-			if (selection.baseNode.nodeType==3) {
-				nodeBefore = selection.baseNode;
-
-				//nodeAfter = selection.baseNode.splitText(selection.baseOffset)
-			}
-			var range = selection.getRangeAt(0);
-			this.markNodes(this.element)
-			setTimeout(this.postpaste.bind(this,range,nodeBefore,selection.baseOffset))
-		},
+		
 		getEntityElement: function (element) {//slightly different to entities helper method
 			if (element) {
 				while (element && element!=this.element) {
@@ -367,41 +393,6 @@ function SelectionTracker() {
 				}
 			}
 			return false 
-		},
-		postpaste: function (originalRange,nodeBefore,offset,nodeAfter) {
-			
-			var selection = this.document.getSelection();
-			
-			if (!selection.rangeCount) {
-				
-				return;
-			}
-			var newCursorContainer = (selection.getRangeAt(0).commonAncestorContainer)
-			
-			var brokenEntities = this.helper.getBrokenEntities(this.document);
-			for (var i=0,enitity;i<brokenEntities.length;i++) {
-				entity = brokenEntities[i]
-				if (entity.firstChild.tagName == "BR") {
-					var parent = entity.parentNode,
-						grandParent = parent.parentNode
-
-					parent.parentNode.replaceChild(document.createTextNode(" "),parent);
-
-					selection.selectAllChildren(grandParent)
-					selection.collapseToEnd();
-					continue
-				}
-				if (entity.parentNode == this.element) {
-					if (originalRange.commonAncestorContainer.nodeType == 3) {
-						var newNode = nodeBefore.splitText(offset);
-						newNode.parentNode.insertBefore(entity,newNode);
-						newNode.parentNode.insertBefore(document.createTextNode("\u00a0"),newNode)
-					}
-				} else if (entity.parentNode.parentNode == this.element && !entity.nextSibling && !entity.previousSibling) {
-					entity.parentNode.insertBefore(document.createTextNode("\u00a0"),newNode)
-				}
-				entity.contentEditable = "false";
-			}
 		},
 		cutHandler: function () {
 			console.log(document.getSelection().getRangeAt(0).createContextualFragment())
