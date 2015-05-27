@@ -12,10 +12,62 @@ function SelectionTracker() {
 			this.document.addEventListener("keydown",this,true);
 			this.document.addEventListener("paste",this,true)
 			this.document.addEventListener("cut",this,true)
+			this.document.addEventListener("drop",this,true)
 		},
 		handleEvent: function (event) {
 			return this[event.type+"Handler"](event)
 		},
+		dropHandler: function (event) {
+		var selection  = this.document.getSelection();
+		if (selection.rangeCount) {
+			this.internalDropHandler(event)
+		} else {
+			setTimeout(this.internalDropHandler.bind(this,event))
+		}
+	},
+	internalDropHandler: function (event) {
+		var dropTarget = this.document.elementFromPoint(event.pageX,event.pageY),
+			caret = this.document.caretRangeFromPoint(event.pageX,event.pageY);	
+		if (dropTarget) {
+				var selection = dropTarget.ownerDocument.getSelection();
+				var range = selection.getRangeAt(0);
+				var startNode = caret.startContainer,
+					nextTextNode,
+					fragment;
+				if (event.ctrlKey) {
+					fragment = range.cloneContents();
+				} else {
+					fragment = range.extractContents();
+					
+				}
+				fragment = this.cleanFragment(fragment);
+				
+				if (startNode.nodeType == 3) {
+					newTextNode = startNode.splitText(caret.startOffset);
+				} else {
+					startNode = startNode.insertBefore(document.createTextNode(""),startNode.firstChild);
+
+					newTextNode = startNode.parentNode.insertBefore(document.createTextNode(""),startNode.nextSibling);
+
+				}
+				newTextNode.parentNode.insertBefore(fragment,newTextNode);
+				range.setStartAfter(startNode);
+				range.setEndBefore(newTextNode);
+				selection.removeAllRanges();
+				selection.addRange(range);
+				event.stopPropagation();
+				event.preventDefault();
+				if (typeof CKEDITOR != "undefined" && CKEDITOR.currentInstance) {
+					//debugger;
+						CKEDITOR.currentInstance.fire("saveSnapshot");
+				}
+		}
+		
+	},
+	cleanFragment: function (fragment) {
+		console.log(""+fragment.firstChild)
+		return fragment
+	},
 		mousedownHandler: function (event) {
 			var cursorDetails = this.getCursorDetails(event)
 			if (cursorDetails.withoutTextEnd) {

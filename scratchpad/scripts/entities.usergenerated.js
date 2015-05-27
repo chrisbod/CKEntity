@@ -86,14 +86,15 @@ UserConditionalManager.prototype = {
 		}
 	},
 	generateUserConditionalTemplateNode: function () {
-		var conditional = document.createElement("conditional");
-		conditional.className = "user"
-		
+		var conditional = document.createElement("section");
+		conditional.className = "user conditional"
+		conditional.style.display = "inline"
+		conditional.contenteditable = false;
 		conditional.setAttribute("data-args","type: 'user'");
-		conditional.innerHTML = '<b class="contents conditional" style="display: inline" contenteditable="true">  </b>'
-		var editSpan = document.createElement("span");
-		editSpan.style.display = "inline"
+		conditional.innerHTML = '<section style="display: inline" class="contents conditional"> &nbsp;</span>'
+		var editSpan = document.createElement("section");
 		editSpan.className = "entity-wrapper";
+		editSpan.style.display = "inline"
 		editSpan.appendChild(conditional)
 		editSpan.setAttribute("data-entity-node","user")
 		this.conditionalTemplateNode = editSpan;

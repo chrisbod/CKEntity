@@ -28,7 +28,7 @@ translation {
 
 
 
-token, translation, conditional {
+token, translation, .conditional {
 	display: inline;
 }
 token > span {
@@ -50,8 +50,8 @@ token {
 }
 
 span[data-entity-node=conditional]::selection,
-conditional::selection,
-conditional span::selection,
+.conditional::selection,
+.conditional span::selection,
 translation span::selection
 {
 	background-color: #1F497D;
@@ -70,26 +70,26 @@ token span::selection
 
 
 
-conditional.user {
+.conditional.user {
 	
 	display: inline;
 	color: green;
 }
-conditional:before {
+.entity-wrapper > .conditional:before {
 	content: '[';
 }
-conditional:after {
+.entity-wrapper > .conditional:after {
 	content: ']';
 }
-conditional[data-not-present] {
+.conditional[data-not-present] {
   display: none;
 }
 
-conditional .conditional.args {
+.conditional ..conditional.args {
 	min-width: 1.5ex;
 	color: rgba(0,0,0,0);
 }
-conditional > span.contents:focus {
+.conditional > span.contents:focus {
 	outline: none;
 }
 
@@ -109,7 +109,7 @@ table.scenario-table th {
 
 
 
-.conditional:first-child {
+..conditional:first-child {
 	position: relative;
 	display: inline-block;
 	box-sizing: border-box;
@@ -124,7 +124,7 @@ translation > .end
 ;
 }
 
-span.conditional:first-child::before {
+span..conditional:first-child::before {
   position: absolute;
   width: 150%;
   background-image: url(../img/minus.png);
@@ -139,31 +139,31 @@ span.conditional:first-child::before {
   height: 100%;
 }
 
-conditional.user[data-args*=hidden] span.conditional.args:first-child {
+.conditional.user[data-args*=hidden] span..conditional.args:first-child {
   margin: 0 0.3ex 0 0ex;
 }
-conditional[data-args*=hidden] span.contents {
+.conditional[data-args*=hidden] span.contents {
 	display: none;
 }
-conditional[data-args*=hidden]:before {
+.conditional[data-args*=hidden]:before {
   content: '[';
 }
-conditional[data-args*=hidden]:after {
+.conditional[data-args*=hidden]:after {
   content: ' ]';
 }
-conditional[data-args*=hidden] span.conditional {
+.conditional[data-args*=hidden] span..conditional {
 	color: white;
   margin: 0;
  width: 0;
  font-size: 1ex;
 }
-conditional[data-args*=hidden] span.conditional:first-child::before {
+.conditional[data-args*=hidden] span..conditional:first-child::before {
    background-image: url(../img/plus.png);
   margin-left: 10%;
   margin-top: -0.5ex;
 }
 
-conditional.user .contents {
+.conditional.user .contents {
 	position:relative;
 	z-index: 1000;
 	outline: 1px dotted green;
