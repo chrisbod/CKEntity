@@ -9,10 +9,16 @@ TokenTokenizer.prototype = {
 		this.tokenDefinitions.push(def);
 		this.tokenDefinitions.sort();
 	},
-	getTrigger: function (rangeOrText) {
+	getTrigger: function (rangeOrText,event) {
+		if (event) {
+			if (event.keyCode == 188) {
+				return "<";
+			}
+		}
 		var text = ""+rangeOrText;
+
 		text = text.replace(/\u200b/gm,'');
-		text = text.trim().match(/<[^>]*>?$/mg);
+		text = text.trim().match(/(<)[^>]*>?$/mg);
 		if (text) {
 			return text[text.length-1];
 		}

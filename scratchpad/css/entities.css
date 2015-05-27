@@ -114,7 +114,6 @@ table.scenario-table th {
 	display: inline-block;
 	box-sizing: border-box;
 }
-.conditional:last-child,
 translation > .args,
 translation > .end
  {

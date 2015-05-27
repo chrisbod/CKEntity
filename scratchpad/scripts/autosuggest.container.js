@@ -137,6 +137,7 @@ function AutoSuggestContainer(id, tokenizer) {
 	keyupHandler: function (event) {
 		this.rangeToReplace = null;
 		switch (event.keyCode) {
+			case 16: return;
 			case 40: return;
 			case 38: return;
 			case 39: return;
@@ -160,7 +161,7 @@ function AutoSuggestContainer(id, tokenizer) {
 			if (node.nextSibling && node.nextSibling.nodeType==3) {
 				duplicateRange.setEndAfter(node.nextSibling)
 			}
-			var trigger = this.tokenizer.getTrigger(""+duplicateRange);
+			var trigger = this.tokenizer.getTrigger(""+duplicateRange,event);
 
 			if (trigger) {
 				duplicateRange.endContainer.normalize();
@@ -269,8 +270,9 @@ function AutoSuggestContainer(id, tokenizer) {
 			range.insertNode(newNode);
 			if (newNode.previousSibling) {
 				if (newNode.previousSibling.data) {
+					console.log("here")
 					var endText = new RegExp(this.trigger.trim()+"(\\s|\\u200b\\u00a0)*$");
-				newNode.previousSibling.data = newNode.previousSibling.data.replace(endText,'');
+				newNode.previousSibling.data = newNode.previousSibling.data.replace(endText,' \u200b');
 					
 				}
 				

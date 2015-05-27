@@ -310,7 +310,7 @@ function SelectionTracker() {
 		getEntityElement: function (element) {//slightly different to entities helper method
 			if (element) {
 				while (element && element!=this.element) {
-					if (element.hasAttribute && element.hasAttribute("data-entity-node")) return element;
+					if (element.hasAttribute && element.hasAttribute("data-entity-node") && element.getAttribute("data-entity-node")!="user") return element;
 					element = element.parentNode;
 				}
 			}

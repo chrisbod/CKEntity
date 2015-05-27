@@ -44,7 +44,7 @@ UserConditionalManager.prototype = {
 					sibling.splitText(1)
 				}
 				sibling.parentNode.replaceChild(conditional,sibling)
-				conditional.parentNode.insertBefore(this.editableDocument.createTextNode("\u00A0"),conditional.nextSibling)
+				//conditional.parentNode.insertBefore(this.editableDocument.createTextNode("\u00A0"),conditional.nextSibling)
 				selection.removeAllRanges();
 				selection.selectAllChildren(conditional.querySelector(".contents.conditional"));
 				selection.collapseToEnd()
@@ -88,13 +88,14 @@ UserConditionalManager.prototype = {
 	generateUserConditionalTemplateNode: function () {
 		var conditional = document.createElement("conditional");
 		conditional.className = "user"
-		conditional.setAttribute("contenteditable","false");
+		
 		conditional.setAttribute("data-args","type: 'user'");
-		conditional.innerHTML = '<span class="args conditional"  contenteditable="false">[</span><span class="contents conditional" contenteditable="true">&nbsp&nbsp;</span><span class="conditional end" contenteditable="false">]</span>'
+		conditional.innerHTML = '<b class="contents conditional" style="display: inline" contenteditable="true">  </b>'
 		var editSpan = document.createElement("span");
+		editSpan.style.display = "inline"
 		editSpan.className = "entity-wrapper";
 		editSpan.appendChild(conditional)
-		editSpan.setAttribute("data-entity-node","")
+		editSpan.setAttribute("data-entity-node","user")
 		this.conditionalTemplateNode = editSpan;
 
 	},
