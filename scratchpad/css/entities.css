@@ -121,46 +121,35 @@ translation > .end
   display: inline-block;
   width: 0;
   overflow: hidden;
-;
+  height: 0px;
+
 }
 
-span..conditional:first-child::before {
-  position: absolute;
-  width: 150%;
-  background-image: url(../img/minus.png);
-  background-repeat: no-repeat;
-  background-size: 9px;
-  background-position: left;
-  margin: 0 0 0 0ex;
-  color: rgba(0,0,0,1);
-  overflow: hidden;
-  text-indent: 100%;
-  content: '';
-  height: 100%;
-}
 
-.conditional.user[data-args*=hidden] span..conditional.args:first-child {
+
+.entity-wrapper[data-args*=hidden] span..conditional.args:first-child {
   margin: 0 0.3ex 0 0ex;
 }
-.conditional[data-args*=hidden] span.contents {
+.entity-wrapper[data-args*=hidden] span.contents {
 	display: none;
 }
-.conditional[data-args*=hidden]:before {
-  content: '[';
+.entity-wrapper[data-entity-node=conditional] span.args {
+	margin-right: 1ex;
+	background-image: url(../img/plus.png);
+
 }
-.conditional[data-args*=hidden]:after {
-  content: ' ]';
+  
+
+.entity-wrapper[data-entity-node=conditional] span.args {
+  padding-right: 1em;
+  margin-right: -0.01ex;
+  background-image: url(../img/minus.png);
+  background-size: 1em;
+  background-repeat: no-repeat;
+  background-position: center right;
 }
-.conditional[data-args*=hidden] span..conditional {
-	color: white;
-  margin: 0;
- width: 0;
- font-size: 1ex;
-}
-.conditional[data-args*=hidden] span..conditional:first-child::before {
-   background-image: url(../img/plus.png);
-  margin-left: 10%;
-  margin-top: -0.5ex;
+.entity-wrapper[data-entity-node=conditional][data-args*=hidden] span.args{
+	background-image: url(../img/plus.png);
 }
 
 .conditional.user .contents {

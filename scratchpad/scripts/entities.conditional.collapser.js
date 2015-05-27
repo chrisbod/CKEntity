@@ -17,28 +17,30 @@ ConditionalCollapser.prototype = {
 		return this[event.type+"Handler"](event)
 	},
 	clickHandler: function (event) {
-		if (event.target.className == "args conditional" && event.target.parentNode.firstChild == event.target) {
+		if (event.target.className == "args conditional") {
 			var args = this.entitiesHelper.getDataArguments(event.target.parentNode)
 			if (args.hidden) {
-				this.expand(event.target.parentNode,"hidden")
+				this.expand(event.target.parentNode.parentNode,"hidden")
 			} else {
-				this.collapse(event.target.parentNode,"hidden")
+				this.collapse(event.target.parentNode.parentNode,"hidden")
 			}
 			event.stopPropagation();
 		}
 	},
 	dblclickHandler: function (event) {
-		if (event.target.className == "args conditional" && event.target.parentNode.firstChild == event.target) {
+		if (event.target.className == "args conditional") {
 			
 			event.stopPropagation();
 			event.preventDefault()
 		}
 	},
 	collapse: function (entityElement) {
+		entityElement.ownerDocument.getSelection().removeAllRanges()
 		this.entitiesHelper.setDataArgument(entityElement,"hidden",true)
 		
 	},
 	expand: function (entityElement) {
+		entityElement.ownerDocument.getSelection().removeAllRanges()
 		this.entitiesHelper.removeDataArgument(entityElement,"hidden")
 	}
 

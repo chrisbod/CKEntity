@@ -155,12 +155,14 @@ function AutoSuggestContainer(id, tokenizer) {
 				if (node.contentEditable == "false") {
 					return
 				}
-			duplicateRange.selectNodeContents(node);
 
+			duplicateRange.setStartBefore(node);
 
+			console.log(duplicateRange)
 			if (node.nextSibling && node.nextSibling.nodeType==3) {
 				duplicateRange.setEndAfter(node.nextSibling)
 			}
+
 			var trigger = this.tokenizer.getTrigger(""+duplicateRange,event);
 
 			if (trigger) {
@@ -270,7 +272,6 @@ function AutoSuggestContainer(id, tokenizer) {
 			range.insertNode(newNode);
 			if (newNode.previousSibling) {
 				if (newNode.previousSibling.data) {
-					console.log("here")
 					var endText = new RegExp(this.trigger.trim()+"(\\s|\\u200b\\u00a0)*$");
 				newNode.previousSibling.data = newNode.previousSibling.data.replace(endText,' \u200b');
 					
