@@ -11,6 +11,7 @@ function SelectionTracker() {
 			this.document.addEventListener("keyup",this,true);
 			this.document.addEventListener("keydown",this,true);
 			this.document.addEventListener("paste",this,true)
+			this.document.addEventListener("cut",this,true)
 		},
 		handleEvent: function (event) {
 			return this[event.type+"Handler"](event)
@@ -52,7 +53,7 @@ function SelectionTracker() {
 				case 8 : return this.deleteHandler(event);
 				case 37: return this.keyLeftDownHandler(event);	
 				case 39: return this.keyRightDownHandler(event);
-
+				case 46: return this.backspaceHandler(event);
 			}
 		},
 		deleteHandler: function (event) {
@@ -68,6 +69,39 @@ function SelectionTracker() {
 
 			
 			
+		},
+		backspaceHandler: function (event) {
+			var cursorDetails = this.getCursorDetails(event);
+			if (!cursorDetails.textNode && !cursorDetails.beforeElement) {
+				
+				if (cursorDetails.baseNode.parentNode.hasAttribute("data-deletable")) {
+					event.preventDefault()
+					return
+				}
+				event.preventDefault()
+			}
+			if (cursorDetails.atEndOfElement) {
+				console.log("EE")
+				var node = cursorDetails.baseNode;
+				if (node.parentNode.hasAttribute("data-deletable")) {
+					event.preventDefault()
+					return
+				}
+				while (node && !node.nextSibling) {
+					node = node.parentNode;
+				}
+				if (node) {
+					while (node.nextSibling && node.nextSibling.nodeType == 3 && !node.nextSibling.data.replace(/\s/gm,'').length) {
+						
+						node = node.nextSibling;
+					}
+					if (node && node.nextSibling && node.nextSibling.hasAttribute("data-deletable") ) {
+						event.preventDefault()
+					}
+					
+				}
+				
+			}
 		},
 		keyRightDownHandler: function (event) {
 			
@@ -240,6 +274,9 @@ function SelectionTracker() {
 				entity.contentEditable = "false";
 			}
 		},
+		cutHandler: function () {
+			console.log(document.getSelection().getRangeAt(0).createContextualFragment())
+		},
 		markNodes: function (main) {
 			var marker = {}
 		    var loop = function(main) {
@@ -349,7 +386,7 @@ function SelectionTracker() {
 				}
 				cursorDetails.textNode = baseNode
 			} else if (baseNode) {
-
+				
 				if (baseNode.childNodes[selection.baseOffset-1]) {
 					cursorDetails.atEndOfElement = true;
 				} else {
@@ -360,6 +397,9 @@ function SelectionTracker() {
 					cursorDetails.atStartOfTextNode = true;
 					cursorDetails.atEndOfTextNode = true;
 					cursorDetails.inEmptyElement = true;
+				} else {
+					cursorDetails.beforeElement = true;
+					cursorDetails.nextElement = baseNode.childNodes[selection.baseOffset]
 				}
 				}
 			}
@@ -414,27 +454,9 @@ function SelectionTracker() {
 			range.selectNode(cursor);
 			selection.removeAllRanges();
 			selection.addRange(range);
-			selection.collapseToStart();
+			selection.collapseToEnd();
 		},
 		moveCursorAfter: function (node) {
-			
-			/*var selection = this.document.getSelection();
-			selection.removeAllRanges();
-			var range = document.createRange();
-			range.selectNode(node.nextSibling)
-			selection.addRange(range)
-			var cursor = this.document.createElement("span"),
-				range = this.document.createRange(),
-				selection = this.document.getSelection();
-			cursor.innerText = "sdasd"
-			cursor.tabIndex = -1,
-			node.parentNode.insertBefore(cursor,node.nextSibling)
-			cursor.focus()
-			//node.parentNode.insertBefore(cursor,newNode.nextSibling)
-			range.selectNode(cursor);
-			selection.removeAllRanges();
-			selection.addRange(range);
-			selection.collapseToStart();*/
 		},
 		getZeroWidthSpace: function () {
 			var space = this.document.createTextNode("\u200b")
