@@ -1,16 +1,17 @@
 function EntityStore() {
 }
 EntityStore.prototype =  {
-	addEntity: function (key,id,preview) {
+	addEntity: function (key,id,readOnly) {
 		var preexists = this.templatableNodes[key];
 		if (!preexists) {
 			var text = key.replace(/(\[|\<)[^\:]+\:/g,"$1");
 			var text = key.replace(/\[[^:]+\:\s*\]/g,'')
 			this.allNodes.push(this.templatableNodes[id] = this.templatableNodes[key] = this.templatableNodes[text] ={
-				node: this.createTemplatableNodeFromEntity(key,id,preview),
+				node: this.createTemplatableNodeFromEntity(key,id,readOnly),
 				def: key,
 				id: id,
-				text: text
+				text: text,
+				readOnly: readOnly
 			})
 
 		}
@@ -40,11 +41,14 @@ TokenStore.prototype.parseTextMarkup = function () {
 		.replace(/</g,'&lt;')
 		.replace(/>/g,'&gt;')
 }
-TokenStore.prototype.createTemplatableNodeFromEntity = function (key,id,previewHTML) {
+TokenStore.prototype.createTemplatableNodeFromEntity = function (key,id,readOnly) {
 	var node = document.createElement("token")
 	node.setAttribute("data-entity-node","token")
 	node.setAttribute("contenteditable", false);
 	node.setAttribute("data-args","type: '"+id+"'")
+	if (readOnly) {
+		node.setAttribute("data-read-only","true")
+	}
 	node.setAttribute("class",id)
 	node.innerHTML = '<span>'+key.replace(/(^<)|(>$)/g,'')+'<span>';
 	var rules = document.createElement("span")
@@ -62,6 +66,9 @@ TokenStore.prototype.createTemplatableNodeFromEntity = function (key,id,previewH
 	editSpan.appendChild(node);
 	editSpan.setAttribute("data-entity-node","token")
 	editSpan.setAttribute("contenteditable","false")
+	if (readOnly) {
+		editSpan.setAttribute("data-read-only","true")
+	}
 //	editSpan.insertBefore(document.createTextNode("\u200b"),editSpan.firstChild);
 //	editSpan.appendChild(document.createTextNode("\u200b"))
 	return node;
@@ -137,12 +144,15 @@ TokenStore.prototype.parseTextMarkup = function () {
 		.replace(/</g,'&lt;')
 		.replace(/>/g,'&gt;')
 }
-TokenStore.prototype.createTemplatableNodeFromEntity = function (key,id,previewHTML) {
+TokenStore.prototype.createTemplatableNodeFromEntity = function (key,id,readOnly) {
 	var node = document.createElement("token")
 	node.setAttribute("contenteditable", "false");//this seems to trigger a strange drag and drop bug
 	
 	node.setAttribute("data-args","type: '"+id+"'")
 	node.setAttribute("class",id)
+	if (readOnly) {
+		node.setAttribute("data-read-only","true")
+	}
 	node.innerHTML = '<span contenteditable="false">'+key.replace(/(\<)|(\>)/gm,'')+'<span>';
 	var rules = document.createElement("span")
 	rules.className = "args token";
@@ -164,5 +174,8 @@ TokenStore.prototype.createTemplatableNodeFromEntity = function (key,id,previewH
 	editSpan.setAttribute("contenteditable","false")
 	editSpan.insertBefore(document.createTextNode("   "),editSpan.firstChild);
 	editSpan.appendChild(document.createTextNode("   "))
+	if (readOnly) {
+		editSpan.setAttribute("data-read-only","true")
+	}
 	return editSpan;
 }

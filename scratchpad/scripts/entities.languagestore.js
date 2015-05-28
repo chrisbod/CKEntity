@@ -3,6 +3,7 @@ function LanguageStore(tokenPath,logicPath,translationPath) {
 	this.tokenPath = tokenPath;
 	this.logicPath = logicPath;
 	this.translationPath = translationPath;
+	this.crossRefs = {}
 }
 LanguageStore.prototype = {
 	currentLanguage: "",
@@ -55,7 +56,8 @@ LanguageStore.prototype = {
 			sentenceTokenizer: new SentenceTokenizer(),
 			tokenTokenizer:  new TokenTokenizer()
 		};
-		this.loadTokens(id,callback);
+		this.loadCrossRefs(id,callback)
+		//;
 	},
 	loadLogic: function (languageId,callback) {
 		$.ajax(this.logicPath+"."+languageId+".json", {
@@ -72,6 +74,18 @@ LanguageStore.prototype = {
 		this.languages[languageId].logicDefinitions = logic;
 		this.loadTranslations(languageId,callback)
 	},
+	loadCrossRefs: function (id,callback) {
+		$.ajax("json/tag.xref.json", {
+			mimeType: "application-x/json",
+			success: this.crossRefsLoaded.bind(this,id,callback)
+		})
+	},
+	crossRefsLoaded: function (id,callback,crossRefs) {
+		crossRefs.forEach(function (crossRef) {
+			this.crossRefs[crossRef.tagId] = crossRef.tagName
+		},this)
+		this.loadTokens(id,callback)
+	},
 	loadTokens: function (languageId,callback) {
 		$.ajax(this.tokenPath+"."+languageId+".json", {
 			mimeType: "application-x/json",
@@ -87,7 +101,9 @@ LanguageStore.prototype = {
 		var store = this.languages[id].tokenStore;
 		this.languages[id].tokenDefinitions = tokens;
 		tokens.forEach(function (token) {
-			this.languages[id].tokenStore.addEntity('<'+token.text+'>',token.id)
+			token.type = this.crossRefs[token.tagId]
+			var readOnly = (!token.groups || !token.groups.length) && (!token.items || !token.items.length)
+			this.languages[id].tokenStore.addEntity('<'+token.text+'>',this.crossRefs[token.tagId],readOnly)
 		},this);
 		this.loadLogic(id,callback)
 	},
@@ -101,10 +117,10 @@ LanguageStore.prototype = {
 		if (!this.translationsLength) {
 			this.translationsLength = translations.length
 		} else if (this.translationsLength != translations.length) {
-			throw new Error("Inconsistent translation sizes")
+			//throw new Error("Inconsistent translation sizes")
 		}
 		translations.forEach(function (translation) {
-			this.languages[languageId].translationStore.addEntity(translation.def,translation.id)
+			this.languages[languageId].translationStore.addEntity(translation.text,translation.translationId)
 		},this)
 		this.languages[languageId].translationDefinitions = translations;
 		if (callback) {
