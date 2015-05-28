@@ -100,7 +100,7 @@ UserConditionalManager.prototype = {
 		conditional.contenteditable = false;
 		conditional.setAttribute("data-args","type: 'user'");
 		conditional.innerHTML = '<span class="args conditional" contenteditable="false" data-args>[</span><span class="contents conditional" contenteditable="false"><span contenteditable=true>  </span></span><span class="conditional end" contenteditable="false" data-args>]</span></span>'
-		var editSpan = this.document.createElement("div");
+		var editSpan = this.document.createElement("span");
 		editSpan.className = "entity-wrapper";
 		editSpan.appendChild(conditional)
 		editSpan.setAttribute("data-entity-node","user")

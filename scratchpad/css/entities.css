@@ -123,7 +123,7 @@ translation > .end
 	display: inline-block;
 	min-width: 1em;
 }
-.entity-wrapper[data-args*=hidden] .contents {
+conditional[data-args*=hidden] .contents {
 	display: none;
 }
 .entity-wrapper[data-entity-node=conditional] > * > .args,
@@ -136,8 +136,8 @@ translation > .end
   background-repeat: no-repeat;
   background-position: center right;
 }
-.entity-wrapper[data-entity-node=conditional][data-args*=hidden] .args,
-.entity-wrapper[data-entity-node=user][data-args*=hidden] .args
+.entity-wrapper[data-entity-node=conditional] conditional[data-args*=hidden] .args,
+.entity-wrapper[data-entity-node=user] *[data-args*=hidden] .args
 {
 	background-image: url(../img/plus.png);
 }
@@ -187,7 +187,7 @@ div[data-block-level=true].entity-wrapper .contents, span[data-block-level=true]
 	outline: none;
 }
 
-.entity-wrapper[data-block-level=true] .contents.conditional > div:before {
+.entity-wrapper[data-block-level=true] .contents.conditional > span:before {
 	display: block;
 	content: '[';
 	position: absolute;
@@ -196,7 +196,7 @@ div[data-block-level=true].entity-wrapper .contents, span[data-block-level=true]
 	outline-width: 0;
 }
 
-.entity-wrapper[data-block-level=true] .contents.conditional > div:after {
+.entity-wrapper[data-block-level=true] .contents.conditional > span:after {
 	display: block;
 	content: ']';
 	position: absolute;
@@ -204,13 +204,13 @@ div[data-block-level=true].entity-wrapper .contents, span[data-block-level=true]
   	bottom: 0;
 	outline-width: 0;
 }
-.entity-wrapper .contents.conditional > div,
-.entity-wrapper .contents.conditional > div > div {
+.entity-wrapper .contents.conditional > span,
+.entity-wrapper .contents.conditional > span > span {
 	display: inline;
 	outline-width: 0;
 }
 
-.entity-wrapper[data-block-level=true] .contents.conditional > div > div {
+.entity-wrapper[data-block-level=true] .contents.conditional > span > span {
 	display: block;
 	outline-width: 0;
 }

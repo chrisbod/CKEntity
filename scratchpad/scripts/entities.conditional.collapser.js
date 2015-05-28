@@ -20,9 +20,9 @@ ConditionalCollapser.prototype = {
 		if (event.target.className == "args conditional") {
 			var args = this.entitiesHelper.getDataArguments(event.target.parentNode)
 			if (args.hidden) {
-				this.expand(event.target.parentNode.parentNode,"hidden")
+				this.expand(event.target.parentNode,"hidden")
 			} else {
-				this.collapse(event.target.parentNode.parentNode,"hidden")
+				this.collapse(event.target.parentNode,"hidden")
 			}
 			event.stopPropagation();
 		}
