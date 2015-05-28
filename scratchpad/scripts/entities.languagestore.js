@@ -61,7 +61,7 @@ LanguageStore.prototype = {
 	},
 	loadLogic: function (languageId,callback) {
 		$.ajax(this.logicPath+"."+languageId+".json", {
-			mimeType: "application-x/json",
+			mimeType: "application/json",
 			success: this.logicLoaded.bind(this,languageId,callback)
 		})
 	},
@@ -72,11 +72,14 @@ LanguageStore.prototype = {
 			throw new Error("Inconsistent token definition sizes")
 		}
 		this.languages[languageId].logicDefinitions = logic;
+		logic.forEach(function (logicTag) {
+			logicTag.id = this.crossRefs[logicTag.tagId]
+		},this)
 		this.loadTranslations(languageId,callback)
 	},
 	loadCrossRefs: function (id,callback) {
 		$.ajax("json/tag.xref.json", {
-			mimeType: "application-x/json",
+			mimeType: "application/json",
 			success: this.crossRefsLoaded.bind(this,id,callback)
 		})
 	},
@@ -88,7 +91,7 @@ LanguageStore.prototype = {
 	},
 	loadTokens: function (languageId,callback) {
 		$.ajax(this.tokenPath+"."+languageId+".json", {
-			mimeType: "application-x/json",
+			mimeType: "application/json",
 			success: this.tokensLoaded.bind(this,languageId,callback)
 		})
 	},
@@ -109,7 +112,7 @@ LanguageStore.prototype = {
 	},
 	loadTranslations: function (languageId, callback) {
 		$.ajax(this.translationPath+"."+languageId+".json", {
-			mimeType: "application-x/json",
+			mimeType: "application/json",
 			success: this.translationsLoaded.bind(this,languageId,callback)
 		});
 	},
@@ -120,7 +123,7 @@ LanguageStore.prototype = {
 			//throw new Error("Inconsistent translation sizes")
 		}
 		translations.forEach(function (translation) {
-			this.languages[languageId].translationStore.addEntity(translation.text,translation.translationId)
+			this.languages[languageId].translationStore.addEntity(translation.text,translation.parentTranslationId || translation.translationId)
 		},this)
 		this.languages[languageId].translationDefinitions = translations;
 		if (callback) {
