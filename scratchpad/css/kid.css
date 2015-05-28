@@ -1,9 +1,15 @@
+html {
+	background-color: #cccccc;
+}
 body {
-	font-family: Arial, Helvetica, san-serif;
-	counter-reset: section;
-	font-size: 11pt;
-	margin: 1em;
-	padding: 1em 1ex 1ex 3ex;
+  font-family: Arial, Helvetica, san-serif;
+  counter-reset: section;
+  font-size: 11pt;
+  margin: 1em auto;
+  padding: 20mm;
+  width: 210mm;
+  box-sizing: border-box;
+  background-color: white;
 }
 
 h1 {
@@ -14,7 +20,7 @@ h1 {
 }
 h2 {
 	color: #1F497D;
-	margin: 1ex 1ex 1ex -2ex;
+	margin: 1ex 1ex 1ex 0ex;
 }
 .cke_panel_container a h2 {
 	margin-left: 0;
@@ -130,5 +136,9 @@ table p {
 }
 table td {
 	padding: 1ex;
+}
+
+#header-data, #footer-data {
+	display: none;
 }
 

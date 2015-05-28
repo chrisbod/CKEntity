@@ -25,6 +25,9 @@ translation {
 	display: inline;
 	
 }
+args {
+	display: inline;
+}
 
 
 
@@ -70,28 +73,7 @@ token span::selection
 
 
 
-.conditional.user {
-	
-	display: inline;
-	color: green;
-}
-.entity-wrapper > .conditional:before {
-	content: '[';
-}
-.entity-wrapper > .conditional:after {
-	content: ']';
-}
-.conditional[data-not-present] {
-  display: none;
-}
 
-.conditional ..conditional.args {
-	min-width: 1.5ex;
-	color: rgba(0,0,0,0);
-}
-.conditional > span.contents:focus {
-	outline: none;
-}
 
 translation {
 	display: inline;
@@ -127,20 +109,20 @@ translation > .end
 
 
 
-.entity-wrapper[data-args*=hidden] span..conditional.args:first-child {
-  margin: 0 0.3ex 0 0ex;
+
+.entity-wrapper, .user.conditional, .user.conditional .end {
+	display: inline;
 }
-.entity-wrapper[data-args*=hidden] span.contents {
+.user.conditional > .contents > span {
+	display: inline-block;
+	min-width: 1em;
+}
+.entity-wrapper[data-args*=hidden] .contents {
 	display: none;
 }
-.entity-wrapper[data-entity-node=conditional] span.args {
-	margin-right: 1ex;
-	background-image: url(../img/plus.png);
-
-}
-  
-
-.entity-wrapper[data-entity-node=conditional] span.args {
+.entity-wrapper[data-entity-node=conditional] > * > .args,
+.entity-wrapper[data-entity-node=user] > * > .args
+ {
   padding-right: 1em;
   margin-right: -0.01ex;
   background-image: url(../img/minus.png);
@@ -148,7 +130,9 @@ translation > .end
   background-repeat: no-repeat;
   background-position: center right;
 }
-.entity-wrapper[data-entity-node=conditional][data-args*=hidden] span.args{
+.entity-wrapper[data-entity-node=conditional][data-args*=hidden] .args,
+.entity-wrapper[data-entity-node=user][data-args*=hidden] .args
+{
 	background-image: url(../img/plus.png);
 }
 
@@ -156,4 +140,71 @@ translation > .end
 	position:relative;
 	z-index: 1000;
 	outline: 1px dotted green;
+}
+
+.conditional.user {
+	
+	display: inline;
+	color: green;
+	position: relative;
+}
+.entity-wrapper > .conditional:before {
+	content: '[';
+}
+.entity-wrapper > .conditional:after {
+	content: ']';
+}
+.conditional[data-not-present] {
+  display: none;
+}
+div[data-block-level=true], span[data-block-level=true] {
+	display: block;
+}
+div[data-block-level=true].entity-wrapper .contents, span[data-block-level=true].entity-wrapper .contents {
+	display: block;
+}
+
+.entity-wrapper[data-block-level=true] > .conditional:before {
+	content: '';
+}
+.entity-wrapper[data-block-level=true] > .conditional:after {
+	content: '';
+}
+.conditional.user .conditional.args,
+.conditional.user .conditional.end
+ {
+ 	display: inline-block;
+  width: 0;
+	color: rgba(0,0,0,0);
+}
+.conditional > span.contents:focus {
+	outline: none;
+}
+
+.entity-wrapper[data-block-level=true] .contents.conditional > div:before {
+	display: block;
+	content: '[';
+	position: absolute;
+ 	left: -1ex;
+  	top: 0;
+	outline-width: 0;
+}
+
+.entity-wrapper[data-block-level=true] .contents.conditional > div:after {
+	display: block;
+	content: ']';
+	position: absolute;
+ 	right: -1ex;
+  	bottom: 0;
+	outline-width: 0;
+}
+.entity-wrapper .contents.conditional > div,
+.entity-wrapper .contents.conditional > div > div {
+	display: inline;
+	outline-width: 0;
+}
+
+.entity-wrapper[data-block-level=true] .contents.conditional > div > div {
+	display: block;
+	outline-width: 0;
 }

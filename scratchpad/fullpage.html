@@ -79,7 +79,7 @@ For licensing, see LICENSE.md or http://ckeditor.com/license
 	var pasteManager = new EntityPasteManager()
 
 	//var markupManager = new EntityMarkupManager()
-	var entitiesSelection = new SelectionTracker()
+	var entitiesSelection = SelectionTracker.getInstance()
 
 	var translator = new DocumentTranslator(languageStore)
 	var headersAndFooters = new HeaderAndFooterHandler();
@@ -139,9 +139,10 @@ $(function () {
 				fullPage: true,
 				allowedContent: true,
 				extraPlugins: 'tab,wysiwygarea,wallstreetdocs,wordpaste,documentlang,knockoutdialog,pagebreaktag,wsdpreview',
-				removePlugins: 'elementspath,magicline,pastetext,pastefromword,clipboard',
+				removePlugins: 'elementspath,magicline,pastetext,pastefromword,clipboard,forms,scayt',
 				language_list: [ 'en:English', 'de:German'],
-
+				removeButtons: 'Source,NewPage,DocProps,Templates,SpellChecker,CreateDiv,Flash,Smiley,PageBreak,Iframe,Format,About,Language,SpellChecker',
+				skin: 'flat',
 				on :
    {
       // Maximize the editor on start-up.

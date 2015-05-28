@@ -1,3 +1,8 @@
+span.cke_toolbar_break {
+	display: none;
+	float: none;
+}
+
 .cke_button_label.cke_button__documentlanguage_label {
 	display: inline-block;
 	overflow: hidden;

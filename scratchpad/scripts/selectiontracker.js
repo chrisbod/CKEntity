@@ -1,7 +1,15 @@
 function SelectionTracker() {
 		this.helper = new EntitiesHelper();
 		this.zeroWidthSpaces = [];
+		this.collapser = ConditionalCollapser.getInstance()
 	}
+
+SelectionTracker.getInstance = function () {
+	if (!this.instance) {
+		this.instance = new this()
+	}
+	return this.instance
+}
 	SelectionTracker.prototype = {
 		init: function (element) {
 			this.element = element;
@@ -21,7 +29,6 @@ function SelectionTracker() {
 		copyHandler: function (event) {
 			var selection  = this.document.getSelection();
 			var range = selection.getRangeAt(0).cloneContents()
-			console.log(range.childNodes.length)
 			this.copyRange = range;
 		},
 		dropHandler: function (event) {
@@ -35,17 +42,17 @@ function SelectionTracker() {
 	},
 	pasteHandler: function (event) {
 		var selection = this.document.getSelection();
-		console.log(this.copyRange,this.copyRange.childNodes.length)
-		if (selection.rangeCount) {//internal copy so all good...
+		if (selection.rangeCount && this.copyRange) {//internal copy so all good...
 			var range = selection.getRangeAt(0);
 			var copiedFragment= range.cloneContents();
 			event.stopPropagation();
 			event.preventDefault();
- 			setTimeout(this.postpasteHandler.bind(this,event,range,copiedFragment))
+ 			setTimeout(this.postpasteHandler.bind(this,event,range,copiedFragment,this.copyRange))
+ 			//this.copyRange = null;
 		}
 		
 	},
-	postpasteHandler: function (event,range,copiedFragment) {
+	postpasteHandler: function (event,range,copiedFragment,copyRange) {
 		if (!this.copyRange) {
 			return this.attemptToGetPastedInfo(event,range,copiedFragment)
 		}
@@ -54,16 +61,20 @@ function SelectionTracker() {
 			if (startNode.nodeType == 3) {
 				newTextNode = startNode.splitText(range.startOffset);
 			} else {
-				startNode = startNode.insertBefore(document.createTextNode("sdfsdf"),startNode.firstChild);
+				startNode = startNode.insertBefore(document.createTextNode(" "),startNode.firstChild);
 
-				newTextNode = startNode.parentNode.insertBefore(document.createTextNode("sdfsdfsd"),startNode.nextSibling);
+				newTextNode = startNode.parentNode.insertBefore(document.createTextNode(" "),startNode.nextSibling);
 			}
-			newTextNode.parentNode.insertBefore(this.copyRange,newTextNode);
+			newTextNode.parentNode.insertBefore(copyRange,newTextNode);
 		if (typeof CKEDITOR != "undefined" && CKEDITOR.currentInstance) {
 			CKEDITOR.currentInstance.fire("saveSnapshot");
 		}
 	},
-	attemptToGetPastedInfo: 
+	attemptToGetPastedInfo: function () {
+		if (typeof CKEDITOR != "undefined" && CKEDITOR.currentInstance) {
+			CKEDITOR.currentInstance.fire("saveSnapshot");
+		}
+	},
 	internalDropHandler: function (event) {
 
 		var dropTarget = this.document.elementFromPoint(event.pageX,event.pageY),
@@ -90,7 +101,13 @@ function SelectionTracker() {
 					newTextNode = startNode.parentNode.insertBefore(document.createTextNode(""),startNode.nextSibling);
 
 				}
-				newTextNode.parentNode.insertBefore(fragment,newTextNode);
+				try {
+					newTextNode.parentNode.insertBefore(fragment,newTextNode);
+				} 
+				catch (e) {
+					console.log(e) 
+				}
+				
 				range.setStartAfter(startNode);
 				range.setEndBefore(newTextNode);
 				selection.removeAllRanges();
@@ -103,6 +120,45 @@ function SelectionTracker() {
 				}
 		}
 		
+	},
+	getBlockLevelElement: function (element) {
+		//going to do this via tag detection but maybe should use computedStyle?
+		var blocks = /^(p|address|article|aside|blockquote|main|div|section|footer|header|li|ul|ol|h1|h2|h3|h4|h5|h6|body)$/i
+		var currentElement = element.parentNode
+		while (currentElement && currentElement!=element.ownerDocument.body) {
+			if (blocks.test(currentElement.tagName)) {
+				return currentElement
+			}
+			currentElement = currentElement.parentNode;
+		}
+		return null;
+	},
+	makeEntityBlockLevel: function (element) {
+		
+		if (!element) {
+			element = this.getEntityElement(this.document.getSelection().baseNode)
+			if (!element) return false;
+		}
+		if (element.getAttribute("data-block-level") != "true") {
+			var block = this.getBlockLevelElement(element);
+			if (block) {
+				var beforeRange = this.document.createRange()
+				beforeRange.selectNode(block)
+				beforeRange.setEndBefore(element);
+				var afterRange = this.document.createRange()
+				afterRange.selectNode(block)
+				afterRange.setStartAfter(element);
+				element.parentNode.insertBefore(beforeRange.extractContents(),element)
+				element.parentNode.insertBefore(afterRange.extractContents(),element.nextSibling)
+				element.setAttribute("data-block-level","true")
+				return true;
+			} else {
+				return false;
+			}
+			
+		}
+		return false;
+
 	},
 	cleanFragment: function (fragment) {
 		console.log(""+fragment.firstChild)
@@ -123,20 +179,22 @@ function SelectionTracker() {
 			var baseNode = cursorDetails.baseNode;
 			if (baseNode) {
 					var entity = this.getEntityElement(baseNode.parentNode);
-					if (entity) {
+					if (entity && entity.getAttribute("data-entity-node")!="user") {
 
 							this.selectNode(entity)
 							event.preventDefault()
+							return
 							
 						
 						
 						
 					} 
 			}
+			this.selectedNode = null;
 		},
 		keydownHandler: function (event) {
 			var baseNode = this.document.getSelection().baseNode
-			if (baseNode.data == "\u200b") {
+			if (baseNode && baseNode.data == "\u200b") {
 				if (baseNode.nextSibling) {
 					baseNode.data = ""
 				} 
@@ -149,8 +207,10 @@ function SelectionTracker() {
 				case 46: return this.backspaceHandler(event);
 			}
 		},
-		deleteHandler: function (event) {
-			var cursorDetails = this.getCursorDetails(event)
+		/*deleteHandler: function (event) {
+			var cursorDetails = this.getCursorDetails(event);
+
+			if (this.getEntityElement)
 			if (cursorDetails.atStartOfElement) {
 				if (cursorDetails.textNode && cursorDetails.textNode.parentNode.hasAttribute("data-deletable")) {
 					event.preventDefault();
@@ -162,7 +222,51 @@ function SelectionTracker() {
 
 			
 			
+		},*/
+		deleteHandler: function (event) {
+			if (this.selectedNode && event.keyCode == 8) {
+				this.removeCurrentEntityIfAllowed()
+				event.stopPropagation();
+				event.preventDefault();
+			}
 		},
+	
+	removeCurrentEntityIfAllowed: function () {
+		//you cannot remove tokens or conditionals if they are part of a translation
+		if (this.selectedNode) {
+			var entityType = this.selectedNode.getAttribute("data-entity-node"),
+				deleteAllowed = false;
+			if (entityType) {
+				if (entityType == "conditional") {
+					this.collapser.collapse(this.selectedNode);
+
+				} else 
+					if (entityType == "translation") {
+						deleteAllowed = true;
+					} else {
+						if (entityType == "token") {
+							deleteAllowed = true;
+						}
+						var currentNode = this.selectedNode;
+						while (currentNode && currentNode!=this.element) {
+							if (currentNode.getAttribute("data-entity-node") == "translation") {
+								deleteAllowed = false;
+								break;
+							}
+							currentNode = currentNode.parentNode;
+						}
+					}
+					if (deleteAllowed) {
+						this.selectedNode.parentNode.removeChild(this.selectedNode);
+						this.selectedNode = null;
+					}
+
+			}
+			if (typeof CKEDITOR != "undefined" && CKEDITOR.currentInstance) {
+				CKEDITOR.currentInstance.fire("saveSnapshot");
+			}
+		}
+	},
 		backspaceHandler: function (event) {
 			var cursorDetails = this.getCursorDetails(event);
 			if (!cursorDetails.textNode && !cursorDetails.beforeElement) {
@@ -388,7 +492,7 @@ function SelectionTracker() {
 		getEntityElement: function (element) {//slightly different to entities helper method
 			if (element) {
 				while (element && element!=this.element) {
-					if (element.hasAttribute && element.hasAttribute("data-entity-node") && element.getAttribute("data-entity-node")!="user") return element;
+					if (element.hasAttribute && element.hasAttribute("data-entity-node")) return element;
 					element = element.parentNode;
 				}
 			}

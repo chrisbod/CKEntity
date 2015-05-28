@@ -7,9 +7,10 @@ UserConditionalManager.prototype = {
 	active: false,
 	init: function (editableElement) {
 		this.editableElement = editableElement;
+		this.document = this.editableElement.ownerDocument;
 		this.editableElement.addEventListener("keyup", this,true)
-		this.editableElement.addEventListener("keydown", this);
-		this.editableDocument = this.editableElement.ownerDocument;
+		this.document.addEventListener("keydown", this, true);
+		
 		this.generateUserConditionalTemplateNode()
 	},
 	handleEvent: function (event) {
@@ -23,14 +24,26 @@ UserConditionalManager.prototype = {
 	},
 	keydownHandler: function (event) {
 		switch (event.keyCode) {
-			//case 8: return this.checkDelete(event);
+			case 13: return this.handleEnter(event)
+			case 8: return this.checkDelete(event);
+		}
+	},
+	handleEnter: function (event) {
+		if (event.shiftKey) {
+			return
+		}
+		var selectionTracker = SelectionTracker.getInstance(),
+			wasMadeBlock = selectionTracker.makeEntityBlockLevel();
+		if (wasMadeBlock) {
+			event.preventDefault();
+			event.stopPropagation();
 		}
 	},
 	inputHandler: function (event) {
 		console.log("here")
 	}, 
 	openSquareBrackets: function (event) {
-		var selection = this.editableDocument.getSelection(),
+		var selection = this.document.getSelection(),
 			range = selection.getRangeAt(0),
 			conditional = this.conditionalTemplateNode.cloneNode(true);
 		if (range.collapsed == true) {
@@ -44,9 +57,9 @@ UserConditionalManager.prototype = {
 					sibling.splitText(1)
 				}
 				sibling.parentNode.replaceChild(conditional,sibling)
-				//conditional.parentNode.insertBefore(this.editableDocument.createTextNode("\u00A0"),conditional.nextSibling)
+				//conditional.parentNode.insertBefore(this.document.createTextNode("\u00A0"),conditional.nextSibling)
 				selection.removeAllRanges();
-				selection.selectAllChildren(conditional.querySelector(".contents.conditional"));
+				selection.selectAllChildren(conditional.querySelector(".contents.conditional *[contenteditable=true]"));
 				selection.collapseToEnd()
 				event.preventDefault()
 				event.stopPropagation()
@@ -58,50 +71,43 @@ UserConditionalManager.prototype = {
 		}
 	},
 	checkDelete: function (event) {
-		var selection = this.editableDocument.getSelection();
+		var selection = this.document.getSelection();
 		//console.log(selection)
 		//console.log(event.currentTarget)
 		
-		var entity = this.entitiesHelper.getEntityElement(selection.anchorNode);
-		
-		if (entity && entity.classList.contains("user")) {
-			if (!this.isValidUserEntity(entity)) {
-				var contentNode = entity.firstChild;
-				var removed = false;
-				while (contentNode) {
-					if (contentNode.nodeType!=3) {
-						if (contentNode.classList.contains("contents")) {
-							contentNode.className = '';
-							entity.parentNode.replaceChild(contentNode,entity);
-							removed = true;
-							break;
-						}
-					} 
-					contentNode = contentNode.nextSibling;
-				}
-				if (!removed) {
-					entity.parentNode.replaceChild(document.createTextNode(" "),entity)
-				}
+		var entity = this.getUserEntityElement(selection.anchorNode);
+		if (entity) {
+			if (entity.innerText == "[]") {
 			}
+		} else {
+			//debugger;
 		}
+		
+	},
+	getUserEntityElement: function (node) {
+		while (node && node != this.document.body) {
+			if (node.hasAttribute && node.getAttribute("data-entity-node") == "user") {
+				return node
+			}
+			node = node.parentNode
+		}
+		return null;
 	},
 	generateUserConditionalTemplateNode: function () {
-		var conditional = document.createElement("section");
+		var conditional = this.document.createElement("conditional");
 		conditional.className = "user conditional"
-		conditional.style.display = "inline"
 		conditional.contenteditable = false;
 		conditional.setAttribute("data-args","type: 'user'");
-		conditional.innerHTML = '<section style="display: inline" class="contents conditional"> &nbsp;</span>'
-		var editSpan = document.createElement("section");
+		conditional.innerHTML = '<span class="args conditional" contenteditable="false" data-args>[</span><span class="contents conditional" contenteditable="false"><span contenteditable=true>  </span></span><span class="conditional end" contenteditable="false" data-args>]</span></span>'
+		var editSpan = this.document.createElement("div");
 		editSpan.className = "entity-wrapper";
-		editSpan.style.display = "inline"
 		editSpan.appendChild(conditional)
 		editSpan.setAttribute("data-entity-node","user")
 		this.conditionalTemplateNode = editSpan;
 
 	},
 	isValidUserEntity: function (entity) {
-		if (!entity.firstChild.classList || !entity.firstChild.classList.contains("args")) {
+		if (!entity.firstChild.classList || !entity.firstChild.classList.contains("conditional")) {
 			return false
 		}
 		if (!entity.lastChild.classList || !entity.lastChild.classList.contains("end")) {
