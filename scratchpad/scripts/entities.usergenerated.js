@@ -78,6 +78,7 @@ UserConditionalManager.prototype = {
 		var entity = this.getUserEntityElement(selection.anchorNode);
 		if (entity) {
 			if (entity.innerText == "[]") {
+				entity.parentNode.removeChild(entity)
 			}
 		} else {
 			//debugger;

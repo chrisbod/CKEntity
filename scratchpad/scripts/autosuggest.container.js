@@ -39,6 +39,7 @@ function AutoSuggestContainer(id, tokenizer) {
 	},
 	
 	hide: function () {
+		console.log(arguments.callee.caller)
 		this.firstOption = null;
 		this.element.style.visibility = "";
 		if (this.focussedElement) {
@@ -123,14 +124,23 @@ function AutoSuggestContainer(id, tokenizer) {
 		}
 	},
 	keydownHandler: function (event) {
-		if (event.keyCode == 13 && event.target.ownerDocument == this.editableDocument) {
-			return this.enter(event);
+		if (event.target.ownerDocument == this.editableDocument) {
+			if (event.keyCode == 13) {
+				return this.enter(event);
+			} else {
+				return
+			}
+
 		}
+		
 		
 		switch (event.keyCode) {
 			case 40: return this.arrowDown(event);
 			case 38: return this.arrowUp(event);
-			default: return this.hide();
+			default: {
+				return this.hide();
+			}
+
 			
 		}
 	},
@@ -158,7 +168,7 @@ function AutoSuggestContainer(id, tokenizer) {
 
 			duplicateRange.setStartBefore(node);
 
-			console.log(duplicateRange)
+			
 			if (node.nextSibling && node.nextSibling.nodeType==3) {
 				duplicateRange.setEndAfter(node.nextSibling)
 			}
