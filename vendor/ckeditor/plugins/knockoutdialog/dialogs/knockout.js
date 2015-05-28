@@ -26,7 +26,7 @@ CKEDITOR.dialog.add( 'knockoutDialog', function( editor ) {
 		dialogContentsElement.style.maxWidth = "";
 		var naturalFlowedContentsRect = dialogContentsElement.getBoundingClientRect();
 		var newWidth = Math.min(naturalFlowedContentsRect.width,window.innerWidth)-40;
-		dialogContentsElement.style.maxWidth = newWidth+"px";
+		//dialogContentsElement.style.maxWidth = newWidth+"px";
 		dialogContentsElement.style.maxHeight = (dialogContentsElement.offsetHeight-40)+"px"
 		dialogContentsElement.style.minWidth = ((dialogContentsElement.offsetWidth/2)-40)+"px"
 		return parseInt(dialogContentsElement.style.minWidth);

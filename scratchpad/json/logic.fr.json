@@ -1,108 +1,125 @@
 [ {
-  "language" : "EN",
-  "text" : "Number of underlyings",
+  "language" : "FR",
+  "text" : "Nombre de sous-jacents",
   "items" : [ {
     "value" : "oneUnderlying",
-    "text" : "One"
+    "text" : "Un"
   }, {
     "value" : "oneOrMoreUnderlyings",
-    "text" : "At least one"
+    "text" : "Un ou plus"
   }, {
     "value" : "moreThanOneUnderlying",
-    "text" : "More than one"
+    "text" : "Plus d'un"
   }, {
     "value" : "moreThanOneUnderlying",
-    "text" : "Only"
+    "text" : "Exclusif"
   } ],
   "tagId" : 1058
 }, {
-  "language" : "EN",
-  "text" : "Quotation type",
+  "language" : "FR",
+  "text" : "Type de cotation",
   "items" : [ {
     "value" : "parValue",
-    "text" : "Par value"
+    "text" : "Valeur nominale"
   }, {
     "value" : "nonParValue",
-    "text" : "Non-par value"
+    "text" : "Valeur non-nominale"
   } ],
   "tagId" : 1060
 }, {
-  "language" : "EN",
-  "text" : "Security type",
+  "language" : "FR",
+  "text" : "Type de cotation",
   "items" : [ {
     "value" : "note",
-    "text" : "Note"
+    "text" : "Obligation"
   }, {
     "value" : "certificate",
-    "text" : "Certificate"
+    "text" : "Certificat"
   }, {
     "value" : "warrant",
-    "text" : "Warrant"
+    "text" : "Option"
   } ],
   "tagId" : 1057
 }, {
-  "language" : "EN",
-  "text" : "Settlement type",
+  "language" : "FR",
+  "text" : "Type de règlement",
   "items" : [ {
     "value" : "cash",
-    "text" : "Cash"
+    "text" : "Espèces"
   }, {
     "value" : "cashOrPhysical",
-    "text" : "Cash or physical"
+    "text" : "Espèces ou physique"
   } ],
   "tagId" : 1064
 }, {
-  "language" : "EN",
-  "text" : "Product type",
+  "language" : "FR",
+  "text" : "Type de produit",
   "items" : [ {
     "value" : "bonusCertificate",
-    "text" : "Bonus certificate"
+    "text" : "Certificat de bonus"
   }, {
     "value" : "discountCertificate",
-    "text" : "Discount certificate"
+    "text" : "Certificat d'escompte"
   }, {
     "value" : "expressCertificate",
-    "text" : "Express certificate"
+    "text" : "Certificat d'express"
   }, {
     "value" : "sprintCertificate",
-    "text" : "Sprint certificate"
+    "text" : "Certificat de sprint"
   }, {
     "value" : "reverseConvertible",
     "text" : "Reverse convertible"
   }, {
     "value" : "turboCertificate",
-    "text" : "Turbo certificate"
+    "text" : "Certificat de turbo"
   }, {
     "value" : "warrant",
-    "text" : "Warrant"
+    "text" : "Optionsschein"
   }, {
     "value" : "callOption",
-    "text" : "Call option"
+    "text" : "Option d'achat"
   }, {
     "value" : "putOption",
-    "text" : "Put option"
+    "text" : "Option de vente"
   } ],
   "tagId" : 1056
 }, {
-  "language" : "EN",
-  "text" : "Upside style",
+  "language" : "FR",
+  "text" : "Paiement en cas de baisse de prix",
+  "items" : [ {
+    "value" : "kiPutAtMaturityAtTheClose",
+    "text" : "KI put à l'échéance à la clôture"
+  }, {
+    "value" : "kiDailyAtTheClose",
+    "text" : "KI put quotidiennement à la clôture"
+  }, {
+    "value" : "kiPutContinuous",
+    "text" : "KI put en continu"
+  }, {
+    "value" : "vanillaPut",
+    "text" : "Vanilla put"
+  } ],
+  "tagId" : 1070
+}, {
+  "language" : "FR",
+  "text" : "Paiement en cas de hausse de prix",
   "items" : [ {
     "value" : "digital",
     "text" : "Digital"
   }, {
     "value" : "participationInCall",
-    "text" : "Participation in call"
+    "text" : "Participation au call"
   }, {
     "value" : "participationInCallSpread",
-    "text" : "Participation in call spread"
+    "text" : "Participation au call spread"
   } ],
   "tagId" : 1069
 }, {
-  "language" : "EN",
-  "text" : "Listing",
+  "language" : "FR",
+  "text" : "Inscription",
   "items" : [ {
     "value" : "unlisted",
-    "text" : "Unlisted"
+    "text" : "Non cotées"
   }, {
     "value" : "luxembourg",
     "text" : "Luxembourg"
@@ -112,143 +129,126 @@
   } ],
   "tagId" : 1072
 }, {
-  "language" : "EN",
-  "text" : "Memory coupon applies",
+  "language" : "FR",
+  "text" : "Mémoire coupon",
   "items" : [ {
     "value" : "yes",
-    "text" : "Yes"
+    "text" : "Oui"
   }, {
     "value" : "no",
-    "text" : "No"
+    "text" : "Non"
   } ],
   "tagId" : 1068
 }, {
-  "language" : "EN",
-  "text" : "Barrier breached",
+  "language" : "FR",
+  "text" : "Barrière touchée",
   "items" : [ {
     "value" : "yes",
-    "text" : "Yes"
+    "text" : "Oui"
   }, {
     "value" : "no",
-    "text" : "No"
+    "text" : "Non"
   } ],
   "tagId" : 1071
 }, {
-  "language" : "EN",
-  "text" : "Business day convention",
+  "language" : "FR",
+  "text" : "Convention d'affaires de la journée",
   "items" : [ {
     "value" : "following",
-    "text" : "Following"
+    "text" : "Suivant"
   }, {
     "value" : "modifiedFollowing",
-    "text" : "Modified following"
+    "text" : "Suivant modifiée"
   }, {
     "value" : "preceding",
-    "text" : "Preceding"
+    "text" : "Précédente"
   } ],
   "tagId" : 1065
 }, {
-  "language" : "EN",
-  "text" : "Contingent coupon applies",
+  "language" : "FR",
+  "text" : "Coupon conditionelle",
   "items" : [ {
     "value" : "yes",
-    "text" : "Yes"
+    "text" : "Oui"
   }, {
     "value" : "no",
-    "text" : "No"
+    "text" : "Non"
   } ],
   "tagId" : 1067
 }, {
-  "language" : "EN",
-  "text" : "FX risk applies",
+  "language" : "FR",
+  "text" : "Risque de change",
   "items" : [ {
     "value" : "yes",
-    "text" : "Yes"
+    "text" : "Oui"
   }, {
     "value" : "no",
-    "text" : "No"
+    "text" : "Non"
   } ],
   "tagId" : 1062
 }, {
-  "language" : "EN",
-  "text" : "Quanto applies",
+  "language" : "FR",
+  "text" : "Quanto",
   "items" : [ {
     "value" : "yes",
-    "text" : "Yes"
+    "text" : "Oui"
   }, {
     "value" : "no",
-    "text" : "No"
+    "text" : "Non"
   } ],
   "tagId" : 1063
 }, {
-  "language" : "EN",
-  "text" : "Secondary market applies",
+  "language" : "FR",
+  "text" : "Marché secondaire",
   "items" : [ {
     "value" : "yes",
-    "text" : "Yes"
+    "text" : "Oui"
   }, {
     "value" : "no",
-    "text" : "No"
+    "text" : "Non"
   } ],
   "tagId" : 1073
 }, {
-  "language" : "EN",
-  "text" : "Coupon type",
+  "language" : "FR",
+  "text" : "Type de taux d'intérêt",
   "items" : [ {
     "value" : "fixed",
-    "text" : "Fixed"
+    "text" : "Fixe"
   }, {
     "value" : "floating",
-    "text" : "Floating"
+    "text" : "Variable"
   } ],
   "tagId" : 1066
 }, {
-  "language" : "EN",
-  "text" : "Downside style",
-  "items" : [ {
-    "value" : "kiPutAtMaturityAtTheClose",
-    "text" : "KI put at maturity at the close"
-  }, {
-    "value" : "kiDailyAtTheClose",
-    "text" : "KI put daily at the close"
-  }, {
-    "value" : "kiPutContinuous",
-    "text" : "KI put continuous"
-  }, {
-    "value" : "vanillaPut",
-    "text" : "Vanilla put"
-  } ],
-  "tagId" : 1070
-}, {
-  "language" : "EN",
-  "text" : "Underlying type",
+  "language" : "FR",
+  "text" : "Type de sous-jacent",
   "items" : [ {
     "value" : "share",
-    "text" : "Share"
+    "text" : "Action"
   }, {
     "value" : "preferenceShare",
-    "text" : "Preference share"
+    "text" : "Action de préférence"
   }, {
     "value" : "profitParticipationCertificate",
-    "text" : "Profit participation certificate"
+    "text" : "Certificat de participation aux bénéfices"
   }, {
     "value" : "ADR",
     "text" : "ADR"
   }, {
     "value" : "certificate",
-    "text" : "Certificate"
+    "text" : "Certificat"
   }, {
     "value" : "warrant",
-    "text" : "Warrant"
+    "text" : "Option"
   }, {
     "value" : "index",
-    "text" : "Index"
+    "text" : "Indice"
   }, {
     "value" : "ETF",
     "text" : "ETF"
   }, {
     "value" : "commodity",
-    "text" : "Commodity"
+    "text" : "Marchandise"
   } ],
   "tagId" : 1059
 } ]

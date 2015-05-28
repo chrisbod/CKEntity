@@ -1,1391 +1,998 @@
-[
-	{
-		"id": "issueDate",
-		"text": "Ausgabetag",
-		"preview": "01.01.2017",
-		"groups": [
-			{
-				"label": "Format",				
-				"controls": [
-					{
-						"type": "radio",
-						"id": "format",
-						"options": [
-							{
-								"value": "short",
-								"text": "Kurzformat (z.B. 01.01.2017)"
-							},
-							{
-								"value": "long",
-								"text": "Langformat (z.B. 1. Januar 2017)"
-							}
-						]
-					}
-				]
-			}
-		]
-	},
-	{
-		"id": "currentTime",
-		"text": "Aktuelle Uhrzeit",
-		"preview": "19:20",
-		"groups": [
-			{
-				"label": "Format",				
-				"controls": [
-					{
-						"type": "radio",
-						"id": "format",
-						"options": [
-							{
-								"value": "HH:mm",
-								"text": "HH:mm"
-							},
-							{
-								"value": "HH:mm:ss",
-								"text": "HH:mm:ss"
-							},
-							{
-								"value": "yyyy-MM-ddTHH:mm",
-								"text": "yyyy-MM-ddTHH:mm"
-							},
-							{
-								"value": "yyyy-MM-ddTHH:mm:ss",
-								"text": "yyyy-MM-ddTHH:mm:ss"
-							}
-						]
-					}
-				]
-			}
-		]
-	},
-	{
-		"id": "finalValuationDate",
-		"text": "Endgültiger Bewertungstag",
-		"preview": "01.01.2017",
-		"groups": [
-			{
-				"label": "Format",				
-				"controls": [
-					{
-						"type": "radio",
-						"id": "format",
-						"options": [
-							{
-								"value": "short",
-								"text": "Kurzformat (z.B. 01.01.2017)"
-							},
-							{
-								"value": "long",
-								"text": "Langformat (z.B. 1. Januar 2017)"
-							}
-						]
-					}
-				]
-			}
-		]
-	},
-	{
-		"id": "maturityDate",
-		"text": "Fälligkeitstag",
-		"preview": "01.01.2017",
-		"groups": [
-			{
-				"label": "Format",				
-				"controls": [
-					{
-						"type": "radio",
-						"id": "format",
-						"options": [
-							{
-								"value": "short",
-								"text": "Kurzformat (z.B. 01.01.2017)"
-							},
-							{
-								"value": "long",
-								"text": "Langformat (z.B. 1. Januar 2017)"
-							}
-						]
-					}
-				]
-			}
-		]
-	},
-	{
-		"id": "productCurrency",
-		"text": "Produktwaehrung",
-		"preview": "CUR",
-		"groups": [
-			{
-				"label": "Format",				
-				"controls": [
-					{
-						"type": "radio",
-						"id": "format",
-						"options": [
-							{
-								"value": "symbol",
-								"text": "Symbol (z.B. €)"
-							},
-							{
-								"value": "short",
-								"text": "Kurzformat (z.B. EUR)"
-							},
-							{
-								"value": "long",
-								"text": "Langformat (z.B. Euro)"
-							}
-						]
-					}
-				]
-			}
-		]
-	},
-	{
-		"id": "underlyingName",
-		"text": "Name des Basiswerts",
-		"preview": "the SX5E Index",
-		"groups": [
-			{
-				"label": "Format",
-				"controls": [
-					{
-						"type": "radio",
-						"id": "format",
-						"options": [
-							{
-								"value": "short",
-								"text": "Kurzformat (z.B. SX5E)"
-							},
-							{
-								"value": "long",
-								"text": "Langformat (z.B. EURO STOXX 50 Index)"
-							}
-						]
-					}
-				]
-			}
-		]
-	},
-	{
-		"id": "underlyingCurrency",
-		"text": "Waehrung des Basiswerts",
-		"preview": "CUR",
-		"groups": [
-			{
-				"label": "Format",
-				"controls": [
-					{
-						"type": "radio",
-						"id": "format",
-						"options": [
-							{
-								"value": "symbol",
-								"text": "Symbol (z.B. €)"
-							},
-							{
-								"value": "short",
-								"text": "Kurzformat (z.B. EUR)"
-							},
-							{
-								"value": "long",
-								"text": "Langformat (z.B. Euro)"
-							}
-						]
-					}
-				]
-			}
-		]
-	},
-	{
-		"id": "denomination",
-		"text": "Stueckelung",
-		"preview": "CUR 123.45",
-		"groups": [
-			{
-				"label": "Format",
-				"controls": [
-					{
-						"type": "radio",
-						"id": "format",
-						"options": [
-							{
-								"value": "auto",
-								"text": "Automatisch"
-							},
-							{
-								"value": "currency",
-								"text": "Waehrung + absoluter Betrag"
-							},
-							{
-								"value": "absolute",
-								"text": "Absoluter Betrag"
-							}
-						]
-					}
-				]
-			},
-			{
-				"label": "Nachkommastellen",				
-				"controls": [
-					{
-						"type": "select",
-						"id": "decimals",
-						"options": [
-							{
-								"value": "default",
-								"text": "Tatsaechlich"
-							},
-							{
-								"value": "0",
-								"text": "0"
-							},
-							{
-								"value": "1",
-								"text": "1"
-							},
-							{
-								"value": "2",
-								"text": "2"
-							},
-							{
-								"value": "2+",
-								"text": "2+"
-							},
-							{
-								"value": "2-3",
-								"text": "2-3"
-							},
-							{
-								"value": "2-4",
-								"text": "2-4"
-							},
-							{
-								"value": "2-5",
-								"text": "2-5"
-							},
-							{
-								"value": "2-6",
-								"text": "2-6"
-							},
-							{
-								"value": "2-7",
-								"text": "2-7"
-							},
-							{
-								"value": "3",
-								"text": "3"
-							},
-							{
-								"value": "4",
-								"text": "4"
-							},
-							{
-								"value": "5",
-								"text": "5"
-							},
-							{
-								"value": "6",
-								"text": "6"
-							},
-							{
-								"value": "6",
-								"text": "7"
-							}
-						]
-					}
-				]
-			}
-		]
-	},
-	{
-		"id": "referenceAmount",
-		"text": "Nennwert",
-		"preview": "CUR 123.45",
-		"groups": [
-			{
-				"label": "Format",
-				"controls": [
-					{
-						"type": "radio",
-						"id": "format",
-						"options": [
-							{
-								"value": "auto",
-								"text": "Automatisch"
-							},
-							{
-								"value": "currency",
-								"text": "Waehrung + absoluter Betrag"
-							},
-							{
-								"value": "absolute",
-								"text": "Absoluter Betrag"
-							}
-						]
-					}
-				]
-			},
-			{
-				"label": "Nachkommastellen",				
-				"controls": [
-					{
-						"type": "select",
-						"id": "decimals",
-						"options": [
-							{
-								"value": "default",
-								"text": "Tatsaechlich"
-							},
-							{
-								"value": "0",
-								"text": "0"
-							},
-							{
-								"value": "1",
-								"text": "1"
-							},
-							{
-								"value": "2",
-								"text": "2"
-							},
-							{
-								"value": "2+",
-								"text": "2+"
-							},
-							{
-								"value": "2-3",
-								"text": "2-3"
-							},
-							{
-								"value": "2-4",
-								"text": "2-4"
-							},
-							{
-								"value": "2-5",
-								"text": "2-5"
-							},
-							{
-								"value": "2-6",
-								"text": "2-6"
-							},
-							{
-								"value": "2-7",
-								"text": "2-7"
-							},
-							{
-								"value": "3",
-								"text": "3"
-							},
-							{
-								"value": "4",
-								"text": "4"
-							},
-							{
-								"value": "5",
-								"text": "5"
-							},
-							{
-								"value": "6",
-								"text": "6"
-							},
-							{
-								"value": "6",
-								"text": "7"
-							}
-						]
-					}
-				]
-			}
-		]
-	},
-	{
-		"id": "minimumInvestment",
-		"text": "Mindestanlage",
-		"preview": "CUR 123.45",
-		"groups": [
-			{
-				"label": "Format",
-				"controls": [
-					{
-						"type": "radio",
-						"id": "format",
-						"options": [
-							{
-								"value": "auto",
-								"text": "Automatisch"
-							},
-							{
-								"value": "currency",
-								"text": "Waehrung + absoluter Betrag"
-							},
-							{
-								"value": "absolute",
-								"text": "Absoluter Betrag"
-							}
-						]
-					}
-				]
-			},
-			{
-				"label": "Nachkommastellen",				
-				"controls": [
-					{
-						"type": "select",
-						"id": "decimals",
-						"options": [
-							{
-								"value": "default",
-								"text": "Tatsaechlich"
-							},
-							{
-								"value": "0",
-								"text": "0"
-							},
-							{
-								"value": "1",
-								"text": "1"
-							},
-							{
-								"value": "2",
-								"text": "2"
-							},
-							{
-								"value": "2+",
-								"text": "2+"
-							},
-							{
-								"value": "2-3",
-								"text": "2-3"
-							},
-							{
-								"value": "2-4",
-								"text": "2-4"
-							},
-							{
-								"value": "2-5",
-								"text": "2-5"
-							},
-							{
-								"value": "2-6",
-								"text": "2-6"
-							},
-							{
-								"value": "2-7",
-								"text": "2-7"
-							},
-							{
-								"value": "3",
-								"text": "3"
-							},
-							{
-								"value": "4",
-								"text": "4"
-							},
-							{
-								"value": "5",
-								"text": "5"
-							},
-							{
-								"value": "6",
-								"text": "6"
-							},
-							{
-								"value": "6",
-								"text": "7"
-							}
-						]
-					}
-				]
-			}
-		]
-	},
-	{
-		"id": "aggregatePrincipalAmount",
-		"text": "Gesamtbetrag",
-		"preview": "CUR 123.45",
-		"groups": [
-			{
-				"label": "Format",
-				"controls": [
-					{
-						"type": "radio",
-						"id": "format",
-						"options": [
-							{
-								"value": "auto",
-								"text": "Automatisch"
-							},
-							{
-								"value": "currency",
-								"text": "Waehrung + absoluter Betrag"
-							},
-							{
-								"value": "absolute",
-								"text": "Absoluter Betrag"
-							}
-						]
-					}
-				]
-			},
-			{
-				"label": "Nachkommastellen",				
-				"controls": [
-					{
-						"type": "select",
-						"id": "decimals",
-						"options": [
-							{
-								"value": "default",
-								"text": "Tatsaechlich"
-							},
-							{
-								"value": "0",
-								"text": "0"
-							},
-							{
-								"value": "1",
-								"text": "1"
-							},
-							{
-								"value": "2",
-								"text": "2"
-							},
-							{
-								"value": "2+",
-								"text": "2+"
-							},
-							{
-								"value": "2-3",
-								"text": "2-3"
-							},
-							{
-								"value": "2-4",
-								"text": "2-4"
-							},
-							{
-								"value": "2-5",
-								"text": "2-5"
-							},
-							{
-								"value": "2-6",
-								"text": "2-6"
-							},
-							{
-								"value": "2-7",
-								"text": "2-7"
-							},
-							{
-								"value": "3",
-								"text": "3"
-							},
-							{
-								"value": "4",
-								"text": "4"
-							},
-							{
-								"value": "5",
-								"text": "5"
-							},
-							{
-								"value": "6",
-								"text": "6"
-							},
-							{
-								"value": "6",
-								"text": "7"
-							}
-						]
-					}
-				]
-			}
-		]
-	},
-	{
-		"id": "cap",
-		"text": "Cap",
-		"preview": "CUR 123.45",
-		"groups": [
-			{
-				"label": "Format",
-				"controls": [
-					{
-						"type": "radio",
-						"id": "format",
-						"options": [
-							{
-								"value": "auto",
-								"text": "Automatisch"
-							},
-							{
-								"value": "currency",
-								"text": "Waehrung + absoluter Betrag"
-							},
-							{
-								"value": "absolute",
-								"text": "Absoluter Betrag"
-							},
-							{
-								"value": "percentage",
-								"text": "Prozentsatz (relativ zum anfaenglichen Referenzpreis)"
-							}
-						]
-					}
-				]
-			},
-			{
-				"label": "Nachkommastellen",				
-				"controls": [
-					{
-						"type": "select",
-						"id": "decimals",
-						"options": [
-							{
-								"value": "default",
-								"text": "Tatsaechlich"
-							},
-							{
-								"value": "0",
-								"text": "0"
-							},
-							{
-								"value": "1",
-								"text": "1"
-							},
-							{
-								"value": "2",
-								"text": "2"
-							},
-							{
-								"value": "2+",
-								"text": "2+"
-							},
-							{
-								"value": "2-3",
-								"text": "2-3"
-							},
-							{
-								"value": "2-4",
-								"text": "2-4"
-							},
-							{
-								"value": "2-5",
-								"text": "2-5"
-							},
-							{
-								"value": "2-6",
-								"text": "2-6"
-							},
-							{
-								"value": "2-7",
-								"text": "2-7"
-							},
-							{
-								"value": "3",
-								"text": "3"
-							},
-							{
-								"value": "4",
-								"text": "4"
-							},
-							{
-								"value": "5",
-								"text": "5"
-							},
-							{
-								"value": "6",
-								"text": "6"
-							},
-							{
-								"value": "6",
-								"text": "7"
-							}
-						]
-					}
-				]
-			}
-		]
-	},
-	{
-		"id": "maximumAmount",
-		"text": "Hoechstbetrag",
-		"preview": "CUR 123.45",
-		"groups": [
-			{
-				"label": "Format",
-				"controls": [
-					{
-						"type": "radio",
-						"id": "format",
-						"options": [
-							{
-								"value": "auto",
-								"text": "Automatisch"
-							},
-							{
-								"value": "currency",
-								"text": "Waehrung + absoluter Betrag"
-							},
-							{
-								"value": "absolute",
-								"text": "Absoluter Betrag"
-							},
-							{
-								"value": "percentage",
-								"text": "Prozentsatz"
-							}
-						]
-					}
-				]
-			},
-			{
-				"label": "Nachkommastellen",
-				"controls": [
-					{
-						"type": "select",
-						"id": "decimals",
-						"options": [
-							{
-								"value": "default",
-								"text": "Tatsaechlich"
-							},
-							{
-								"value": "0",
-								"text": "0"
-							},
-							{
-								"value": "1",
-								"text": "1"
-							},
-							{
-								"value": "2",
-								"text": "2"
-							},
-							{
-								"value": "2+",
-								"text": "2+"
-							},
-							{
-								"value": "2-3",
-								"text": "2-3"
-							},
-							{
-								"value": "2-4",
-								"text": "2-4"
-							},
-							{
-								"value": "2-5",
-								"text": "2-5"
-							},
-							{
-								"value": "2-6",
-								"text": "2-6"
-							},
-							{
-								"value": "2-7",
-								"text": "2-7"
-							},
-							{
-								"value": "3",
-								"text": "3"
-							},
-							{
-								"value": "4",
-								"text": "4"
-							},
-							{
-								"value": "5",
-								"text": "5"
-							},
-							{
-								"value": "6",
-								"text": "6"
-							},
-							{
-								"value": "6",
-								"text": "7"
-							}
-						]
-					}
-				]
-			}
-		]
-	},
-	{
-		"id": "bonusLevel",
-		"text": "Bonuslevel",
-		"preview": "CUR 123.45",
-		"groups": [
-			{
-				"label": "Format",
-				"controls": [
-					{
-						"type": "radio",
-						"id": "format",
-						"options": [
-							{
-								"value": "auto",
-								"text": "Automatisch"
-							},
-							{
-								"value": "currency",
-								"text": "Waehrung + absoluter Betrag"
-							},
-							{
-								"value": "absolute",
-								"text": "Absoluter Betrag"
-							},
-							{
-								"value": "percentage",
-								"text": "Prozentsatz (relativ zum anfaenglichen Referenzpreis)"
-							}
-						]
-					}
-				]
-			},
-			{
-				"label": "Nachkommastellen",				
-				"controls": [
-					{
-						"type": "select",
-						"id": "decimals",
-						"options": [
-							{
-								"value": "default",
-								"text": "Tatsaechlich"
-							},
-							{
-								"value": "0",
-								"text": "0"
-							},
-							{
-								"value": "1",
-								"text": "1"
-							},
-							{
-								"value": "2",
-								"text": "2"
-							},
-							{
-								"value": "2+",
-								"text": "2+"
-							},
-							{
-								"value": "2-3",
-								"text": "2-3"
-							},
-							{
-								"value": "2-4",
-								"text": "2-4"
-							},
-							{
-								"value": "2-5",
-								"text": "2-5"
-							},
-							{
-								"value": "2-6",
-								"text": "2-6"
-							},
-							{
-								"value": "2-7",
-								"text": "2-7"
-							},
-							{
-								"value": "3",
-								"text": "3"
-							},
-							{
-								"value": "4",
-								"text": "4"
-							},
-							{
-								"value": "5",
-								"text": "5"
-							},
-							{
-								"value": "6",
-								"text": "6"
-							},
-							{
-								"value": "6",
-								"text": "7"
-							}
-						]
-					}
-				]
-			}
-		]
-	},
-	{
-		"id": "bonusAmount",
-		"text": "Bonusbetrag",
-		"preview": "CUR 123.45",
-		"groups": [
-			{
-				"label": "Format",
-				"controls": [
-					{
-						"type": "radio",
-						"id": "format",
-						"options": [
-							{
-								"value": "auto",
-								"text": "Automatisch"
-							},
-							{
-								"value": "currency",
-								"text": "Waehrung + absoluter Betrag"
-							},
-							{
-								"value": "absolute",
-								"text": "Absoluter Betrag"
-							},
-							{
-								"value": "percentage",
-								"text": "Prozentsatz"
-							}
-						]
-					}
-				]
-			},
-			{
-				"label": "Nachkommastellen",				
-				"controls": [
-					{
-						"type": "select",
-						"id": "decimals",
-						"options": [
-							{
-								"value": "default",
-								"text": "Tatsaechlich"
-							},
-							{
-								"value": "0",
-								"text": "0"
-							},
-							{
-								"value": "1",
-								"text": "1"
-							},
-							{
-								"value": "2",
-								"text": "2"
-							},
-							{
-								"value": "2+",
-								"text": "2+"
-							},
-							{
-								"value": "2-3",
-								"text": "2-3"
-							},
-							{
-								"value": "2-4",
-								"text": "2-4"
-							},
-							{
-								"value": "2-5",
-								"text": "2-5"
-							},
-							{
-								"value": "2-6",
-								"text": "2-6"
-							},
-							{
-								"value": "2-7",
-								"text": "2-7"
-							},
-							{
-								"value": "3",
-								"text": "3"
-							},
-							{
-								"value": "4",
-								"text": "4"
-							},
-							{
-								"value": "5",
-								"text": "5"
-							},
-							{
-								"value": "6",
-								"text": "6"
-							},
-							{
-								"value": "6",
-								"text": "7"
-							}
-						]
-					}
-				]
-			}
-		]
-	},
-	{
-		"id": "couponBarrier",
-		"text": "Zinsbarriere",
-		"preview": "CUR 123.45",
-		"groups": [
-			{
-				"label": "Format",
-				"controls": [
-					{
-						"type": "radio",
-						"id": "format",
-						"options": [
-							{
-								"value": "auto",
-								"text": "Automatisch"
-							},
-							{
-								"value": "currency",
-								"text": "Waehrung + absoluter Betrag"
-							},
-							{
-								"value": "absolute",
-								"text": "Absoluter Betrag"
-							},
-							{
-								"value": "percentage",
-								"text": "Prozentsatz (relativ zum anfaenglichen Referenzpreis)"
-							}
-						]
-					}
-				]
-			},
-			{
-				"label": "Nachkommastellen",				
-				"controls": [
-					{
-						"type": "select",
-						"id": "decimals",
-						"options": [
-							{
-								"value": "default",
-								"text": "Tatsaechlich"
-							},
-							{
-								"value": "0",
-								"text": "0"
-							},
-							{
-								"value": "1",
-								"text": "1"
-							},
-							{
-								"value": "2",
-								"text": "2"
-							},
-							{
-								"value": "2+",
-								"text": "2+"
-							},
-							{
-								"value": "2-3",
-								"text": "2-3"
-							},
-							{
-								"value": "2-4",
-								"text": "2-4"
-							},
-							{
-								"value": "2-5",
-								"text": "2-5"
-							},
-							{
-								"value": "2-6",
-								"text": "2-6"
-							},
-							{
-								"value": "2-7",
-								"text": "2-7"
-							},
-							{
-								"value": "3",
-								"text": "3"
-							},
-							{
-								"value": "4",
-								"text": "4"
-							},
-							{
-								"value": "5",
-								"text": "5"
-							},
-							{
-								"value": "6",
-								"text": "6"
-							},
-							{
-								"value": "6",
-								"text": "7"
-							}
-						]
-					}
-				]
-			}
-		]
-	},
-	{
-		"id": "knockInBarrier",
-		"text": "Knock in-Barriere",
-		"preview": "CUR 123.45",
-		"groups": [
-			{
-				"label": "Format",
-				"controls": [
-					{
-						"type": "radio",
-						"id": "format",
-						"options": [
-							{
-								"value": "auto",
-								"text": "Automatisch"
-							},
-							{
-								"value": "currency",
-								"text": "Waehrung + absoluter Betrag"
-							},
-							{
-								"value": "absolute",
-								"text": "Absoluter Betrag"
-							},
-							{
-								"value": "percentage",
-								"text": "Prozentsatz (relativ zum anfaenglichen Referenzpreis)"
-							}
-						]
-					}
-				]
-			},
-			{
-				"label": "Nachkommastellen",				
-				"controls": [
-					{
-						"type": "select",
-						"id": "decimals",
-						"options": [
-							{
-								"value": "default",
-								"text": "Tatsaechlich"
-							},
-							{
-								"value": "0",
-								"text": "0"
-							},
-							{
-								"value": "1",
-								"text": "1"
-							},
-							{
-								"value": "2",
-								"text": "2"
-							},
-							{
-								"value": "2+",
-								"text": "2+"
-							},
-							{
-								"value": "2-3",
-								"text": "2-3"
-							},
-							{
-								"value": "2-4",
-								"text": "2-4"
-							},
-							{
-								"value": "2-5",
-								"text": "2-5"
-							},
-							{
-								"value": "2-6",
-								"text": "2-6"
-							},
-							{
-								"value": "2-7",
-								"text": "2-7"
-							},
-							{
-								"value": "3",
-								"text": "3"
-							},
-							{
-								"value": "4",
-								"text": "4"
-							},
-							{
-								"value": "5",
-								"text": "5"
-							},
-							{
-								"value": "6",
-								"text": "6"
-							},
-							{
-								"value": "6",
-								"text": "7"
-							}
-						]
-					}
-				]
-			}
-		]
-	},
-	{
-		"id": "putStrike",
-		"text": "Put-Basispreis",
-		"preview": "CUR 123.45",
-		"groups": [
-			{
-				"label": "Format",
-				"controls": [
-					{
-						"type": "radio",
-						"id": "format",
-						"options": [
-							{
-								"value": "auto",
-								"text": "Automatisch"
-							},
-							{
-								"value": "currency",
-								"text": "Waehrung + absoluter Betrag"
-							},
-							{
-								"value": "absolute",
-								"text": "Absoluter Betrag"
-							},
-							{
-								"value": "percentage",
-								"text": "Prozentsatz (relativ zum anfaenglichen Referenzpreis)"
-							}
-						]
-					}
-				]
-			},
-			{
-				"label": "Nachkommastellen",				
-				"controls": [
-					{
-						"type": "select",
-						"id": "decimals",
-						"options": [
-							{
-								"value": "default",
-								"text": "Tatsaechlich"
-							},
-							{
-								"value": "0",
-								"text": "0"
-							},
-							{
-								"value": "1",
-								"text": "1"
-							},
-							{
-								"value": "2",
-								"text": "2"
-							},
-							{
-								"value": "2+",
-								"text": "2+"
-							},
-							{
-								"value": "2-3",
-								"text": "2-3"
-							},
-							{
-								"value": "2-4",
-								"text": "2-4"
-							},
-							{
-								"value": "2-5",
-								"text": "2-5"
-							},
-							{
-								"value": "2-6",
-								"text": "2-6"
-							},
-							{
-								"value": "2-7",
-								"text": "2-7"
-							},
-							{
-								"value": "3",
-								"text": "3"
-							},
-							{
-								"value": "4",
-								"text": "4"
-							},
-							{
-								"value": "5",
-								"text": "5"
-							},
-							{
-								"value": "6",
-								"text": "6"
-							},
-							{
-								"value": "6",
-								"text": "7"
-							}
-						]
-					}
-				]
-			}
-		]
-	},
-	{
-		"id": "scenarioTable",
-		"text": "Szenariotabelle",
-		"preview": "<table class=\"scenario-table\"><tr><th>Scenario table</th></tr><tr><td>&nbsp;</td></tr></table>",
-		"groups": [
-			{
-				"label": "Columns",
-				"controls": [
-					{
-						"type": "checkbox",
-						"value":"underlyingPrice",
-						"id" : "underlyingPrice",
-						"text": "Basiswert (Preis)"
-					},
-					{
-						"type": "checkbox",
-						"value":"underlyingReturn",
-						"id" : "underlyingReturn",
-						"text": "Basiswert (Rendite)"
-					},
-					{
-						"type": "checkbox",
-						"value":"derivativePrice",
-						"id" : "derivativePrice",
-						"text": "Derivat (Preis)"
-					},
-					{			 
-						"type": "checkbox",
-						"id" : "derivativeReturnGross",
-						"value": "derivativeReturnGross",
-						"text": "Derivat (Bruttorendite)"
-					},
-					{
-						"type": "checkbox",
-						"id": "derivativeReturnNet",
-						"value": "derivativeReturnNet",
-						"text": "Derivat (Nettorendite)"
-					}]
-			},
-			{
-				"label": "Options",				
-				"controls": [
-					{
-						"type": "checkbox",
-						"id":"colorDerivativeReturnNet",
-						"value": "colorDerivativeReturnNet",
-						"text": "Einfaerbung der Rendite des Derivats (rot, gelb, gruen)"
-					}
-				]
-			}
-		]
-	}
-]
+[ {
+  "preview" : "01.01.2017",
+  "groups" : [ {
+    "label" : "Format",
+    "controls" : [ {
+      "type" : "radio",
+      "id" : "format",
+      "options" : [ {
+        "value" : "short",
+        "text" : "Kurzform (z.B. 01.01.2017)"
+      }, {
+        "value" : "long",
+        "text" : "Langform (z.B. 1. Januar 2017)"
+      } ]
+    } ]
+  } ],
+  "language" : "DE",
+  "text" : "Emissionsdatum",
+  "tagId" : 1037
+}, {
+  "preview" : "01.01.2017",
+  "groups" : [ {
+    "label" : "Format",
+    "controls" : [ {
+      "type" : "radio",
+      "id" : "format",
+      "options" : [ {
+        "value" : "short",
+        "text" : "Kurzform (z.B. 01.01.2017)"
+      }, {
+        "value" : "long",
+        "text" : "Langform (z.B. 1. Januar 2017)"
+      } ]
+    } ]
+  } ],
+  "language" : "DE",
+  "text" : "Endgültiger Bewertungstag",
+  "tagId" : 1040
+}, {
+  "preview" : "01.01.2017",
+  "groups" : [ {
+    "label" : "Format",
+    "controls" : [ {
+      "type" : "radio",
+      "id" : "format",
+      "options" : [ {
+        "value" : "short",
+        "text" : "Kurzform (z.B. 01.01.2017)"
+      }, {
+        "value" : "long",
+        "text" : "Langform (z.B. 1. Januar 2017)"
+      } ]
+    } ]
+  } ],
+  "language" : "DE",
+  "text" : "Anfänglicher Bewertungstag",
+  "tagId" : 1039
+}, {
+  "preview" : "01.01.2017",
+  "groups" : [ {
+    "label" : "Format",
+    "controls" : [ {
+      "type" : "radio",
+      "id" : "format",
+      "options" : [ {
+        "value" : "short",
+        "text" : "Kurzform (z.B. 01.01.2017)"
+      }, {
+        "value" : "long",
+        "text" : "Langform (z.B. 1. Januar 2017)"
+      } ]
+    } ]
+  } ],
+  "language" : "DE",
+  "text" : "Fälligkeitsdatum",
+  "tagId" : 1038
+}, {
+  "preview" : "CUR 123,45",
+  "groups" : [ {
+    "label" : "Format",
+    "controls" : [ {
+      "type" : "radio",
+      "id" : "format",
+      "options" : [ {
+        "value" : "auto",
+        "text" : "Automatisch"
+      }, {
+        "value" : "currency",
+        "text" : "Waehrung + absoluter Betrag"
+      }, {
+        "value" : "absolute",
+        "text" : "Absoluter Betrag"
+      }, {
+        "value" : "percentage",
+        "text" : "Prozentsatz (relativ zum anfaenglichen Referenzpreis)"
+      } ]
+    } ]
+  }, {
+    "label" : "Nachkommastellen",
+    "controls" : [ {
+      "type" : "select",
+      "id" : "decimals",
+      "options" : [ {
+        "value" : "default",
+        "text" : "Tatsaechlich"
+      }, {
+        "value" : "0",
+        "text" : "0"
+      }, {
+        "value" : "1",
+        "text" : "1"
+      }, {
+        "value" : "2",
+        "text" : "2"
+      }, {
+        "value" : "2+",
+        "text" : "2+"
+      }, {
+        "value" : "2-3",
+        "text" : "2-3"
+      }, {
+        "value" : "2-4",
+        "text" : "2-4"
+      }, {
+        "value" : "2-5",
+        "text" : "2-5"
+      }, {
+        "value" : "2-6",
+        "text" : "2-6"
+      }, {
+        "value" : "2-7",
+        "text" : "2-7"
+      }, {
+        "value" : "3",
+        "text" : "3"
+      }, {
+        "value" : "4",
+        "text" : "4"
+      }, {
+        "value" : "5",
+        "text" : "5"
+      }, {
+        "value" : "6",
+        "text" : "6"
+      }, {
+        "value" : "6",
+        "text" : "7"
+      } ]
+    } ]
+  } ],
+  "language" : "DE",
+  "text" : "Zinsbarriere",
+  "tagId" : 1052
+}, {
+  "preview" : "CUR 123,45",
+  "groups" : [ {
+    "label" : "Format",
+    "controls" : [ {
+      "type" : "radio",
+      "id" : "format",
+      "options" : [ {
+        "value" : "auto",
+        "text" : "Automatisch"
+      }, {
+        "value" : "currency",
+        "text" : "Waehrung + absoluter Betrag"
+      }, {
+        "value" : "absolute",
+        "text" : "Absoluter Betrag"
+      }, {
+        "value" : "percentage",
+        "text" : "Prozentsatz (relativ zum anfaenglichen Referenzpreis)"
+      } ]
+    } ]
+  }, {
+    "label" : "Nachkommastellen",
+    "controls" : [ {
+      "type" : "select",
+      "id" : "decimals",
+      "options" : [ {
+        "value" : "default",
+        "text" : "Tatsaechlich"
+      }, {
+        "value" : "0",
+        "text" : "0"
+      }, {
+        "value" : "1",
+        "text" : "1"
+      }, {
+        "value" : "2",
+        "text" : "2"
+      }, {
+        "value" : "2+",
+        "text" : "2+"
+      }, {
+        "value" : "2-3",
+        "text" : "2-3"
+      }, {
+        "value" : "2-4",
+        "text" : "2-4"
+      }, {
+        "value" : "2-5",
+        "text" : "2-5"
+      }, {
+        "value" : "2-6",
+        "text" : "2-6"
+      }, {
+        "value" : "2-7",
+        "text" : "2-7"
+      }, {
+        "value" : "3",
+        "text" : "3"
+      }, {
+        "value" : "4",
+        "text" : "4"
+      }, {
+        "value" : "5",
+        "text" : "5"
+      }, {
+        "value" : "6",
+        "text" : "6"
+      }, {
+        "value" : "6",
+        "text" : "7"
+      } ]
+    } ]
+  } ],
+  "language" : "DE",
+  "text" : "Cap",
+  "tagId" : 1048
+}, {
+  "preview" : "CUR 123,45",
+  "groups" : [ {
+    "label" : "Format",
+    "controls" : [ {
+      "type" : "radio",
+      "id" : "format",
+      "options" : [ {
+        "value" : "currency",
+        "text" : "Waehrung + absoluter Betrag"
+      }, {
+        "value" : "absolute",
+        "text" : "Absoluter Betrag"
+      } ]
+    } ]
+  }, {
+    "label" : "Nachkommastellen",
+    "controls" : [ {
+      "type" : "select",
+      "id" : "decimals",
+      "options" : [ {
+        "value" : "default",
+        "text" : "Tatsaechlich"
+      }, {
+        "value" : "0",
+        "text" : "0"
+      }, {
+        "value" : "1",
+        "text" : "1"
+      }, {
+        "value" : "2",
+        "text" : "2"
+      }, {
+        "value" : "2+",
+        "text" : "2+"
+      }, {
+        "value" : "2-3",
+        "text" : "2-3"
+      }, {
+        "value" : "2-4",
+        "text" : "2-4"
+      }, {
+        "value" : "2-5",
+        "text" : "2-5"
+      }, {
+        "value" : "2-6",
+        "text" : "2-6"
+      }, {
+        "value" : "2-7",
+        "text" : "2-7"
+      }, {
+        "value" : "3",
+        "text" : "3"
+      }, {
+        "value" : "4",
+        "text" : "4"
+      }, {
+        "value" : "5",
+        "text" : "5"
+      }, {
+        "value" : "6",
+        "text" : "6"
+      }, {
+        "value" : "6",
+        "text" : "7"
+      } ]
+    } ]
+  } ],
+  "language" : "DE",
+  "text" : "Gesamtbetrag",
+  "tagId" : 1047
+}, {
+  "preview" : "CUR 123,45",
+  "groups" : [ {
+    "label" : "Format",
+    "controls" : [ {
+      "type" : "radio",
+      "id" : "format",
+      "options" : [ {
+        "value" : "auto",
+        "text" : "Automatisch"
+      }, {
+        "value" : "currency",
+        "text" : "Waehrung + absoluter Betrag"
+      }, {
+        "value" : "absolute",
+        "text" : "Absoluter Betrag"
+      }, {
+        "value" : "percentage",
+        "text" : "Prozentsatz (relativ zum anfaenglichen Referenzpreis)"
+      } ]
+    } ]
+  }, {
+    "label" : "Nachkommastellen",
+    "controls" : [ {
+      "type" : "select",
+      "id" : "decimals",
+      "options" : [ {
+        "value" : "default",
+        "text" : "Tatsaechlich"
+      }, {
+        "value" : "0",
+        "text" : "0"
+      }, {
+        "value" : "1",
+        "text" : "1"
+      }, {
+        "value" : "2",
+        "text" : "2"
+      }, {
+        "value" : "2+",
+        "text" : "2+"
+      }, {
+        "value" : "2-3",
+        "text" : "2-3"
+      }, {
+        "value" : "2-4",
+        "text" : "2-4"
+      }, {
+        "value" : "2-5",
+        "text" : "2-5"
+      }, {
+        "value" : "2-6",
+        "text" : "2-6"
+      }, {
+        "value" : "2-7",
+        "text" : "2-7"
+      }, {
+        "value" : "3",
+        "text" : "3"
+      }, {
+        "value" : "4",
+        "text" : "4"
+      }, {
+        "value" : "5",
+        "text" : "5"
+      }, {
+        "value" : "6",
+        "text" : "6"
+      }, {
+        "value" : "6",
+        "text" : "7"
+      } ]
+    } ]
+  } ],
+  "language" : "DE",
+  "text" : "Bonuslevel",
+  "tagId" : 1050
+}, {
+  "preview" : "CUR 123,45",
+  "groups" : [ {
+    "label" : "Format",
+    "controls" : [ {
+      "type" : "radio",
+      "id" : "format",
+      "options" : [ {
+        "value" : "auto",
+        "text" : "Automatisch"
+      }, {
+        "value" : "currency",
+        "text" : "Waehrung + absoluter Betrag"
+      }, {
+        "value" : "absolute",
+        "text" : "Absoluter Betrag"
+      }, {
+        "value" : "percentage",
+        "text" : "Prozentsatz (relativ zum anfaenglichen Referenzpreis)"
+      } ]
+    } ]
+  }, {
+    "label" : "Nachkommastellen",
+    "controls" : [ {
+      "type" : "select",
+      "id" : "decimals",
+      "options" : [ {
+        "value" : "default",
+        "text" : "Tatsaechlich"
+      }, {
+        "value" : "0",
+        "text" : "0"
+      }, {
+        "value" : "1",
+        "text" : "1"
+      }, {
+        "value" : "2",
+        "text" : "2"
+      }, {
+        "value" : "2+",
+        "text" : "2+"
+      }, {
+        "value" : "2-3",
+        "text" : "2-3"
+      }, {
+        "value" : "2-4",
+        "text" : "2-4"
+      }, {
+        "value" : "2-5",
+        "text" : "2-5"
+      }, {
+        "value" : "2-6",
+        "text" : "2-6"
+      }, {
+        "value" : "2-7",
+        "text" : "2-7"
+      }, {
+        "value" : "3",
+        "text" : "3"
+      }, {
+        "value" : "4",
+        "text" : "4"
+      }, {
+        "value" : "5",
+        "text" : "5"
+      }, {
+        "value" : "6",
+        "text" : "6"
+      }, {
+        "value" : "6",
+        "text" : "7"
+      } ]
+    } ]
+  } ],
+  "language" : "DE",
+  "text" : "Barriere",
+  "tagId" : 1053
+}, {
+  "preview" : "CUR 123,45",
+  "groups" : [ {
+    "label" : "Format",
+    "controls" : [ {
+      "type" : "radio",
+      "id" : "format",
+      "options" : [ {
+        "value" : "currency",
+        "text" : "Waehrung + absoluter Betrag"
+      }, {
+        "value" : "absolute",
+        "text" : "Absoluter Betrag"
+      } ]
+    } ]
+  }, {
+    "label" : "Nachkommastellen",
+    "controls" : [ {
+      "type" : "select",
+      "id" : "decimals",
+      "options" : [ {
+        "value" : "default",
+        "text" : "Tatsaechlich"
+      }, {
+        "value" : "0",
+        "text" : "0"
+      }, {
+        "value" : "1",
+        "text" : "1"
+      }, {
+        "value" : "2",
+        "text" : "2"
+      }, {
+        "value" : "2+",
+        "text" : "2+"
+      }, {
+        "value" : "2-3",
+        "text" : "2-3"
+      }, {
+        "value" : "2-4",
+        "text" : "2-4"
+      }, {
+        "value" : "2-5",
+        "text" : "2-5"
+      }, {
+        "value" : "2-6",
+        "text" : "2-6"
+      }, {
+        "value" : "2-7",
+        "text" : "2-7"
+      }, {
+        "value" : "3",
+        "text" : "3"
+      }, {
+        "value" : "4",
+        "text" : "4"
+      }, {
+        "value" : "5",
+        "text" : "5"
+      }, {
+        "value" : "6",
+        "text" : "6"
+      }, {
+        "value" : "6",
+        "text" : "7"
+      } ]
+    } ]
+  } ],
+  "language" : "DE",
+  "text" : "Bonusbetrag",
+  "tagId" : 1051
+}, {
+  "preview" : "CUR 123,45",
+  "groups" : [ {
+    "label" : "Format",
+    "controls" : [ {
+      "type" : "radio",
+      "id" : "format",
+      "options" : [ {
+        "value" : "currency",
+        "text" : "Waehrung + absoluter Betrag"
+      }, {
+        "value" : "absolute",
+        "text" : "Absoluter Betrag"
+      } ]
+    } ]
+  }, {
+    "label" : "Nachkommastellen",
+    "controls" : [ {
+      "type" : "select",
+      "id" : "decimals",
+      "options" : [ {
+        "value" : "default",
+        "text" : "Tatsaechlich"
+      }, {
+        "value" : "0",
+        "text" : "0"
+      }, {
+        "value" : "1",
+        "text" : "1"
+      }, {
+        "value" : "2",
+        "text" : "2"
+      }, {
+        "value" : "2+",
+        "text" : "2+"
+      }, {
+        "value" : "2-3",
+        "text" : "2-3"
+      }, {
+        "value" : "2-4",
+        "text" : "2-4"
+      }, {
+        "value" : "2-5",
+        "text" : "2-5"
+      }, {
+        "value" : "2-6",
+        "text" : "2-6"
+      }, {
+        "value" : "2-7",
+        "text" : "2-7"
+      }, {
+        "value" : "3",
+        "text" : "3"
+      }, {
+        "value" : "4",
+        "text" : "4"
+      }, {
+        "value" : "5",
+        "text" : "5"
+      }, {
+        "value" : "6",
+        "text" : "6"
+      }, {
+        "value" : "6",
+        "text" : "7"
+      } ]
+    } ]
+  } ],
+  "language" : "DE",
+  "text" : "Höchstbetrag",
+  "tagId" : 1049
+}, {
+  "preview" : "CUR 123,45",
+  "groups" : [ {
+    "label" : "Format",
+    "controls" : [ {
+      "type" : "radio",
+      "id" : "format",
+      "options" : [ {
+        "value" : "currency",
+        "text" : "Waehrung + absoluter Betrag"
+      }, {
+        "value" : "absolute",
+        "text" : "Absoluter Betrag"
+      } ]
+    } ]
+  }, {
+    "label" : "Nachkommastellen",
+    "controls" : [ {
+      "type" : "select",
+      "id" : "decimals",
+      "options" : [ {
+        "value" : "default",
+        "text" : "Tatsaechlich"
+      }, {
+        "value" : "0",
+        "text" : "0"
+      }, {
+        "value" : "1",
+        "text" : "1"
+      }, {
+        "value" : "2",
+        "text" : "2"
+      }, {
+        "value" : "2+",
+        "text" : "2+"
+      }, {
+        "value" : "2-3",
+        "text" : "2-3"
+      }, {
+        "value" : "2-4",
+        "text" : "2-4"
+      }, {
+        "value" : "2-5",
+        "text" : "2-5"
+      }, {
+        "value" : "2-6",
+        "text" : "2-6"
+      }, {
+        "value" : "2-7",
+        "text" : "2-7"
+      }, {
+        "value" : "3",
+        "text" : "3"
+      }, {
+        "value" : "4",
+        "text" : "4"
+      }, {
+        "value" : "5",
+        "text" : "5"
+      }, {
+        "value" : "6",
+        "text" : "6"
+      }, {
+        "value" : "6",
+        "text" : "7"
+      } ]
+    } ]
+  } ],
+  "language" : "DE",
+  "text" : "Mindestanlage",
+  "tagId" : 1046
+}, {
+  "preview" : "CUR 123,45",
+  "groups" : [ {
+    "label" : "Format",
+    "controls" : [ {
+      "type" : "radio",
+      "id" : "format",
+      "options" : [ {
+        "value" : "currency",
+        "text" : "Waehrung + absoluter Betrag"
+      }, {
+        "value" : "absolute",
+        "text" : "Absoluter Betrag"
+      } ]
+    } ]
+  }, {
+    "label" : "Nachkommastellen",
+    "controls" : [ {
+      "type" : "select",
+      "id" : "decimals",
+      "options" : [ {
+        "value" : "default",
+        "text" : "Tatsaechlich"
+      }, {
+        "value" : "0",
+        "text" : "0"
+      }, {
+        "value" : "1",
+        "text" : "1"
+      }, {
+        "value" : "2",
+        "text" : "2"
+      }, {
+        "value" : "2+",
+        "text" : "2+"
+      }, {
+        "value" : "2-3",
+        "text" : "2-3"
+      }, {
+        "value" : "2-4",
+        "text" : "2-4"
+      }, {
+        "value" : "2-5",
+        "text" : "2-5"
+      }, {
+        "value" : "2-6",
+        "text" : "2-6"
+      }, {
+        "value" : "2-7",
+        "text" : "2-7"
+      }, {
+        "value" : "3",
+        "text" : "3"
+      }, {
+        "value" : "4",
+        "text" : "4"
+      }, {
+        "value" : "5",
+        "text" : "5"
+      }, {
+        "value" : "6",
+        "text" : "6"
+      }, {
+        "value" : "6",
+        "text" : "7"
+      } ]
+    } ]
+  } ],
+  "language" : "DE",
+  "text" : "Nennwert",
+  "tagId" : 1045
+}, {
+  "preview" : "CUR",
+  "groups" : [ {
+    "label" : "Format",
+    "controls" : [ {
+      "type" : "radio",
+      "id" : "format",
+      "options" : [ {
+        "value" : "symbol",
+        "text" : "Symbol (z.B. €)"
+      }, {
+        "value" : "short",
+        "text" : "Kurzformat (z.B. EUR)"
+      }, {
+        "value" : "long",
+        "text" : "Langformat (z.B. Euro)"
+      } ]
+    } ]
+  } ],
+  "language" : "DE",
+  "text" : "Produktwährung",
+  "tagId" : 1041
+}, {
+  "preview" : "CUR",
+  "groups" : [ {
+    "label" : "Format",
+    "controls" : [ {
+      "type" : "radio",
+      "id" : "format",
+      "options" : [ {
+        "value" : "symbol",
+        "text" : "Symbol (z.B. €)"
+      }, {
+        "value" : "short",
+        "text" : "Kurzformat (z.B. EUR)"
+      }, {
+        "value" : "long",
+        "text" : "Langformat (z.B. Euro)"
+      } ]
+    } ]
+  } ],
+  "language" : "DE",
+  "text" : "Währung des Basiswerts",
+  "tagId" : 1042
+}, {
+  "preview" : "der SX5E-Index",
+  "groups" : [ {
+    "label" : "Format",
+    "controls" : [ {
+      "type" : "radio",
+      "id" : "format",
+      "options" : [ {
+        "value" : "short",
+        "text" : "Kurzformat (z.B. SX5E)"
+      }, {
+        "value" : "long",
+        "text" : "Langformat (z.B. EURO STOXX 50 Index)"
+      } ]
+    } ]
+  } ],
+  "language" : "DE",
+  "text" : "Name des Basiswerts",
+  "tagId" : 1043
+}, {
+  "preview" : "<table class=\"scenario-table\"><tr><th>Scenariotabelle</th></tr><tr><td>&nbsp;</td></tr></table>",
+  "groups" : [ {
+    "label" : "Spalten",
+    "controls" : [ {
+      "type" : "checkbox",
+      "value" : "underlyingPrice",
+      "id" : "underlyingPrice",
+      "text" : "Preis des Basiswerts"
+    }, {
+      "type" : "checkbox",
+      "value" : "underlyingReturn",
+      "id" : "underlyingReturn",
+      "text" : "Rendite des Basiswerts"
+    }, {
+      "type" : "checkbox",
+      "value" : "derivativePrice",
+      "id" : "derivativePrice",
+      "text" : "Rendite des Derivats"
+    }, {
+      "type" : "checkbox",
+      "id" : "derivativeReturnGross",
+      "value" : "derivativeReturnGross",
+      "text" : "Bruttorendite des Derivats"
+    }, {
+      "type" : "checkbox",
+      "id" : "derivativeReturnNet",
+      "value" : "derivativeReturnNet",
+      "text" : "Nettorendite des Derivats"
+    } ]
+  }, {
+    "label" : "Optionen",
+    "controls" : [ {
+      "type" : "checkbox",
+      "id" : "colorDerivativeReturnNet",
+      "value" : "colorDerivativeReturnNet",
+      "text" : "Farbe Nettorendite des Derivats (rot, gelb, grün)"
+    } ]
+  } ],
+  "language" : "DE",
+  "text" : "Szenariotabelle",
+  "tagId" : 1055
+}, {
+  "preview" : "CUR 123,45",
+  "groups" : [ {
+    "label" : "Format",
+    "controls" : [ {
+      "type" : "radio",
+      "id" : "format",
+      "options" : [ {
+        "value" : "currency",
+        "text" : "Waehrung + absoluter Betrag"
+      }, {
+        "value" : "absolute",
+        "text" : "Absoluter Betrag"
+      } ]
+    } ]
+  }, {
+    "label" : "Nachkommastellen",
+    "controls" : [ {
+      "type" : "select",
+      "id" : "decimals",
+      "options" : [ {
+        "value" : "default",
+        "text" : "Tatsaechlich"
+      }, {
+        "value" : "0",
+        "text" : "0"
+      }, {
+        "value" : "1",
+        "text" : "1"
+      }, {
+        "value" : "2",
+        "text" : "2"
+      }, {
+        "value" : "2+",
+        "text" : "2+"
+      }, {
+        "value" : "2-3",
+        "text" : "2-3"
+      }, {
+        "value" : "2-4",
+        "text" : "2-4"
+      }, {
+        "value" : "2-5",
+        "text" : "2-5"
+      }, {
+        "value" : "2-6",
+        "text" : "2-6"
+      }, {
+        "value" : "2-7",
+        "text" : "2-7"
+      }, {
+        "value" : "3",
+        "text" : "3"
+      }, {
+        "value" : "4",
+        "text" : "4"
+      }, {
+        "value" : "5",
+        "text" : "5"
+      }, {
+        "value" : "6",
+        "text" : "6"
+      }, {
+        "value" : "6",
+        "text" : "7"
+      } ]
+    } ]
+  } ],
+  "language" : "DE",
+  "text" : "Stückelung",
+  "tagId" : 1044
+}, {
+  "preview" : "CUR 123,45",
+  "groups" : [ {
+    "label" : "Format",
+    "controls" : [ {
+      "type" : "radio",
+      "id" : "format",
+      "options" : [ {
+        "value" : "auto",
+        "text" : "Automatisch"
+      }, {
+        "value" : "currency",
+        "text" : "Waehrung + absoluter Betrag"
+      }, {
+        "value" : "absolute",
+        "text" : "Absoluter Betrag"
+      }, {
+        "value" : "percentage",
+        "text" : "Prozentsatz (relativ zum anfaenglichen Referenzpreis)"
+      } ]
+    } ]
+  }, {
+    "label" : "Nachkommastellen",
+    "controls" : [ {
+      "type" : "select",
+      "id" : "decimals",
+      "options" : [ {
+        "value" : "default",
+        "text" : "Tatsaechlich"
+      }, {
+        "value" : "0",
+        "text" : "0"
+      }, {
+        "value" : "1",
+        "text" : "1"
+      }, {
+        "value" : "2",
+        "text" : "2"
+      }, {
+        "value" : "2+",
+        "text" : "2+"
+      }, {
+        "value" : "2-3",
+        "text" : "2-3"
+      }, {
+        "value" : "2-4",
+        "text" : "2-4"
+      }, {
+        "value" : "2-5",
+        "text" : "2-5"
+      }, {
+        "value" : "2-6",
+        "text" : "2-6"
+      }, {
+        "value" : "2-7",
+        "text" : "2-7"
+      }, {
+        "value" : "3",
+        "text" : "3"
+      }, {
+        "value" : "4",
+        "text" : "4"
+      }, {
+        "value" : "5",
+        "text" : "5"
+      }, {
+        "value" : "6",
+        "text" : "6"
+      }, {
+        "value" : "6",
+        "text" : "7"
+      } ]
+    } ]
+  } ],
+  "language" : "DE",
+  "text" : "Basispreis",
+  "tagId" : 1054
+}, {
+  "preview" : "ABC AG",
+  "language" : "DE",
+  "text" : "issuer",
+  "tagId" : 1074
+} ]

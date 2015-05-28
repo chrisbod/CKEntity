@@ -1,396 +1,254 @@
-[
-	{
-		"text": "Produktgattung",
-		"id": "productType",
-		"items": [
-			{
-				"value": "bonusCertificate",
-				"text": "Bonus-Zertifikat"
-			},
-			{
-				"value": "discountCertificate",
-				"text": "Discount-Zertifikat"
-			},
-			{
-				"value": "expressCertificate",
-				"text": "Express-Zertifikat"
-			},
-			{
-				"value": "sprintCertificate",
-				"text": "Sprint-Zertifikat"
-			},
-			{
-				"value": "reverseConvertible",
-				"text": "Aktienanleihe"
-			},
-			{
-				"value": "turboCertificate",
-				"text": "Turbo-Zertifikat"
-			},
-			{
-				"value": "warrant",
-				"text": "Optionsschein"
-			},
-			{
-				"value": "callOption",
-				"text": "Call-Optionsschein"
-			},
-			{
-				"value": "putOption",
-				"text": "Put-Optionsschein"
-			}
-		]
-	},
-	{
-		"text": "Wertpapiergattung",
-		"id": "securityType",
-		"items": [
-			{
-				"value": "note",
-				"text": "Anleihe"
-			},
-			{
-				"value": "certificate",
-				"text": "Zertifikat"
-			},
-			{
-				"value": "warrant",
-				"text": "Optionsschein"
-			}
-		]
-	},
-	{
-		"text": "Anzahl der Basiswerte",
-		"id": "numberOfUnderlyings",
-		"items": [
-			{
-				"value": "oneUnderlying",
-				"text": "Einer"
-			},
-			{
-				"value": "oneOrMoreUnderlyings",
-				"text": "Mindestens einer"
-			},
-			{
-				"value": "moreThanOneUnderlying",
-				"text": "Mehr als einer"
-			}
-		]
-	},
-	{
-		"text": "Art des Basiswerts",
-		"id": "underlyingType",
-		"items": [
-			{
-				"value": "atLeastOneShare",
-				"text": "Mindestens eine Aktie"
-			},
-			{
-				"value": "atLeastOnePreferenceShare",
-				"text": "Mindestens eine Vorzugsaktie"
-			},
-			{
-				"value": "atLeastOneProfitParticipationCertificate",
-				"text": "Mindestens ein Genussschein"
-			},
-			{
-				"value": "atLeastOneADR",
-				"text": "Mindestens eine ADR"
-			},
-			{
-				"value": "atLeastOneCertificate",
-				"text": "Mindestens ein Zertifikat"
-			},
-			{
-				"value": "atLeastOneWarrant",
-				"text": "Mindestens ein Optionsschein"
-			},
-			{
-				"value": "atLeastOneIndex",
-				"text": "Mindestens ein Index"
-			},
-			{
-				"value": "atLeastOneETF",
-				"text": "Mindestens ein ETF"
-			},
-			{
-				"value": "atLeastOneCommodity",
-				"text": "Mindestens ein Rohstoff"
-			},
-			{
-				"value": "oneShare",
-				"text": "Eine Aktie"
-			},
-			{
-				"value": "onePreferenceShare",
-				"text": "Eine Vorzugsaktie"
-			},
-			{
-				"value": "oneProfitParticipationCertificate",
-				"text": "Ein Genussschein"
-			},
-			{
-				"value": "oneADR",
-				"text": "Eine ADR"
-			},
-			{
-				"value": "oneCertificate",
-				"text": "Ein Zertifikat"
-			},
-			{
-				"value": "oneWarrant",
-				"text": "Ein Optionsschein"
-			},
-			{
-				"value": "oneIndex",
-				"text": "Ein Index"
-			},
-			{
-				"value": "oneETF",
-				"text": "Ein ETF"
-			},
-			{
-				"value": "oneCommodity",
-				"text": "Ein Rohstoff"
-			},
-			{
-				"value": "onlyShares",
-				"text": "Nur Aktien"
-			},
-			{
-				"value": "onlyPreferenceShares",
-				"text": "Nur Vorzugsaktien"
-			},
-			{
-				"value": "onlyProfitParticipationCertificate",
-				"text": "Nur Genussscheine"
-			},
-			{
-				"value": "onlyADRs",
-				"text": "Nur ADRs"
-			},
-			{
-				"value": "onlyCertificates",
-				"text": "Nur Zertifikate"
-			},
-			{
-				"value": "onlyWarrants",
-				"text": "Nur Optionsscheine"
-			},
-			{
-				"value": "onlyIndices",
-				"text": "Only indices"
-			},
-			{
-				"value": "onlyETFs",
-				"text": "Only ETFs"
-			},
-			{
-				"value": "onlyCommodities",
-				"text": "Only commodities"
-			}
-		]
-	},
-	{
-		"text": "Notizart",
-		"id": "quotationType",
-		"items": [
-			{
-				"value": "Prozentnotiz",
-				"text": "Par value"
-			},
-			{
-				"value": "Stuecknotiz",
-				"text": "Non-par value"
-			}
-		]
-	},
-	{
-		"text": "Waehrungsrisiko",
-		"id": "fxRisk",
-		"items": [
-			{
-				"value": "yes",
-				"text": "Ja"
-			},
-			{
-				"value": "no",
-				"text": "Nein"
-			}
-		]	
-	},
-	{
-		"text": "Quanto",
-		"id": "quanto",
-		"items": [
-			{
-				"value": "yes",
-				"text": "Ja"
-			},
-			{
-				"value": "no",
-				"text": "Nein"
-			}
-		]
-	},
-	{
-		"text": "Art der Abrechnung",
-		"id": "settlementType",
-		"items": [
-			{
-				"value": "cash",
-				"text": "Bar"
-			},
-			{
-				"value": "cashOrPhysical",
-				"text": "Bar oder physische Lieferung"
-			}
-		]
-	},
-	{
-		"text": "Geschaeftstagekonvention",
-		"id": "businessDayConvention",
-		"items": [
-			{
-				"value": "following",
-				"text": "Folgende"
-			},
-			{
-				"value": "modifiedFollowing",
-				"text": "Modifiziert folgende"
-			},
-			{
-				"value": "preceding",
-				"text": "Vorhergehende"
-			}
-		]
-	},
-	{
-		"text": "Zinsart",
-		"id": "couponType",
-		"items": [
-			{
-				"value": "fixed",
-				"text": "Fest"
-			},
-			{
-				"value": "floating",
-				"text": "Variabel"
-			}
-		]	
-	},
-	{
-		"text": "Bedingter Zins",
-		"id": "contingentCoupon",
-		"items": [
-			{
-				"value": "yes",
-				"text": "Ja"
-			},
-			{
-				"value": "no",
-				"text": "Nein"
-			}
-		]	
-	},
-	{
-		"text": "Memory-Zinssatz",
-		"id": "memoryCoupon",
-		"items": [
-			{
-				"value": "yes",
-				"text": "Ja"
-			},
-			{
-				"value": "no",
-				"text": "Nein"
-			}
-		]	
-	},
-	{
-		"text": "Zahlung bei Kursanstieg",
-		"id": "upsideStyle",
-		"items": [
-			{
-				"value": "digital",
-				"text": "Digital"
-			},
-			{
-				"value": "participationInCall",
-				"text": "Partizipation in Call"
-			},
-			{
-				"value": "participationInCallSpread",
-				"text": "Partizipation in Call-Spread"
-			}
-		]
-	},
-	{
-		"text": "Zahlung bei Kursrueckgang",
-		"id": "downsideStyle",
-		"items": [
-			{
-				"value": "kiPutAtMaturityAtTheClose",
-				"text": "KI-Put am Faelligkeitstag bei Marktschluss"
-			},
-			{
-				"value": "kiDailyAtTheClose",
-				"text": "KI-Put taeglich bei Marktschluss"
-			},
-			{
-				"value": "kiPutContinuous",
-				"text": "KI-Put kontinuierlich"
-			},
-			{
-				"value": "vanillaPut",
-				"text": "Vanilla-Put"
-			}
-		]
-	},
-	{
-		"text": "Barriere beruehrt",
-		"id": "barrierBreached",
-		"items": [
-			{
-				"value": "yes",
-				"text": "Ja"
-			},
-			{
-				"value": "no",
-				"text": "Nein"
-			}
-		]
-	},
-	{
-		"text": "Listing",
-		"id": "listing",
-		"items": [
-			{
-				"value": "unlisted",
-				"text": "Nicht gelistet"
-			},
-			{
-				"value": "luxembourg",
-				"text": "Luxemburg"
-			},
-			{
-				"value": "luxembourgEuroMTF",
-				"text": "Luxemburg Euro MTF"
-			}
-		]
-	},
-	{
-		"text": "Sekundaermarkt",
-		"id": "secondaryMarket",
-		"items": [
-			{
-				"value": "yes",
-				"text": "Ja"
-			},
-			{
-				"value": "no",
-				"text": "Nein"
-			}
-		]
-	}
-]
+[ {
+  "language" : "DE",
+  "text" : "Anzahl der Basiswerte",
+  "items" : [ {
+    "value" : "oneUnderlying",
+    "text" : "Einer"
+  }, {
+    "value" : "oneOrMoreUnderlyings",
+    "text" : "Mindestens einer"
+  }, {
+    "value" : "moreThanOneUnderlying",
+    "text" : "Mehr als einer"
+  }, {
+    "value" : "moreThanOneUnderlying",
+    "text" : "Ausschließlich"
+  } ],
+  "tagId" : 1058
+}, {
+  "language" : "DE",
+  "text" : "Notizart",
+  "items" : [ {
+    "value" : "Prozentnotiz",
+    "text" : "Par value"
+  }, {
+    "value" : "Stuecknotiz",
+    "text" : "Non-par value"
+  } ],
+  "tagId" : 1060
+}, {
+  "language" : "DE",
+  "text" : "Wertpapiergattung",
+  "items" : [ {
+    "value" : "note",
+    "text" : "Anleihe"
+  }, {
+    "value" : "certificate",
+    "text" : "Zertifikat"
+  }, {
+    "value" : "warrant",
+    "text" : "Optionsschein"
+  } ],
+  "tagId" : 1057
+}, {
+  "language" : "DE",
+  "text" : "Art der Abrechnung",
+  "items" : [ {
+    "value" : "cash",
+    "text" : "Bar"
+  }, {
+    "value" : "cashOrPhysical",
+    "text" : "Bar oder physische Lieferung"
+  } ],
+  "tagId" : 1064
+}, {
+  "language" : "DE",
+  "text" : "Art des Basiswerts",
+  "items" : [ {
+    "value" : "share",
+    "text" : "Aktie"
+  }, {
+    "value" : "preferenceShare",
+    "text" : "Vorzugsaktie"
+  }, {
+    "value" : "profitParticipationCertificate",
+    "text" : "Genussschein"
+  }, {
+    "value" : "ADR",
+    "text" : "ADR"
+  }, {
+    "value" : "certificate",
+    "text" : "Zertifikat"
+  }, {
+    "value" : "warrant",
+    "text" : "Optionsschein"
+  }, {
+    "value" : "index",
+    "text" : "Index"
+  }, {
+    "value" : "ETF",
+    "text" : "ETF"
+  }, {
+    "value" : "commodity",
+    "text" : "Rohstoff"
+  } ],
+  "tagId" : 1059
+}, {
+  "language" : "DE",
+  "text" : "Produktgattung",
+  "items" : [ {
+    "value" : "bonusCertificate",
+    "text" : "Bonus-Zertifikat"
+  }, {
+    "value" : "discountCertificate",
+    "text" : "Discount-Zertifikat"
+  }, {
+    "value" : "expressCertificate",
+    "text" : "Express-Zertifikat"
+  }, {
+    "value" : "sprintCertificate",
+    "text" : "Sprint-Zertifikat"
+  }, {
+    "value" : "reverseConvertible",
+    "text" : "Aktienanleihe"
+  }, {
+    "value" : "turboCertificate",
+    "text" : "Turbo-Zertifikat"
+  }, {
+    "value" : "warrant",
+    "text" : "Optionsschein"
+  }, {
+    "value" : "callOption",
+    "text" : "Call-Optionsschein"
+  }, {
+    "value" : "putOption",
+    "text" : "Put-Optionsschein"
+  } ],
+  "tagId" : 1056
+}, {
+  "language" : "DE",
+  "text" : "Zahlung bei Kursanstieg",
+  "items" : [ {
+    "value" : "digital",
+    "text" : "Digital"
+  }, {
+    "value" : "participationInCall",
+    "text" : "Partizipation in Call"
+  }, {
+    "value" : "participationInCallSpread",
+    "text" : "Partizipation in Call-Spread"
+  } ],
+  "tagId" : 1069
+}, {
+  "language" : "DE",
+  "text" : "Börsennotierung",
+  "items" : [ {
+    "value" : "unlisted",
+    "text" : "Nicht gelistet"
+  }, {
+    "value" : "luxembourg",
+    "text" : "Luxemburg"
+  }, {
+    "value" : "luxembourgEuroMTF",
+    "text" : "Luxemburg Euro MTF"
+  } ],
+  "tagId" : 1072
+}, {
+  "language" : "DE",
+  "text" : "Memory-Zins",
+  "items" : [ {
+    "value" : "yes",
+    "text" : "Ja"
+  }, {
+    "value" : "no",
+    "text" : "Nein"
+  } ],
+  "tagId" : 1068
+}, {
+  "language" : "DE",
+  "text" : "Barriere berührt",
+  "items" : [ {
+    "value" : "yes",
+    "text" : "Ja"
+  }, {
+    "value" : "no",
+    "text" : "Nein"
+  } ],
+  "tagId" : 1071
+}, {
+  "language" : "DE",
+  "text" : "Geschäftstagekonvention",
+  "items" : [ {
+    "value" : "following",
+    "text" : "Folgende"
+  }, {
+    "value" : "modifiedFollowing",
+    "text" : "Modifiziert folgende"
+  }, {
+    "value" : "preceding",
+    "text" : "Vorhergehende"
+  } ],
+  "tagId" : 1065
+}, {
+  "language" : "DE",
+  "text" : "Bedingter Zins",
+  "items" : [ {
+    "value" : "yes",
+    "text" : "Ja"
+  }, {
+    "value" : "no",
+    "text" : "Nein"
+  } ],
+  "tagId" : 1067
+}, {
+  "language" : "DE",
+  "text" : "Währungsrisiko",
+  "items" : [ {
+    "value" : "yes",
+    "text" : "Ja"
+  }, {
+    "value" : "no",
+    "text" : "Nein"
+  } ],
+  "tagId" : 1062
+}, {
+  "language" : "DE",
+  "text" : "Quanto",
+  "items" : [ {
+    "value" : "yes",
+    "text" : "Ja"
+  }, {
+    "value" : "no",
+    "text" : "Nein"
+  } ],
+  "tagId" : 1063
+}, {
+  "language" : "DE",
+  "text" : "Sekundärmarkt",
+  "items" : [ {
+    "value" : "yes",
+    "text" : "Ja"
+  }, {
+    "value" : "no",
+    "text" : "Nein"
+  } ],
+  "tagId" : 1073
+}, {
+  "language" : "DE",
+  "text" : "Zinsart",
+  "items" : [ {
+    "value" : "fixed",
+    "text" : "Fest"
+  }, {
+    "value" : "floating",
+    "text" : "Variabel"
+  } ],
+  "tagId" : 1066
+}, {
+  "language" : "DE",
+  "text" : "Zahlung bei Kursrückgang",
+  "items" : [ {
+    "value" : "kiPutAtMaturityAtTheClose",
+    "text" : "KI-Put am Fälligkeitstag bei Marktschluss"
+  }, {
+    "value" : "kiDailyAtTheClose",
+    "text" : "KI-Put täglich bei Marktschluss"
+  }, {
+    "value" : "kiPutContinuous",
+    "text" : "KI-Put kontinuierlich"
+  }, {
+    "value" : "vanillaPut",
+    "text" : "Vanilla-Put"
+  } ],
+  "tagId" : 1070
+} ]

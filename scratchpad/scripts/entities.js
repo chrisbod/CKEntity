@@ -170,7 +170,7 @@ EntitiesHelper.prototype = {
 	getTokenDefinitionByType: function (type) {
 		var definitions = this.languageStore.getCurrentTokenDefinitions();
 		for (var i=0;i<definitions.length;i++) {
-			if (definitions[i].id == type) {
+			if (definitions[i].type == type) {
 				return definitions[i]
 			}
 		}

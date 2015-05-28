@@ -127,9 +127,7 @@ function AutoSuggestContainer(id, tokenizer) {
 		if (event.target.ownerDocument == this.editableDocument) {
 			if (event.keyCode == 13) {
 				return this.enter(event);
-			} else {
-				return
-			}
+			} 
 
 		}
 		

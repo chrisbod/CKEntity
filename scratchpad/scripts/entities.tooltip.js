@@ -45,8 +45,7 @@ EntityTooltip.prototype = {
 		var target = event.target;
 		if (target!=this.editableElement) {
 			target = this.entitiesHelper.getEntityElement(event.target,event);
-			if (target) {
-
+			if (target && !target.hasAttribute("data-read-only")) {
 				//if (this.currentlyOver != target) {
 					this.activateTooltip(target,event);
 				//}

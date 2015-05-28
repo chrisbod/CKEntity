@@ -41,6 +41,9 @@ token > span {
 token {
 	color: green;	
 }
+token[data-read-only] {
+	color: inherit;
+}
 token > span {
 	display: inline;
 }
@@ -56,6 +59,9 @@ span[data-entity-node=conditional]::selection,
 .conditional::selection,
 .conditional span::selection,
 translation span::selection
+span[data-entity-node=token][data-read-only]::selection,
+token[data-read-only]::selection,
+token[data-read-only] span::selection
 {
 	background-color: #1F497D;
 	color: white;

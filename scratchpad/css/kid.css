@@ -1,16 +1,4 @@
-html {
-	background-color: #cccccc;
-}
-body {
-  font-family: Arial, Helvetica, san-serif;
-  counter-reset: section;
-  font-size: 11pt;
-  margin: 1em auto;
-  padding: 20mm;
-  width: 210mm;
-  box-sizing: border-box;
-  background-color: white;
-}
+
 
 h1 {
 	color: #1F497D;
