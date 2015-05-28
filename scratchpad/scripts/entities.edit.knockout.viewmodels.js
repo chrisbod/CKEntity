@@ -97,5 +97,5 @@ function DocumentPreviewViewModel() {
 DocumentPreviewViewModel.prototype = new EntityViewModel();
 DocumentPreviewViewModel.prototype.update = function () {
 	this.active(false);
-	console.log(this.values())
+	//console.log(this.values())
 }

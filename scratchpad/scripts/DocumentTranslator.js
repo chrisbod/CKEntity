@@ -15,8 +15,8 @@ DocumentTranslator.prototype = {
 		for (var i=0;i<tokens.length;i++) {
 			args = helper.getDataArguments(tokens[i]);
 			newNode = tokenStore.getEntityNode(args.type);
-			helper.setDataArguments(newNode,args)
-			tokens[i].parentNode.replaceChild(newNode,tokens[i]);
+			helper.setDataArguments(newNode.querySelector("token"),args);
+			tokens[i].parentNode.parentNode.replaceChild(newNode,tokens[i].parentNode);
 			
 		}
 	},

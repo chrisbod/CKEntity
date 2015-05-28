@@ -26,7 +26,7 @@ CKEDITOR.dialog.add( 'knockoutDialog', function( editor ) {
 		dialogContentsElement.style.maxWidth = "";
 		var naturalFlowedContentsRect = dialogContentsElement.getBoundingClientRect();
 		var newWidth = Math.min(naturalFlowedContentsRect.width,window.innerWidth)-40;
-		//dialogContentsElement.style.maxWidth = newWidth+"px";
+		dialogContentsElement.style.maxWidth = newWidth+"px";
 		dialogContentsElement.style.maxHeight = (dialogContentsElement.offsetHeight-40)+"px"
 		dialogContentsElement.style.minWidth = ((dialogContentsElement.offsetWidth/2)-40)+"px"
 		return parseInt(dialogContentsElement.style.minWidth);
@@ -78,15 +78,20 @@ CKEDITOR.dialog.add( 'knockoutDialog', function( editor ) {
 				
 			}
 			this.layout()
+			var currentElement = wrapper
 			//remove horizontal scrollbar
-			for (var currentElement = wrapper; currentElement; currentElement=currentElement.parentNode) {
+			/*for (var currentElement = wrapper; currentElement; currentElement=currentElement.parentNode) {
 					if (currentElement.style.width == "200px") {
-						
 						currentElement.style.minWidth = (minWidth+10)+"px";
-						console.log(currentElement)
 						break;
 					}
+				}*/
+			while (currentElement && currentElement.style) {
+				if (currentElement.style.display) {
+					currentElement.style = ""
 				}
+				currentElement = currentElement.parentNode
+			}
 		},
 		// This method is invoked once a user clicks the OK button, confirming the dialog.
 		onOk: function() {

@@ -105,7 +105,7 @@ SelectionTracker.getInstance = function () {
 					newTextNode.parentNode.insertBefore(fragment,newTextNode);
 				} 
 				catch (e) {
-					console.log(e) 
+					//console.log(e) 
 				}
 				
 				range.setStartAfter(startNode);
@@ -161,7 +161,6 @@ SelectionTracker.getInstance = function () {
 
 	},
 	cleanFragment: function (fragment) {
-		console.log(""+fragment.firstChild)
 		return fragment
 	},
 		mousedownHandler: function (event) {
@@ -315,7 +314,7 @@ SelectionTracker.getInstance = function () {
 							cursorDetails.baseNode.data = " "
 						}
 					} else {
-						console.log(133)
+						//console.log(133)
 					}
 				} else {
 					startOfElementIncludingWhitespace = !previousSibling.previousSibling,
@@ -391,7 +390,7 @@ SelectionTracker.getInstance = function () {
 					
 					var entity = this.getEntityElement(baseNode.firstChild)
 					if (entity) {
-						console.log(1)
+						//console.log(1)
 						this.selectNode(entity);
 						this.selectedNodeOnDown = true;
 						event.stopPropagation();
@@ -403,44 +402,44 @@ SelectionTracker.getInstance = function () {
 							if (!this.selectedNode) {
 								var entity = this.getEntityElement(baseNode.firstChild.nextSibling)
 								if (entity) {
-									console.log(3)
+									//console.log(3)
 									this.selectNode(entity);
 									event.stopPropagation();
 									event.preventDefault();
 									return
 								} else {
-									console.log(baseNode)
+									//console.log(baseNode)
 								}
 							}
 						} else {
-							console.log(5)
+							//console.log(5)
 						}
 
 						
 					}
 				} else {
 					if (baseNode.nodeType == 3) {
-						console.log(6)
+						//console.log(6)
 						if (this.isWhitespace(baseNode)) {
-							console.log(7)
+							//console.log(7)
 							if (cursorDetails.baseOffset == baseNode.data.length) {
 								var entity = this.getEntityElement(baseNode.nextSibling)
 							if (entity) {
-								console.log(8)
+								//console.log(8)
 								//this.selectNode(entity);
 								//this.selectedNodeOnDown = true;
 								//event.stopPropagation();
 								//event.preventDefault();
 								return
 							} else {
-								console.log(9)
+								//console.log(9)
 							}
 							}
 							
 						}
 						this.selectedNode = null
 					} else {
-						console.log(231)
+						//console.log(231)
 					}
 				}
 
@@ -461,17 +460,17 @@ SelectionTracker.getInstance = function () {
 
 				if (cursorDetails.baseNode.nodeType!=3)	{
 				 if (cursorDetails.baseOffset == 0) {//at start of node
-				 	console.log("194");
+				 	//console.log("194");
 					return
 				} else {
-					console.log(197)
+					//console.log(197)
 					var entity  = cursorDetails.baseNode.childNodes[cursorDetails.baseOffset-1]
 					if (entity) {
 						this.selectNode(entity);
 						event.stopPropagation()
 						return
 					} else {
-						console.log(213)
+						//console.log(213)
 					}
 				}
 				
@@ -499,7 +498,7 @@ SelectionTracker.getInstance = function () {
 			return false 
 		},
 		cutHandler: function () {
-			console.log(document.getSelection().getRangeAt(0).createContextualFragment())
+			//console.log(document.getSelection().getRangeAt(0).createContextualFragment())
 		},
 		markNodes: function (main) {
 			var marker = {}
@@ -564,7 +563,7 @@ SelectionTracker.getInstance = function () {
 				}
 
 				if (cursorDetails.atEndOfTextNode && baseNode.nextSibling && this.getEntityElement(baseNode.nextSibling)) {
-					//console.log(cursorDetails)
+					////console.log(cursorDetails)
 					if (currentSelected!=baseNode.nextSibling) {
 						cursorDetails.nodeToRight = baseNode.nextSibling
 						//this.selectNode(baseNode.nextSibling);

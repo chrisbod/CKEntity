@@ -39,7 +39,7 @@ function AutoSuggestContainer(id, tokenizer) {
 	},
 	
 	hide: function () {
-		console.log(arguments.callee.caller)
+		//console.log(arguments.callee.caller)
 		this.firstOption = null;
 		this.element.style.visibility = "";
 		if (this.focussedElement) {

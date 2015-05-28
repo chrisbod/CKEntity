@@ -40,7 +40,7 @@ UserConditionalManager.prototype = {
 		}
 	},
 	inputHandler: function (event) {
-		console.log("here")
+		//console.log("here")
 	}, 
 	openSquareBrackets: function (event) {
 		var selection = this.document.getSelection(),
@@ -51,7 +51,7 @@ UserConditionalManager.prototype = {
 				offset = selection.baseOffset-1;
 				
 			if (start.nodeType == 3) {
-				//console.log(start.data)
+				////console.log(start.data)
 				var sibling = start.splitText(offset);
 				if (sibling.data.length>1) {
 					sibling.splitText(1)
@@ -64,7 +64,7 @@ UserConditionalManager.prototype = {
 				event.preventDefault()
 				event.stopPropagation()
 			} else  {
-				console.log(selection,range)
+				//console.log(selection,range)
 			}
 		} else {
 			//overwriting selection....
@@ -72,8 +72,8 @@ UserConditionalManager.prototype = {
 	},
 	checkDelete: function (event) {
 		var selection = this.document.getSelection();
-		//console.log(selection)
-		//console.log(event.currentTarget)
+		////console.log(selection)
+		////console.log(event.currentTarget)
 		
 		var entity = this.getUserEntityElement(selection.anchorNode);
 		if (entity) {

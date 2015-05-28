@@ -143,7 +143,7 @@ EntitiesHelper.prototype = {
 			args.push(i+":'"+values[i]+"'");
 		}
 		element.setAttribute("data-args",args);
-		//element.firstElementChild.setAttribute("data-args",args);
+		element.firstElementChild.setAttribute("data-args",args);
 	},
 	setDataArgument: function (element,key,value) {
 		var values = this.getDataArguments(element);

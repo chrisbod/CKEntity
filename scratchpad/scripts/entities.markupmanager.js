@@ -75,11 +75,11 @@ EntityMarkupManager.prototype = {
 		
 	},
 	cleanFragment: function (fragment) {
-		console.log(""+fragment.firstChild)
+		//console.log(""+fragment.firstChild)
 		return fragment
 	},
 	postPaste: function (event,range) {
-		console.log(""+range)
+		//console.log(""+range)
 	},
 	pasteHandler: function (event) {
 		var selection = event.target.ownerDocument.getSelection();
@@ -194,7 +194,7 @@ EntityMarkupManager.prototype = {
 		for (var i=0;i<partials.length;i++) {
 			var range = this.editableDocument.createRange()
 			range.selectNodeContents(partials[i]);
-			console.log(range.extractContents())
+			//console.log(range.extractContents())
 			
 			//partials[i].parentNode.parentNode.replaceChild(partials[i],range.extractContents())
 		}

@@ -26,7 +26,7 @@ EntityPasteManager.prototype = {
 			var range = selection.getRangeAt(0);
 			setTimeout(this.postPaste.bind(this,range,event))
 		} else {
-			console.log(event.target)
+			//console.log(event.target)
 		}	
 	},
 	postPaste: function (pasteRange,pasteEvent) {
