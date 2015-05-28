@@ -105,6 +105,7 @@ LanguageStore.prototype = {
 		this.languages[id].tokenDefinitions = tokens;
 		tokens.forEach(function (token) {
 			token.type = this.crossRefs[token.tagId]
+			token.id = token.tagId;
 			var readOnly = (!token.groups || !token.groups.length) && (!token.items || !token.items.length)
 			this.languages[id].tokenStore.addEntity('<'+token.text+'>',this.crossRefs[token.tagId],readOnly)
 		},this);
