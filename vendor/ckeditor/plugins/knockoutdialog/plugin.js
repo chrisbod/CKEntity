@@ -18,17 +18,18 @@
 				viewModel.active(false);
 			}
 
-			function launchDialog(element,viewModel,editor) {
-				editor.execCommand("launchKnockDialog", {
+			function launchDialog(element,viewModel) {
+				console.log("launch called")
+				CKEDITOR.currentInstance.execCommand("launchKnockDialog", {
 				"element": element,
 				viewModel: viewModel,
 				onOkay: onOkay.bind(null,viewModel),
 				onCancel: onCancel.bind(null,viewModel)
 			})
 			}
-			function launchIfNeeded(element,viewModel,editor,isActive) {
+			function launchIfNeeded(element,viewModel,isActive) {
 				if (isActive) {
-					launchDialog(element,viewModel,editor)
+					launchDialog(element,viewModel)
 				} else {
 					console.log("active:"+isActive)
 				}
@@ -40,7 +41,7 @@
 		update: function (element, valueAccessor, allBindingsAccessor, viewModel, bindingContext) {
 
 			
-			valueAccessor().subscribe(launchIfNeeded.bind(null,element,viewModel,CKEDITOR.currentInstance),null,"change")
+			valueAccessor().subscribe(launchIfNeeded.bind(null,element,viewModel),null,"change")
 		}
 }
 	

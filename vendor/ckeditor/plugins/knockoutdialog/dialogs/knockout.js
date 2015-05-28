@@ -38,8 +38,8 @@ CKEDITOR.dialog.add( 'knockoutDialog', function( editor ) {
 
 		// Basic properties of the dialog window: title, minimum size.
 		title: 'Entity Properties',
-		minWidth: 200,
-		minHeight: 120,
+		minWidth: 300,
+		minHeight: 100,
 
 
 		// Dialog window content definition.
@@ -64,33 +64,36 @@ CKEDITOR.dialog.add( 'knockoutDialog', function( editor ) {
 				
 				enterBlocker.attach(wrapper)
 				knockoutNode = data.element;
-
-				var minWidth = reflowDialog(data.element)
-
+				//console.log(data.element.getBoundingClientRect())
 				wrapper.appendChild(data.element);
 				
 
-				if (data.title) {
-					document.querySelector(".cke_dialog_title").innerHTML = data.title
-				}
-				
 
-				
-			}
-			this.layout()
-			var currentElement = wrapper
-			//remove horizontal scrollbar
-			/*for (var currentElement = wrapper; currentElement; currentElement=currentElement.parentNode) {
-					if (currentElement.style.width == "200px") {
-						currentElement.style.minWidth = (minWidth+10)+"px";
-						break;
+				var rect = this.parts.dialog.$.getBoundingClientRect();
+				var overspill = rect.bottom-window.innerHeight,
+					windowWidth = window.innerWidth,
+					widthLeft = windowWidth - (rect.width+100)
+				if (overspill>0) {
+	
+					var element = wrapper.parentNode;
+					while (element) {
+						if (element.style.width) {
+
+							console.log(parseInt(element.style.width))
+							element.style.width = 600+"px"
+							break;
+						} else {
+							element = element.parentNode
+						}
 					}
-				}*/
-			while (currentElement && currentElement.style) {
-				if (currentElement.style.display) {
-					currentElement.style = ""
+
+					var rect = this.parts.dialog.$.getBoundingClientRect();
+					var overspill = rect.bottom-window.innerHeight
+					if (overspill>0) {
+
+						wrapper.style.height = (wrapper.offsetHeight - overspill) + "px"
+					}
 				}
-				currentElement = currentElement.parentNode
 			}
 		},
 		// This method is invoked once a user clicks the OK button, confirming the dialog.
