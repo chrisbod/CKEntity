@@ -28,9 +28,10 @@ DocumentTranslator.prototype = {
 		for (var i=0;i<keys.length;i++) {
 			args = helper.getDataArguments(keys[i]);
 			newNode = translationStore.getEntityNode(args.key);
+			console.log(newNode)
 			helper.setDataArguments(newNode,args);
 			this.synchronizeConditionals(newNode,keys[i],language)
-			keys[i].parentNode.replaceChild(newNode,keys[i])
+			keys[i].parentNode.parentNode.replaceChild(newNode,keys[i].parentNode)
 		}
 	},
 	synchronizeConditionals: function (newElement, oldElement, language) {
@@ -51,7 +52,9 @@ DocumentTranslator.prototype = {
 		}
 		for (i=0;i<originalConditionals.length;i++) {
 			var args = this.entitiesHelper.getDataArguments(originalConditionals[i])
-			lookup[args.conditional].setAttribute("data-args",originalConditionals[i].getAttribute("data-args"))
+			var node = lookup[args.conditional]
+			node.setAttribute("data-args",originalConditionals[i].getAttribute("data-args"))
+			node.firstElementChild.setAttribute("data-args",originalConditionals[i].getAttribute("data-args"))
 		}
 
 	}

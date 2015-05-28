@@ -138,6 +138,9 @@ EntitiesHelper.prototype = {
 
 	},
 	setDataArguments: function (element,values) {
+		if (element.hasAttribute("data-entity-node")) {
+			element = element.firstElementChild
+		}
 		var args = [];
 		for (var i in values) {
 			args.push(i+":'"+values[i]+"'");
