@@ -136,6 +136,7 @@ conditional[data-args*=hidden] .contents {
   background-repeat: no-repeat;
   background-position: center right;
 }
+
 .entity-wrapper[data-entity-node=conditional] conditional[data-args*=hidden] .args,
 .entity-wrapper[data-entity-node=user] *[data-args*=hidden] .args
 {
@@ -168,6 +169,10 @@ div[data-block-level=true], span[data-block-level=true] {
 }
 div[data-block-level=true].entity-wrapper .contents, span[data-block-level=true].entity-wrapper .contents {
 	display: block;
+	  padding-left: 1em;
+}
+.entity-wrapper[data-block-level=true] > * > .args {
+	position: absolute;
 }
 
 .entity-wrapper[data-block-level=true] > .conditional:before {
