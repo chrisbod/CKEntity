@@ -33,13 +33,22 @@ EntityTooltip.prototype = {
 	},
 	resizeHandler: function () {
 		if (this.currentlyOver) {
+			try {
 			this.positionTooltip(this.currentlyOver);
+			} catch (e) {
+				this.currentlyOver = null;
+			}
 		}
 	},
 	scrollHandler: function () {
 		if (this.currentlyOver) {
+			try {
 			this.positionTooltip(this.currentlyOver);
+			} catch (e) {
+				this.currentlyOver = null;
+			}
 		}
+
 	},
 	clickHandler: function (event) {
 		var target = event.target;
