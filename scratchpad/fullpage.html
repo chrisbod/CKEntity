@@ -138,7 +138,7 @@ $(function () {
 				allowedContent: true,
 				fullPage: true,
 				allowedContent: true,
-				extraPlugins: 'tab,wysiwygarea,wallstreetdocs,wordpaste,documentlang,knockoutdialog,pagebreaktag,wsdpreview',
+				extraPlugins: 'tab,wysiwygarea,wallstreetdocs,wordpaste,documentlang,knockoutdialog,pagebreaktag,wsdpreview,funky',
 				removePlugins: 'elementspath,magicline,pastetext,pastefromword,clipboard,forms,scayt',
 				language_list: [ 'en:English', 'fr:French', 'de:German'],
 				removeButtons: 'Source,NewPage,DocProps,Templates,SpellChecker,CreateDiv,Flash,Smiley,PageBreak,Iframe,Format,About,Language,SpellChecker',
@@ -154,10 +154,10 @@ $(function () {
 
 			});
 			var editor = CKEDITOR.instances.documentSource;
-			new SaveShim(document.forms[0])
-			var localVersion = localStorage.getItem("source")
-			if (localVersion) {
-				editor.setData(localVersion)
+			window.SAVESHIM = new SaveShim(document.forms[0])
+			var lastDoc = localStorage.getItem("lastDoc")
+			if (lastDoc) {
+				editor.setData(localStorage.getItem(lastDoc))
 			} else {
 				$.ajax('kid.html', {
 				success: function (data) {
@@ -190,17 +190,17 @@ function SaveShim(form) {
 		this.init(form)
 	}
 }
+window.CURRENTDOC = "kid"
 SaveShim.prototype = {
 	init: function (form) {
 
 		this.form = form;
 		this.form.submit = function () {
 			var source = this.elements[0].value
-			localStorage.setItem("source",source)
+			localStorage.setItem(window.CURRENTDOC,source)
 		}
 	},
 	handleEvent: function (event) {
-		debugger;
 		return this[event.type+"Handler"](event)
 	},
 	submitHandler: function (event) {
@@ -290,6 +290,71 @@ SaveShim.prototype = {
     	console.log(event.target)
     }
 };
+
+
+
+CKEDITOR.plugins.add("funky",{
+	requires: 'menubutton',
+	init: function (editor) {
+		//editor.addMenuGroup("templates",1);
+		/*editor.ui.addButton(
+			'Mook',
+		{
+
+			label: "ook",
+			command: "mook",
+			text: "zoo"
+
+		}
+
+
+			)*/
+
+
+			// Initialize groups for menu.
+
+
+
+			var tags =[]
+
+			 tags[0]=["kid", "KID", "KID"];
+     		 tags[1]=["societe_general", "socgen", "socgen"];
+			editor.ui.add( 'docs', CKEDITOR.UI_RICHCOMBO, {
+				label: "Load File",
+				command: 'loadDoc',
+				text: "Documents",
+				multiSelect: false,
+				panel: {
+					css: [editor.config.contentsCss, 'css/combo.css']
+
+
+				},
+				init: function () {
+					for (var this_tag in tags){
+		                  this.add(tags[this_tag][0], tags[this_tag][1], tags[this_tag][2]);
+		               }
+		             panel = this.panel
+				},
+				onClick: function(value) {
+					$.ajax(value+'.html', {
+				success: function (data) {
+					window.CURRENTDOC = value
+					editor.setData(data, function () {
+						
+						//var editDocument = CKEDITOR.instances.documentSource.window.$.document
+
+						//build()
+
+					});
+					
+				}
+			});
+				
+		
+	}
+});
+
+}});
 		</script>
 		<form action="javascript:;" method="GET">
 

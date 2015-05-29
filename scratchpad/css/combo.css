@@ -1,0 +1,17 @@
+body {
+	font: normal normal normal 12px Arial,Helvetica,Tahoma,Verdana,Sans-Serif;
+}
+ul, li {
+	list-style-type: none;
+	margin: 0;
+	padding: 0;
+	color: black;
+}
+li {
+	  line-height: 26px;
+  	padding-left: 10px;
+}
+a {
+	color: black;
+	text-decoration: none
+}
