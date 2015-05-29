@@ -63,14 +63,13 @@ TokenStore.prototype.createTemplatableNodeFromEntity = function (key,id,readOnly
 	node.insertBefore(rules,node.firstChild)
 	var editSpan = document.createElement("span")
 	editSpan.className = "entity-wrapper"
+
 	editSpan.appendChild(node);
 	editSpan.setAttribute("data-entity-node","token")
 	editSpan.setAttribute("contenteditable","false")
 	if (readOnly) {
 		editSpan.setAttribute("data-read-only","true")
 	}
-//	editSpan.insertBefore(document.createTextNode("\u200b"),editSpan.firstChild);
-//	editSpan.appendChild(document.createTextNode("\u200b"))
 	return node;
 }
 
@@ -119,8 +118,6 @@ TranslationStore.prototype.createTemplatableNodeFromEntity = function (key,id) {
 	editSpan.className = "entity-wrapper"
 	editSpan.setAttribute("contenteditable","false")
 	editSpan.appendChild(node)
-//	editSpan.insertBefore(document.createTextNode("\u200b"),editSpan.firstChild);
-//	editSpan.appendChild(document.createTextNode("\u200b"))
 	return editSpan;
 }
 TranslationStore.prototype.parseTextMarkup = function (string) {

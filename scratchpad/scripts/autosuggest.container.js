@@ -281,8 +281,9 @@ function AutoSuggestContainer(id, tokenizer) {
 			if (newNode.previousSibling) {
 				if (newNode.previousSibling.data) {
 					var endText = new RegExp(this.trigger.trim()+"(\\s|\\u200b\\u00a0)*$");
-				newNode.previousSibling.data = newNode.previousSibling.data.replace(endText,' \u200b');
-					
+					console.log(escape(newNode.previousSibling.data))
+				newNode.previousSibling.data = newNode.previousSibling.data.replace(endText,' ');
+					console.log(escape(newNode.previousSibling.data))
 				}
 				
 			}
@@ -295,7 +296,7 @@ function AutoSuggestContainer(id, tokenizer) {
 				afterNode = newNode.nextSibling;
 
 			} else {
-				newNode.parentNode.appendChild(document.createTextNode("\u200b"))
+				newNode.parentNode.appendChild(document.createTextNode("\u00a0"))
 			}	
 			range.selectNode(newNode.nextSibling);
 			selection.removeAllRanges();
@@ -306,8 +307,8 @@ function AutoSuggestContainer(id, tokenizer) {
 	cleanEndNodes: function (node) {
 		while (node && node.nextSibling) {
 			if (node.nextSibling.nodeType == 3) {
-				if (node.nextSibling.data.indexOf("\u200b")!=-1) {
-					node.nextSibling.data = node.nextSibling.data.replace(/\u200b/g,'');
+				if (node.nextSibling.data.indexOf("\u00a0")!=-1) {
+					node.nextSibling.data = node.nextSibling.data.replace(/\u00a0/g,'');
 					if (!node.previousSibling.data.length) {
 						node.parentNode.removeChild(node.previousSibling)
 					}
@@ -319,8 +320,8 @@ function AutoSuggestContainer(id, tokenizer) {
 	cleanStartNodes: function (node) {
 		while (node && node.previousSibling) {
 			if (node.previousSibling.nodeType == 3) {
-				if (node.previousSibling.data.indexOf("\u200b")!=-1) {
-					node.previousSibling.data = node.previousSibling.data.replace(/\u200b/g,'');
+				if (node.previousSibling.data.indexOf("\u00a0")!=-1) {
+					node.previousSibling.data = node.previousSibling.data.replace(/\u00a0/g,'');
 					if (!node.previousSibling.data.length) {
 						node.parentNode.removeChild(node.previousSibling)
 					}

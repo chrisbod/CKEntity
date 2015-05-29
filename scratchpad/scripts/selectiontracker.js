@@ -192,36 +192,15 @@ SelectionTracker.getInstance = function () {
 			this.selectedNode = null;
 		},
 		keydownHandler: function (event) {
-			var baseNode = this.document.getSelection().baseNode
-			if (baseNode && baseNode.data == "\u200b") {
-				if (baseNode.nextSibling) {
-					baseNode.data = ""
-				} 
-			}
+			
 			switch (event.keyCode) {
-				case 13: return this.keyEnterDownHandler(event);
-				case 8 : return this.deleteHandler(event);
+				//case 13: return this.keyEnterDownHandler(event);
+				//case 8 : return this.deleteHandler(event);
 				case 37: return this.keyLeftDownHandler(event);	
 				case 39: return this.keyRightDownHandler(event);
-				case 46: return this.backspaceHandler(event);
+				//case 46: return this.backspaceHandler(event);
 			}
 		},
-		/*deleteHandler: function (event) {
-			var cursorDetails = this.getCursorDetails(event);
-
-			if (this.getEntityElement)
-			if (cursorDetails.atStartOfElement) {
-				if (cursorDetails.textNode && cursorDetails.textNode.parentNode.hasAttribute("data-deletable")) {
-					event.preventDefault();
-				} else if (cursorDetails.baseNode && cursorDetails.baseNode.hasAttribute && cursorDetails.baseNode.hasAttribute("data-deletable")) {
-					event.preventDefault()
-				}
-			}
-
-
-			
-			
-		},*/
 		deleteHandler: function (event) {
 			if (this.selectedNode && event.keyCode == 8) {
 				this.removeCurrentEntityIfAllowed()
@@ -299,47 +278,8 @@ SelectionTracker.getInstance = function () {
 			}
 		},
 		keyLeftDownHandler: function (event) {//before selection
-
-			var cursorDetails = this.getCursorDetails(event),
-			baseNode = cursorDetails.baseNode;
-			if (baseNode && baseNode.nodeType == 3) {
-				var whitespace = this.isWhitespace(cursorDetails.baseNode.data),
-					length = baseNode.data.length,
-					offset = cursorDetails.textOffset,
-					previousSibling = baseNode.previousSibling,
-					startOfElementIncludingWhitespace;
-				if (!previousSibling) {//start of element
-					if (whitespace) {//remove any halfwidth space 
-						if (cursorDetails.baseNode.data.indexOf("\u200b") == 1) {
-							cursorDetails.baseNode.data = " "
-						}
-					} else {
-						//console.log(133)
-					}
-				} else {
-					startOfElementIncludingWhitespace = !previousSibling.previousSibling,
-					endOfElement = !baseNode.nextSibling,
-					entityNode = this.getEntityElement(previousSibling)
-					if (startOfElementIncludingWhitespace && entityNode) {
-						
-						this.selectNode(entityNode);
-						event.preventDefault()
-						return
-					}
-					if (whitespace && endOfElement && entityNode) {
-						this.selectNode(entityNode);
-						event.preventDefault()
-						return
-						
-					} else {
-						if (entityNode && offset == 0) {
-							this.selectNode(entityNode);
-							event.preventDefault()
-							return
-						}
-					}
-				}
-			}
+			//console.log(this.getCursorDetails())
+			event.stopPropagation()
 			
 		},
 		keyupHandler: function (event) {
@@ -348,14 +288,22 @@ SelectionTracker.getInstance = function () {
 			
 			switch (event.keyCode) {
 				case 37: return this.keyLeftUpHandler(event);	
-				case 13 : return this.keyEnterUpHandler(event)
+				//case 13 : return this.keyEnterUpHandler(event)
 				case 39 : return this.keyRightUpHandler(event);
 			}
 
 			
 		},
 		keyLeftUpHandler: function (event) {
-
+			var cursorDetails = this.getCursorDetails()
+			try {
+			if (cursorDetails.textNode.nextSibling.tagName == "SPAN") {
+				if (!this.selectedNode) this.selectNode(cursorDetails.textNode.nextSibling)
+			}
+			}
+			catch (e) {
+			
+			}
 			event.stopPropagation()
 		},
 		keyEnterDownHandler: function () {
@@ -381,111 +329,18 @@ SelectionTracker.getInstance = function () {
 		
 		
 		keyRightDownHandler: function (event) {
-			var cursorDetails = this.getCursorDetails();
-			if (cursorDetails.atEndOfElement) {
-				event.stopPropagation();
-			} else {
-				var baseNode = cursorDetails.baseNode;
-				if (baseNode.nodeType != 3 && cursorDetails.baseOffset == 0 && baseNode.firstChild) {//at beginning of element
-					
-					var entity = this.getEntityElement(baseNode.firstChild)
-					if (entity) {
-						//console.log(1)
-						this.selectNode(entity);
-						this.selectedNodeOnDown = true;
-						event.stopPropagation();
-						event.preventDefault();
-						return
-					} else {
-						//textNode as firstChild
-						if (this.isWhitespace(baseNode.firstChild)) {
-							if (!this.selectedNode) {
-								var entity = this.getEntityElement(baseNode.firstChild.nextSibling)
-								if (entity) {
-									//console.log(3)
-									this.selectNode(entity);
-									event.stopPropagation();
-									event.preventDefault();
-									return
-								} else {
-									//console.log(baseNode)
-								}
-							}
-						} else {
-							//console.log(5)
-						}
-
-						
-					}
-				} else {
-					if (baseNode.nodeType == 3) {
-						//console.log(6)
-						if (this.isWhitespace(baseNode)) {
-							//console.log(7)
-							if (cursorDetails.baseOffset == baseNode.data.length) {
-								var entity = this.getEntityElement(baseNode.nextSibling)
-							if (entity) {
-								//console.log(8)
-								//this.selectNode(entity);
-								//this.selectedNodeOnDown = true;
-								//event.stopPropagation();
-								//event.preventDefault();
-								return
-							} else {
-								//console.log(9)
-							}
-							}
-							
-						}
-						this.selectedNode = null
-					} else {
-						//console.log(231)
-					}
-				}
+			var cursorDetails = this.getCursorDetails()
+			console.log(cursorDetails.nextSibling)
+			event.stopPropagation()
 
 				
 
-			}
+			
 			
 		},
 		keyRightUpHandler: function (event) {
-			var cursorDetails = this.getCursorDetails(event);
-			if (this.selectedNodeOnDown) {
-				this.selectedNodeOnDown = false;
-				//this.moveCursorAfter(this.selectedNode)
-				event.preventDefault()
-				event.stopPropagation()
-				return
-			} else if (!this.selectedNode) {
-
-				if (cursorDetails.baseNode.nodeType!=3)	{
-				 if (cursorDetails.baseOffset == 0) {//at start of node
-				 	//console.log("194");
-					return
-				} else {
-					//console.log(197)
-					var entity  = cursorDetails.baseNode.childNodes[cursorDetails.baseOffset-1]
-					if (entity) {
-						this.selectNode(entity);
-						event.stopPropagation()
-						return
-					} else {
-						//console.log(213)
-					}
-				}
-				
-				} else {
-					var entity = this.getEntityElement(cursorDetails.baseNode.nextSibling)
-					if (entity && this.isWhitespace(cursorDetails.baseNode)) {
-						
-						if (cursorDetails.baseNode.data.charAt(cursorDetails.baseOffset-1)=="\u200b") {
-							this.selectNode(entity)
-						}
-						
-						
-					}
-				}
-			}	
+			var details = this.getCursorDetails()
+			console.log(details.baseNode, details.textOffset)
 		},
 		
 		getEntityElement: function (element) {//slightly different to entities helper method
@@ -653,10 +508,10 @@ SelectionTracker.getInstance = function () {
 			var range = this.document.createRange();
 
 			if (!node.nextSibling || !node.nextSibling.data) {
-				node.parentNode.insertBefore(this.getZeroWidthSpace(true),node.nextSibling);
+				//node.parentNode.insertBefore(this.getZeroWidthSpace(true),node.nextSibling);
 			}
 			if (!node.previousSibling || !node.previousSibling.data) {
-				node.parentNode.insertBefore(this.getZeroWidthSpace(true),node);
+				//node.parentNode.insertBefore(this.getZeroWidthSpace(true),node);
 			}
 			
 			
@@ -664,7 +519,7 @@ SelectionTracker.getInstance = function () {
 			selection.removeAllRanges()
 			selection.addRange(range);
 			this.selectedNode = node;
-			this.cleanZeroWidthSpaces()
+			//this.cleanZeroWidthSpaces()
 
 		},
 		insertCursorBefore: function (node) {
