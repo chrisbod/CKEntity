@@ -301,7 +301,6 @@ function AutoSuggestContainer(id, tokenizer) {
 			selection.removeAllRanges();
 			selection.addRange(range);
 			selection.collapseToStart();
-			console.log(newNode.previousSibling)
 		}
 	},
 	cleanEndNodes: function (node) {

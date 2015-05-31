@@ -164,11 +164,7 @@ SelectionTracker.getInstance = function () {
 		return fragment
 	},
 		mousedownHandler: function (event) {
-			var cursorDetails = this.getCursorDetails(event)
-			if (cursorDetails.withoutTextEnd) {
-				cursorDetails.withoutTextEnd.appendChild(this.getZeroWidthSpace())
-
-			}
+			
 			//event.stopPropagation();
 		},
 		clickHandler: function (event) {
@@ -196,18 +192,21 @@ SelectionTracker.getInstance = function () {
 			
 			switch (event.keyCode) {
 				//case 13: return this.keyEnterDownHandler(event);
-				//case 8 : return this.deleteHandler(event);
+				case 8 : return this.deleteHandler(event);
 				case 37: return this.keyLeftDownHandler(event);	
 				case 39: return this.keyRightDownHandler(event);
 				//case 46: return this.backspaceHandler(event);
 			}
 		},
 		deleteHandler: function (event) {
-			if (this.selectedNode && event.keyCode == 8) {
-				this.removeCurrentEntityIfAllowed()
-				event.stopPropagation();
+
+			if (this.selectedNode) {
+				this.removeCurrentEntityIfAllowed();
+				
 				event.preventDefault();
 			}
+
+			event.stopPropagation();
 		},
 	
 	removeCurrentEntityIfAllowed: function () {
@@ -328,60 +327,92 @@ SelectionTracker.getInstance = function () {
 		
 		},
 		isImmediatelyBeforeEntity: function (cursorDetails) {
-			var simple = cursorDetails.textNode &&
-				   cursorDetails.textOffset == 0 &&
-				   cursorDetails.textNode.previousSibling &&
-				   cursorDetails.textNode.previousSibling.className == "entity-wrapper";
-			if (simple) {
-				return true;
-			} else {
-				if (cursorDetails.textNode) {
-					console.log(cursorDetails.textNode.data)
-					console.log(cursorDetails.textNode.previousSibling)
-				}
-			} 
-		},
-		keyLeftDownHandler: function (event) {
+			if (cursorDetails.textNode) {
+				if (cursorDetails.textNode.previousSibling && cursorDetails.textNode.previousSibling.className == "entity-wrapper") {
+					
 
-			var cursorDetails = this.getCursorDetails();
-
-			if (this.isImmediatelyBeforeEntity(cursorDetails)) {
-				this.selectNode(cursorDetails.textNode.previousSibling);
-				event.stopPropagation();
-				event.preventDefault();
-				return;
-			} 
-		},
-		isAtEndOfElementAndEditorIsAboutToDestroyDOM: function (cursorDetails) {
-			console.log(cursorDetails)
-		},
-		keyRightDownHandler: function (event) {
-			var cursorDetails = this.getCursorDetails();
-			if (this.isAtEndOfElementAndAboutToBeHiddenByEditor(cursorDetails)) {
-				console.log("hidden")
-				event.stopPropagation()
-				return
-			}
-		
-			if (!this.selectedNode) {
-
-				if (!cursorDetails.textNode && cursorDetails.baseOffset == 0) {
-					if (cursorDetails.baseNode.childNodes[0].data == " ") {
-						if (cursorDetails.baseNode.childNodes[1]) {
-							if (cursorDetails.baseNode.childNodes[1].className == "entity-wrapper") {
-								this.selectNode(cursorDetails.baseNode.childNodes[1])
-								event.stopPropagation()	
-								event.preventDefault();
-								return
-							}
+					if (cursorDetails.textOffset == 0) {
+						return true
+					} else {
+						if (cursorDetails.textOffset == 1 && cursorDetails.textNode.data.charAt(0) == "\u200b") {
+							//debugger;
+							return true
 						}
 					}
 				}
+
+			}
+			return false;
+			
+		},
+		keyLeftDownHandler: function (event) {
+			event.stopPropagation();
+			var cursorDetails = this.getCursorDetails();
+			var textNode = cursorDetails.textNode;
+			if (!textNode && cursorDetails.baseOffset != 0) {
+				var childNodeBefore = cursorDetails.baseNode.childNodes[cursorDetails.baseOffset-1]
+				if (childNodeBefore && childNodeBefore.className == "entity-wrapper") {
+					this.selectNode(childNodeBefore)
+					event.preventDefault();
+					return
+				}
+			}
+			if (textNode && cursorDetails.textOffset === 0) {
+				if (textNode.previousSibling && textNode.previousSibling.className == "entity-wrapper") {
+					this.selectNode(textNode.previousSibling)
+					event.preventDefault();
+					return
+				}
 			}
 			this.selectedNode = null;
-
 			
-				
+		},
+		isAtEndOfElementAndEditorIsAboutToDestroyDOM: function (cursorDetails) {
+			//console.log(cursorDetails)
+		},
+		keyRightDownHandler: function (event) {
+			event.stopPropagation();
+			var cursorDetails = this.getCursorDetails();
+			var textNode = cursorDetails.textNode;
+
+			if (!textNode && cursorDetails.baseOffset != 0) {
+				var childNodeAfter= cursorDetails.baseNode.childNodes[cursorDetails.baseOffset]
+				if (childNodeAfter && childNodeAfter.className == "entity-wrapper") {
+					this.selectNode(childNodeAfter)
+					event.preventDefault();
+					return
+				}
+			}
+
+			if (!this.selectedNode && textNode) {
+				if (cursorDetails.textOffset === textNode.data.length) {
+					var next = textNode.nextSibling
+					if (next.data === "") {
+						next = next.nextSibling
+					}
+					if (next && next.className == "entity-wrapper") {
+						this.selectNode(next)
+						event.preventDefault();
+						return
+						}
+					} 
+
+
+			}
+			if (!textNode && !this.selectedNode) {
+				if (cursorDetails.baseOffset == 0) {
+					if (cursorDetails.baseNode.firstChild && cursorDetails.baseNode.firstChild.data.trim() == "") {
+						if (cursorDetails.baseNode.firstChild.nextSibling && cursorDetails.baseNode.firstChild.nextSibling.className == "entity-wrapper") {
+							this.selectNode(cursorDetails.baseNode.firstChild.nextSibling)
+							event.preventDefault();
+							return
+						}
+					}
+					
+				}
+			}
+
+			this.selectedNode = null;	
 		},
 		keyRightUpHandler: function (event) {
 			var details = this.getCursorDetails()
@@ -576,17 +607,16 @@ SelectionTracker.getInstance = function () {
 			var selection = this.document.getSelection();
 			selection.removeAllRanges();
 			var range = this.document.createRange();	
-			if (node.nextSibling && node.nextSibling.data == "\u00a0" && !node.nextSibling.nextSibling) {
-				//end of block level element selection will break
-				node.nextSibling.data = " \u00a0 ";
-
-				node.parentNode.appendChild(document.createElement("garbage"),node.nextSibling)
+			if (node.previousSibling && node.previousSibling.nodeType !== 3 || node.previousSibling.data == "\u00a0") {// no whitespace in between previous node
+				node.parentNode.insertBefore(document.createTextNode(" "),node)
+			}
+			if (node.nextSibling && node.nextSibling.nodeType !== 3 || node.nextSibling.data == "\u00a0") {// no whitespace in between previous node
+				node.parentNode.insertBefore(document.createTextNode(" "),node.nextSibling)
 			}
 			range.selectNode(node);
 			selection.removeAllRanges()
 			selection.addRange(range);
 			this.selectedNode = node;
-			//this.cleanZeroWidthSpaces()
 
 		},
 		insertCursorBefore: function (node) {
