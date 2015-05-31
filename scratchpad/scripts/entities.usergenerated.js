@@ -43,6 +43,9 @@ UserConditionalManager.prototype = {
 		//console.log("here")
 	}, 
 	openSquareBrackets: function (event) {
+		if (event.shiftKey) {
+			return
+		}
 		var selection = this.document.getSelection(),
 			range = selection.getRangeAt(0),
 			conditional = this.conditionalTemplateNode.cloneNode(true);

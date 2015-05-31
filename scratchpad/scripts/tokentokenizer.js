@@ -11,7 +11,7 @@ TokenTokenizer.prototype = {
 	},
 	getTrigger: function (rangeOrText,event) {
 		if (event) {
-			if (event.keyCode == 188) {
+			if (event.keyCode == 188 && event.shiftKey) {
 				return "<";
 			}
 		}
