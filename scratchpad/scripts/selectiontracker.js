@@ -182,6 +182,7 @@ SelectionTracker.getInstance = function () {
 
 							this.selectNode(entity)
 							event.preventDefault()
+							event.stopPropagation()
 							return
 							
 						
@@ -277,35 +278,117 @@ SelectionTracker.getInstance = function () {
 				
 			}
 		},
-		keyLeftDownHandler: function (event) {//before selection
-			//console.log(this.getCursorDetails())
-			event.stopPropagation()
-			
-		},
+		
 		keyupHandler: function (event) {
 
 			
 			
 			switch (event.keyCode) {
 				case 37: return this.keyLeftUpHandler(event);	
-				//case 13 : return this.keyEnterUpHandler(event)
 				case 39 : return this.keyRightUpHandler(event);
 			}
 
 			
 		},
-		keyLeftUpHandler: function (event) {
-			var cursorDetails = this.getCursorDetails()
-			try {
-			if (cursorDetails.textNode.nextSibling.tagName == "SPAN") {
-				if (!this.selectedNode) this.selectNode(cursorDetails.textNode.nextSibling)
+		keydownHandler: function (event) {
+			switch (event.keyCode) {
+				case 37: return this.keyLeftDownHandler(event);	
+				case 39 : return this.keyRightDownHandler(event);
 			}
-			}
-			catch (e) {
-			
-			}
-			event.stopPropagation()
 		},
+		keyLeftUpHandler: function (event) {
+			if (this.selectedNode) {
+				this.selectedNode = null;
+			}
+			
+		},
+		isAtEndOfElementAndAboutToBeHiddenByEditor: function (cursorDetails) {
+			if (cursorDetails.textNode) {
+				if (cursorDetails.textNode.data.length ==  cursorDetails.textOffset) {
+					if (!cursorDetails.baseNode.nextSibling) {
+					var currentNode = cursorDetails.baseNode
+					while (currentNode && !currentNode.nextSibling) {
+						currentNode = currentNode.parentNode;
+					}
+					currentNode.nextSibling.normalize();
+					var firstChild = currentNode.nextSibling.firstChild;
+					if (firstChild.nodeType == 3) {
+						if (firstChild.data.trim() == "") {//node won't be focussed naturally
+							if (firstChild.nextSibling && firstChild.nextSibling.className == "entity-wrapper") {
+								return true;
+							}
+						}
+					}
+					
+				}
+
+			}
+			}
+			return false;
+		
+		},
+		isImmediatelyBeforeEntity: function (cursorDetails) {
+			var simple = cursorDetails.textNode &&
+				   cursorDetails.textOffset == 0 &&
+				   cursorDetails.textNode.previousSibling &&
+				   cursorDetails.textNode.previousSibling.className == "entity-wrapper";
+			if (simple) {
+				return true;
+			} else {
+				if (cursorDetails.textNode) {
+					console.log(cursorDetails.textNode.data)
+					console.log(cursorDetails.textNode.previousSibling)
+				}
+			} 
+		},
+		keyLeftDownHandler: function (event) {
+
+			var cursorDetails = this.getCursorDetails();
+
+			if (this.isImmediatelyBeforeEntity(cursorDetails)) {
+				this.selectNode(cursorDetails.textNode.previousSibling);
+				event.stopPropagation();
+				event.preventDefault();
+				return;
+			} 
+		},
+		isAtEndOfElementAndEditorIsAboutToDestroyDOM: function (cursorDetails) {
+			console.log(cursorDetails)
+		},
+		keyRightDownHandler: function (event) {
+			var cursorDetails = this.getCursorDetails();
+			if (this.isAtEndOfElementAndAboutToBeHiddenByEditor(cursorDetails)) {
+				console.log("hidden")
+				event.stopPropagation()
+				return
+			}
+		
+			if (!this.selectedNode) {
+
+				if (!cursorDetails.textNode && cursorDetails.baseOffset == 0) {
+					if (cursorDetails.baseNode.childNodes[0].data == " ") {
+						if (cursorDetails.baseNode.childNodes[1]) {
+							if (cursorDetails.baseNode.childNodes[1].className == "entity-wrapper") {
+								this.selectNode(cursorDetails.baseNode.childNodes[1])
+								event.stopPropagation()	
+								event.preventDefault();
+								return
+							}
+						}
+					}
+				}
+			}
+			this.selectedNode = null;
+
+			
+				
+		},
+		keyRightUpHandler: function (event) {
+			var details = this.getCursorDetails()
+			//console.log(details)
+			
+		},
+
 		keyEnterDownHandler: function () {
 			var cursorDetails = this.getCursorDetails()
 			if (cursorDetails.baseNode.parentNode.hasAttribute("data-deletable")) {
@@ -328,20 +411,7 @@ SelectionTracker.getInstance = function () {
 		},
 		
 		
-		keyRightDownHandler: function (event) {
-			var cursorDetails = this.getCursorDetails()
-			console.log(cursorDetails.nextSibling)
-			event.stopPropagation()
-
-				
-
-			
-			
-		},
-		keyRightUpHandler: function (event) {
-			var details = this.getCursorDetails()
-			console.log(details.baseNode, details.textOffset)
-		},
+		
 		
 		getEntityElement: function (element) {//slightly different to entities helper method
 			if (element) {
@@ -505,16 +575,13 @@ SelectionTracker.getInstance = function () {
 		selectNode: function (node) {
 			var selection = this.document.getSelection();
 			selection.removeAllRanges();
-			var range = this.document.createRange();
+			var range = this.document.createRange();	
+			if (node.nextSibling && node.nextSibling.data == "\u00a0" && !node.nextSibling.nextSibling) {
+				//end of block level element selection will break
+				node.nextSibling.data = " \u00a0 ";
 
-			if (!node.nextSibling || !node.nextSibling.data) {
-				//node.parentNode.insertBefore(this.getZeroWidthSpace(true),node.nextSibling);
+				node.parentNode.appendChild(document.createElement("garbage"),node.nextSibling)
 			}
-			if (!node.previousSibling || !node.previousSibling.data) {
-				//node.parentNode.insertBefore(this.getZeroWidthSpace(true),node);
-			}
-			
-			
 			range.selectNode(node);
 			selection.removeAllRanges()
 			selection.addRange(range);

@@ -281,9 +281,8 @@ function AutoSuggestContainer(id, tokenizer) {
 			if (newNode.previousSibling) {
 				if (newNode.previousSibling.data) {
 					var endText = new RegExp(this.trigger.trim()+"(\\s|\\u200b\\u00a0)*$");
-					console.log(escape(newNode.previousSibling.data))
 				newNode.previousSibling.data = newNode.previousSibling.data.replace(endText,' ');
-					console.log(escape(newNode.previousSibling.data))
+					//console.log(escape(newNode.previousSibling.data))
 				}
 				
 			}
@@ -302,6 +301,7 @@ function AutoSuggestContainer(id, tokenizer) {
 			selection.removeAllRanges();
 			selection.addRange(range);
 			selection.collapseToStart();
+			console.log(newNode.previousSibling)
 		}
 	},
 	cleanEndNodes: function (node) {

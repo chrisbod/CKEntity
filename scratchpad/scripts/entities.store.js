@@ -117,7 +117,9 @@ TranslationStore.prototype.createTemplatableNodeFromEntity = function (key,id) {
 	editSpan.setAttribute("data-entity-node","translation")
 	editSpan.className = "entity-wrapper"
 	editSpan.setAttribute("contenteditable","false")
+	editSpan.appendChild(document.createTextNode("\u200b"))
 	editSpan.appendChild(node)
+	editSpan.appendChild(document.createTextNode("\u200b"))
 	return editSpan;
 }
 TranslationStore.prototype.parseTextMarkup = function (string) {
@@ -165,12 +167,12 @@ TokenStore.prototype.createTemplatableNodeFromEntity = function (key,id,readOnly
 	node.insertBefore(rules,node.firstChild)
 	
 	var editSpan = document.createElement("span")
+	editSpan.appendChild(document.createTextNode("\u200b"))
 	editSpan.setAttribute("data-entity-node","token")
 	editSpan.className = "entity-wrapper"
 	editSpan.appendChild(node);
 	editSpan.setAttribute("contenteditable","false")
-	editSpan.insertBefore(document.createTextNode("   "),editSpan.firstChild);
-	editSpan.appendChild(document.createTextNode("   "))
+	editSpan.appendChild(document.createTextNode("\u200b"))
 	if (readOnly) {
 		editSpan.setAttribute("data-read-only","true")
 	}
