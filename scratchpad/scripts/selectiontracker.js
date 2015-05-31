@@ -178,7 +178,7 @@ SelectionTracker.getInstance = function () {
 
 							this.selectNode(entity)
 							event.preventDefault()
-							event.stopPropagation()
+							//event.stopPropagation()
 							return
 							
 						
@@ -349,6 +349,11 @@ SelectionTracker.getInstance = function () {
 			event.stopPropagation();
 			var cursorDetails = this.getCursorDetails();
 			var textNode = cursorDetails.textNode;
+			if (cursorDetails.baseNode.normalize) {
+				cursorDetails.baseNode.normalize()
+			} else {
+				cursorDetails.baseNode.parentNode.normalize()
+			}
 			if (!textNode && cursorDetails.baseOffset != 0) {
 				var childNodeBefore = cursorDetails.baseNode.childNodes[cursorDetails.baseOffset-1]
 				if (childNodeBefore && childNodeBefore.className == "entity-wrapper") {
@@ -372,9 +377,14 @@ SelectionTracker.getInstance = function () {
 		},
 		keyRightDownHandler: function (event) {
 			event.stopPropagation();
+
 			var cursorDetails = this.getCursorDetails();
 			var textNode = cursorDetails.textNode;
-
+if (cursorDetails.baseNode.normalize) {
+				cursorDetails.baseNode.normalize()
+			} else {
+				cursorDetails.baseNode.parentNode.normalize()
+			}
 			if (!textNode && cursorDetails.baseOffset != 0) {
 				var childNodeAfter= cursorDetails.baseNode.childNodes[cursorDetails.baseOffset]
 				if (childNodeAfter && childNodeAfter.className == "entity-wrapper") {
@@ -385,9 +395,9 @@ SelectionTracker.getInstance = function () {
 			}
 
 			if (!this.selectedNode && textNode) {
-				if (cursorDetails.textOffset === textNode.data.length) {
+				if (cursorDetails.textOffset >= textNode.data.replace(/\s\s+\$/,' ').length) {//more than two spaces and the offset and the length won't coincide
 					var next = textNode.nextSibling
-					if (next.data === "") {
+					if (next && next.data === "") {
 						next = next.nextSibling
 					}
 					if (next && next.className == "entity-wrapper") {
@@ -609,6 +619,9 @@ SelectionTracker.getInstance = function () {
 			var range = this.document.createRange();	
 			if (node.previousSibling && node.previousSibling.nodeType !== 3 || node.previousSibling.data == "\u00a0") {// no whitespace in between previous node
 				node.parentNode.insertBefore(document.createTextNode(" "),node)
+				if (node.previousSibling.data == "\u00a0") {
+					node.parentNode.removeChild(node.previousSibling)
+				}
 			}
 			if (node.nextSibling && node.nextSibling.nodeType !== 3 || node.nextSibling.data == "\u00a0") {// no whitespace in between previous node
 				node.parentNode.insertBefore(document.createTextNode(" "),node.nextSibling)
