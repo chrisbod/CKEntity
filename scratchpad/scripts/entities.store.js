@@ -167,7 +167,7 @@ TokenStore.prototype.createTemplatableNodeFromEntity = function (key,id,readOnly
 	node.insertBefore(rules,node.firstChild)
 	
 	var editSpan = document.createElement("span")
-	editSpan.appendChild(document.createTextNode(" \u200b"))
+	editSpan.appendChild(document.createTextNode("\u200b"))
 	editSpan.setAttribute("data-entity-node","token")
 	editSpan.className = "entity-wrapper"
 	editSpan.appendChild(node);

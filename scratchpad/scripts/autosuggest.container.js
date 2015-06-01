@@ -281,7 +281,7 @@ function AutoSuggestContainer(id, tokenizer) {
 			if (newNode.previousSibling) {
 				if (newNode.previousSibling.data) {
 					var endText = new RegExp(this.trigger.trim()+"(\\s|\\u200b\\u00a0)*$");
-				newNode.previousSibling.data = newNode.previousSibling.data.replace(endText,' ');
+				newNode.previousSibling.data = newNode.previousSibling.data.replace(endText,'');
 					//console.log(escape(newNode.previousSibling.data))
 				}
 				

@@ -282,12 +282,19 @@ SelectionTracker.getInstance = function () {
 			
 		},
 		keydownHandler: function (event) {
-			this.selectedNode && this.cleanSelectedNode()
+			
 			switch (event.keyCode) {
 				case 37: return this.leftArrowDownHandler(event);	
 				case 39 : return this.rightArrowDownHandler(event);
 				case 40: return this.downArrowDownHandler(event);
-				case 38: return this.upArrowDownHandler(event)
+				case 38: return this.upArrowDownHandler(event);
+				default: return this.anykeyDownHandler(event);
+			}
+		},
+		anykeyDownHandler: function () {
+			var cursorDetails = this.getCursorDetails()
+			if (cursorDetails.textNode) {
+				cursorDetails.textNode.data = cursorDetails.textNode.data.replace(/\u200b/g,'')
 			}
 		},
 		leftArrowUpHandler: function (event) {
@@ -300,6 +307,7 @@ SelectionTracker.getInstance = function () {
 			if (this.selectedNode) {//start of Element
 				var selection = this.document.getSelection()
 				selection.collapseToEnd()
+				this.cleanSelectedNode()
 				this.selectedNode = null;
 			} else {
 
@@ -375,15 +383,25 @@ SelectionTracker.getInstance = function () {
 		isImmediatelyBeforeEntity: function (cursorDetails) {
 			if (cursorDetails.textNode) {
 
-				if (cursorDetails.textOffset == cursorDetails.textNode.length && cursorDetails.textNode.nextSibling && cursorDetails.textNode.nextSibling.className == "entity-wrapper") {
+				if (cursorDetails.textOffset >= cursorDetails.textNode.data.replace(/\s\s+$/,' ').length && cursorDetails.textNode.nextSibling && cursorDetails.textNode.nextSibling.className == "entity-wrapper") {
 					return cursorDetails.textNode.nextSibling
+				} else {
+					console.log(escape(cursorDetails.textNode.data))
 				}
 
 			} else {
 				var baseNode = cursorDetails.baseNode;
-				var nextElement = baseNode.childNodes[cursorDetails.baseOffset+1]
-				if (nextElement) {
+				var nextElement = baseNode.childNodes[cursorDetails.baseOffset]
+				if (nextElement && nextElement.className == "entity-wrapper") {
 					return nextElement
+				} else {
+					
+					if (nextElement.nodeType == 3 && nextElement.data.trim() == "" && !nextElement.previousSibling && nextElement.nextSibling.className == "entity-wrapper") {
+						//at start of paragraph
+						return nextElement.nextSibling
+
+
+					}
 				}
 			}
 			return false;
@@ -394,6 +412,7 @@ SelectionTracker.getInstance = function () {
 			if (textNode) {
 				if (textNode.previousElementSibling && textNode.previousElementSibling.className == "entity-wrapper") {
 					var entity = textNode.previousElementSibling;
+
 					textNode.parentNode.normalize();
 					var textNode = entity.nextSibling;
 					var details = this.getCursorDetails()
@@ -418,18 +437,25 @@ SelectionTracker.getInstance = function () {
 			event.stopPropagation();
 			var cursorDetails = this.getCursorDetails();
 			var textNode = cursorDetails.textNode;
+			if (cursorDetails.textNode) {
+					cursorDetails.textNode.data = cursorDetails.textNode.data.replace(/\u200b/g,'')
+				}
 			if (cursorDetails.baseNode.normalize) {
 				cursorDetails.baseNode.normalize()
 			} else {
 				cursorDetails.baseNode.parentNode.normalize()
 			}
+			var entity = this.isImmediatelyAfterEntity(cursorDetails);
+
 			if (this.selectedNode) {
 				this.cleanSelectedNode()
+				this.selectedNode.parentElement.insertBefore(document.createTextNode(" "),this.selectedNode)
+				event.preventDefault()
+				this.document.getSelection().collapseToStart()
 				this.selectedNode = null;
 				return
-			}
-			var entity = this.isImmediatelyAfterEntity(cursorDetails);
-			if (entity && !this.selectedNode) {
+			} 
+			if (entity) {
 				this.selectNode(entity)
 				event.preventDefault()
 				return
@@ -448,13 +474,16 @@ SelectionTracker.getInstance = function () {
 			} else {
 				cursorDetails.baseNode.parentNode.normalize()
 			}
-			cursorDetails = this.getCursorDetails()
+			if (cursorDetails.textNode) {
+					cursorDetails.textNode.data = cursorDetails.textNode.data.replace(/\u200b/g,'')
+				}
+			
 			if (this.selectedNode) {
-				//this.cleanSelectedNode()
 				this.selectedNode = null;
 				return
 			}
-			var entity = this.isImmediatelyBeforeEntity(cursorDetails);
+			var entity = this.isImmediatelyBeforeEntity(this.getCursorDetails());
+			
 			
 			if (entity && !this.selectedNode) {
 				this.selectNode(entity);
