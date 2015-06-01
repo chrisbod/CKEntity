@@ -382,14 +382,13 @@ SelectionTracker.getInstance = function () {
 		},
 		isImmediatelyBeforeEntity: function (cursorDetails) {
 			if (cursorDetails.textNode) {
-
-				if (cursorDetails.textOffset >= cursorDetails.textNode.data.replace(/\s\s+$/,' ').length && cursorDetails.textNode.nextSibling && cursorDetails.textNode.nextSibling.className == "entity-wrapper") {
+				if (cursorDetails.textOffset >= cursorDetails.textNode.data.replace(/\u0020\u0020*$/,' ').replace(/\u200b$/,'').length && cursorDetails.textNode.nextSibling && cursorDetails.textNode.nextSibling.className == "entity-wrapper") {
 					return cursorDetails.textNode.nextSibling
 				} else {
-					console.log(escape(cursorDetails.textNode.data))
 				}
 
 			} else {
+				console.log(394)
 				var baseNode = cursorDetails.baseNode;
 				var nextElement = baseNode.childNodes[cursorDetails.baseOffset]
 				if (nextElement && nextElement.className == "entity-wrapper") {
@@ -414,7 +413,6 @@ SelectionTracker.getInstance = function () {
 					var entity = textNode.previousElementSibling;
 
 					textNode.parentNode.normalize();
-					var textNode = entity.nextSibling;
 					var details = this.getCursorDetails()
 					if (details.baseOffset == 0) {
 						return entity;
@@ -449,7 +447,7 @@ SelectionTracker.getInstance = function () {
 
 			if (this.selectedNode) {
 				this.cleanSelectedNode()
-				this.selectedNode.parentElement.insertBefore(document.createTextNode(" "),this.selectedNode)
+				//this.selectedNode.parentElement.insertBefore(document.createTextNode(" "),this.selectedNode)
 				event.preventDefault()
 				this.document.getSelection().collapseToStart()
 				this.selectedNode = null;
@@ -474,15 +472,11 @@ SelectionTracker.getInstance = function () {
 			} else {
 				cursorDetails.baseNode.parentNode.normalize()
 			}
-			if (cursorDetails.textNode) {
-					cursorDetails.textNode.data = cursorDetails.textNode.data.replace(/\u200b/g,'')
-				}
-			
 			if (this.selectedNode) {
 				this.selectedNode = null;
 				return
 			}
-			var entity = this.isImmediatelyBeforeEntity(this.getCursorDetails());
+			var entity = this.isImmediatelyBeforeEntity(cursorDetails);
 			
 			
 			if (entity && !this.selectedNode) {
@@ -698,6 +692,7 @@ SelectionTracker.getInstance = function () {
 			node.parentNode.normalize()
 			if (node.previousSibling) {
 				if (node.previousSibling.nodeType == 3) {
+
 					if (node.previousSibling.data == " " && node.previousSibling.previousSibling) {//just raw whitespace will mess up selection
 						node.previousSibling.data = " \u200b"
 					}
