@@ -282,6 +282,7 @@ SelectionTracker.getInstance = function () {
 			
 		},
 		keydownHandler: function (event) {
+			this.selectedNode && this.cleanSelectedNode()
 			switch (event.keyCode) {
 				case 37: return this.leftArrowDownHandler(event);	
 				case 39 : return this.rightArrowDownHandler(event);
@@ -290,9 +291,7 @@ SelectionTracker.getInstance = function () {
 			}
 		},
 		leftArrowUpHandler: function (event) {
-			if (this.selectedNode) {
-				this.selectedNode = null;
-			}
+			
 			
 		},
 		downArrowDownHandler: function (event) {
@@ -313,13 +312,15 @@ SelectionTracker.getInstance = function () {
 			if (this.selectedNode) {//start of Element
 				var selection = this.document.getSelection()
 				selection.collapseToStart()
+				this.cleanSelectedNode()
+
 				this.selectedNode = null;
 			}
 			
 		},
 		downArrowUpHandler: function (event) {
 			event.stopPropagation()
-			var cursorDetails = this.getCursorDetails(event)
+			
 		},
 		upArrowUpHandler: function (event) {
 			event.stopPropagation()
@@ -423,11 +424,12 @@ SelectionTracker.getInstance = function () {
 				cursorDetails.baseNode.parentNode.normalize()
 			}
 			if (this.selectedNode) {
+				this.cleanSelectedNode()
 				this.selectedNode = null;
 				return
 			}
 			var entity = this.isImmediatelyAfterEntity(cursorDetails);
-			if (entity && ! this.selectedNode) {
+			if (entity && !this.selectedNode) {
 				this.selectNode(entity)
 				event.preventDefault()
 				return
@@ -448,6 +450,7 @@ SelectionTracker.getInstance = function () {
 			}
 			cursorDetails = this.getCursorDetails()
 			if (this.selectedNode) {
+				//this.cleanSelectedNode()
 				this.selectedNode = null;
 				return
 			}
@@ -667,19 +670,19 @@ SelectionTracker.getInstance = function () {
 			if (node.previousSibling) {
 				if (node.previousSibling.nodeType == 3) {
 					if (node.previousSibling.data == " " && node.previousSibling.previousSibling) {//just raw whitespace will mess up selection
-						node.previousSibling.data = "\u00a0"
+						node.previousSibling.data = " \u200b"
 					}
 				} else {
-					node.parentNode.insertBefore(document.createTextNode('\u00a0'),node)
+					node.parentNode.insertBefore(document.createTextNode('\u200b'),node)
 				}
 			}
 			if (node.nextSibling) {
 				if (node.nextSibling.nodeType == 3) {
 					if (node.nextSibling.data == " " && !node.nextSibling.nextSibling) {//just raw whitespace will mess up selection
-						node.previousSibling.data = "\u00a0"
+						node.nextSibling.data = "\u200b"
 					}
 				} else {
-					node.parentNode.insertBefore(document.createTextNode('\u00a0'),node.nextSibling)
+					node.parentNode.insertBefore(document.createTextNode('\u200b'),node.nextSibling)
 				}
 			}
 			range.selectNode(node);
@@ -687,6 +690,21 @@ SelectionTracker.getInstance = function () {
 			selection.addRange(range);
 			this.selectedNode = node;
 
+		},
+		cleanSelectedNode: function () {
+			var previous = this.selectedNode.previousSibling,
+				next = this.selectedNode.nextSibling;
+			if (previous && previous.nodeType == 3) {
+				if (previous.data.indexOf("\u200b")!=-1)  {
+					previous.data = previous.data.replace(/\u200b/,"")
+				}
+			}
+			if (next && next.nodeType == 3) {
+				if (next.data.indexOf("\u200b")!=-1) {
+					next.data = next.data.replace(/\u200b/,"")
+				}
+			}
+			//this.selectedNode = null;
 		},
 		insertCursorBefore: function (node) {
 			return
