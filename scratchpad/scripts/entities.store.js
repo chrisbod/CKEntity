@@ -117,9 +117,9 @@ TranslationStore.prototype.createTemplatableNodeFromEntity = function (key,id) {
 	editSpan.setAttribute("data-entity-node","translation")
 	editSpan.className = "entity-wrapper"
 	editSpan.setAttribute("contenteditable","false")
-	editSpan.appendChild(document.createTextNode("\u200b"))
+	editSpan.appendChild(document.createTextNode(" \u200b"))
 	editSpan.appendChild(node)
-	editSpan.appendChild(document.createTextNode("\u200b"))
+	editSpan.appendChild(document.createTextNode("\u200b "))
 	return editSpan;
 }
 TranslationStore.prototype.parseTextMarkup = function (string) {
