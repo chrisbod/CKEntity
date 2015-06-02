@@ -6,6 +6,7 @@ function AutoSuggestContainer(id, tokenizer) {
 	this.element.addEventListener("click", this, true);
 	this.element.addEventListener("mouseover", this);
 	this.element.addEventListener("keydown",this, true);
+	this.selectionTracker = SelectionTracker.getInstance();
 }
 
 (function (extend) {
@@ -182,6 +183,7 @@ function AutoSuggestContainer(id, tokenizer) {
 				if (node.data) {
 					this.trigger = trigger;
 					
+					
 				} else {
 					return;
 				}
@@ -275,61 +277,14 @@ function AutoSuggestContainer(id, tokenizer) {
 	clicked: function (id,text) {
 		var selection = this.editableDocument.getSelection()
 			range = selection.getRangeAt(0),
+			startNode = range.startContainer
 			newNode = this.store.getEntityNode(text);//document.createTextNode(text);
 		if (this.editableElement == range.commonAncestorContainer || this.editableElement.contains(range.commonAncestorContainer)) {
-			range.insertNode(newNode);
-			if (newNode.previousSibling) {
-				if (newNode.previousSibling.data) {
-					var endText = new RegExp(this.trigger.trim()+"(\\s|\\u200b\\u00a0)*$");
-				newNode.previousSibling.data = newNode.previousSibling.data.replace(endText,'');
-					//console.log(escape(newNode.previousSibling.data))
-				}
-				
-			}
-			var afterNode;
+			this.selectionTracker.insertEntityAtCursor(this.store.getEntityNode(text))
+			startNode.data = (startNode.data.replace(new RegExp(this.trigger+"$"),''))
 			
-			if (newNode.nextSibling && newNode.nextSibling.nodeType == 3) {
-				if (newNode.nextSibling.data.length == 0) {
-					newNode.nextSibling.data = "\u00a0"
-				}
-				afterNode = newNode.nextSibling;
-
-			} else {
-				newNode.parentNode.appendChild(document.createTextNode("\u00a0"))
-			}	
-			range.selectNode(newNode.nextSibling);
-			selection.removeAllRanges();
-			selection.addRange(range);
-			selection.collapseToStart();
 		}
 	},
-	cleanEndNodes: function (node) {
-		while (node && node.nextSibling) {
-			if (node.nextSibling.nodeType == 3) {
-				if (node.nextSibling.data.indexOf("\u00a0")!=-1) {
-					node.nextSibling.data = node.nextSibling.data.replace(/\u00a0/g,'');
-					if (!node.previousSibling.data.length) {
-						node.parentNode.removeChild(node.previousSibling)
-					}
-				}
-			}
-			node = node.nextSibling;
-		}
-	},
-	cleanStartNodes: function (node) {
-		while (node && node.previousSibling) {
-			if (node.previousSibling.nodeType == 3) {
-				if (node.previousSibling.data.indexOf("\u00a0")!=-1) {
-					node.previousSibling.data = node.previousSibling.data.replace(/\u00a0/g,'');
-					if (!node.previousSibling.data.length) {
-						node.parentNode.removeChild(node.previousSibling)
-					}
-				}
-			}
-			node = node.previousSibling;
-		}
-	},
-	
 	showByIds: function (idsArray) {
 		this.element.innerHTML = "";
 		for (var i=0;i!=idsArray.length;i++) {

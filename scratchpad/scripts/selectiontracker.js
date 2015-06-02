@@ -269,7 +269,10 @@ SelectionTracker.getInstance = function () {
 		},
 		
 		keyupHandler: function (event) {
-
+			if (event.shiftKey) {
+				//console.log(this.getCursorDetails())
+				return
+			}
 			
 			
 			switch (event.keyCode) {
@@ -294,7 +297,7 @@ SelectionTracker.getInstance = function () {
 		anykeyDownHandler: function () {
 			var cursorDetails = this.getCursorDetails()
 			if (cursorDetails.textNode) {
-				cursorDetails.textNode.data = cursorDetails.textNode.data.replace(/\u200b/g,'')
+				cursorDetails.textNode.data = cursorDetails.textNode.data.replace(/\u200b+/g,'\u200b')
 			}
 		},
 		leftArrowUpHandler: function (event) {
@@ -309,29 +312,50 @@ SelectionTracker.getInstance = function () {
 				selection.collapseToEnd()
 				this.cleanSelectedNode()
 				this.selectedNode = null;
-			} else {
-
 			}
 		},
 		upArrowDownHandler: function (event) {
-			event.stopPropagation()
-			var cursorDetails = this.getCursorDetails(event)
-			
-			if (this.selectedNode) {//start of Element
-				var selection = this.document.getSelection()
-				selection.collapseToStart()
-				this.cleanSelectedNode()
+			event.stopPropagation();
+			//return
+			if (event.shiftKey) {
 
-				this.selectedNode = null;
+				//return
+				var cursorDetails = this.getCursorDetails(event);
+				var previousSibling = cursorDetails.range.startContainer.previousSibling 
+				if (previousSibling && previousSibling.className=="entity-wrapper") {
+					var data = cursorDetails.range.startContainer.data,
+						offset = cursorDetails.range.startOffset
+					if (data && offset == 0) {
+						var range = cursorDetails.range.cloneRange()
+						
+						this.insertDummySpacesForSelection(previousSibling)
+						range.setStartAfter(previousSibling.previousSibling);
+						this.document.getSelection().extend(range.startContainer,range.startOffset);//won't work in IE extend not supported
+
+					}
+				}
 			}
-			
 		},
 		downArrowUpHandler: function (event) {
-			event.stopPropagation()
-			
+			event.stopPropagation();
+			var cursorDetails = this.getCursorDetails();
+			var entity = this.getTopLevelEntityElement(cursorDetails.baseNode)
+			if (entity) {//curosr lost inside read only node
+				var selection = this.document.getSelection()
+				var range = cursorDetails.range;
+					range.selectNode(entity.nextSibling||entity.parentNode.appendChild(document.createTextNode("  ")))
+					selection.removeAllRanges()
+					selection.addRange(range);
+					selection.collapseToStart()
+			}
 		},
 		upArrowUpHandler: function (event) {
-			event.stopPropagation()
+
+			event.stopPropagation();
+			if (event.shiftKey) {
+
+				//event.preventDefault()
+			}
 			var cursorDetails = this.getCursorDetails(event)
 			var entity = this.getTopLevelEntityElement(cursorDetails.baseNode)
 			
@@ -381,10 +405,13 @@ SelectionTracker.getInstance = function () {
 		
 		},
 		isImmediatelyBeforeEntity: function (cursorDetails) {
+
 			if (cursorDetails.textNode) {
+				cursorDetails.textNode.parentNode.normalize()
 				if (cursorDetails.textOffset >= cursorDetails.textNode.data.replace(/\u0020\u0020*$/,' ').replace(/\u200b$/,'').length && cursorDetails.textNode.nextSibling && cursorDetails.textNode.nextSibling.className == "entity-wrapper") {
 					return cursorDetails.textNode.nextSibling
 				} else {
+					console.log(418)
 				}
 
 			} else {
@@ -395,7 +422,7 @@ SelectionTracker.getInstance = function () {
 					return nextElement
 				} else {
 					
-					if (nextElement.nodeType == 3 && nextElement.data.trim() == "" && !nextElement.previousSibling && nextElement.nextSibling.className == "entity-wrapper") {
+					if (nextElement && nextElement.nodeType == 3 && nextElement.data.trim() == "" && nextElement.nextSibling && nextElement.nextSibling.className == "entity-wrapper") {
 						//at start of paragraph
 						return nextElement.nextSibling
 
@@ -409,6 +436,7 @@ SelectionTracker.getInstance = function () {
 		isImmediatelyAfterEntity: function (cursorDetails) {
 			var textNode = cursorDetails.textNode
 			if (textNode) {
+
 				if (textNode.previousElementSibling && textNode.previousElementSibling.className == "entity-wrapper") {
 					var entity = textNode.previousElementSibling;
 
@@ -432,11 +460,13 @@ SelectionTracker.getInstance = function () {
 			
 		},
 		leftArrowDownHandler: function (event) {
+			if (event.shiftKey) return
 			event.stopPropagation();
+			
 			var cursorDetails = this.getCursorDetails();
 			var textNode = cursorDetails.textNode;
 			if (cursorDetails.textNode) {
-					cursorDetails.textNode.data = cursorDetails.textNode.data.replace(/\u200b/g,'')
+					cursorDetails.textNode.data = cursorDetails.textNode.data.replace(/\u200b+/g,'\u200b')
 				}
 			if (cursorDetails.baseNode.normalize) {
 				cursorDetails.baseNode.normalize()
@@ -452,6 +482,7 @@ SelectionTracker.getInstance = function () {
 				this.document.getSelection().collapseToStart()
 				this.selectedNode = null;
 				return
+
 			} 
 			if (entity) {
 				this.selectNode(entity)
@@ -463,6 +494,7 @@ SelectionTracker.getInstance = function () {
 		},
 		rightArrowDownHandler: function (event) {
 			event.stopPropagation();
+			if (event.shiftKey) return
 
 			var cursorDetails = this.getCursorDetails();
 			var textNode = cursorDetails.textNode;
@@ -618,6 +650,11 @@ SelectionTracker.getInstance = function () {
 				isCaret: selection.isCollapsed
 				
 			}
+			if (selection.baseNode.normalize) {
+				selection.baseNode.normalize()
+			} else {
+				selection.baseNode.parentNode.normalize()
+			}
 
 			
 			if (selection.baseNode === null && /mouse/.test(event.type)) {
@@ -626,6 +663,9 @@ SelectionTracker.getInstance = function () {
 					cursorDetails.withoutTextEnd = event.target;
 				}
 
+			}
+			if (selection.rangeCount) {
+				cursorDetails.range = selection.getRangeAt(0)
 			}
 
 			var baseNode = selection.baseNode;
@@ -690,15 +730,24 @@ SelectionTracker.getInstance = function () {
 			selection.removeAllRanges();
 			var range = this.document.createRange();
 			node.parentNode.normalize()
+			this.insertDummySpacesForSelection(node)
+			range.selectNode(node);
+			selection.removeAllRanges()
+			selection.addRange(range);
+			this.selectedNode = node;
+		},
+		insertDummySpacesForSelection: function (node) {
 			if (node.previousSibling) {
 				if (node.previousSibling.nodeType == 3) {
 
 					if (node.previousSibling.data == " " && node.previousSibling.previousSibling) {//just raw whitespace will mess up selection
 						node.previousSibling.data = " \u200b"
+					} else {
+						node.parentNode.insertBefore(document.createTextNode('\u200b'),node)
 					}
-				} else {
-					node.parentNode.insertBefore(document.createTextNode('\u200b'),node)
 				}
+			} else {
+				node.parentNode.insertBefore(document.createTextNode('\u200b'),node)
 			}
 			if (node.nextSibling) {
 				if (node.nextSibling.nodeType == 3) {
@@ -708,69 +757,21 @@ SelectionTracker.getInstance = function () {
 				} else {
 					node.parentNode.insertBefore(document.createTextNode('\u200b'),node.nextSibling)
 				}
+			}else {
+				node.parentNode.appendChild(document.createTextNode('\u00a0 '))
 			}
-			range.selectNode(node);
-			selection.removeAllRanges()
-			selection.addRange(range);
-			this.selectedNode = node;
-
 		},
 		cleanSelectedNode: function () {
-			var previous = this.selectedNode.previousSibling,
-				next = this.selectedNode.nextSibling;
-			if (previous && previous.nodeType == 3) {
-				if (previous.data.indexOf("\u200b")!=-1)  {
-					previous.data = previous.data.replace(/\u200b/,"")
-				}
-			}
-			if (next && next.nodeType == 3) {
-				if (next.data.indexOf("\u200b")!=-1) {
-					next.data = next.data.replace(/\u200b/,"")
-				}
-			}
-			//this.selectedNode = null;
+			this.selectedNode.parentNode.normalize()
 		},
-		insertCursorBefore: function (node) {
-			return
-			var range = this.document.createRange(),
-				selection = this.document.getSelection();
-				cursor = this.getZeroWidthSpace()
-			node.parentNode.insertBefore(cursor,node)
-			range.selectNode(cursor);
+		insertEntityAtCursor: function (entity) {
+			var selection = this.document.getSelection(),
+				range = selection.getRangeAt(0)
+			range.insertNode(entity)
+			this.insertDummySpacesForSelection(entity);
+			range.selectNode(entity.nextSibling);
 			selection.removeAllRanges();
 			selection.addRange(range);
-			selection.collapseToEnd();
-		},
-		moveCursorAfter: function (node) {
-			var selection = this.document.getSelection()
-			var range = document.createRange()
-			selection.removeAllRanges()
-			var range = document.createRange();
-			range.selectNode(node.nextSibling)
-			
-			
-			selection.addRange(range)
-			selection.collapseToStart()
-			
-		},
-		getZeroWidthSpace: function (addSpaces) {
-			var spaces = addSpaces? " \u200b" : "\u200b";
-			var space = this.document.createTextNode(spaces)
-			this.zeroWidthSpaces.push(space)
-			return space;
-		},
-		cleanZeroWidthSpaces: function () {
-			
-			var baseNode = document.getSelection().baseNode
-			this.zeroWidthSpaces.forEach(function (space) {
-				if (baseNode != space && space.parentNode && space.previousSibling && space.nextSibling) {
-					space.data = " "
-				}
-			})
-			this.zeroWidthSpaces = [];
-		},
-		isWhitespace: function (nodeOrString) {
-			var string = typeof nodeOrString == "string" ? nodeOrString : nodeOrString.data;
-			return /^(\r|\n|\s|\u200b|\u00a0)*$/mg.test(string)
+			selection.collapseToStart();
 		}
 	}
