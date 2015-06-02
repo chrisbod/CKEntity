@@ -7,6 +7,7 @@ function AutoSuggestContainer(id, tokenizer) {
 	this.element.addEventListener("mouseover", this);
 	this.element.addEventListener("keydown",this, true);
 	this.selectionTracker = SelectionTracker.getInstance();
+
 }
 
 (function (extend) {
@@ -144,16 +145,39 @@ function AutoSuggestContainer(id, tokenizer) {
 		}
 	},
 	keyupHandler: function (event) {
+		console.log(event.timeStamp)
 		this.rangeToReplace = null;
 		switch (event.keyCode) {
-			case 16: return;
-			case 40: return;
-			case 38: return;
-			case 39: return;
-			case 37: return;
+			case 16: 
+			case 40: 
+			case 38: 
+			case 39: 
+			case 37: {
+
+				return
+			}
 		}
 		if (!this.enterClicked) {
-			var selection = this.editableDocument.getSelection();
+			
+			if (!this.currentRange) {
+				this.currentRange = this.editableDocument.getSelection().getRangeAt(0);
+			} 
+			var newRange = this.editableDocument.getSelection().getRangeAt(0)
+
+			if (newRange.endContainer!=this.currentRange.endContainer) {
+				this.currentRange = null;
+				return 
+			}
+			
+			
+			
+			
+			var range = document.createRange()
+			range.setStart(this.currentRange.startContainer,this.currentRange.startOffset);
+			range.setEnd(newRange.endContainer,newRange.endOffset)
+			console.log(""+range)
+			
+			/*var selection = this.editableDocument.getSelection();
 				if (!selection.rangeCount) {
 					return
 				}
@@ -170,15 +194,15 @@ function AutoSuggestContainer(id, tokenizer) {
 			
 			if (node.nextSibling && node.nextSibling.nodeType==3) {
 				duplicateRange.setEndAfter(node.nextSibling)
-			}
+			}*/
 
-			var trigger = this.tokenizer.getTrigger(""+duplicateRange,event);
+			var trigger = this.tokenizer.getTrigger(""+range,event);
 
 			if (trigger) {
-				duplicateRange.endContainer.normalize();
-				node = duplicateRange.endContainer.lastChild;
+				range.endContainer.normalize();
+				node = range.endContainer.lastChild;
 				if (node == null) {
-					node = duplicateRange.endContainer;
+					node = range.endContainer;
 				}
 				if (node.data) {
 					this.trigger = trigger;
@@ -188,7 +212,7 @@ function AutoSuggestContainer(id, tokenizer) {
 					return;
 				}
 				
-				this.moveToRange(this.editableDocument,duplicateRange);
+				this.moveToRange(this.editableDocument,range);
 				var suggestions = this.tokenizer.getSuggestions(trigger);
 				
 				this.showByKeys(suggestions);
