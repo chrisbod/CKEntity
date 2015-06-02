@@ -280,8 +280,10 @@ function AutoSuggestContainer(id, tokenizer) {
 			startNode = range.startContainer
 			newNode = this.store.getEntityNode(text);//document.createTextNode(text);
 		if (this.editableElement == range.commonAncestorContainer || this.editableElement.contains(range.commonAncestorContainer)) {
+			var index = startNode.data.lastIndexOf(this.trigger.trim())
 			this.selectionTracker.insertEntityAtCursor(this.store.getEntityNode(text))
-			startNode.data = (startNode.data.replace(new RegExp(this.trigger+"$"),''))
+			startNode.data = startNode.data.slice(0,index)+"\u200b"
+			
 			
 		}
 	},
