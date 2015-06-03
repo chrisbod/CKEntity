@@ -5,7 +5,8 @@ EntityStore.prototype =  {
 		var preexists = this.templatableNodes[key];
 		if (!preexists) {
 			var text = key.replace(/(\[|\<)[^\:]+\:/g,"$1");
-			var text = key.replace(/\[[^:]+\:\s*\]/g,'')
+			
+			
 			this.allNodes.push(this.templatableNodes[id] = this.templatableNodes[key] = this.templatableNodes[text] ={
 				node: this.createTemplatableNodeFromEntity(key,id,readOnly),
 				def: key,

@@ -145,92 +145,57 @@ function AutoSuggestContainer(id, tokenizer) {
 		}
 	},
 	keyupHandler: function (event) {
-		console.log(event.timeStamp)
-		this.rangeToReplace = null;
 		switch (event.keyCode) {
-			case 16: 
-			case 40: 
-			case 38: 
-			case 39: 
-			case 37: {
-
-				return
-			}
+			case 16: case 40: case 38: case 39: case 37: return;//breakout for (some) irrelevant keys
 		}
-		if (!this.enterClicked) {
-			
-			if (!this.currentRange) {
-				this.currentRange = this.editableDocument.getSelection().getRangeAt(0);
-			} 
-			var newRange = this.editableDocument.getSelection().getRangeAt(0)
+		if (this.enterClicked) {//bail out if we're inserting something
+			this.enterClicked = false;
+			return;
+		}
+		var selection = this.editableDocument.getSelection(),
+			range = document.createRange(),
+			trigger,
+			node,
+			suggestions,
+			startingRange = this.startingRange,	
+			latestRange = selection.getRangeAt(0);
 
-			if (newRange.endContainer!=this.currentRange.endContainer) {
-				this.currentRange = null;
-				return 
-			}
-			
-			
-			
-			
-			var range = document.createRange()
-			range.setStart(this.currentRange.startContainer,this.currentRange.startOffset);
-			range.setEnd(newRange.endContainer,newRange.endOffset)
-			console.log(""+range)
-			
-			/*var selection = this.editableDocument.getSelection();
-				if (!selection.rangeCount) {
-					return
-				}
-			var	range = selection.getRangeAt(0),
-				node = range.commonAncestorContainer,
-				duplicateRange = range.cloneRange(),
-				index;
-				if (node.contentEditable == "false") {
-					return
-				}
+		if (!startingRange) {
+			startingRange = this.startingRange = selection.getRangeAt(0);
+			startingRange.setStart(startingRange.startContainer,Math.min(startingRange.startOffset,0))
+		} 
 
-			duplicateRange.setStartBefore(node);
+		if (latestRange.endContainer!=startingRange.endContainer) {
+			this.startingRange = null;
+			return 
+		}
+		
+		range.setStart(startingRange.startContainer,startingRange.startOffset);
+		range.setEnd(latestRange.endContainer,latestRange.endOffset);
 
-			
-			if (node.nextSibling && node.nextSibling.nodeType==3) {
-				duplicateRange.setEndAfter(node.nextSibling)
-			}*/
+		trigger = this.tokenizer.getTrigger(""+range,event);
 
-			var trigger = this.tokenizer.getTrigger(""+range,event);
-
-			if (trigger) {
-				range.endContainer.normalize();
-				node = range.endContainer.lastChild;
-				if (node == null) {
-					node = range.endContainer;
-				}
-				if (node.data) {
-					this.trigger = trigger;
-					
-					
-				} else {
-					return;
-				}
-				
-				this.moveToRange(this.editableDocument,range);
-				var suggestions = this.tokenizer.getSuggestions(trigger);
-				
-				this.showByKeys(suggestions);
-				if (suggestions.length) {
-					event.stopPropagation()
-				}
-
-
+		if (trigger) {
+			range.endContainer.normalize();
+			node = range.endContainer.lastChild || range.endContainer;
+			if (node.data) {
+				this.trigger = trigger;
 			} else {
-				this.hide();
+				this.trigger = null;
+				return;
+			}
+			range.setStart(range.startContainer,Math.min((""+range).lastIndexOf(trigger.trim()),0))
+			this.moveToRange(this.editableDocument,range);
+			suggestions = this.tokenizer.getSuggestions(trigger);
+			this.showByKeys(suggestions);
+			if (suggestions.length) {
 				event.stopPropagation();
-				event.preventDefault();
 			}
 		} else {
-			//.stopPropagation();
-			//event.preventDefault();
+			this.hide();
+			event.stopPropagation();
+			event.preventDefault();
 		}
-		this.enterClicked = false;
 	},
 	getCurrentNode: function (range) {
 		
@@ -305,7 +270,7 @@ function AutoSuggestContainer(id, tokenizer) {
 			newNode = this.store.getEntityNode(text);//document.createTextNode(text);
 		if (this.editableElement == range.commonAncestorContainer || this.editableElement.contains(range.commonAncestorContainer)) {
 			var index = startNode.data.lastIndexOf(this.trigger.trim())
-			this.selectionTracker.insertEntityAtCursor(this.store.getEntityNode(text))
+			this.selectionTracker.insertEntityWrapperAtCursor(this.store.getEntityNode(text))
 			startNode.data = startNode.data.slice(0,index)+"\u200b"
 			
 			
