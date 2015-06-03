@@ -2,121 +2,221 @@ function UserConditionalManager() {
 	this.conditionalOpenRanges = [];
 	this.conditionalCloseRanges = [];
 	this.entitiesHelper = new EntitiesHelper();
+	this.selectionTracker = SelectionTracker.getInstance()
 }
+UserConditionalManager.count = 0;
 UserConditionalManager.prototype = {
-	active: false,
+	ifTemplate: null,
+	endifTemplate: null,
 	init: function (editableElement) {
-		this.editableElement = editableElement;
-		this.document = this.editableElement.ownerDocument;
-		this.editableElement.addEventListener("keyup", this,true)
+		this.element = editableElement;
+		this.document = editableElement.ownerDocument;
+		this.ifTemplate = this.generateIfTemplate();
+		this.endifTemplate = this.generateEndifTemplate();
+		this.document.addEventListener("keyup", this, true);
 		this.document.addEventListener("keydown", this, true);
-		
-		this.generateUserConditionalTemplateNode()
+		this.document.addEventListener("mousedown", this, true);
+		this.document.addEventListener("drag", this, true);
+		this.document.addEventListener("drop", this, true);
+		this.calculateCount()
+	},
+	calculateCount: function () {
+		var ifs = this.document.querySelectorAll("if");
+		for (var i=0;i<ifs.length;i++) {
+			UserConditionalManager.count = Math.max(parseInt(ifs.id.replace(/uc/g,'')),UserConditionalManager.count)
+		}
+
 	},
 	handleEvent: function (event) {
 		return this[event.type+"Handler"](event);
 	},
 	keyupHandler: function (event) {
+		//var character =  String.fromCharCode(event.charCode)
+		console.log(event.keyCode)
 		switch (event.keyCode) {
-			case 219: return this.openSquareBrackets(event);
+			case 219: return this.insertBoth(event);
+			case 46:
 			case 8: return this.checkDelete(event);
 		}
 	},
 	keydownHandler: function (event) {
-		switch (event.keyCode) {
-			case 13: return this.handleEnter(event)
-			case 8: return this.checkDelete(event);
-		}
-	},
-	handleEnter: function (event) {
-		if (event.shiftKey) {
-			return
-		}
-		var selectionTracker = SelectionTracker.getInstance(),
-			wasMadeBlock = selectionTracker.makeEntityBlockLevel();
-		if (wasMadeBlock) {
+		if (!event.shiftKey && event.keyCode == 219) {
 			event.preventDefault();
-			event.stopPropagation();
+		}
+		
+	},
+	mousedownHandler: function (event) {
+		if (event.target.parentNode.tagName == "IF" || event.target.parentNode.tagName == "ENDIF") {
+			this.selectionTracker.selectNode(event.target.parentNode.parentNode);
+			this.activateNodes(event.target.parentNode.parentNode.getAttribute("data-conditional-id"))
+		} else {
+			this.deactivateNodes()
 		}
 	},
-	inputHandler: function (event) {
-		//console.log("here")
-	}, 
-	openSquareBrackets: function (event) {
-		if (event.shiftKey) {
-			return
-		}
-		var selection = this.document.getSelection(),
-			range = selection.getRangeAt(0),
-			conditional = this.conditionalTemplateNode.cloneNode(true);
-		if (range.collapsed == true) {
-			var start = selection.baseNode,
-				offset = selection.baseOffset-1;
+	dragHandler: function (event) {
+			if (!this.dragNode && /^(if|endif)$/i.test(event.target.parentNode.tagName)) {
+				this.dragNode = event.target.parentNode.parentNode;
+				event.stopPropagation()
+			}
+		},
+		postDropHandler: function (dragNode,details) {
+					    if (details.textNode.nodeType == 3) {
+					        var replacement = details.textNode.splitText(details.offset);
+					        details.textNode.parentNode.insertBefore(dragNode, replacement);
+					        this.validateNodePositions()
+					    }	
+		},
+		dropHandler: function (event) {
+			if (this.dragNode) {
+				//var selection = this.document.getSelection();
+						//console.log( this.document.caretPositionFromPoint(event.pageX, event.pageY))
+						var details = {
+							range: null,
+							textNode: null,
+							offset: null
+						};
+
+					    if (document.caretPositionFromPoint) {
+					        details.range = this.document.caretPositionFromPoint(event.clientX, event.clientY);
+					        details.textNode = details.range.offsetNode;
+					        details.offset = range.offset;
+					        
+					    } else if (document.caretRangeFromPoint) {
+					        details.range = this.document.caretRangeFromPoint(event.clientX, event.clientY);
+					        details.textNode = details.range.startContainer;
+					        details.offset = details.range.startOffset;
+					    }
+
+					   
+					
+
+
+            
+				setTimeout(this.postDropHandler.bind(this,this.dragNode,details))
 				
-			if (start.nodeType == 3) {
-				////console.log(start.data)
-				var sibling = start.splitText(offset);
-				if (sibling.data.length>1) {
-					sibling.splitText(1)
-				}
-				sibling.parentNode.replaceChild(conditional,sibling)
-				//conditional.parentNode.insertBefore(this.document.createTextNode("\u00A0"),conditional.nextSibling)
-				selection.removeAllRanges();
-				selection.selectAllChildren(conditional.querySelector(".contents.conditional *[contenteditable=true]"));
-				selection.collapseToEnd()
+
+				
+				this.dragNode = null;
 				event.preventDefault()
 				event.stopPropagation()
-			} else  {
-				//console.log(selection,range)
-			}
-		} else {
-			//overwriting selection....
+
+			} else {
+		var selection  = this.document.getSelection();
+		var foo = {}
+		for (var i in selection) {
+			foo[i] = selection[i]
 		}
-	},
-	checkDelete: function (event) {
-		var selection = this.document.getSelection();
-		////console.log(selection)
-		////console.log(event.currentTarget)
+		var range = selection.getRangeAt(0)
+		console.log(foo,range)
+		if (selection.rangeCount) {
+			this.internalDropHandler(event);
+		} else {
+			setTimeout(this.internalDropHandler.bind(this,event));
+		}
+			}
+
 		
-		var entity = this.getUserEntityElement(selection.anchorNode);
-		if (entity) {
-			if (entity.innerText == "[]") {
-				entity.parentNode.removeChild(entity)
-			}
-		} else {
-			//debugger;
-		}
+		this.dragNode = null
 		
 	},
-	getUserEntityElement: function (node) {
-		while (node && node != this.document.body) {
-			if (node.hasAttribute && node.getAttribute("data-entity-node") == "user") {
-				return node
-			}
-			node = node.parentNode
+	deactivateNodes: function () {
+		if (this.activeNodes) {
+			this.activeNodes[0].firstElementChild.className = "";
+			this.activeNodes[1].firstElementChild.className = "";
 		}
-		return null;
+		this.activeNodes = null;
 	},
-	generateUserConditionalTemplateNode: function () {
-		var conditional = this.document.createElement("conditional");
-		conditional.className = "user conditional"
-		conditional.contenteditable = false;
-		conditional.setAttribute("data-args","type: 'user'");
-		conditional.innerHTML = '<span class="args conditional" contenteditable="false" data-args>[</span><span class="contents conditional" contenteditable="false"><span contenteditable=true>  </span></span><span class="conditional end" contenteditable="false" data-args>]</span></span>'
-		var editSpan = this.document.createElement("span");
-		editSpan.className = "entity-wrapper";
-		editSpan.appendChild(conditional)
-		editSpan.setAttribute("data-entity-node","user")
-		this.conditionalTemplateNode = editSpan;
+	activateNodes: function (conditionalId) {
+		if (this.activeNodes) {
+			this.deactivateNodes()
+		}
+		var nodes = this.document.querySelectorAll("span.entity-wrapper[data-conditional-id="+conditionalId+"]");
+		if (nodes.length && nodes.length != 2) {
+			throw "Illegal node situation!"
+		} else {
+			nodes[0].firstElementChild.className = "active";
+			nodes[1].firstElementChild.className = "active";
+			this.activeNodes = nodes;
+		}
+	},
+	validateNodePositions: function () {
+		var nodes = this.activeNodes;
+		if (nodes[0].compareDocumentPosition(nodes[1]) != 4) {
+			var placeholder = document.createElement("span")
+			nodes[0].parentNode.replaceChild(placeholder,nodes[0])
+			nodes[1].parentNode.replaceChild(nodes[0],nodes[1])
+			placeholder.parentNode.replaceChild(nodes[1],placeholder)
+
+		}
+		
+	},
+	handleEnter: function (event) {
 
 	},
-	isValidUserEntity: function (entity) {
-		if (!entity.firstChild.classList || !entity.firstChild.classList.contains("conditional")) {
-			return false
+	insertBoth: function (event) {
+		if (!event.shiftKey) {
+			var id = "uc"+UserConditionalManager.count++
+			var ifNode = this.ifTemplate.cloneNode(true)
+			ifNode.setAttribute("data-conditional-id",id)
+			this.selectionTracker.insertEntityAtCursor(ifNode);
+			var spacer = document.createTextNode('\u00a0 ')
+			this.selectionTracker.insertEntityAtCursor(spacer);
+			var endifNode = this.endifTemplate.cloneNode(true)
+			endifNode.setAttribute("data-conditional-id",id)
+			this.selectionTracker.insertEntityAtCursor(endifNode);
+			var range = document.createRange()
+			range.setStartAfter(ifNode)
+			range.setEndBefore(endifNode)
+			range.collapse(true)
+			var selection = this.document.getSelection()
+			selection.removeAllRanges()
+			selection.addRange(range)
+			event.preventDefault()
 		}
-		if (!entity.lastChild.classList || !entity.lastChild.classList.contains("end")) {
-			return false
+	},
+	insertIf: function (event) {
+		if (!event.shiftKey) {
+			
 		}
-		return true;
+	}, 
+
+	checkDelete: function (event) {
+		if (this.activeNodes) {
+
+			for (var i=0;i<this.activeNodes.length;i++) {
+				if (this.activeNodes[i].parentNode == null) {
+					if (i==1) {
+						this.activeNodes[0].parentNode.removeChild(this.activeNodes[0])
+					} else {
+						this.activeNodes[1].parentNode.removeChild(this.activeNodes[1])
+					}
+					this.activeNodes = null
+				}
+			}
+		}
+		
+	},
+	generateIfTemplate: function () {
+		var span = this.document.createElement("span");
+		span.className = "entity-wrapper";
+		span.contentEditable = false;
+		var ifElement = document.createElement("if");
+		ifElement.contentEditable = false;
+		span.appendChild(ifElement)
+		var img = document.createElement("img")
+		ifElement.appendChild(img)
+		return span
+
+	},
+	generateEndifTemplate: function () {
+		var span = this.document.createElement("span");
+		span.className = "entity-wrapper";
+		span.contentEditable = false;
+		var ifElement = document.createElement("endif");
+		ifElement.contentEditable = false;
+		span.appendChild(ifElement)
+		var img = document.createElement("img")
+		ifElement.appendChild(img)
+		return span
 	}
 }

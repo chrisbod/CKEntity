@@ -2,11 +2,456 @@
 <html lang="en">
 <head>
 	<title></title>
-	<link href="css/template.css" rel="stylesheet" />
+	<!--link href="css/template.css" rel="stylesheet" />
 	<link href="css/kid.css" rel="stylesheet" />
-	<link href="css/entities.css" rel="stylesheet" />
-	<link href="css/entities.css" rel="stylesheet" />
-	<link href="css/entities.css" rel="stylesheet" />
+	<link href="css/entities.css" rel="stylesheet" /-->
+	<style>
+	html {
+	background-color: #cccccc;
+}
+body {
+  font-family: Arial, Helvetica, san-serif;
+  counter-reset: section;
+  font-size: 11pt;
+  margin: 1em auto;
+  padding: 20mm;
+  width: 210mm;
+  box-sizing: border-box;
+  background-color: white;
+}
+
+#header-data {
+	position: relative;
+}
+#header-data header {
+	outline: 1px dashed #000;
+	background-color: white;
+	width: 100%;
+}
+#header header {
+	position: absolute;
+	visibility: hidden
+}
+#footer-data {
+	position: relative;
+	display: none;
+	bottom: 10px;
+
+}
+#footer-data footer {
+	outline: 1px dashed #000;
+	background-color: white;
+	width: 100%;
+}
+
+
+h1 {
+	color: #1F497D;
+	font-size: 22pt;
+	margin: 1ex 0;
+	padding: 0;
+}
+h2 {
+	color: #1F497D;
+	margin: 1ex 1ex 1ex 0ex;
+}
+.cke_panel_container a h2 {
+	margin-left: 0;
+}
+h2:before {
+	counter-increment: section;
+	content: counter(section) ". ";
+}
+
+h3 {
+	font-size: 11pt;
+	color: #1F497D;
+	margin: 1ex 0;
+}
+p {
+	margin: 1ex 0;
+}
+
+ol {
+	margin: 1ex 0;
+	disc-style-type: square;
+}
+
+ol li {
+
+}
+
+ul {
+	margin: 1ex 1em;
+}
+
+ul li {
+
+
+}
+
+.red {
+ 	color: red;
+ 	margin: 0.5ex 0;
+}
+.green {
+	color: green;
+	margin: 0.5ex 0;
+}
+.blue {
+	color: blue;
+	margin: 0.5ex 0;
+}
+.grey {
+	color: gray;
+	margin: 0.5ex 0;
+}
+
+.description {
+	font-size: 17pt;
+	color: #1F497D;
+	margin: 0.5ex 0;
+}
+.status {
+	font-size: 11pt;
+	color: #1F497D;
+	margin: 1ex 0;
+}
+.subtitle {
+	font-size: 11pt;
+	color: #1F497D;
+	font-weight: bold;
+	margin: 1ex 0;
+}
+.strong-note {
+	background-color: #1F497D;
+	color: #fff;
+	padding: 1ex;
+
+}
+
+.explanatory-statement {
+	background-color: #1F497D;
+	color: #fff;
+	padding: 1ex;
+	text-align: justify;
+
+}
+
+table.definitions {
+
+}
+table tr:nth-child(2n) {
+	background-color: #DADCED;
+}
+table.definitions td:nth-child(2n+1) {
+	color: #1F497D;
+}
+table.definitions td:nth-child(2n) {
+	color: gray;
+}
+
+table th {
+	background-color: #1F497D;
+	color: white;
+
+}
+
+table {
+	border-collapse: collapse;
+	margin: 1ex 0 1ex 0;
+	width: 100%;
+	box-sizing: border-box;
+}
+
+table p {
+	margin: 0.5ex;
+}
+table td {
+	padding: 1ex;
+}
+
+#header-data, #footer-data {
+	display: none;
+}
+
+span.rules {
+	color: red;
+
+}
+
+span.entity-wrapper> if, span.entity-wrapper >  endif {
+	display: inline;
+	position: relative;
+
+
+}
+if img, endif img {
+	width: 1em;
+	height: 1em;
+	border: 1px solid red;
+	border-radius: 2px;
+	box-sizing: border-box;
+	vertical-align: text-bottom;
+	cursor: default
+} 
+span.entity-wrapper > if.active img,span.entity-wrapper > endif.active img {
+	background-color: red;
+}
+span.entity-wrapper> if::selection {
+	background-color: transparent;
+	color: white;
+}
+span.entity-wrapper if::selection,
+span.entity-wrapper endif::selection,
+span.entity-wrapper img::selection
+ {
+ 	background-color: transparent;
+ 	color: white;
+}
+
+
+if:before {
+  content: '[';
+  position: absolute;
+  left: 15%;
+  top: 5%;
+  font-size: 90%;
+  cursor: default;
+  -webkit-pointer-events: none;
+  pointer-events: none;
+}
+
+
+endif:before {
+  content: ']';
+  position: absolute;
+  right: 15%;
+  top: 5%;
+  font-size: 90%;
+  cursor: default;
+  -webkit-pointer-events: none;
+  pointer-events: none;
+}
+token {
+	display: inline-block;
+	
+}
+translation .contents {
+	border-bottom: 1px dotted green;
+}
+
+token,translation,token *, translation * {
+	  -webkit-user-modify: read-only;
+	  -moz-user-modify: read-only;
+	  user-modify: read-only;
+}
+
+.editing token {
+	color: green;
+}
+
+translation {
+	display: inline;
+	
+}
+args {
+	display: inline;
+}
+
+
+
+token, translation, .conditional {
+	display: inline;
+}
+token > span {
+	display: none;
+}
+
+token {
+	color: green;	
+}
+token[data-read-only] {
+	color: inherit;
+}
+token > span {
+	display: inline;
+}
+
+token preview {
+	display: none;
+}
+token {
+	white-space: nowrap;
+}
+
+span[data-entity-node=conditional]::selection,
+.conditional::selection,
+.conditional span::selection,
+translation span::selection
+span[data-entity-node=token][data-read-only]::selection,
+token[data-read-only]::selection,
+token[data-read-only] span::selection
+{
+	background-color: #1F497D;
+	color: white;
+}
+
+span[data-entity-node=token]::selection,
+token::selection,
+token span::selection
+{
+	background-color: green;
+	color: white;
+}
+
+
+
+
+
+
+
+translation {
+	display: inline;
+	
+}
+
+table.scenario-table {
+	border: 1px solid black;
+}
+table.scenario-table th {
+	background-color: black;
+	color: white;
+}
+
+
+
+
+..conditional:first-child {
+	position: relative;
+	display: inline-block;
+	box-sizing: border-box;
+}
+translation > .args,
+translation > .end
+ {
+  color: rgba(0,0,0,0);
+  display: inline-block;
+  width: 0;
+  overflow: hidden;
+  height: 0px;
+
+}
+
+
+
+
+.entity-wrapper, .user.conditional, .user.conditional .end {
+	display: inline;
+}
+.user.conditional > .contents > span {
+	display: inline-block;
+	min-width: 1em;
+}
+conditional[data-args*=hidden] .contents {
+	display: none;
+}
+.entity-wrapper[data-entity-node=conditional] > * > .args,
+.entity-wrapper[data-entity-node=user] > * > .args
+ {
+  padding-right: 1em;
+  margin-right: -0.01ex;
+  background-image: url(../img/minus.png);
+  background-size: 1em;
+  background-repeat: no-repeat;
+  background-position: center right;
+}
+
+.entity-wrapper[data-entity-node=conditional] conditional[data-args*=hidden] .args,
+.entity-wrapper[data-entity-node=user] *[data-args*=hidden] .args
+{
+	background-image: url(../img/plus.png);
+}
+
+.conditional.user .contents {
+	position:relative;
+	z-index: 1000;
+	outline: 1px dotted green;
+}
+
+.conditional.user {
+	
+	display: inline;
+	color: green;
+	position: relative;
+}
+.entity-wrapper > .conditional:before {
+	content: '[';
+}
+.entity-wrapper > .conditional:after {
+	content: ']';
+}
+.conditional[data-not-present] {
+  display: none;
+}
+div[data-block-level=true], span[data-block-level=true] {
+	display: block;
+}
+div[data-block-level=true].entity-wrapper .contents, span[data-block-level=true].entity-wrapper .contents {
+	display: block;
+	  padding-left: 1em;
+}
+.entity-wrapper[data-block-level=true] > * > .args {
+	position: absolute;
+}
+
+.entity-wrapper[data-block-level=true] > .conditional:before {
+	content: '';
+}
+.entity-wrapper[data-block-level=true] > .conditional:after {
+	content: '';
+}
+.conditional.user .conditional.args,
+.conditional.user .conditional.end
+ {
+ 	display: inline-block;
+  width: 0;
+	color: rgba(0,0,0,0);
+}
+.conditional > span.contents:focus {
+	outline: none;
+}
+
+.entity-wrapper[data-block-level=true] .contents.conditional > span:before {
+	display: block;
+	content: '[';
+	position: absolute;
+ 	left: -1ex;
+  	top: 0;
+	outline-width: 0;
+}
+
+.entity-wrapper[data-block-level=true] .contents.conditional > span:after {
+	display: block;
+	content: ']';
+	position: absolute;
+ 	right: -1ex;
+  	bottom: 0;
+	outline-width: 0;
+}
+.entity-wrapper .contents.conditional > span,
+.entity-wrapper .contents.conditional > span > span {
+	display: inline;
+	outline-width: 0;
+}
+
+.entity-wrapper[data-block-level=true] .contents.conditional > span > span {
+	display: block;
+	outline-width: 0;
+}
+
+	</style>
+
 </head>
 <body>
 <div contenteditable="false" data-deletable="false" id="header-data"><freetext extent="5mm" id="firstPageHeader"> <root>

@@ -14,14 +14,16 @@ SelectionTracker.getInstance = function () {
 		init: function (element) {
 			this.element = element;
 			this.document = element.ownerDocument;
-			this.document.addEventListener("click",this,true);
-			this.document.addEventListener("mousedown",this,true);
+			//this.document.addEventListener("click",this,true);
+			//this.document.addEventListener("mousedown",this,true);
 			this.document.addEventListener("keyup",this,true);
 			this.document.addEventListener("keydown",this,true);
 			this.document.addEventListener("paste",this,true)
 			this.document.addEventListener("cut",this,true)
-			this.document.addEventListener("drop",this,true)
+			//this.document.addEventListener("drop",this,true)
 			this.document.addEventListener("copy",this,true);
+			//this.document.addEventListener("drag",this,true);
+
 		},
 		handleEvent: function (event) {
 			return this[event.type+"Handler"](event)
@@ -31,13 +33,74 @@ SelectionTracker.getInstance = function () {
 			var range = selection.getRangeAt(0).cloneContents()
 			this.copyRange = range;
 		},
+		dragHandler: function (event) {
+			if (!this.dragNode && /^(if|endif)$/i.test(event.target.parentNode.tagName)) {
+				this.dragNode = event.target.parentNode.parentNode;
+
+				
+				
+			}
+			//event.stopPropagation()
+			
+
+		},
+		postDropHandler: function (dragNode,details) {
+					    if (details.textNode.nodeType == 3) {
+					        var replacement = details.textNode.splitText(details.offset);
+					        details.textNode.parentNode.insertBefore(dragNode, replacement);
+					    }	
+		},
 		dropHandler: function (event) {
+			if (this.dragNode) {
+				//var selection = this.document.getSelection();
+						//console.log( this.document.caretPositionFromPoint(event.pageX, event.pageY))
+						var details = {
+							range: null,
+							textNode: null,
+							offset: null
+						};
+
+					    if (document.caretPositionFromPoint) {
+					        details.range = this.document.caretPositionFromPoint(event.clientX, event.clientY);
+					        details.textNode = details.range.offsetNode;
+					        details.offset = range.offset;
+					        
+					    } else if (document.caretRangeFromPoint) {
+					        details.range = this.document.caretRangeFromPoint(event.clientX, event.clientY);
+					        details.textNode = details.range.startContainer;
+					        details.offset = details.range.startOffset;
+					    }
+
+					   
+					
+
+
+            
+				setTimeout(this.postDropHandler.bind(this,this.dragNode,details))
+				
+
+				
+				this.dragNode = null;
+				event.preventDefault()
+				event.stopPropagation()
+
+			} else {
 		var selection  = this.document.getSelection();
-		if (selection.rangeCount) {
-			this.internalDropHandler(event)
-		} else {
-			setTimeout(this.internalDropHandler.bind(this,event))
+		var foo = {}
+		for (var i in selection) {
+			foo[i] = selection[i]
 		}
+		var range = selection.getRangeAt(0)
+		console.log(foo,range)
+		if (selection.rangeCount) {
+			this.internalDropHandler(event);
+		} else {
+			setTimeout(this.internalDropHandler.bind(this,event));
+		}
+			}
+
+		
+		this.dragNode = null
 		
 	},
 	pasteHandler: function (event) {
@@ -165,7 +228,7 @@ SelectionTracker.getInstance = function () {
 	},
 		mousedownHandler: function (event) {
 			
-			//event.stopPropagation();
+			
 		},
 		clickHandler: function (event) {
 			

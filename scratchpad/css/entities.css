@@ -3,6 +3,59 @@ span.rules {
 
 }
 
+span.entity-wrapper> if, span.entity-wrapper >  endif {
+	display: inline;
+	position: relative;
+
+
+}
+if img, endif img {
+	width: 1em;
+	height: 1em;
+	border: 1px solid red;
+	border-radius: 2px;
+	box-sizing: border-box;
+	vertical-align: text-bottom;
+	cursor: default
+} 
+span.entity-wrapper > if.active img,span.entity-wrapper > endif.active img {
+	background-color: red;
+}
+span.entity-wrapper> if::selection {
+	background-color: transparent;
+	color: white;
+}
+span.entity-wrapper if::selection,
+span.entity-wrapper endif::selection,
+span.entity-wrapper img::selection
+ {
+ 	background-color: transparent;
+ 	color: white;
+}
+
+
+if:before {
+  content: '[';
+  position: absolute;
+  left: 15%;
+  top: 5%;
+  font-size: 90%;
+  cursor: default;
+  -webkit-pointer-events: none;
+  pointer-events: none;
+}
+
+
+endif:before {
+  content: ']';
+  position: absolute;
+  right: 15%;
+  top: 5%;
+  font-size: 90%;
+  cursor: default;
+  -webkit-pointer-events: none;
+  pointer-events: none;
+}
 token {
 	display: inline-block;
 	
