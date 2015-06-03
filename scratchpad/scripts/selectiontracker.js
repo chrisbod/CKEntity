@@ -189,8 +189,24 @@ SelectionTracker.getInstance = function () {
 			this.selectedNode = null;
 		},
 		deleteHandler: function (event) {
+			if (!this.selectedNode) {
 
-			if (this.selectedNode) {
+			var cursorDetails = this.getCursorDetails();
+			if (cursorDetails.textOffset ===0 ) {
+
+						var currentNode = cursorDetails.range.startContainer;
+						if (!currentNode.getAttribute) {
+							currentNode = currentNode.parentNode
+						}
+						
+						while (currentNode && !currentNode.previousSibling) {
+							console.log(currentNode.getAttribute("data-deletable"))
+							currentNode = currentNode.parentNode;
+
+						}
+			}
+
+			} else  {
 				this.removeCurrentEntityIfAllowed();
 				
 				event.preventDefault();
@@ -287,6 +303,7 @@ SelectionTracker.getInstance = function () {
 		keydownHandler: function (event) {
 			
 			switch (event.keyCode) {
+				case 8: return this.deleteHandler(event);
 				case 37: return this.leftArrowDownHandler(event);	
 				case 39 : return this.rightArrowDownHandler(event);
 				case 40: return this.downArrowDownHandler(event);
@@ -297,7 +314,7 @@ SelectionTracker.getInstance = function () {
 		anykeyDownHandler: function () {
 			var cursorDetails = this.getCursorDetails()
 			if (cursorDetails.textNode) {
-				cursorDetails.textNode.data = cursorDetails.textNode.data.replace(/\u200b+/g,'\u200b')
+				cursorDetails.textNode.data = cursorDetails.textNode.data.replace(/\u200d+/g,'\u200d')
 			}
 		},
 		leftArrowUpHandler: function (event) {
@@ -408,7 +425,7 @@ SelectionTracker.getInstance = function () {
 
 			if (cursorDetails.textNode) {
 				cursorDetails.textNode.parentNode.normalize()
-				if (cursorDetails.textOffset >= cursorDetails.textNode.data.replace(/\u0020\u0020*$/,' ').replace(/\u200b$/,'').length && cursorDetails.textNode.nextSibling && cursorDetails.textNode.nextSibling.className == "entity-wrapper") {
+				if (cursorDetails.textOffset >= cursorDetails.textNode.data.replace(/\u0020\u0020*$/,' ').replace(/\u200d$/,'').length && cursorDetails.textNode.nextSibling && cursorDetails.textNode.nextSibling.className == "entity-wrapper") {
 					return cursorDetails.textNode.nextSibling
 				} else {
 					console.log(418)
@@ -466,7 +483,7 @@ SelectionTracker.getInstance = function () {
 			var cursorDetails = this.getCursorDetails();
 			var textNode = cursorDetails.textNode;
 			if (cursorDetails.textNode) {
-					cursorDetails.textNode.data = cursorDetails.textNode.data.replace(/\u200b+/g,'\u200b')
+					cursorDetails.textNode.data = cursorDetails.textNode.data.replace(/\u200d+/g,'\u200d')
 				}
 			if (cursorDetails.baseNode.normalize) {
 				cursorDetails.baseNode.normalize()
@@ -741,21 +758,21 @@ SelectionTracker.getInstance = function () {
 				if (node.previousSibling.nodeType == 3) {
 
 					if (node.previousSibling.data == " " && node.previousSibling.previousSibling) {//just raw whitespace will mess up selection
-						node.previousSibling.data = " \u200b"
+						node.previousSibling.data = " \u200d"
 					} else {
-						node.parentNode.insertBefore(document.createTextNode('\u200b'),node)
+						node.parentNode.insertBefore(document.createTextNode('\u200d'),node)
 					}
 				}
 			} else {
-				node.parentNode.insertBefore(document.createTextNode('\u200b'),node)
+				node.parentNode.insertBefore(document.createTextNode('\u200d'),node)
 			}
 			if (node.nextSibling) {
 				if (node.nextSibling.nodeType == 3) {
 					if (node.nextSibling.data == " " && !node.nextSibling.nextSibling) {//just raw whitespace will mess up selection
-						node.nextSibling.data = "\u200b"
+						node.nextSibling.data = "\u200d"
 					}
 				} else {
-					node.parentNode.insertBefore(document.createTextNode('\u200b'),node.nextSibling)
+					node.parentNode.insertBefore(document.createTextNode('\u200d'),node.nextSibling)
 				}
 			}else {
 				node.parentNode.appendChild(document.createTextNode('\u00a0 '))

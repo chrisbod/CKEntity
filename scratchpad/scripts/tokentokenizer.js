@@ -17,7 +17,7 @@ TokenTokenizer.prototype = {
 		}
 		var text = ""+rangeOrText;
 
-		text = text.replace(/\u200b/gm,'');
+		text = text.replace(/\u200d/gm,'');
 		text = text.trim().match(/(<)[^>]*>?$/mg);
 		if (text) {
 			return text[text.length-1];
