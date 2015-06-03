@@ -199,7 +199,7 @@ SelectionTracker.getInstance = function () {
 	makeEntityBlockLevel: function (element) {
 		
 		if (!element) {
-			element = this.getEntityElement(this.document.getSelection().baseNode)
+			element = this.helper.getEntityWrapper(this.document.getSelection().baseNode)
 			if (!element) return false;
 		}
 		if (element.getAttribute("data-block-level") != "true") {
@@ -236,7 +236,7 @@ SelectionTracker.getInstance = function () {
 			var cursorDetails = this.getCursorDetails(event);
 			var baseNode = cursorDetails.baseNode;
 			if (baseNode) {
-					var entity = this.getEntityElement(baseNode.parentNode);
+					var entity = this.helper.getEntityWrapper(baseNode.parentNode);
 					if (entity && entity.getAttribute("data-entity-node")!="user") {
 
 							this.selectNode(entity)
@@ -419,7 +419,7 @@ SelectionTracker.getInstance = function () {
 		downArrowUpHandler: function (event) {
 			event.stopPropagation();
 			var cursorDetails = this.getCursorDetails();
-			var entity = this.getTopLevelEntityElement(cursorDetails.baseNode)
+			var entity = this.helper.getTopLevelEntityWrapper(cursorDetails.baseNode)
 			if (entity) {//curosr lost inside read only node
 				var selection = this.document.getSelection()
 				var range = cursorDetails.range;
@@ -437,7 +437,7 @@ SelectionTracker.getInstance = function () {
 				//event.preventDefault()
 			}
 			var cursorDetails = this.getCursorDetails(event)
-			var entity = this.getTopLevelEntityElement(cursorDetails.baseNode)
+			var entity = this.helper.getTopLevelEntityWrapper(cursorDetails.baseNode)
 			
 
 			if (entity) {
@@ -545,21 +545,37 @@ SelectionTracker.getInstance = function () {
 			
 			var cursorDetails = this.getCursorDetails();
 			var textNode = cursorDetails.textNode;
+<<<<<<< HEAD
 			if (cursorDetails.textNode) {
 					cursorDetails.textNode.data = cursorDetails.textNode.data.replace(/\u200d+/g,'\u200d')
 				}
+=======
+			if (textNode) {
+				textNode.data = textNode.data.replace(/\u200b/g,'')
+			}
+		
+>>>>>>> newb
 			if (cursorDetails.baseNode.normalize) {
 				cursorDetails.baseNode.normalize()
 			} else {
 				cursorDetails.baseNode.parentNode.normalize()
 			}
 			var entity = this.isImmediatelyAfterEntity(cursorDetails);
+			
 
 			if (this.selectedNode) {
-				this.cleanSelectedNode()
+
+				//this.cleanSelectedNode()
 				//this.selectedNode.parentElement.insertBefore(document.createTextNode(" "),this.selectedNode)
 				event.preventDefault()
-				this.document.getSelection().collapseToStart()
+				//this.selectNode(this.selectedNode)
+				//this.document.getSelection().collapseToStart()
+				var selection = this.document.getSelection()
+				var range = selection.getRangeAt(0)
+				range.setStartBefore(this.selectedNode)
+				range.setEndBefore(this.selectedNode)
+				selection.removeAllRanges()
+				selection.addRange(range)
 				this.selectedNode = null;
 				return
 
@@ -624,102 +640,8 @@ SelectionTracker.getInstance = function () {
 		},
 		
 		
-		getTopLevelEntityElement: function (element) {
-			var lastEntity = null,
-				entity = this.getEntityElement(element);
-			lastEntity = entity
-			while (entity) {
-				entity = this.getEntityElement(entity.parentNode)
-				if (entity) {
-					lastEntity = entity
-				}
-			}
-			return lastEntity;
-
-		},
-		
-		getEntityElement: function (element) {//slightly different to entities helper method
-			if (element) {
-				while (element && element!=this.element) {
-					if (element.hasAttribute && element.hasAttribute("data-entity-node")) return element;
-					element = element.parentNode;
-				}
-			}
-			return false 
-		},
 		cutHandler: function () {
 			//console.log(document.getSelection().getRangeAt(0).createContextualFragment())
-		},
-		markNodes: function (main) {
-			var marker = {}
-		    var loop = function(main) {
-		        do {
-		            main.marker = marker;
-		            if(main.hasChildNodes()) {
-		            	loop(main.firstChild);
-		            }
-		                
-		        }
-		        while (main = main.nextSibling);
-		    }
-		    loop(main);
-		},
-		getNewNodes: function (main) {
-			if (!main) {
-				debugger;
-			}
-			var newNodes = [];
-		    var loop = function(main) {
-		        do {
-		            if (!main.marker) {
-		            	newNodes.push(main)
-		            }
-		        }
-		        while (main = main.nextSibling);
-		        
-		    }
-		    return newNodes;
-		},
-		getSurroundingNodes: function (cursorDetails) {
-			var baseNode = cursorDetails.baseNode;
-			var currentSelected = this.selectedNode;
-			if (baseNode) {
-				cursorDetails.entityNode = this.getEntityElement(baseNode)
-				if (cursorDetails.atStartOfTextNode && baseNode.previousSibling && this.getEntityElement(baseNode.previousSibling)) {
-					cursorDetails.nodeToLeft = baseNode.previousSibling
-				}
-				if (cursorDetails.atEndOfTextNode && baseNode.nextSibling && this.getEntityElement(baseNode.nextSibling)) {
-					
-					if (currentSelected!=baseNode.nextSibling) {
-						cursorDetails.nodeToRight = baseNode.nextSibling;
-					}
-				}
-
-				if (cursorDetails.atEndOfElement ) {
-					if (baseNode.lastChild && baseNode.lastChild.nodeType == 3) {
-						if (!baseNode.lastChild.data.trim().length) {
-
-							var previous = baseNode.lastChild.previousSibling;
-							if (this.getEntityElement(previous)) {//weird end of node behaviour
-								cursorDetails.nodeToRight = cursorDetails.nodeToLeft = previous;
-							}
-						}
-						
-					}
-					if (currentSelected!=baseNode.lastChild) {
-						
-					}
-					return
-				}
-
-				if (cursorDetails.atEndOfTextNode && baseNode.nextSibling && this.getEntityElement(baseNode.nextSibling)) {
-					////console.log(cursorDetails)
-					if (currentSelected!=baseNode.nextSibling) {
-						cursorDetails.nodeToRight = baseNode.nextSibling
-						//this.selectNode(baseNode.nextSibling);
-					}
-				}
-			}
 		},
 		getCursorDetails: function (event) {
 			var currentSelected = this.selectedNode;
@@ -738,7 +660,7 @@ SelectionTracker.getInstance = function () {
 
 			
 			if (selection.baseNode === null && /mouse/.test(event.type)) {
-					cursorDetails.entityNode = this.getEntityElement(event.target)
+					cursorDetails.entityNode = this.helper.getEntityWrapper(event.target)
 				if (event.target.lastChild.nodeType !== 3) {
 					cursorDetails.withoutTextEnd = event.target;
 				}
@@ -816,6 +738,17 @@ SelectionTracker.getInstance = function () {
 			selection.addRange(range);
 			this.selectedNode = node;
 		},
+
+		insertEntityWrapperAtCursor: function (entity) {
+			var selection = this.document.getSelection(),
+				range = selection.getRangeAt(0)
+			range.insertNode(entity)
+			this.insertDummySpacesForSelection(entity);
+			range.selectNode(entity.nextSibling);
+			selection.removeAllRanges();
+			selection.addRange(range);
+			selection.collapseToStart();
+		},
 		insertDummySpacesForSelection: function (node) {
 			if (node.previousSibling) {
 				if (node.previousSibling.nodeType == 3) {
@@ -823,7 +756,15 @@ SelectionTracker.getInstance = function () {
 					if (node.previousSibling.data == " " && node.previousSibling.previousSibling) {//just raw whitespace will mess up selection
 						node.previousSibling.data = " \u200d"
 					} else {
+<<<<<<< HEAD
 						node.parentNode.insertBefore(document.createTextNode('\u200d'),node)
+=======
+						var data = node.previousSibling.data
+						if (data.charAt(data.length-1) !== '\u200b') {
+							node.parentNode.insertBefore(document.createTextNode('\u200b'),node)
+						}
+						
+>>>>>>> newb
 					}
 				}
 			} else {
@@ -831,8 +772,13 @@ SelectionTracker.getInstance = function () {
 			}
 			if (node.nextSibling) {
 				if (node.nextSibling.nodeType == 3) {
+<<<<<<< HEAD
 					if (node.nextSibling.data == " " && !node.nextSibling.nextSibling) {//just raw whitespace will mess up selection
 						node.nextSibling.data = "\u200d"
+=======
+					if (/^\u200b?$/.test(node.nextSibling.data.trim())  && !node.nextSibling.nextSibling) {//just raw whitespace will mess up selection
+						node.nextSibling.data = "\u00a0 "
+>>>>>>> newb
 					}
 				} else {
 					node.parentNode.insertBefore(document.createTextNode('\u200d'),node.nextSibling)
@@ -842,16 +788,6 @@ SelectionTracker.getInstance = function () {
 			}
 		},
 		cleanSelectedNode: function () {
-			this.selectedNode.parentNode.normalize()
-		},
-		insertEntityAtCursor: function (entity) {
-			var selection = this.document.getSelection(),
-				range = selection.getRangeAt(0)
-			range.insertNode(entity)
-			this.insertDummySpacesForSelection(entity);
-			range.selectNode(entity.nextSibling);
-			selection.removeAllRanges();
-			selection.addRange(range);
-			selection.collapseToStart();
+			this.selectedNode && this.selectedNode.parentNode.normalize()
 		}
 	}

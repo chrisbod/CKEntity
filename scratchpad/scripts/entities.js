@@ -177,7 +177,30 @@ EntitiesHelper.prototype = {
 	},
 	getCurrentLogicDefinitions: function () {
 		return this.languageStore.getCurrentLogicDefinitions();
-	}
+	},
+	getTopLevelEntityWrapper: function (element) {
+			var lastEntity = null,
+				entity = this.getEntityElement(element);
+			lastEntity = entity
+			while (entity) {
+				entity = this.getEntityElement(entity.parentNode)
+				if (entity) {
+					lastEntity = entity
+				}
+			}
+			return lastEntity;
+
+		},
+		
+		getEntityWrapper: function (element) {//slightly different to entities helper method
+			if (element) {
+				while (element && element!=this.element) {
+					if (element.hasAttribute && element.hasAttribute("data-entity-node")) return element;
+					element = element.parentNode;
+				}
+			}
+			return false 
+		}
 }
 
 
