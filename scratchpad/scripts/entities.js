@@ -193,9 +193,13 @@ EntitiesHelper.prototype = {
 		},
 		
 		getEntityWrapper: function (element) {//slightly different to entities helper method
+			if (element.nodeType == 3) {
+				element.nodeType = element.parentNode;
+			}
 			if (element) {
 				while (element && element!=this.element) {
-					if (element.hasAttribute && element.hasAttribute("data-entity-node")) return element;
+
+					if (element.hasAttribute && element.hasAttribute("data-entity-wrapper")) return element;
 					element = element.parentNode;
 				}
 			}

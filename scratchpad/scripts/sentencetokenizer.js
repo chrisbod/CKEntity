@@ -6,7 +6,7 @@ function SentenceTokenizer () {
 SentenceTokenizer.prototype = {
 	getLastSentenceFromRange: function (rangeOrText) {
 		var text = ""+rangeOrText;
-		text = text.replace(/\u200b/gm,'').replace(/\s*\u00a0\s*/,' ');//clan out any duff markup
+		text = text.replace(/\u200d/gm,'').replace(/\s*\u00a0\s*/,' ');//clan out any duff markup
 		var sentences = text.split(/[\.\?\!^]\s*(?=[A-Z])/);
 
 		if (sentences) {

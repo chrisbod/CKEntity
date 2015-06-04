@@ -271,7 +271,7 @@ function AutoSuggestContainer(id, tokenizer) {
 		if (this.editableElement == range.commonAncestorContainer || this.editableElement.contains(range.commonAncestorContainer)) {
 			var index = startNode.data.lastIndexOf(this.trigger.trim())
 			this.selectionTracker.insertEntityWrapperAtCursor(this.store.getEntityNode(text))
-			startNode.data = startNode.data.slice(0,index)+"\u200b"
+			startNode.data = startNode.data.slice(0,index)+"\u200d"
 			
 			
 		}

@@ -182,10 +182,11 @@ SelectionTracker.getInstance = function () {
 			
 			var cursorDetails = this.getCursorDetails(event);
 			var baseNode = cursorDetails.baseNode;
+			console.log(cursorDetails)
 			if (baseNode) {
-					var entity = this.helper.getEntityWrapper(baseNode.parentNode);
+					var entity = this.helper.getEntityWrapper(baseNode);
+					console.log(entity)
 					if (entity && entity.getAttribute("data-entity-node")!="user") {
-
 							this.selectNode(entity)
 							event.preventDefault()
 							//event.stopPropagation()
@@ -199,21 +200,21 @@ SelectionTracker.getInstance = function () {
 			this.selectedNode = null;
 		},
 		deleteHandler: function (event) {
+
 			if (!this.selectedNode) {
 
 			var cursorDetails = this.getCursorDetails();
 			if (cursorDetails.textOffset ===0 ) {
 
-						var currentNode = cursorDetails.range.startContainer;
+						/*var currentNode = cursorDetails.range.startContainer;
 						if (!currentNode.getAttribute) {
 							currentNode = currentNode.parentNode
 						}
 						
 						while (currentNode && !currentNode.previousSibling) {
-							console.log(currentNode.getAttribute("data-deletable"))
 							currentNode = currentNode.parentNode;
 
-						}
+						}*/
 			}
 
 			} else  {
@@ -438,11 +439,9 @@ SelectionTracker.getInstance = function () {
 				if (cursorDetails.textOffset >= cursorDetails.textNode.data.replace(/\u0020\u0020*$/,' ').replace(/\u200d$/,'').length && cursorDetails.textNode.nextSibling && cursorDetails.textNode.nextSibling.className == "entity-wrapper") {
 					return cursorDetails.textNode.nextSibling
 				} else {
-					console.log(418)
 				}
 
 			} else {
-				console.log(394)
 				var baseNode = cursorDetails.baseNode;
 				var nextElement = baseNode.childNodes[cursorDetails.baseOffset]
 				if (nextElement && nextElement.className == "entity-wrapper") {
@@ -493,7 +492,7 @@ SelectionTracker.getInstance = function () {
 			var cursorDetails = this.getCursorDetails();
 			var textNode = cursorDetails.textNode;
 			if (textNode) {
-				textNode.data = textNode.data.replace(/\u200b/g,'')
+				textNode.data = textNode.data.replace(/\u200d/g,'')
 			}
 			if (cursorDetails.baseNode.normalize) {
 				cursorDetails.baseNode.normalize()
@@ -698,8 +697,8 @@ SelectionTracker.getInstance = function () {
 					} else {
 
 						var data = node.previousSibling.data
-						if (data.charAt(data.length-1) !== '\u200b') {
-							node.parentNode.insertBefore(document.createTextNode('\u200b'),node)
+						if (data.charAt(data.length-1) !== '\u200d') {
+							node.parentNode.insertBefore(document.createTextNode('\u200d'),node)
 						}
 						
 					}
@@ -709,7 +708,7 @@ SelectionTracker.getInstance = function () {
 			}
 			if (node.nextSibling) {
 				if (node.nextSibling.nodeType == 3) {
-					if (/^\u200b?$/.test(node.nextSibling.data.trim())  && !node.nextSibling.nextSibling) {//just raw whitespace will mess up selection
+					if (/^\u200d?$/.test(node.nextSibling.data.trim())  && !node.nextSibling.nextSibling) {//just raw whitespace will mess up selection
 						node.nextSibling.data = "\u00a0 "
 					}
 				} else {
@@ -721,5 +720,21 @@ SelectionTracker.getInstance = function () {
 		},
 		cleanSelectedNode: function () {
 			this.selectedNode && this.selectedNode.parentNode.normalize()
+		},
+		replaceEntity: function (node,replacementNode) {
+			var trailingDummySpaces = /(\u00a0|\u200d)+$/,
+			parentNode = node.parentNode;
+			if (node.previousSibling && trailingDummySpaces.test(node.previousSibling.data)) {
+				node.previousSibling.data = node.previousSibling.data.replace(trailingDummySpaces);
+			}
+			if (node.nextSibling && trailingDummySpaces.test(node.nextSibling.data)) {
+				node.nextSibling.data = node.nextSibling.data.replace(trailingDummySpaces);
+			}
+			if (replacementNode) {
+				node.parentNode.replaceChild(replacementNode,node);
+			} else {
+				parentNode.removeChild(node);
+			}
+			parentNode.normalize();
 		}
 	}

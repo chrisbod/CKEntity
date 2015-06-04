@@ -44,15 +44,16 @@ UserConditionalManager.prototype = {
 		
 	},
 	mousedownHandler: function (event) {
-		if (event.target.parentNode.tagName == "IF" || event.target.parentNode.tagName == "ENDIF") {
-			this.selectionTracker.selectNode(event.target.parentNode.parentNode);
-			this.activateNodes(event.target.parentNode.parentNode.getAttribute("data-conditional-id"))
+		var parentNode = event.target.parentNode
+		if (/^(IF|ENDIF)$/.test(parentNode.tagName)) {
+			this.selectionTracker.selectNode(parentNode.parentNode);
+			this.activateNodes(parentNode.parentNode.getAttribute("data-conditional-id"))
 		} else {
 			this.deactivateNodes()
 		}
 	},
 	dragHandler: function (event) {
-			if (!this.dragNode && /^(if|endif)$/i.test(event.target.parentNode.tagName)) {
+			if (!this.dragNode && /^(IF|ENDIF)$/.test(event.target.parentNode.tagName)) {
 				this.dragNode = event.target.parentNode.parentNode;
 				event.stopPropagation()
 			}
@@ -130,13 +131,14 @@ UserConditionalManager.prototype = {
 		}
 	},
 	validateNodePositions: function () {
-		var nodes = this.activeNodes;
+		var nodes = this.activeNodes,
+			selectionTracker = this.selectionTracker,
+			placeholder;
 		if (nodes[0].compareDocumentPosition(nodes[1]) != 4) {
-			var placeholder = document.createElement("span")
-			nodes[0].parentNode.replaceChild(placeholder,nodes[0])
-			nodes[1].parentNode.replaceChild(nodes[0],nodes[1])
-			placeholder.parentNode.replaceChild(nodes[1],placeholder)
-
+			placeholder = document.createElement("span")
+			selectionTracker.replaceEntity(nodes[0],placeholder);//.parentNode.replaceChild(placeholder,nodes[0])
+			selectionTracker.replaceEntity(nodes[1],nodes[0]);
+			selectionTracker.replaceEntity(placeholder,nodes[1])
 		}
 		
 	},
@@ -176,9 +178,9 @@ UserConditionalManager.prototype = {
 			for (var i=0;i<this.activeNodes.length;i++) {
 				if (this.activeNodes[i].parentNode == null) {
 					if (i==1) {
-						this.activeNodes[0].parentNode.removeChild(this.activeNodes[0])
+						this.selectionTracker.replaceEntity(this.activeNodes[0])
 					} else {
-						this.activeNodes[1].parentNode.removeChild(this.activeNodes[1])
+						this.selectionTracker.replaceEntity(this.activeNodes[1])
 					}
 					this.activeNodes = null
 					break;
