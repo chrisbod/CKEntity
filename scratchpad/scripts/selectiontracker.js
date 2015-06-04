@@ -182,10 +182,9 @@ SelectionTracker.getInstance = function () {
 			
 			var cursorDetails = this.getCursorDetails(event);
 			var baseNode = cursorDetails.baseNode;
-			console.log(cursorDetails)
 			if (baseNode) {
-					var entity = this.helper.getEntityWrapper(baseNode);
-					console.log(entity)
+					var entity = this.helper.getEntityWrapper(baseNode.parentNode);
+					console.log(baseNode)
 					if (entity && entity.getAttribute("data-entity-node")!="user") {
 							this.selectNode(entity)
 							event.preventDefault()
