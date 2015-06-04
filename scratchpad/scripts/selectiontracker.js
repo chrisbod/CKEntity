@@ -545,16 +545,9 @@ SelectionTracker.getInstance = function () {
 			
 			var cursorDetails = this.getCursorDetails();
 			var textNode = cursorDetails.textNode;
-<<<<<<< HEAD
-			if (cursorDetails.textNode) {
-					cursorDetails.textNode.data = cursorDetails.textNode.data.replace(/\u200d+/g,'\u200d')
-				}
-=======
 			if (textNode) {
 				textNode.data = textNode.data.replace(/\u200b/g,'')
 			}
-		
->>>>>>> newb
 			if (cursorDetails.baseNode.normalize) {
 				cursorDetails.baseNode.normalize()
 			} else {
@@ -756,15 +749,12 @@ SelectionTracker.getInstance = function () {
 					if (node.previousSibling.data == " " && node.previousSibling.previousSibling) {//just raw whitespace will mess up selection
 						node.previousSibling.data = " \u200d"
 					} else {
-<<<<<<< HEAD
-						node.parentNode.insertBefore(document.createTextNode('\u200d'),node)
-=======
+
 						var data = node.previousSibling.data
 						if (data.charAt(data.length-1) !== '\u200b') {
 							node.parentNode.insertBefore(document.createTextNode('\u200b'),node)
 						}
 						
->>>>>>> newb
 					}
 				}
 			} else {
@@ -772,13 +762,8 @@ SelectionTracker.getInstance = function () {
 			}
 			if (node.nextSibling) {
 				if (node.nextSibling.nodeType == 3) {
-<<<<<<< HEAD
-					if (node.nextSibling.data == " " && !node.nextSibling.nextSibling) {//just raw whitespace will mess up selection
-						node.nextSibling.data = "\u200d"
-=======
 					if (/^\u200b?$/.test(node.nextSibling.data.trim())  && !node.nextSibling.nextSibling) {//just raw whitespace will mess up selection
 						node.nextSibling.data = "\u00a0 "
->>>>>>> newb
 					}
 				} else {
 					node.parentNode.insertBefore(document.createTextNode('\u200d'),node.nextSibling)
