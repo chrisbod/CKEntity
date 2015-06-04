@@ -162,7 +162,7 @@ function AutoSuggestContainer(id, tokenizer) {
 
 		if (!startingRange) {
 			startingRange = this.startingRange = selection.getRangeAt(0);
-			startingRange.setStart(startingRange.startContainer,Math.min(startingRange.startOffset,0))
+			startingRange.setStart(startingRange.startContainer,Math.max(startingRange.startOffset,0))
 		} 
 
 		if (latestRange.endContainer!=startingRange.endContainer) {
@@ -184,7 +184,7 @@ function AutoSuggestContainer(id, tokenizer) {
 				this.trigger = null;
 				return;
 			}
-			range.setStart(range.startContainer,Math.min((""+range).lastIndexOf(trigger.trim()),0))
+			range.setStart(range.startContainer,Math.max((""+range).lastIndexOf(trigger.trim()),0))
 			this.moveToRange(this.editableDocument,range);
 			suggestions = this.tokenizer.getSuggestions(trigger);
 			this.showByKeys(suggestions);
