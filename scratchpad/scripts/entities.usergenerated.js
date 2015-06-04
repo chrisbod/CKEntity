@@ -158,12 +158,12 @@ UserConditionalManager.prototype = {
 			var id = "uc"+UserConditionalManager.count++
 			var ifNode = this.ifTemplate.cloneNode(true)
 			ifNode.setAttribute("data-conditional-id",id)
-			this.selectionTracker.insertEntityAtCursor(ifNode);
+			this.selectionTracker.insertEntityWrapperAtCursor(ifNode);
 			var spacer = document.createTextNode('\u00a0 ')
-			this.selectionTracker.insertEntityAtCursor(spacer);
+			this.selectionTracker.insertEntityWrapperAtCursor(spacer);
 			var endifNode = this.endifTemplate.cloneNode(true)
 			endifNode.setAttribute("data-conditional-id",id)
-			this.selectionTracker.insertEntityAtCursor(endifNode);
+			this.selectionTracker.insertEntityWrapperAtCursor(endifNode);
 			var range = document.createRange()
 			range.setStartAfter(ifNode)
 			range.setEndBefore(endifNode)
