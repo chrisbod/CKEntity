@@ -8,7 +8,7 @@ EntitiesHelper.prototype = {
 	},
 	isEntityElement: function (element) {
 		if (element) { 			
-			return /TRANSLATION|TOKEN|CONDITIONAL/i.test(element.tagName);
+			return /^(TRANSLATION|TOKEN|CONDITIONAL|IF)$/i.test(element.tagName);
   		}
 	},
 	isEntityWrapper: function (element) {

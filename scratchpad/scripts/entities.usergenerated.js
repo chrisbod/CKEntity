@@ -31,8 +31,6 @@ UserConditionalManager.prototype = {
 		return this[event.type+"Handler"](event);
 	},
 	keyupHandler: function (event) {
-		//var character =  String.fromCharCode(event.charCode)
-		console.log(event.keyCode)
 		switch (event.keyCode) {
 			case 219: return this.insertBoth(event);
 			case 46:
@@ -62,6 +60,7 @@ UserConditionalManager.prototype = {
 		postDropHandler: function (dragNode,details) {
 					    if (details.textNode.nodeType == 3) {
 					        var replacement = details.textNode.splitText(details.offset);
+					       // console.log(dragNode)
 					        details.textNode.parentNode.insertBefore(dragNode, replacement);
 					        this.validateNodePositions()
 					    }	
@@ -99,21 +98,12 @@ UserConditionalManager.prototype = {
 				this.dragNode = null;
 				event.preventDefault()
 				event.stopPropagation()
+				if (typeof CKEDITOR != "undefined" && CKEDITOR.currentInstance) {
+					//debugger;
+						CKEDITOR.currentInstance.fire("saveSnapshot");
+				}
 
-			} else {
-		var selection  = this.document.getSelection();
-		var foo = {}
-		for (var i in selection) {
-			foo[i] = selection[i]
-		}
-		var range = selection.getRangeAt(0)
-		console.log(foo,range)
-		if (selection.rangeCount) {
-			this.internalDropHandler(event);
-		} else {
-			setTimeout(this.internalDropHandler.bind(this,event));
-		}
-			}
+			} 
 
 		
 		this.dragNode = null
@@ -191,6 +181,7 @@ UserConditionalManager.prototype = {
 						this.activeNodes[1].parentNode.removeChild(this.activeNodes[1])
 					}
 					this.activeNodes = null
+					break;
 				}
 			}
 		}

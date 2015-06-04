@@ -43,7 +43,7 @@ function LogicDialogViewModel(element) {
 LogicDialogViewModel.prototype = new EntityViewModel();
 LogicDialogViewModel.prototype.updateFromElement = function (element) {
 	this.element = element;
-	this.text(element.innerText)
+	this.text(element.innerText||"If")
 	this.values(this.entitiesHelper.getDataArguments(element));
 	this.logic(this.entitiesHelper.getCurrentLogicDefinitions());
 }
@@ -60,7 +60,7 @@ TokenTooltipViewModel.prototype.updateFromElement = function (element) {
 	this.element = element;
 	var values = this.entitiesHelper.getDataArguments(element);
 	var permissions = this.entitiesHelper.getEditPermissions(element);
-	this.title(element.innerText.replace(/[\<\>\[\]]/g,''));
+	this.title(element.innerText.replace(/[\<\>\[\]]/g,'')||"[...]");
 	this.canEditRules(permissions.rules||false);
 	this.canEditProperties(permissions.properties||false)
 	if (!permissions.rules && !permissions.properties) {
@@ -99,3 +99,4 @@ DocumentPreviewViewModel.prototype.update = function () {
 	this.active(false);
 	//console.log(this.values())
 }
+
