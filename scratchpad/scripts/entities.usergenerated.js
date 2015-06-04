@@ -23,7 +23,7 @@ UserConditionalManager.prototype = {
 	calculateCount: function () {
 		var ifs = this.document.querySelectorAll("if");
 		for (var i=0;i<ifs.length;i++) {
-			UserConditionalManager.count = Math.max(parseInt(ifs.id.replace(/uc/g,'')),UserConditionalManager.count)
+			UserConditionalManager.count = Math.max(parseInt(ifs[i].id.replace(/uc/g,'')),UserConditionalManager.count)
 		}
 
 	},
