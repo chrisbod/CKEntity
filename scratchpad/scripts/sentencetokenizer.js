@@ -7,8 +7,7 @@ SentenceTokenizer.prototype = {
 	getLastSentenceFromRange: function (rangeOrText) {
 		var text = ""+rangeOrText;
 		text = text.replace(/\u200d/gm,'').replace(/\s*\u00a0\s*/,' ');//clan out any duff markup
-		var sentences = text.split(/[\.\?\!^]\s*(?=[A-Z])/);
-
+		var sentences = text.split(/[\.\?\!^\()]\s*(?=[A-Z])/);
 		if (sentences) {
 			var lastSentence = sentences[sentences.length-1];
 			return lastSentence;
@@ -51,9 +50,12 @@ SentenceTokenizer.prototype = {
 			//}
 		//}
 		var split = string.trim().split(/\s+/),
-			results = [];
+			results = [],
+			currentTrigger = "";
+
 		function crawl(object) {
 			if (split.length) {
+				currentTrigger = split.join(" ")
 				var next = split.shift();
 					if (next in object) {
 						crawl(object[next])
@@ -67,7 +69,7 @@ SentenceTokenizer.prototype = {
 		function iterate(object) {
 			for (var i in object) {
 				if (i == "_$") {
-					results.push(object._$)
+					results.push({trigger: currentTrigger, suggestion: object._$})
 				} else {
 					iterate(object[i])
 				}
@@ -81,6 +83,11 @@ SentenceTokenizer.prototype = {
 			}
 		}
 		crawl(this.tokens,split);
+		if (split.length>1) {//more than one word
+			split = [split[split.length-1]];
+			crawl(this.tokens)
+		}
+		
 		results.sort(function (a,b) {
 			/*if (a.def.length > b.def.length) {
 				return 1

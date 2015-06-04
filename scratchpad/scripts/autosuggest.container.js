@@ -101,7 +101,7 @@ function AutoSuggestContainer(id, tokenizer) {
 	clickHandler: function (ev) {
 		var p = (ev.target||event.srcElement);
 		if (p!=this) {
-			this.clicked(p.id,p.innerText,p);
+			this.clicked(p);
 			this.hide();
 		}
 	},
@@ -161,18 +161,20 @@ function AutoSuggestContainer(id, tokenizer) {
 			latestRange = selection.getRangeAt(0);
 
 		if (!startingRange) {
+
 			startingRange = this.startingRange = selection.getRangeAt(0);
-			startingRange.setStart(startingRange.startContainer,Math.max(startingRange.startOffset,0))
+			var container = startingRange.startContainer,
+				offset = startingRange.startOffset
+			//startingRange.setStart(startingRange.startContainer,0)
 		} 
 
 		if (latestRange.endContainer!=startingRange.endContainer) {
 			this.startingRange = null;
 			return 
 		}
-		
-		range.setStart(startingRange.startContainer,startingRange.startOffset);
-		range.setEnd(latestRange.endContainer,latestRange.endOffset);
 
+		range.setStart(startingRange.startContainer,0);
+		range.setEnd(latestRange.endContainer,latestRange.endOffset);
 		trigger = this.tokenizer.getTrigger(""+range,event);
 
 		if (trigger) {
@@ -180,6 +182,7 @@ function AutoSuggestContainer(id, tokenizer) {
 			node = range.endContainer.lastChild || range.endContainer;
 			if (node.data) {
 				this.trigger = trigger;
+				this.currentRange = range
 			} else {
 				this.trigger = null;
 				return;
@@ -256,30 +259,47 @@ function AutoSuggestContainer(id, tokenizer) {
 	},
 	enter: function (event) {		
 		if (this.visible && this.focussedElement) {
-			this.clicked(this.focussedElement.id,this.focussedElement.innerText,this.focussedElement);
+			this.clicked(this.focussedElement);
 			this.hide();
 			event.stopPropagation();
 			event.preventDefault();
 			this.enterClicked = true;
 		}
 	},
-	clicked: function (id,text) {
+	clicked: function (element) {
 		var selection = this.editableDocument.getSelection()
 			range = selection.getRangeAt(0),
 			startNode = range.startContainer
-			newNode = this.store.getEntityNode(text);//document.createTextNode(text);
+			newNode = this.store.getEntityNode(element.innerText),//document.createTextNode(text);
+			offset = range.startOffset
+
 		if (this.editableElement == range.commonAncestorContainer || this.editableElement.contains(range.commonAncestorContainer)) {
-			var index = startNode.data.lastIndexOf(this.trigger.trim())
-			this.selectionTracker.insertEntityWrapperAtCursor(this.store.getEntityNode(text))
-			startNode.data = startNode.data.slice(0,index)+"\u200d"
+			var trigger = element.getAttribute("data-trigger"),
+				startData = startNode.data;
+				
+			var index =startData.lastIndexOf(trigger);
+			var node = this.store.getEntityNode(element.innerText)
+			this.selectionTracker.insertEntityWrapperAtCursor(node);
 			
+			var firstSlice = startData.slice(0,index),
+				secondSlice = startData.slice(index),
+				offsetSlice = startData.slice(0,offset)/*,
+				thirdSlice =startData.slice(0,)*/
+			console.log("before"+startData)
+			console.log("first"+firstSlice,index)
+			console.log("second"+secondSlice,index)
+			console.log("offset"+offsetSlice,offset)
+			console.log("data:"+startNode.data)
+			this.startingRange = null;
 			
 		}
 	},
 	showByIds: function (idsArray) {
 		this.element.innerHTML = "";
+		var node
 		for (var i=0;i!=idsArray.length;i++) {
-			this.element.appendChild(this.nodes[idsArray[i]])
+			node = this.element.appendChild(this.nodes[idsArray[i].suggestion.id])
+			node.setAttribute("data-trigger", idsArray[i].trigger)
 		}
 		this.firstOption = this.element.firstChild;
 		if (this.focussedElement) {
@@ -295,7 +315,7 @@ function AutoSuggestContainer(id, tokenizer) {
 	showByKeys: function (keysArray) {
 		var ids = []
 		for (var i=0;i!=keysArray.length;i++) {
-			ids[ids.length] = keysArray[i].id
+			ids[ids.length] = keysArray[i]
 		}
 		this.showByIds(ids)
 	},
