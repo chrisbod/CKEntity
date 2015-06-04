@@ -159,7 +159,7 @@ $(function () {
 			if (lastDoc) {
 				editor.setData(localStorage.getItem(lastDoc))
 			} else {
-				$.ajax('kid.html', {
+				$.ajax('kid/kid.html', {
 				success: function (data) {
 					
 					editor.setData(data, function () {

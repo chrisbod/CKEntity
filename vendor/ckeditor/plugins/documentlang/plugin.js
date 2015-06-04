@@ -33,15 +33,8 @@
 
 			function changeLanguage(editor,languageId) {
 				
-				var config = editor.config,
-					  			name = editor.name;
-					  		config.language = languageId
 					  		currentEditorLanguageId = languageId
-					  		editor.destroy();
-					  		config.on = { 
-'instanceReady': function (evt) { evt.editor.execCommand('maximize'); }
-}
-					  		editor = CKEDITOR.replace(name, config);
+					  		build(editor,editor.editable().$,currentEditorLanguageId);//horrible
 
 
 					 
@@ -161,23 +154,3 @@
 	} );
 } )();
 
-/**
- * Specifies the list of languages available in the
- * [Language](http://ckeditor.com/addon/language) plugin. Each entry
- * should be a string in the following format:
- *
- *		<languageCode>:<languageLabel>[:<textDirection>]
- *
- * * _languageCode_: The language code used for the `lang` attribute in ISO 639 format.
- * 	Language codes can be found [here](http://www.loc.gov/standards/iso639-2/php/English_list.php).
- * 	You can use both 2-letter ISO-639-1 codes and 3-letter ISO-639-2 codes, though
- * 	for consistency it is recommended to stick to ISO-639-1 2-letter codes.
- * * _languageLabel_: The label to show for this language in the list.
- * * _textDirection_: (optional) One of the following values: `rtl` or `ltr`,
- * 	indicating the reading direction of the language. Defaults to `ltr`.
- *
- *		config.language_list = [ 'he:Hebrew:rtl', 'pt:Portuguese', 'de:German' ];
- *
- * @cfg {Array} [language_list = [ 'ar:Arabic:rtl', 'fr:French', 'es:Spanish' ]]
- * @member CKEDITOR.config
- */

@@ -1,0 +1,37 @@
+html {
+	background-color: #cccccc;
+}
+body {
+  font-family: Arial, Helvetica, san-serif;
+  counter-reset: section;
+  font-size: 11pt;
+  margin: 1em auto;
+  padding: 20mm;
+  width: 210mm;
+  box-sizing: border-box;
+  background-color: white;
+}
+
+#header-data {
+	position: relative;
+}
+#header-data header {
+	outline: 1px dashed #000;
+	background-color: white;
+	width: 100%;
+}
+#header header {
+	position: absolute;
+	visibility: hidden
+}
+#footer-data {
+	position: relative;
+	display: none;
+	bottom: 10px;
+
+}
+#footer-data footer {
+	outline: 1px dashed #000;
+	background-color: white;
+	width: 100%;
+}

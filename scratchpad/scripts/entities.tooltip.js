@@ -57,6 +57,7 @@ EntityTooltip.prototype = {
 			if (target && !target.hasAttribute("data-read-only")) {
 				//if (this.currentlyOver != target) {
 					this.activateTooltip(target,event);
+					event.stopPropagation()
 				//}
 			} else {
 				this.deactivateTooltip(this)

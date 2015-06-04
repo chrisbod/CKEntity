@@ -23,10 +23,15 @@ SelectionTracker.getInstance = function () {
 			//this.document.addEventListener("drop",this,true)
 			this.document.addEventListener("copy",this,true);
 			//this.document.addEventListener("drag",this,true);
+			//this.document.addEventListener("DOMFocusIn",this,true)
 
 		},
 		handleEvent: function (event) {
 			return this[event.type+"Handler"](event)
+		},
+		DOMFocusInHandler: function (event) {
+			console.log(event.target)
+			event.stopPropagation()
 		},
 		copyHandler: function (event) {
 			var selection  = this.document.getSelection();
