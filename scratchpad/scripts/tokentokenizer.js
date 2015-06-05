@@ -29,7 +29,7 @@ TokenTokenizer.prototype = {
 		what = what.trim();
 		this.tokenDefinitions.forEach(function (def) {
 			if (def.indexOf(what) == 0) {
-				suggestions[suggestions.length] = this.tokens[def];
+				suggestions[suggestions.length] = {trigger: what, suggestion: this.tokens[def]} ;
 			} 
 		},this)
 		return suggestions;
