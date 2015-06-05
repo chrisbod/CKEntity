@@ -187,7 +187,7 @@ function AutoSuggestContainer(id, tokenizer) {
 				this.trigger = null;
 				return;
 			}
-			range.setStart(range.startContainer,Math.max((""+range).lastIndexOf(trigger.trim()),0))
+			range.setStart(node,Math.max(0,node.data.lastIndexOf(trigger.trim())))
 			this.moveToRange(this.editableDocument,range);
 			suggestions = this.tokenizer.getSuggestions(trigger);
 			this.showByKeys(suggestions);
