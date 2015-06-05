@@ -121,7 +121,7 @@ UserConditionalManager.prototype = {
 	},
 	activateNodes: function (conditionalId) {
 		if (this.activeNodes) {
-			this.deactivateNodes()
+			this.deactivateNodes();
 		}
 		var nodes = this.document.querySelectorAll("span.entity-wrapper[data-conditional-id="+conditionalId+"]");
 		if (nodes.length && nodes.length != 2) {
@@ -129,8 +129,81 @@ UserConditionalManager.prototype = {
 		} else {
 			nodes[0].firstElementChild.className = "active";
 			nodes[1].firstElementChild.className = "active";
+
 			this.activeNodes = nodes;
+			this.createPath()
 		}
+	},
+	createPath: function () {
+		var activeNodes = this.activeNodes;
+		var range = this.document.createRange();
+		range.setStartAfter(activeNodes[0]);
+		range.setEndBefore(activeNodes[1]);
+		var rects = range.getClientRects()
+		//var rect = this.document.body.getBoundingClientRect();
+		var left = rects[0].left, right = 0;
+		for (var i=0;i<rects.length;i++) {
+			left = Math.min(left,rects[i].left);
+			right = Math.max(right, rects[i].right)
+		}
+		var startRect = rects[0]
+		var endRect = rects[rects.length-1];
+		var top = this.document.body.scrollTop;
+		var pathPositions = "m "+startRect.left+" 0"+" l "+startRect.width+" 0"+" l "+startRect.width+" "+endRect.top+" l "+endRect.right+" "+endRect.top+" m "+endRect.right+" "+endRect.bottom+" l "+endRect.left+" "+endRect.bottom+" l "+endRect.left+" "+startRect.bottom+" l "+startRect.left+" "+startRect.bottom+" z"
+
+		var svg = this.document.createElementNS("http://www.w3.org/2000/svg","svg")
+		svg.setAttribute("xmlns","http://www.w3.org/2000/svg")
+		svg.setAttribute("version","1.1")
+		svg.setAttribute("viewBox","0 0 "+(right-left)+" "+(endRect.bottom-startRect.top))
+		svg.style.position = "absolute";
+		svg.style.width = (right-left)+"px";
+		svg.style.top  =  top + startRect.top+"px";
+		svg.style.height = (endRect.bottom-startRect.top)+"px"
+		svg.style.left = left+"px";
+		svg.style.border = "1px solid red"
+		svg.style.pointerEvents = "none";
+		svg.setAttribute("width",(right-left)+"px")
+		svg.setAttribute("height",(endRect.bottom-startRect.top)+"px")
+		var path = this.document.createElementNS("http://www.w3.org/2000/svg","path")
+		path.setAttribute("stroke-width","1")
+		path.setAttribute("stroke", "red");
+path.setAttribute("d", pathPositions)
+svg.appendChild(path)
+this.document.body.appendChild(svg)
+/*
+
+<svg width="4cm" height="4cm" viewBox="0 0 400 400" xmlns="http://www.w3.org/2000/svg" version="1.1" style="
+    position: absolute;
+    width: 400px;
+    height: 400px;
+">  <path d="M 100 100 L 300 100 L 200 300 z" fill="none" stroke="blue" stroke-width="3"></path> </svg>
+	var svg = this.document.createElementNS("http://www.w3.org/2000/svg","svg")
+		svg.setAttribute("version","1.1")
+		svg.setAttribute("viewBox","0 0 "+400+" "+400);
+		svg.setAttribute("width","4cm")
+		svg.setAttribute("height","4cm")
+		//svg.style.position = "absolute";
+		//svg.style.top  =  top + startRect.top+"px";
+		//svg.style.left = left+"px";
+		//svg.style.border = "1px solid red"
+		//svg.style.pointerEvents = "none";
+		var path = this.document.createElementNS("http://www.w3.org/2000/svg","path")
+		path.setAttribute("stroke-width","3")
+		path.setAttribute("stroke", "blue");
+
+		path.setAttribute("fill","red")
+		path.setAttribute("d","M 100 100 L 300 100 L 200 300 z")
+		svg.appendChild(path)
+		var div = document.createElement("div")
+		div.appendChild(svg)
+		this.document.body.insertBefore(div,this.document.body.firstChild)
+
+		
+	<svg width="4cm" height="4cm" viewBox="0 0 400 400" xmlns="http://www.w3.org/2000/svg" version="1.1">
+  <path d="M 100 100 L 300 100 L 200 300 z" fill="red" stroke="blue" stroke-width="3"></path>
+</svg><
+		*/
+
 	},
 	validateNodePositions: function () {
 		var nodes = this.activeNodes,
