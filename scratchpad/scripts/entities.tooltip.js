@@ -15,6 +15,7 @@ EntityTooltip.prototype = {
 		this.editableElement = editableElement;
 		this.editableElement.addEventListener("click", this);
 		this.editableElement.addEventListener("keydown", this);
+		this.editableElement.addEventListener("drag")
 		this.editableDocument = this.editableElement.ownerDocument;
 		this.tooltipElement = tooltipElement;
 		window.addEventListener("resize", this)
@@ -49,6 +50,9 @@ EntityTooltip.prototype = {
 			}
 		}
 
+	},
+	dragHandler: function () {
+		this.deactivateTooltip(this)
 	},
 	clickHandler: function (event) {
 		var target = event.target;

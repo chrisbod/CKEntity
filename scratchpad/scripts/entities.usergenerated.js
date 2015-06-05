@@ -24,7 +24,7 @@ UserConditionalManager.prototype = {
 		var ifs = this.document.querySelectorAll("if");
 		UserConditionalManager.count = ifs.length
 		for (var i=0;i<ifs.length;i++) {
-			UserConditionalManager.count = Math.max(parseInt(ifs[i].parentNode.getAttribute("data-conditional-id").replace(/uc/g,'')),UserConditionalManager.count)
+			UserConditionalManager.count = Math.max(parseInt(ifs[i].parentNode.getAttribute("data-user-conditional-id").replace(/uc/g,'')),UserConditionalManager.count)
 		}
 		//console.log(UserConditionalManager.count)
 
@@ -49,7 +49,8 @@ UserConditionalManager.prototype = {
 		var parentNode = event.target.parentNode
 		if (/^(IF|ENDIF)$/.test(parentNode.tagName)) {
 			this.selectionTracker.selectNode(parentNode.parentNode);
-			this.activateNodes(parentNode.parentNode.getAttribute("data-conditional-id"))
+			console.log("active")
+			this.activateNodes(parentNode.parentNode.getAttribute("data-user-conditional-id"))
 		} else {
 			this.deactivateNodes()
 		}
@@ -125,14 +126,14 @@ UserConditionalManager.prototype = {
 		if (this.activeNodes) {
 			this.deactivateNodes();
 		}
-		var nodes = this.document.querySelectorAll("span.entity-wrapper[data-conditional-id="+conditionalId+"]");
+		var nodes = this.document.querySelectorAll("span.entity-wrapper[data-user-conditional-id="+conditionalId+"]");
 		if (nodes.length && nodes.length != 2) {
 			throw "Illegal node situation!"
 		} else {
 			nodes[0].firstElementChild.className = "active";
 			nodes[1].firstElementChild.className = "active";
 
-			this.activeNodes = nodes;
+			this.activeNodes = [nodes[0],nodes[1]];
 			this.updatePath()
 		}
 	},
@@ -141,7 +142,7 @@ UserConditionalManager.prototype = {
 			this.createPath()
 		}
 		if (!this.activeNodes) {
-			this.pathElement.style.visibility = "hidden"
+			this.pathElement.style.visibility = "hidden";
 		} else {
 			var activeNodes = this.activeNodes;
 			var range = this.document.createRange();
@@ -208,9 +209,48 @@ UserConditionalManager.prototype = {
 			placeholder = this.document.createElement("span")
 			selectionTracker.replaceEntity(nodes[0],placeholder);//.parentNode.replaceChild(placeholder,nodes[0])
 			selectionTracker.replaceEntity(nodes[1],nodes[0]);
-			selectionTracker.replaceEntity(placeholder,nodes[1])
+			selectionTracker.replaceEntity(placeholder,nodes[1]);
+
 		}
-		console.log(this.document.querySelectorAll("if,endif"))
+		var ifsAndEndIfs = this.document.querySelectorAll("span[data-user-conditional-id]");
+		var currentIfs = [], currentEndIfs = [];
+		for (var i=0;i<ifsAndEndIfs.length;i++) {
+			if (ifsAndEndIfs[i].firstChild.tagName == "IF") {
+				currentIfs.push(ifsAndEndIfs[i]);
+			} else {
+				currentEndIfs.push(ifsAndEndIfs[i]);
+				
+			}
+			
+		}
+		currentEndIfs.reverse();
+		if (currentIfs.length != currentEndIfs.length) {
+			this.deleteUnmatchedNodes(currentIfs,currentEndIfs);
+		}
+		var activeId = this.activeNodes[0].getAttribute("data-user-conditional-id"),
+			activeIf = null;
+
+		currentIfs.forEach(function (ifElement,index) {
+			var ifId = ifElement.getAttribute("data-user-conditional-id"),
+				endIfId = currentEndIfs[index].getAttribute("data-user-conditional-id");
+			if (ifId == activeId) {
+				activeIf = ifElement
+			}
+			if (ifId != endIfId) {
+				if (ifId == activeId) {
+					this.activeNodes[1].firstElementChild.className = ""
+					
+					currentEndIfs[index].firstElementChild.className = "active";
+					console.log("changing second active",currentEndIfs[index])
+					this.activeNodes[1] = currentEndIfs[index]
+				}
+
+				currentEndIfs[index].setAttribute("data-user-conditional-id",ifId)
+			}
+		},this);
+		console.log(this.activeNodes.concat())
+		this.updatePath()
+		
 		
 	},
 	handleEnter: function (event) {
@@ -220,12 +260,12 @@ UserConditionalManager.prototype = {
 		if (!event.shiftKey) {
 			var id = "uc"+UserConditionalManager.count++
 			var ifNode = this.ifTemplate.cloneNode(true)
-			ifNode.setAttribute("data-conditional-id",id)
+			ifNode.setAttribute("data-user-conditional-id",id)
 			this.selectionTracker.insertEntityWrapperAtCursor(ifNode);
 			var spacer = document.createTextNode('\u00a0 ')
 			this.selectionTracker.insertEntityWrapperAtCursor(spacer);
 			var endifNode = this.endifTemplate.cloneNode(true)
-			endifNode.setAttribute("data-conditional-id",id)
+			endifNode.setAttribute("data-user-conditional-id",id)
 			this.selectionTracker.insertEntityWrapperAtCursor(endifNode);
 			var range = document.createRange()
 			range.setStartAfter(ifNode)
@@ -253,7 +293,8 @@ UserConditionalManager.prototype = {
 					} else {
 						this.selectionTracker.replaceEntity(this.activeNodes[1])
 					}
-					this.activeNodes = null
+					this.activeNodes = null;
+					this.pathElement.style.visibility = "hidden"
 					break;
 				}
 			}
