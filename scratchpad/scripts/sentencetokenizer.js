@@ -51,11 +51,10 @@ SentenceTokenizer.prototype = {
 		//}
 		var split = string.trim().split(/\s+/),
 			results = [],
-			currentTrigger = "";
+			currentTrigger = split.concat().join(" ");
 
 		function crawl(object) {
 			if (split.length) {
-				currentTrigger = split.join(" ")
 				var next = split.shift();
 					if (next in object) {
 						crawl(object[next])
@@ -85,6 +84,7 @@ SentenceTokenizer.prototype = {
 		crawl(this.tokens,split);
 		if (split.length>1) {//more than one word
 			split = [split[split.length-1]];
+			currentTrigger = split.concat().join(" ")
 			crawl(this.tokens)
 		}
 		
