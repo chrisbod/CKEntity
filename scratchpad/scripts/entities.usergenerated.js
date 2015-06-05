@@ -22,9 +22,11 @@ UserConditionalManager.prototype = {
 	},
 	calculateCount: function () {
 		var ifs = this.document.querySelectorAll("if");
+		UserConditionalManager.count = ifs.length
 		for (var i=0;i<ifs.length;i++) {
-			UserConditionalManager.count = Math.max(parseInt(ifs[i].id.replace(/uc/g,'')),UserConditionalManager.count)
+			UserConditionalManager.count = Math.max(parseInt(ifs[i].parentNode.getAttribute("data-conditional-id").replace(/uc/g,'')),UserConditionalManager.count)
 		}
+		//console.log(UserConditionalManager.count)
 
 	},
 	handleEvent: function (event) {
@@ -135,11 +137,12 @@ UserConditionalManager.prototype = {
 			selectionTracker = this.selectionTracker,
 			placeholder;
 		if (nodes[0].compareDocumentPosition(nodes[1]) != 4) {
-			placeholder = document.createElement("span")
+			placeholder = this.document.createElement("span")
 			selectionTracker.replaceEntity(nodes[0],placeholder);//.parentNode.replaceChild(placeholder,nodes[0])
 			selectionTracker.replaceEntity(nodes[1],nodes[0]);
 			selectionTracker.replaceEntity(placeholder,nodes[1])
 		}
+		console.log(this.document.querySelectorAll("if,endif"))
 		
 	},
 	handleEnter: function (event) {
