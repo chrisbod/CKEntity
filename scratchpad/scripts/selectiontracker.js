@@ -723,10 +723,10 @@ SelectionTracker.getInstance = function () {
 			var trailingDummySpaces = /(\u00a0|\u200d)+$/,
 			parentNode = node.parentNode;
 			if (node.previousSibling && trailingDummySpaces.test(node.previousSibling.data)) {
-				node.previousSibling.data = node.previousSibling.data.replace(trailingDummySpaces);
+				node.previousSibling.data = node.previousSibling.data.replace(trailingDummySpaces,'');
 			}
 			if (node.nextSibling && trailingDummySpaces.test(node.nextSibling.data)) {
-				node.nextSibling.data = node.nextSibling.data.replace(trailingDummySpaces);
+				node.nextSibling.data = node.nextSibling.data.replace(trailingDummySpaces,'');
 			}
 			if (replacementNode) {
 				node.parentNode.replaceChild(replacementNode,node);
