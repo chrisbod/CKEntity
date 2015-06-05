@@ -275,21 +275,12 @@ function AutoSuggestContainer(id, tokenizer) {
 
 		if (this.editableElement == range.commonAncestorContainer || this.editableElement.contains(range.commonAncestorContainer)) {
 			var trigger = element.getAttribute("data-trigger"),
-				startData = startNode.data;
-				
-			var index =startData.lastIndexOf(trigger);
+				startData = startNode.data;	
+			var index = startData.lastIndexOf(trigger);
 			var node = this.store.getEntityNode(element.innerText)
 			this.selectionTracker.insertEntityWrapperAtCursor(node);
-			
-			var firstSlice = startData.slice(0,index),
-				secondSlice = startData.slice(index),
-				offsetSlice = startData.slice(0,offset)/*,
-				thirdSlice =startData.slice(0,)*/
-			console.log("before"+startData)
-			console.log("first"+firstSlice,index)
-			console.log("second"+secondSlice,index)
-			console.log("offset"+offsetSlice,offset)
-			console.log("data:"+startNode.data)
+			var firstSlice = startData.slice(0,index);
+			startNode.data = firstSlice
 			this.startingRange = null;
 			
 		}
