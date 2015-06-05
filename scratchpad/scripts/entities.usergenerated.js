@@ -185,7 +185,7 @@ UserConditionalManager.prototype = {
 			svg.setAttribute("width",fullWidth+"px")
 			svg.setAttribute("height",fullHeight+"px")
 	
-     var pathPositions = "m "+firstRectLeft+",0 "+firstRectWidth+",0 0,"+(fullHeight-lastRectHeight)+" -"+(fullWidth-lastRectWidth)+",0 0,"+lastRectHeight+" -"+lastRectWidth+",0 0,-"+(fullHeight-firstRectHeight)+" "+firstRectLeft+",0 0,-"+firstRectHeight
+     var pathPositions = "m "+firstRectLeft+",0 "+firstRectWidth+",0 0,"+(fullHeight-lastRectHeight)+" -"+(Math.max(0,fullWidth-lastRectWidth))+",0 0,"+lastRectHeight+" -"+lastRectWidth+",0 0,-"+(fullHeight-firstRectHeight)+" "+firstRectLeft+",0 0,-"+firstRectHeight
     		console.log(pathPositions)
 			svg.firstChild.setAttribute("d",pathPositions)
 			this.pathElement.style.visibility = ""
