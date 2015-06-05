@@ -46,10 +46,10 @@ UserConditionalManager.prototype = {
 		
 	},
 	mousedownHandler: function (event) {
-		var parentNode = event.target.parentNode
+		var parentNode = event.target.parentNode;
 		if (/^(IF|ENDIF)$/.test(parentNode.tagName)) {
 			this.selectionTracker.selectNode(parentNode.parentNode);
-			console.log("active")
+			
 			this.activateNodes(parentNode.parentNode.getAttribute("data-user-conditional-id"))
 		} else {
 			this.deactivateNodes()
@@ -58,6 +58,9 @@ UserConditionalManager.prototype = {
 	dragHandler: function (event) {
 			if (!this.dragNode && /^(IF|ENDIF)$/.test(event.target.parentNode.tagName)) {
 				this.dragNode = event.target.parentNode.parentNode;
+				this.dragBefore = this.dragNode.previousSibling;
+				this.dragAfter = this.dragNode.nextSibling;
+				//this.updatePath()
 				event.stopPropagation()
 			}
 		},
@@ -66,6 +69,12 @@ UserConditionalManager.prototype = {
 					        var replacement = details.textNode.splitText(details.offset);
 					       // console.log(dragNode)
 					        details.textNode.parentNode.insertBefore(dragNode, replacement);
+					        if (this.dragBefore) {
+					        	console.log(escape(this.dragBefore.data))
+					        }
+					        if (this.dragAfter) {
+					        	console.log(escape(this.dragAfter.data))
+					        }
 					        this.validateNodePositions();
 					        this.updatePath()
 					    }	
@@ -150,26 +159,35 @@ UserConditionalManager.prototype = {
 			range.setEndBefore(activeNodes[1]);
 			var rects = range.getClientRects()
 			var svg = this.pathElement
-			//var rect = this.document.body.getBoundingClientRect();
 			var left = rects[0].left, right = 0;
 			for (var i=0;i<rects.length;i++) {
 				left = Math.min(left,rects[i].left);
 				right = Math.max(right, rects[i].right)
 			}
+
 			var startRect = rects[0]
 			var endRect = rects[rects.length-1];
 			var top = this.document.body.scrollTop;
-			var pathPositions = "m "+startRect.left+" 0"+" l "+startRect.width+" 0"+" l "+startRect.width+" "+endRect.top+" l "+endRect.right+" "+endRect.top+" m "+endRect.right+" "+endRect.bottom+" l "+endRect.left+" "+endRect.bottom+" l "+endRect.left+" "+startRect.bottom+" l "+startRect.left+" "+startRect.bottom+" z"
+			var fullWidth = right-left,
+				fullHeight = (endRect.bottom-startRect.top),
+				firstRectHeight = startRect.height,
+				firstRectLeft = (rects[0].left-left)-this.activeNodes[0].offsetWidth,
+				firstRectWidth = fullWidth-firstRectLeft,
+				lastRectWidth =  (endRect.right-left)-1+this.activeNodes[1].offsetWidth,
+				lastRectHeight = endRect.height;
 
-			//svg.setAttribute("viewBox","0 0 "+(right-left)+" "+(endRect.bottom-startRect.top))
-			svg.style.width = (right-left)+"px";
-			svg.style.top  =  top + startRect.top+"px";
-			svg.style.height = (endRect.bottom-startRect.top)+"px"
-			svg.style.left = left+"px";
-			//svg.setAttribute("width",(right-left)+"px")
-			//svg.setAttribute("height",(endRect.bottom-startRect.top)+"px")
-			//svg.firstChild.setAttribute("d", "m 229.28571,401.64792 304.28572,1.42857 4.28571,267.85714 -196.42857,0.71429 1.42857,30 -239.28571,0.71428 0.71428,-277.85714 L 230,425.21935 Z")
 			
+
+			svg.style.width = fullWidth+"px";
+			svg.style.top  =  top + startRect.top+"px";
+			svg.style.height = fullHeight+"px"
+			svg.style.left = left+"px";
+			svg.setAttribute("width",fullWidth+"px")
+			svg.setAttribute("height",fullHeight+"px")
+	
+     var pathPositions = "m "+firstRectLeft+",0 "+firstRectWidth+",0 0,"+(fullHeight-lastRectHeight)+" -"+(fullWidth-lastRectWidth)+",0 0,"+lastRectHeight+" -"+lastRectWidth+",0 0,-"+(fullHeight-firstRectHeight)+" "+firstRectLeft+",0 0,-"+firstRectHeight
+    		console.log(pathPositions)
+			svg.firstChild.setAttribute("d",pathPositions)
 			this.pathElement.style.visibility = ""
 		}
 
@@ -192,11 +210,10 @@ UserConditionalManager.prototype = {
 		svg.setAttribute("version","1.1")
 		//svg.setAttribute("viewBox","0 0 1000 2000")
 		svg.style.position = "absolute";
-		svg.style.border = "1px solid red"
+		//svg.style.border = "1px solid red"
 		svg.style.pointerEvents = "none";
 		var path = this.document.createElementNS("http://www.w3.org/2000/svg","path")
-		path.setAttribute("style","fill:none;fill-rule:evenodd;stroke:#000000;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1")
-		path.setAttribute("d", "m 230,400 300,0 4,300 -200,0 0,30 -200,0 0,-300 L 230,400 Z");
+		path.setAttribute("style","fill:none;fill-rule:evenodd;stroke:red;stroke-dasharray:1,1;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1")
 		svg.appendChild(path)
 		this.document.body.appendChild(svg)
 		this.pathElement = svg;
