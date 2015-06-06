@@ -9,17 +9,20 @@ span.entity-wrapper> if, span.entity-wrapper >  endif {
 
 
 }
+span.entity-wrapper:focus {
+	outline: none;
+}
 if img, endif img {
 	width: 1em;
 	height: 1em;
-	border: 1px solid red;
-	border-radius: 2px;
+	border: 1px dotted red;
+	border-radius: 0.2ex;
 	box-sizing: border-box;
 	vertical-align: text-bottom;
 	cursor: default
 } 
 span.entity-wrapper > if.active img,span.entity-wrapper > endif.active img {
-	background-color: red;
+	background-color: #ff9999;
 }
 span.entity-wrapper> if::selection {
 	background-color: transparent;
@@ -37,9 +40,10 @@ span.entity-wrapper img::selection
 if:before {
   content: '[';
   position: absolute;
-  left: 15%;
+  left: 25%;
   top: 5%;
   font-size: 90%;
+  font-weight:bold;
   cursor: default;
   -webkit-pointer-events: none;
   pointer-events: none;
@@ -49,9 +53,10 @@ if:before {
 endif:before {
   content: ']';
   position: absolute;
-  right: 15%;
+  right: 25%;
   top: 5%;
   font-size: 90%;
+  font-weight:bold;
   cursor: default;
   -webkit-pointer-events: none;
   pointer-events: none;

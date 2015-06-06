@@ -23,15 +23,11 @@ SelectionTracker.getInstance = function () {
 			this.document.addEventListener("drop",this,true)
 			this.document.addEventListener("copy",this,true);
 			this.document.addEventListener("drag",this,true);
-			//this.document.addEventListener("DOMFocusIn",this,true)
+			
 
 		},
 		handleEvent: function (event) {
 			return this[event.type+"Handler"](event)
-		},
-		DOMFocusInHandler: function (event) {
-			console.log(event.target)
-			event.stopPropagation()
 		},
 		copyHandler: function (event) {
 			var selection  = this.document.getSelection();
@@ -182,12 +178,14 @@ SelectionTracker.getInstance = function () {
 			
 			var cursorDetails = this.getCursorDetails(event);
 			var baseNode = cursorDetails.baseNode;
+
 			if (baseNode) {
-					var entity = this.helper.getEntityWrapper(baseNode.parentNode);
+					var entity = this.helper.getEntityWrapper(baseNode);
+
 					if (entity && entity.getAttribute("data-entity-node")!="user") {
-							this.selectNode(entity)
+							this.selectNode(entity);
 							event.preventDefault()
-							//event.stopPropagation()
+							
 							return
 							
 						
@@ -195,6 +193,7 @@ SelectionTracker.getInstance = function () {
 						
 					} 
 			}
+			console.log("null")
 			this.selectedNode = null;
 		},
 		deleteHandler: function (event) {
@@ -583,10 +582,15 @@ SelectionTracker.getInstance = function () {
 		getCursorDetails: function (event) {
 			var currentSelected = this.selectedNode;
 			var selection = this.document.getSelection();
+
 			var cursorDetails = {
 				baseNode: selection.baseNode,
 				baseOffset: selection.baseOffset,
 				isCaret: selection.isCollapsed
+				
+			}
+			if (selection.extentNode.previousSibling && selection.extentNode.previousSibling==selection.anchorNode.nextSibling) {
+				cursorDetails.baseNode = selection.anchorNode.nextSibling.firstChild;
 				
 			}
 			if (selection.baseNode.normalize) {
@@ -667,12 +671,14 @@ SelectionTracker.getInstance = function () {
 		selectNode: function (node) {
 			var selection = this.document.getSelection();
 			selection.removeAllRanges();
+			node.tabIndex = -1
 			var range = this.document.createRange();
 			node.parentNode.normalize()
 			this.insertDummySpacesForSelection(node)
 			range.selectNode(node);
 			selection.removeAllRanges()
 			selection.addRange(range);
+			node.focus()
 			this.selectedNode = node;
 		},
 

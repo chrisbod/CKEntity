@@ -8,7 +8,7 @@
  * http://docs.ckeditor.com/#!/guide/plugin_sdk_sample_1
  */
 		(function () {
-
+var launchingEditor = null
 
 			function onOkay (viewModel) {
 				viewModel.active(false);
@@ -19,21 +19,21 @@
 			}
 
 			function launchDialog(element,viewModel) {
-				try {
-					CKEDITOR.currentInstance.execCommand("launchKnockDialog", {
+			
+					launchingEditor.execCommand("launchKnockDialog", {
 					"element": element,
 					viewModel: viewModel,
 					onOkay: onOkay.bind(null,viewModel),
 					onCancel: onCancel.bind(null,viewModel)
-				})
-	 			} catch (e) {
-					console.log(e)
+				
+	 			
+			});
 				}
-			}
 			function launchIfNeeded(element,viewModel,isActive) {
 				if (isActive) {
 					launchDialog(element,viewModel)
-				} 
+				}
+				
 			}
 		ko.bindingHandlers.ckeditorDialog = {
 			init: function (element, valueAccessor, allBindingsAccessor, viewModel, bindingContext) {
@@ -46,18 +46,13 @@
 		}
 }
 	
-
-
-
-})();
-// Register the plugin within the editor.
 CKEDITOR.plugins.add( 'knockoutdialog', {
 
 	
 
 	// The plugin initialization logic goes inside this method.
 	init: function( editor ) {
-		
+		launchingEditor = editor
 		// Define an editor command that opens our dialog window.
 		var dialog = new CKEDITOR.dialogCommand( 'knockoutDialog' );
 		
@@ -66,12 +61,14 @@ CKEDITOR.plugins.add( 'knockoutdialog', {
 		editor.addCommand('launchKnockDialog',{
                         exec : function(editor,data) {
                         	
-                        	editor.execCommand("knockoutdialog")
+                        	launchingEditor = editor,
+                        	dialogArguments = data
+                        	
                         	editor.getKnockoutDialogArguments = function () {//horrific
                         		//delete editor.getKnockoutDialogArguments;
                         		return data
                         	}
-                        	
+                        	editor.execCommand("knockoutdialog",editor)
 
                         }
               
@@ -81,3 +78,9 @@ CKEDITOR.plugins.add( 'knockoutdialog', {
 		CKEDITOR.dialog.add( 'knockoutDialog', this.path + 'dialogs/knockout.js' );
 	}
 });
+
+
+
+})();
+// Register the plugin within the editor.
+

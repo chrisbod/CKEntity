@@ -67,7 +67,7 @@ TokenTooltipViewModel.prototype.updateFromElement = function (element) {
 		this.active(false)
 	}
 }
-TokenTooltipViewModel.prototype.launchRulesDialog = function () {
+TokenTooltipViewModel.prototype.launchRulesDialog = function (model,event) {
 		if (!this.rulesModel) {
 			var dialog = document.getElementById("logicDialog");
 			this.rulesModel = new LogicDialogViewModel(this.element);
