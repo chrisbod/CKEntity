@@ -12,7 +12,7 @@ CKEDITOR.dialog.add( 'knockoutDialog', function( editor ) {
 
 		},
 		detach: function () {
-			this.element.removeEventListener("keydown", this, true)
+			//this.element.removeEventListener("keydown", this, true)
 		},
 		handleEvent: function (event) {
 			if (event.keyCode == 13) {
@@ -57,7 +57,7 @@ CKEDITOR.dialog.add( 'knockoutDialog', function( editor ) {
             ]
         }],
 		onShow: function () {
-
+			
 			data = editor.getKnockoutDialogArguments(); //deeply horrific
 			if (data) {
 				var wrapper = document.getElementById("knockoutWrapper");
