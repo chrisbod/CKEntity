@@ -4,6 +4,406 @@
 		"selected_items":
 		[
 			[
+				"first",
+				"firstRectHeight"
+			],
+			[
+				"firstRect",
+				"firstRectLeft"
+			],
+			[
+				"last",
+				"lastRectWidth"
+			],
+			[
+				"fir",
+				"firstRectLeft"
+			],
+			[
+				"end",
+				"endRect"
+			],
+			[
+				"drag",
+				"dragNode"
+			],
+			[
+				"curre",
+				"currentEndIfs"
+			],
+			[
+				"cur",
+				"currentIfs"
+			],
+			[
+				"curr",
+				"currentEndIfs"
+			],
+			[
+				"current",
+				"currentEndIf"
+			],
+			[
+				"ifs",
+				"ifsAndEndIfs"
+			],
+			[
+				"get",
+				"getAttribute"
+			],
+			[
+				"create",
+				"createPath"
+			],
+			[
+				"insert",
+				"insertBefore"
+			],
+			[
+				"set",
+				"setAttribute"
+			],
+			[
+				"path",
+				"pathPositions"
+			],
+			[
+				"start",
+				"startRect"
+			],
+			[
+				"active",
+				"activeNodes"
+			],
+			[
+				"enter",
+				"enterClicked"
+			],
+			[
+				"star",
+				"startTypingRange"
+			],
+			[
+				"select",
+				"selectNode"
+			],
+			[
+				"pre",
+				"previousSibling"
+			],
+			[
+				"ua",
+				"u00a0"
+			],
+			[
+				"trigge",
+				"triggerRange"
+			],
+			[
+				"repl",
+				"replaceIncludingGarbage"
+			],
+			[
+				"next",
+				"nextSibling"
+			],
+			[
+				"sele",
+				"selectionTracker"
+			],
+			[
+				"prev",
+				"previousSibling"
+			],
+			[
+				"enity",
+				"entityRect"
+			],
+			[
+				"cursor",
+				"cursorDetails"
+			],
+			[
+				"ent",
+				"entity-wrapper"
+			],
+			[
+				"curs",
+				"cursorDetails"
+			],
+			[
+				"enit",
+				"entityRect"
+			],
+			[
+				"tex",
+				"textNode"
+			],
+			[
+				"range",
+				"rangeCount"
+			],
+			[
+				"char",
+				"charactersBeforeNext"
+			],
+			[
+				"text",
+				"textOffset"
+			],
+			[
+				"u",
+				"u200b"
+			],
+			[
+				"selected",
+				"selectedNode"
+			],
+			[
+				"clea",
+				"cleanSelectedNode"
+			],
+			[
+				"enti",
+				"entity-wrapper"
+			],
+			[
+				"is",
+				"isImmediatelyAfterEntity"
+			],
+			[
+				"base",
+				"baseOffset"
+			],
+			[
+				"selec",
+				"selectedNode"
+			],
+			[
+				"en",
+				"entity-wrapper"
+			],
+			[
+				"isImm",
+				"isImmediatelyAfterEntity"
+			],
+			[
+				"sel",
+				"selectedNode"
+			],
+			[
+				"sle",
+				"selectedNode"
+			],
+			[
+				"block",
+				"blockUp"
+			],
+			[
+				"collapse",
+				"collapseToStart"
+			],
+			[
+				"coll",
+				"collapseToStart"
+			],
+			[
+				"keyupDown",
+				"keyUpDownHandler"
+			],
+			[
+				"fi",
+				"firstChild"
+			],
+			[
+				"creat",
+				"createTextNode"
+			],
+			[
+				"noe",
+				"normalize"
+			],
+			[
+				"node",
+				"nodeType"
+			],
+			[
+				"dta",
+				"data-deletable"
+			],
+			[
+				"list",
+				"list-style-type"
+			],
+			[
+				"font",
+				"font-family"
+			],
+			[
+				"back",
+				"background-color"
+			],
+			[
+				"rem",
+				"removeChild"
+			],
+			[
+				"crea",
+				"createElement"
+			],
+			[
+				"previous",
+				"previousSibling"
+			],
+			[
+				"add",
+				"addRange"
+			],
+			[
+				"ad",
+				"addRange"
+			],
+			[
+				"previou",
+				"previousSibling"
+			],
+			[
+				"pareN",
+				"parentNode"
+			],
+			[
+				"selecte",
+				"selectedNode"
+			],
+			[
+				"at",
+				"atEndofElement"
+			],
+			[
+				"keyRight",
+				"keyRightDownHandler"
+			],
+			[
+				"previo",
+				"previousSibling"
+			],
+			[
+				"cu",
+				"cursorDetails"
+			],
+			[
+				"keyEnter",
+				"keyEnterDownHandler"
+			],
+			[
+				"data",
+				"data-deletable"
+			],
+			[
+				"hea",
+				"headerWrapper"
+			],
+			[
+				"edit",
+				"editPanel"
+			],
+			[
+				"header",
+				"headersAndFooters"
+			],
+			[
+				"paren",
+				"parentNode"
+			],
+			[
+				"mark",
+				"markExistingNodes"
+			],
+			[
+				"new",
+				"newCursorContainer"
+			],
+			[
+				"Enit",
+				"EntityMarkupManager"
+			],
+			[
+				"previ",
+				"previousSibling"
+			],
+			[
+				"sibling",
+				"previousSibling"
+			],
+			[
+				"nodeTo",
+				"nodeToRight"
+			],
+			[
+				"atStart",
+				"atStartOfTextNode"
+			],
+			[
+				"att",
+				"atStartOfTextNode"
+			],
+			[
+				"nodeT",
+				"nodeToRight"
+			],
+			[
+				"sib",
+				"previouSibling"
+			],
+			[
+				"key",
+				"keyRightHandler"
+			],
+			[
+				"con",
+				"contenteditable"
+			],
+			[
+				"atS",
+				"atStartOfTextNode"
+			],
+			[
+				"see",
+				"selectedEntityNode"
+			],
+			[
+				"cr",
+				"createElement"
+			],
+			[
+				"setStart",
+				"setStartAfter"
+			],
+			[
+				"setCurso",
+				"setCursorAfterEntity"
+			],
+			[
+				"getM",
+				"getNextImmediateEntityNode"
+			],
+			[
+				"token",
+				"tokenNode"
+			],
+			[
+				"e",
+				"elementToSelect"
+			],
+			[
+				"dialog",
+				"dialogContentsElement"
+			],
+			[
+				"dial",
+				"dialogContentsElement"
+			],
+			[
 				"content",
 				"contentEditable"
 			],
@@ -16,19 +416,11 @@
 				"background"
 			],
 			[
-				"get",
-				"getBoundingClientRect"
-			],
-			[
 				"vie",
 				"viewModel"
 			],
 			[
 				"curen",
-				"currentViewModel"
-			],
-			[
-				"cur",
 				"currentViewModel"
 			],
 			[
@@ -60,16 +452,8 @@
 				"windowDimensions"
 			],
 			[
-				"selected",
-				"selectedOptions"
-			],
-			[
 				"foc",
 				"focusHandler"
-			],
-			[
-				"selec",
-				"selectedOptions"
 			],
 			[
 				"value",
@@ -81,10 +465,6 @@
 			],
 			[
 				"eni",
-				"entitiesHelper"
-			],
-			[
-				"enti",
 				"entitiesHelper"
 			],
 			[
@@ -108,10 +488,6 @@
 				"logicDefinitions"
 			],
 			[
-				"token",
-				"tokenDefinitions"
-			],
-			[
 				"defin",
 				"defineTokens"
 			],
@@ -120,40 +496,16 @@
 				"inline-block"
 			],
 			[
-				"con",
-				"conditionalTemplateNode"
-			],
-			[
 				"user",
 				"userConditionalManager"
-			],
-			[
-				"pre",
-				"preventDefault"
-			],
-			[
-				"create",
-				"createTextNode"
 			],
 			[
 				"remove",
 				"removeAllRanges"
 			],
 			[
-				"start",
-				"startContainer"
-			],
-			[
 				"paste",
 				"pasteCompleteHandlers"
-			],
-			[
-				"new",
-				"newRange"
-			],
-			[
-				"set",
-				"setStartAfter"
 			],
 			[
 				"can",
@@ -162,226 +514,24 @@
 			[
 				"Eni",
 				"EntityViewModel"
-			],
-			[
-				"upda",
-				"updateElementDataArguments"
-			],
-			[
-				"update",
-				"updateFromElement"
-			],
-			[
-				"Token",
-				"TokenTooltipViewModel"
-			],
-			[
-				"updat",
-				"updateFromElement"
-			],
-			[
-				"o",
-				"observableArray"
-			],
-			[
-				"proce",
-				"processTokenControl"
-			],
-			[
-				"Toke",
-				"TokenTextValues"
-			],
-			[
-				"ele",
-				"elementOrFragment"
-			],
-			[
-				"add",
-				"addEventListener"
-			],
-			[
-				"me",
-				"menuItems"
-			],
-			[
-				"getEnit",
-				"getEntityPathAsText"
-			],
-			[
-				"enit",
-				"entities"
-			],
-			[
-				"e",
-				"entityMatcher"
-			],
-			[
-				"auto",
-				"autoSave"
-			],
-			[
-				"def",
-				"definition"
-			],
-			[
-				"rest",
-				"resetValues"
-			],
-			[
-				"data",
-				"data-args"
-			],
-			[
-				"font",
-				"font-weight"
-			],
-			[
-				"table",
-				"table-cell"
-			],
-			[
-				"border",
-				"border-top-width"
-			],
-			[
-				"border-bo",
-				"border-bottom-width"
-			],
-			[
-				"head",
-				"headings"
-			],
-			[
-				"row",
-				"rowCount"
-			],
-			[
-				"Logic",
-				"LogicDialogViewModel"
-			],
-			[
-				"tokenDefinti",
-				"tokenDefinitions"
-			],
-			[
-				"tran",
-				"translation"
-			],
-			[
-				"input",
-				"inputElement"
-			],
-			[
-				"in",
-				"inputElement"
-			],
-			[
-				"show",
-				"showByIds"
-			],
-			[
-				"tok",
-				"tokenizer"
-			],
-			[
-				"ton",
-				"tokenize"
-			],
-			[
-				"to",
-				"tokenizer"
-			],
-			[
-				"tokeni",
-				"SuggestTokenizer"
-			],
-			[
-				"visi",
-				"visibleCount"
-			],
-			[
-				"vis",
-				"visibleCount"
-			],
-			[
-				"bor",
-				"border-top"
 			]
 		]
 	},
 	"buffers":
 	[
 		{
-			"file": "scratchpad/scripts/entities.selection.js",
+			"file": "scratchpad/events.html",
 			"settings":
 			{
-				"buffer_size": 12398,
+				"buffer_size": 796,
 				"line_ending": "Windows"
 			}
 		},
 		{
-			"file": "/D/Downloads/newName (1).xml",
+			"file": "scratchpad/scripts/entities.events.js",
 			"settings":
 			{
-				"buffer_size": 1552,
-				"line_ending": "Unix"
-			}
-		},
-		{
-			"file": "scratchpad/css/autosuggest.css",
-			"settings":
-			{
-				"buffer_size": 1647,
-				"line_ending": "Windows"
-			}
-		},
-		{
-			"file": "scratchpad/scripts/entities.markupmanager.js",
-			"settings":
-			{
-				"buffer_size": 7166,
-				"line_ending": "Windows"
-			}
-		},
-		{
-			"file": "vendor/ckeditor/plugins/knockoutdialog/plugin.js",
-			"settings":
-			{
-				"buffer_size": 2318,
-				"line_ending": "Windows"
-			}
-		},
-		{
-			"file": "scratchpad/css/dialog-form.css",
-			"settings":
-			{
-				"buffer_size": 7459,
-				"line_ending": "Windows"
-			}
-		},
-		{
-			"contents": "Searching 405 files for \"getLastSentenceFromRAnge\"\n\n0 matches across 0 files\n\n\nSearching 92 files for \"getLastSentenceFromRAnge\"\n\nC:\\Users\\Chris\\Documents\\GitHub\\CKEntity\\scratchpad\\auto.html:\n   80  			var translationContainer = new AutoSuggestContainer(\"translation-menu\",new SentenceTokenizer());\n   81  			var tokenContainer = new AutoSuggestContainer(\"token-menu\",new TokenTokenizer())\n   82: 			tokenContainer.getLastSentenceFromRange = function (range) {\n   83  				var token =  range.toString().match(/(?:\\s*)(<)[^>]*$/);\n   84  				if (token) {\n\nC:\\Users\\Chris\\Documents\\GitHub\\CKEntity\\scratchpad\\fullpage.html:\n   63  	var translationContainer = new AutoSuggestContainer(\"translation-menu\");\n   64  	var tokenContainer = new AutoSuggestContainer(\"token-menu\");\n   65: 	tokenContainer.getLastSentenceFromRange = function (range) {\n   66  		var token =  range.toString().match(/(?:\\s*)(<)[^>]*$/);\n   67  		if (token) {\n\nC:\\Users\\Chris\\Documents\\GitHub\\CKEntity\\scratchpad\\integration.html:\n   94  			var translationContainer = new AutoSuggestContainer(\"translation-menu\",new SentenceTokenizer());\n   95  			var tokenContainer = new AutoSuggestContainer(\"token-menu\",new TokenTokenizer())\n   96: 			tokenContainer.getLastSentenceFromRange = function (range) {\n   97  				var token =  range.toString().match(/(?:\\s*)(<)[^>]*$/);\n   98  				if (token) {\n\nC:\\Users\\Chris\\Documents\\GitHub\\CKEntity\\scratchpad\\scripts\\sentencetokenizer.js:\n    5  }\n    6  SentenceTokenizer.prototype = {\n    7: 	getLastSentenceFromRange: function (rangeOrText) {\n    8  		var text = \"\"+rangeOrText;\n    9  		text = text.replace(/\\u200b/gm,'')\n   ..\n   17  	},\n   18  	getTrigger: function (rangeOrText) {\n   19: 		text = this.getLastSentenceFromRange(rangeOrText);\n   20  		text = text.replace(/\\u200b/gm,'');\n   21  		var split = text.trim().split(/\\s+/);\n\n5 matches across 4 files\n\n\nSearching 92 files for \"getTrigger\"\n\nC:\\Users\\Chris\\Documents\\GitHub\\CKEntity\\scratchpad\\scripts\\autosuggest.container.js:\n  150  			duplicateRange.selectNodeContents(node);\n  151  \n  152: 			var trigger = this.tokenizer.getTrigger(\"\"+duplicateRange);\n  153  \n  154  			if (trigger) {\n\nC:\\Users\\Chris\\Documents\\GitHub\\CKEntity\\scratchpad\\scripts\\broken.js:\n  159  			duplicateRange.selectNodeContents(node);\n  160  \n  161: 			var trigger = this.tokenizer.getTrigger(\"\"+duplicateRange);\n  162  \n  163  			if (trigger) {\n\nC:\\Users\\Chris\\Documents\\GitHub\\CKEntity\\scratchpad\\scripts\\sentencetokenizer.js:\n   16  		return \"\";\n   17  	},\n   18: 	getTrigger: function (rangeOrText) {\n   19  		text = this.getLastSentenceFromRange(rangeOrText);\n   20  		text = text.replace(/\\u200b/gm,'');\n\nC:\\Users\\Chris\\Documents\\GitHub\\CKEntity\\scratchpad\\scripts\\tokentokenizer.js:\n   10  		this.tokenDefinitions.sort();\n   11  	},\n   12: 	getTrigger: function (rangeOrText) {\n   13  		var text = \"\"+rangeOrText;\n   14  		text = text.replace(/\\u200b/gm,'');\n\n4 matches across 4 files\n",
-			"settings":
-			{
-				"buffer_size": 2938,
-				"line_ending": "Windows",
-				"name": "Find Results",
-				"scratch": true
-			}
-		},
-		{
-			"file": "scratchpad/scripts/autosuggest.container.js",
-			"settings":
-			{
-				"buffer_size": 9560,
-				"line_ending": "Windows"
-			}
-		},
-		{
-			"file": "scratchpad/scripts/entities.tooltip.js",
-			"settings":
-			{
-				"buffer_size": 2083,
+				"buffer_size": 1022,
 				"line_ending": "Windows"
 			}
 		}
@@ -418,28 +568,57 @@
 	},
 	"file_history":
 	[
-		"/C/Users/Chris/Documents/GitHub/CKEntity/vendor/ckeditor/config.js",
-		"/C/Users/Chris/Documents/GitHub/CKEntity/scratchpad/css/dialog-form.css",
-		"/C/Users/Chris/Documents/GitHub/CKEntity/scratchpad/fullpage.html",
+		"/C/Users/Chris/Desktop/drawing.svg",
+		"/C/Users/Chris/Documents/GitHub/CKEntity/scratchpad/kid.html",
+		"/C/Users/Chris/Documents/GitHub/CKEntity/scratchpad/scripts/selectiontracker.js",
+		"/C/Users/Chris/Documents/GitHub/CKEntity/scratchpad/scripts/autosuggest.container.js",
 		"/C/Users/Chris/Documents/GitHub/CKEntity/scratchpad/scripts/entities.tooltip.js",
+		"/C/Users/Chris/Documents/GitHub/CKEntity/scratchpad/scripts/entities.usergenerated.js",
+		"/C/Users/Chris/Documents/GitHub/CKEntity/scratchpad/kid/kid.html",
+		"/C/Users/Chris/Desktop/nestedifs.html",
+		"/C/Users/Chris/Documents/GitHub/CKEntity/scratchpad/societe_general.html",
+		"/C/Users/Chris/Documents/GitHub/CKEntity/scratchpad/scripts/sentencetokenizer.js",
+		"/C/Users/Chris/Documents/GitHub/CKEntity/scratchpad/scripts/tokentokenizer.js",
+		"/C/Users/Chris/Desktop/frenchkid.html",
+		"/C/Users/Chris/Documents/GitHub/CKEntity/scratchpad/socgen.html",
+		"/C/Users/Chris/Desktop/societe_general.html",
+		"/C/Users/Chris/Documents/GitHub/CKEntity/scratchpad/scripts/entities.store.js",
+		"/C/Users/Chris/Documents/GitHub/CKEntity/scratchpad/css/entities.css",
+		"/C/Users/Chris/Documents/GitHub/CKEntity/scratchpad/scripts/entities.js",
+		"/C/Users/Chris/Documents/GitHub/CKEntity/scratchpad/css/autosuggest.css",
+		"/C/Users/Chris/Documents/GitHub/CKEntity/scratchpad/fullpage.html",
+		"/C/Users/Chris/Documents/GitHub/CKEntity/scratchpad/scripts/entities.markupmanager.js",
+		"/C/Users/Chris/Documents/GitHub/CKEntity/scratchpad/xml/societe_general.html",
+		"/C/Users/Chris/Documents/GitHub/CKEntity/scratchpad/css/societe_generale.css",
+		"/C/Users/Chris/Documents/GitHub/CKEntity/scratchpad/css/template.css",
+		"/C/Users/Chris/Documents/GitHub/CKEntity/scratchpad/raw.html",
+		"/C/Users/Chris/Documents/GitHub/CKEntity/scratchpad/xml/kid.html",
+		"/C/Users/Chris/Documents/GitHub/CKEntity/scratchpad/scripts/headerandfooterhandler.js",
+		"/D/Downloads/newName (2).xml",
+		"/C/Users/Chris/Documents/GitHub/CKEntity/scratchpad/templates/societe.html",
+		"/C/Users/Chris/Documents/GitHub/CKEntity/scratchpad/scripts/DocumentTranslator.js",
+		"/C/Users/Chris/Documents/GitHub/CKEntity/scratchpad/scripts/broken.js",
+		"/C/Users/Chris/Documents/GitHub/CKEntity/scratchpad/scripts/entities.selection.js",
+		"/C/Users/Chris/Documents/GitHub/CKEntity/scratchpad/scripts/contenteditable.events.js",
+		"/C/Users/Chris/Documents/GitHub/CKEntity/scratchpad/preview.html",
+		"/C/Users/Chris/Documents/GitHub/CKEntity/scratchpad/css/kid.css",
+		"/D/Downloads/newName (1).xml",
+		"/C/Users/Chris/Documents/GitHub/CKEntity/vendor/ckeditor/plugins/knockoutdialog/plugin.js",
+		"/C/Users/Chris/Documents/GitHub/CKEntity/scratchpad/css/dialog-form.css",
+		"/C/Users/Chris/Documents/GitHub/CKEntity/scratchpad/json/translations.de.json",
+		"/C/Users/Chris/Documents/GitHub/CKEntity/scratchpad/scripts/entities.edit.knockout.viewmodels.js",
 		"/C/Users/Chris/Documents/GitHub/CKEntity/vendor/ckeditor/plugins/knockoutdialog/dialogs/knockout.js",
+		"/C/Users/Chris/Documents/GitHub/CKEntity/vendor/ckeditor/config.js",
 		"/C/Users/Chris/Documents/GitHub/CKEntity/vendor/ckeditor/lang/en.js",
 		"/C/Users/Chris/Documents/GitHub/CKEntity/vendor/ckeditor/build-config.js",
-		"/C/Users/Chris/Documents/GitHub/CKEntity/scratchpad/scripts/entities.edit.knockout.viewmodels.js",
 		"/C/Users/Chris/Documents/GitHub/CKEntity/vendor/ckeditor/plugins/pagebreaktag/plugin.js",
-		"/C/Users/Chris/Documents/GitHub/CKEntity/vendor/ckeditor/plugins/knockoutdialog/plugin.js",
 		"/C/Users/Chris/Documents/GitHub/CKEntity/vendor/ckeditor/plugins/knockoutdialog/dialogs/knockoutdialog.js",
 		"/C/Users/Chris/Documents/GitHub/CKEntity/scratchpad/xml/tokens.json",
 		"/C/Users/Chris/Documents/GitHub/CKEntity/scratchpad/knockout-dialog.html",
 		"/C/Users/Chris/Documents/GitHub/CKEntity/scratchpad/integration.html",
-		"/C/Users/Chris/Documents/GitHub/CKEntity/scratchpad/scripts/entities.js",
 		"/C/Users/Chris/Documents/GitHub/CKEntity/scratchpad/css/tooltip.css",
-		"/C/Users/Chris/Documents/GitHub/CKEntity/scratchpad/scripts/entities.selection.js",
-		"/C/Users/Chris/Documents/GitHub/CKEntity/scratchpad/scripts/entities.markupmanager.js",
 		"/C/Users/Chris/Documents/GitHub/CKEntity/scratchpad/css/editor.css",
-		"/C/Users/Chris/Documents/GitHub/CKEntity/scratchpad/scripts/entities.usergenerated.js",
 		"/C/Users/Chris/Documents/GitHub/CKEntity/scratchpad/adapt.html",
-		"/C/Users/Chris/Documents/GitHub/CKEntity/scratchpad/css/autosuggest.css",
 		"/C/Users/Chris/Documents/GitHub/CKEntity/scratchpad/scripts/positionablecontainer.js",
 		"/C/Users/Chris/Documents/GitHub/CKEntity/scratchpad/scripts/entities.edit.trigger.js",
 		"/C/Users/Chris/Documents/GitHub/CKEntity/scratchpad/css/collapse.css",
@@ -450,8 +629,6 @@
 		"/C/Users/Chris/Documents/GitHub/CKEntity/vendor/ckeditor/plugins/pastefromword/filter/default.js",
 		"/D/Downloads/ckeditor-dev-master/ckeditor-dev-master/plugins/pastefromword/plugin.js",
 		"/C/Users/Chris/Documents/GitHub/CKEntity/scratchpad/scripts/entities.paste.js",
-		"/C/Users/Chris/Documents/GitHub/CKEntity/scratchpad/scripts/entities.store.js",
-		"/C/Users/Chris/Documents/GitHub/CKEntity/scratchpad/scripts/autosuggest.container.js",
 		"/C/Users/Chris/Documents/GitHub/CKEntity/scratchpad/scripts/xhtml.js",
 		"/C/Users/Chris/Documents/GitHub/CKEntity/vendor/ckeditor/ckeditor.js",
 		"/C/Users/Chris/Documents/GitHub/CKEntity/scratchpad/scripts/intent.js",
@@ -485,13 +662,15 @@
 	],
 	"find":
 	{
-		"height": 34.0
+		"height": 128.0
 	},
 	"find_in_files":
 	{
-		"height": 102.0,
+		"height": 96.0,
 		"where_history":
 		[
+			"C:\\Users\\Chris\\Documents\\GitHub\\CKEntity\\scratchpad\\",
+			"C:\\Users\\Chris\\Documents\\GitHub\\CKEntity\\scratchpad\\scripts",
 			"C:\\Users\\Chris\\Documents\\GitHub\\CKEntity\\scratchpad",
 			"C:\\Users\\Chris\\Documents\\GitHub\\CKEntity\\vendor\\ckeditor",
 			"C:\\Users\\Chris\\Documents\\GitHub\\CKEntity, *.js",
@@ -508,58 +687,134 @@
 		"case_sensitive": false,
 		"find_history":
 		[
-			"getTrigger",
-			"getLastSentenceFromRAnge",
-			"config",
-			"pagebreak",
-			"newpage",
-			"Insert page",
-			"launchKnoc",
-			"launch",
-			"else",
-			"launchKnockDialog",
-			"execCommand",
-			".active",
-			"\"editing\"",
-			"\\u200",
-			"\\u",
+			"tooltip",
+			"checkDElete",
+			"delete",
+			"updatePath",
+			"delete",
+			"this.activeNodes =",
+			"deactivateTooltip",
+			"updatePath",
+			"validateNodePositions",
+			"deactivateNodes",
+			"activeNodes = null",
+			"validateNode",
+			"active",
+			"data-conditional-id=\"uc",
+			"data-conditional-id=",
+			"data-conditional-id",
+			"console.log",
+			"querySelector",
+			".replace",
+			"une stagnation",
+			"currentRange",
+			"rangeToReplace",
+			"console.log",
+			"this.getTopLevelEntityElement",
+			"this.getEntityElement",
+			"isTrigger",
+			"KeyboardEvent",
+			"index",
+			"this.selectedNode.pare",
+			"selectNode",
+			"\\u200b",
+			"leftArrowUp",
+			"keyleft",
+			"data = ",
+			"data=",
+			"cleanSelectedNode",
+			"getCursorDetails",
+			"isTrigger",
+			"shiftKey",
+			"isImmediatelyBefore",
+			"clicked",
+			"downArrow",
+			"leftArrowDown",
+			"\\u200b",
+			"getCursorDetails",
+			"textNode.data",
+			"createTextNode",
+			"\" \"",
+			"selectNode",
+			"isImm",
+			"isImmm",
+			"isImmediatelyBeforeEntity",
+			"selectNode",
+			"selectNpde",
+			"isImmediately",
+			"selectNode",
+			"selectedNode = null",
+			"left",
+			"collapseToStart",
+			"selectNode",
+			"selecNode",
+			"cleanSelectedNode",
+			"next",
+			"selectNode",
+			"rightArr",
+			"selectNode",
+			"selectNode#",
+			"selectNode",
+			"rightArrowDown",
+			"isImmediatelyBeforeEntity",
+			"upArrowUp",
+			"getE",
+			"downArrowUp",
+			"arrowUpDownHandler",
+			"arrowDownDownHandler",
+			"arrowRightDownHandler",
+			"arrowLeftDownHandler",
+			"keyUpUpHandler",
+			"keyDownUpHandler",
+			"arrowRightUpHandler",
+			"arrowLeftUpHandler",
+			"keyUpDownHandler",
+			"keyDownDownHandler",
+			"keyRightDownHandler",
+			"keyLeftDownHandler",
+			"keyRightUpHandler",
+			"keyLeftUpHandler",
+			"up",
+			"selectNode",
 			"click",
-			"focusin",
-			"snapShot",
-			"addRange",
-			"this.element",
-			"enter",
-			"paste",
-			"cleanWord",
-			"CKEDITOR.cleanWord",
-			"getEditPermissions",
-			"definitions",
-			"myCommand",
-			"lang.forms.textarea.title",
-			"form",
-			"getPath",
-			"this.entities",
-			"getPath",
-			"CKEDITOR.plugins.add(\"forms\",",
-			"addMenu",
-			"oncontext",
-			"TokenDialogViewModel",
-			"size",
-			".CSSTableGenerator",
-			">\n",
-			"Derivative return (gross)",
-			"keypressHandler",
-			"&gt;",
-			"&lt;",
-			"def:",
-			"</key>",
-			"<key>",
-			"}\n",
-			"\n",
-			"]",
-			"[",
-			"&gt;",
-			"&lt;"
+			"deleteHandler",
+			"selectNode",
+			"debugger",
+			"selectNode",
+			"click",
+			"\\u200b",
+			"selectNode",
+			"keyUpHandler",
+			"backspace",
+			"  ",
+			"   ",
+			"h4",
+			".data",
+			"collapseToEnd",
+			"data =",
+			"atStartOfTextNode",
+			"nodeToLeft",
+			"clean",
+			"\\u",
+			"stopPropagation",
+			"events",
+			"keydown",
+			"stopPropagation",
+			"insertCursor",
+			"manuallySelectedNode",
+			"getCursorDetails",
+			"isEnti",
+			"this.helper.isEntityElement",
+			"debu",
+			"getCursorDetails",
+			"translator",
+			"isEntit",
+			"\"drag\"",
+			"\"\\u",
+			"setCursor",
+			"setCursorBeforeEntity",
+			"getNextImmediateEntityNode",
+			"selectedEntityNode"
 		],
 		"highlight": true,
 		"in_selection": false,
@@ -567,6 +822,31 @@
 		"regex": false,
 		"replace_history":
 		[
+			"data-user-conditional-id=\"uc",
+			"data-user-conditional-id",
+			"startingRange",
+			"this.helper.getTopLevelEntityWrapper",
+			"this.helper.getEntityWrapper",
+			"upArrowDownHandler",
+			"downArrowDownHandler",
+			"rightArrowDownHandler",
+			"leftArrowDownHandler",
+			"upArrowUpHandler",
+			"downArrowUpHandler",
+			"rightArrowUpHandler",
+			"leftArrowUpHandler",
+			"arrowUpDownHandler",
+			"arrowDownDownHandler",
+			"arrowRightDownHandler",
+			"arrowLeftDownHandler",
+			"arrowRightUpHandler",
+			"arrowLeftUpHandler",
+			"</li><li>",
+			"this.isEntityElement",
+			"setCursorBeforeEntityWrapper",
+			"getNextImmediateEntityWrapperNode",
+			"selectedEntityWrapper",
+			"\"akeydown",
 			"wsdrules",
 			".dialog",
 			">",
@@ -588,28 +868,28 @@
 	"groups":
 	[
 		{
-			"selected": 7,
+			"selected": 1,
 			"sheets":
 			[
 				{
 					"buffer": 0,
-					"file": "scratchpad/scripts/entities.selection.js",
+					"file": "scratchpad/events.html",
 					"settings":
 					{
-						"buffer_size": 12398,
+						"buffer_size": 796,
 						"regions":
 						{
 						},
 						"selection":
 						[
 							[
-								1235,
-								1235
+								779,
+								779
 							]
 						],
 						"settings":
 						{
-							"syntax": "Packages/JavaScript/JavaScript.tmLanguage",
+							"syntax": "Packages/HTML/HTML.tmLanguage",
 							"translate_tabs_to_spaces": false
 						},
 						"translation.x": 0.0,
@@ -620,72 +900,18 @@
 				},
 				{
 					"buffer": 1,
-					"file": "/D/Downloads/newName (1).xml",
+					"file": "scratchpad/scripts/entities.events.js",
 					"settings":
 					{
-						"buffer_size": 1552,
+						"buffer_size": 1022,
 						"regions":
 						{
 						},
 						"selection":
 						[
 							[
-								0,
-								0
-							]
-						],
-						"settings":
-						{
-							"syntax": "Packages/XML/XML.tmLanguage",
-							"translate_tabs_to_spaces": false
-						},
-						"translation.x": 0.0,
-						"translation.y": 0.0,
-						"zoom_level": 1.0
-					},
-					"type": "text"
-				},
-				{
-					"buffer": 2,
-					"file": "scratchpad/css/autosuggest.css",
-					"settings":
-					{
-						"buffer_size": 1647,
-						"regions":
-						{
-						},
-						"selection":
-						[
-							[
-								1479,
-								1479
-							]
-						],
-						"settings":
-						{
-							"syntax": "Packages/CSS/CSS.tmLanguage",
-							"translate_tabs_to_spaces": false
-						},
-						"translation.x": 0.0,
-						"translation.y": 1650.0,
-						"zoom_level": 1.0
-					},
-					"type": "text"
-				},
-				{
-					"buffer": 3,
-					"file": "scratchpad/scripts/entities.markupmanager.js",
-					"settings":
-					{
-						"buffer_size": 7166,
-						"regions":
-						{
-						},
-						"selection":
-						[
-							[
-								157,
-								157
+								225,
+								225
 							]
 						],
 						"settings":
@@ -695,190 +921,6 @@
 						},
 						"translation.x": 0.0,
 						"translation.y": 0.0,
-						"zoom_level": 1.0
-					},
-					"type": "text"
-				},
-				{
-					"buffer": 4,
-					"file": "vendor/ckeditor/plugins/knockoutdialog/plugin.js",
-					"settings":
-					{
-						"buffer_size": 2318,
-						"regions":
-						{
-						},
-						"selection":
-						[
-							[
-								593,
-								569
-							]
-						],
-						"settings":
-						{
-							"syntax": "Packages/JavaScript/JavaScript.tmLanguage",
-							"translate_tabs_to_spaces": false
-						},
-						"translation.x": 0.0,
-						"translation.y": 0.0,
-						"zoom_level": 1.0
-					},
-					"type": "text"
-				},
-				{
-					"buffer": 5,
-					"file": "scratchpad/css/dialog-form.css",
-					"settings":
-					{
-						"buffer_size": 7459,
-						"regions":
-						{
-						},
-						"selection":
-						[
-							[
-								245,
-								245
-							]
-						],
-						"settings":
-						{
-							"syntax": "Packages/CSS/CSS.tmLanguage",
-							"tab_size": 2,
-							"translate_tabs_to_spaces": true
-						},
-						"translation.x": 0.0,
-						"translation.y": 0.0,
-						"zoom_level": 1.0
-					},
-					"type": "text"
-				},
-				{
-					"buffer": 6,
-					"settings":
-					{
-						"buffer_size": 2938,
-						"regions":
-						{
-							"match":
-							{
-								"flags": 112,
-								"regions":
-								[
-									[
-										416,
-										440
-									],
-									[
-										795,
-										819
-									],
-									[
-										1223,
-										1247
-									],
-									[
-										1500,
-										1524
-									],
-									[
-										1714,
-										1738
-									],
-									[
-										2094,
-										2104
-									],
-									[
-										2328,
-										2338
-									],
-									[
-										2514,
-										2524
-									],
-									[
-										2794,
-										2804
-									]
-								],
-								"scope": ""
-							}
-						},
-						"selection":
-						[
-							[
-								2096,
-								2096
-							]
-						],
-						"settings":
-						{
-							"detect_indentation": false,
-							"output_tag": 3,
-							"result_base_dir": "",
-							"result_file_regex": "^([A-Za-z\\\\/<].*):$",
-							"result_line_regex": "^ +([0-9]+):",
-							"scroll_past_end": true,
-							"syntax": "Packages/Default/Find Results.hidden-tmLanguage"
-						},
-						"translation.x": 0.0,
-						"translation.y": 946.0,
-						"zoom_level": 1.0
-					},
-					"type": "text"
-				},
-				{
-					"buffer": 7,
-					"file": "scratchpad/scripts/autosuggest.container.js",
-					"settings":
-					{
-						"buffer_size": 9560,
-						"regions":
-						{
-						},
-						"selection":
-						[
-							[
-								3775,
-								3775
-							]
-						],
-						"settings":
-						{
-							"syntax": "Packages/JavaScript/JavaScript.tmLanguage",
-							"translate_tabs_to_spaces": false
-						},
-						"translation.x": 0.0,
-						"translation.y": 2356.0,
-						"zoom_level": 1.0
-					},
-					"type": "text"
-				},
-				{
-					"buffer": 8,
-					"file": "scratchpad/scripts/entities.tooltip.js",
-					"settings":
-					{
-						"buffer_size": 2083,
-						"regions":
-						{
-						},
-						"selection":
-						[
-							[
-								1452,
-								1452
-							]
-						],
-						"settings":
-						{
-							"syntax": "Packages/JavaScript/JavaScript.tmLanguage",
-							"translate_tabs_to_spaces": false
-						},
-						"translation.x": 0.0,
-						"translation.y": 528.0,
 						"zoom_level": 1.0
 					},
 					"type": "text"
