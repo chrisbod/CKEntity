@@ -33,6 +33,7 @@ For licensing, see LICENSE.md or http://ckeditor.com/license
 	<script src="scripts/sentencetokenizer.js"></script>
 	<script src="scripts/tokentokenizer.js"></script>
 	<script src="scripts/headerandfooterhandler.js"></script>
+	<script src="scripts/radiodeselect.js"></script>
 	<script src="../vendor/knockout/knockout-3.3.0.js"></script>
 	<link href="css/autosuggest.css" rel="stylesheet">
 	<link href="css/dialog-form.css" rel="stylesheet">
@@ -124,6 +125,7 @@ function build(editor,editPanel,language)  {
 	translationContainer.setEditableElement(editPanel);
 	tokenContainer.setEditableElement(editPanel);
 	headersAndFooters.init(editPanel)
+	//new RadioDeselect().init(document)
 
 
 
@@ -366,7 +368,7 @@ CKEDITOR.plugins.add("funky",{
 
 
 
-		<div class="dialog" data-bind="ckeditorDialog: active" id="tokenDialog">
+		<div class="dialog paper-layout" data-bind="ckeditorDialog: active" id="tokenDialog">
 		
 		<form id="test" data-bind="submit: update">
 			
@@ -433,7 +435,7 @@ CKEDITOR.plugins.add("funky",{
 		
 
 		</style>
-		<div class="dialog logicDialog"  data-bind="ckeditorDialog: active" id="logicDialog">
+		<div class="dialog paper-layout"  data-bind="ckeditorDialog: active" id="logicDialog">
 			
 		<form id="rules" data-bind="submit: update">
 			
@@ -441,11 +443,27 @@ CKEDITOR.plugins.add("funky",{
 			<fieldset class="container-content">
 				
 					<ul data-bind="foreach: logic">
+						
 						<li>
-							<strong data-bind="text:text"></strong>
-							<select size="4" data-bind="minimumSelected: 0,attr:{name:id }, options: items , optionsText: 'text', 	optionsValue: 'value', value: $root.values()[id]">
-							</select>
-						</li>
+						<div data-bind="text:text"></div>
+						
+						<div class="radio">
+						<label>
+							<input type="radio" data-bind="attr:{name: id}" value=""/>
+							<span>clear</span>
+						</label>	
+							<!--ko foreach:items-->
+						<label>
+							<input type="radio" data-bind="attr:{name: $parent.id}, value: value, checked:$root.values()[$parent.id]" data-deselectable/>
+							<span data-bind="text: text"></span>
+						</label>
+							<!--/ko-->
+						
+						</div>
+						
+					</li>
+
+					
 					</ul>
 				</fieldset>
 			</section>

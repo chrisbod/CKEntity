@@ -25,7 +25,6 @@ div.dialog fieldset {
 }
 .dialog form li {
     padding: 0;
-    display: block;
     list-style: none;
     margin: 10px 0 0 0;
 }
@@ -150,6 +149,110 @@ select{
     border-width:0px 0px 0px 1px;
 }
 
+.paper-layout form ul {display: table; list-style-type: none; border-top: 1px solid #cccccc; padding: 0; box-sizing: border-box; width: auto; margin: 1ex;}
+.paper-layout form li {display: table-row; padding: 0; margin: 0; }
+.paper-layout form li > div {
+    display: table-cell;
+    padding: 1ex;
+    border-bottom: 1px dotted #cccccc;
+      
+}
+    .paper-layout li > div {
+      border-right: 1px dotted #cccccc;
+
+    }
+    .paper-layout li > div:first-child {
+      background-color: #eeeeee;
+    }
+    .paper-layout li > div:first-child:after {
+      content: ':';
+    }
+    .paper-layout li > div:last-child {
+      border-right-width: 0;
+      white-space: normal;
+    }
+    .paper-layout li:last-child > div {
+      sborder-bottom-width:0;
+    }
+    /*.paper-layout input[type=radio][value=''] {
+        display: none;
+    }
+    .paper-layout input[type=radio][value=''] + span {
+           background-color: #ddd;
+  padding: 0;
+  width: 1em;
+  border: 1px solid #aaa;
+  height: 1em;
+  box-sizing: border-box;
+  line-height: 100%;
+  text-align: center;
+  color: transparent;
+  margin: 0ex 0.5ex;
+  border-radius: 50%;
+
+    }
+    .paper-layout .radio label:first-child:after {
+      content:' \00a0 ';
+    }*/
+    .paper-layout label span {
+      display: inline-block;
+      border-radius: 1ex;
+      -webkit-user-select: none;
+      user-select: none;
+      padding: 0.5ex 1ex 0.5ex 3ex;
+    }
+    .paper-layout  label {
+      position: relative;
+      white-space: nowrap;
+
+    }
+    .paper-layout label span {cursor: default;}
+    .paper-layout .radio label:after {
+      content:'/ ';
+    }
+    .paper-layout .radio label:first-child {
+      float: right;
+      margin-top: -0.5ex;
+    }
+    .paper-layout .radio label:first-child:after {
+      content:'';
+    }
+    .paper-layout .radio label:last-child:after {
+      content:'';
+    }
+    .paper-layout .checkbox label:after {
+      content:'\00a0 ';
+    }
+    .paper-layout .checkbox label:last-child:after {
+      content:'';
+    }
+    .paper-layout input[type=radio],
+    .paper-layout input[type=checkbox] {
+      position: absolute;
+      top: 0.5ex;
+      left: 0.5ex;
+      sdisplay: none;
+    }
+   /* .paper-layout input[type=radio][value=''] {
+      position: relative;
+      top:0.25ex;
+      left:0.25ex;
+    }*/
+    .paper-layout input[type=radio][value=''] {
+      display: none;
+    }
+    .paper-layout input[checked] + span,
+    .paper-layout input:checked + span {
+      background-color: #cccccc;
+      
+    }
+    .paper-layout input[type=radio][value=''] + span {
+      background-color: transparent;
+      border: 1px solid #ccc;
+      padding-left: 1ex;
+    }
+
+
 .tooltip {
     border: 1px solid #999999;
     padding: 0.5ex;
@@ -203,46 +306,6 @@ select{
       -webkit-appearance: none;
  }
 
-#logicDialog form#rules {
-             display: -webkit-flex;
-             display: flex;
-              -webkit-flex-direction: column;
-              flex-direction: column;
-            height: 100%;
-            max-height: 100%;
-        }
-        form#rules > section {
-            flex-grow: 0;
-        }
-            #logicDialog ul {
-               overflow-y: auto;
-               display: -webkit-flex;
-               display: flex;
-               -webkit-align-items: left;
-               align-items: left;
-               -webkit-justify-content: left;
-               justify-content: left;
-               /* You can set flex-wrap and flex-direction individually */
-               -webkit-flex-direction: row;
-               flex-direction: row;
-               -webkit-flex-wrap: wrap;
-               flex-wrap: wrap;
-               /* Or do it all in one line with flex flow */
-               -webkit-flex-flow: row wrap;
-               flex-flow: row wrap;
-               /* tweak the where items line up on the row */
-               /* valid values are: flex-start, flex-end, space-between, space-around, stretch */
-               -webkit-align-content: flex-end;
-               align-content: flex-end;
-            }
-
-            #logicDialog ul li {
-
-                margin: 1ex;
-                flex-grow: 1;
-                border: 1px solid white;
-
-            }
             #tokenDialog div > strong,
             .dialog ul li strong {
                  display: block;
@@ -313,3 +376,12 @@ select option::checked
                 flex-grow: 1;
   
             }
+body .cke_dialog_ui_vbox_child {
+  padding: 0;
+}
+body .cke_dialog_contents_body {
+  padding:0;
+}
+body .cke_dialog_ui_html {
+  overflow: auto;
+}
