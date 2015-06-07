@@ -37,6 +37,9 @@ function AutoSuggestContainer(id, tokenizer) {
 		this.editableElement.addEventListener("keyup", this, true);
 		this.editableDocument = editableElement.ownerDocument;
 		this.editableDocument.addEventListener("keydown",this,true);
+		this.editableDocument.addEventListener("scroll",this,true)
+		this.scrollTop = this.editableDocument.body.scrollTop
+		this.scrollLeft = this.editableDocument.body.scrollLeft
 
 	},
 	
@@ -105,6 +108,9 @@ function AutoSuggestContainer(id, tokenizer) {
 			this.hide();
 		}
 	},
+	scrollHandler: function (event) {
+		//this.scrollBy(this.editableDocument.body.scrollTop,this.editableDocument.body.scrollLeft)
+	},
 	focusHandler: function (event) {
 		if (event.currentTarget == this.element) {
 
@@ -154,7 +160,7 @@ function AutoSuggestContainer(id, tokenizer) {
 		}
 		var selection = this.editableDocument.getSelection(),
 			range = document.createRange(),
-			trigger,
+			triggers,
 			node,
 			suggestions,
 			startingRange = this.startingRange,	
@@ -165,7 +171,6 @@ function AutoSuggestContainer(id, tokenizer) {
 			startingRange = this.startingRange = selection.getRangeAt(0);
 			var container = startingRange.startContainer,
 				offset = startingRange.startOffset
-			//startingRange.setStart(startingRange.startContainer,0)
 		} 
 
 		if (latestRange.endContainer!=startingRange.endContainer) {
@@ -175,21 +180,24 @@ function AutoSuggestContainer(id, tokenizer) {
 
 		range.setStart(startingRange.startContainer,0);
 		range.setEnd(latestRange.endContainer,latestRange.endOffset);
-		trigger = this.tokenizer.getTrigger(""+range,event);
-
-		if (trigger) {
+		triggers = this.tokenizer.getTriggers(""+range,event);
+		if (triggers.length) {
 			range.endContainer.normalize();
 			node = range.endContainer.lastChild || range.endContainer;
 			if (node.data) {
-				this.trigger = trigger;
+				this.triggers = triggers;
 				this.currentRange = range
 			} else {
-				this.trigger = null;
+				this.triggers = null;
 				return;
 			}
-			range.setStart(node,Math.max(0,node.data.lastIndexOf(trigger.trim())))
-			this.moveToRange(this.editableDocument,range);
-			suggestions = this.tokenizer.getSuggestions(trigger);
+			range.setStart(node,Math.max(0,node.data.lastIndexOf(triggers[0].trim())))
+			this.moveToRange(this.editableDocument,latestRange);
+			var suggestions = [];
+			for (var i=0;i<triggers.length;i++) {
+				suggestions = suggestions.concat(this.tokenizer.getSuggestions(triggers[i]))
+			}
+			;
 			this.showByKeys(suggestions);
 			if (suggestions.length) {
 				event.stopPropagation();
@@ -325,7 +333,7 @@ function AutoSuggestContainer(id, tokenizer) {
 		}
 
 	},
-	configureMetrics: function (elementOrRange) {
+	configureMetrics: function () {
 		var rect = this.element.getBoundingClientRect(),
 			viewBottom = window.innerHeight;
 		if (rect.bottom>viewBottom) {

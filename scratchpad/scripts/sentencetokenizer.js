@@ -14,14 +14,21 @@ SentenceTokenizer.prototype = {
 		}
 		return "";
 	},
-	getTrigger: function (rangeOrText) {
-		text = this.getLastSentenceFromRange(rangeOrText);
+	getTriggers: function (rangeOrText) {
+		var text = this.getLastSentenceFromRange(rangeOrText);
+
 		text = text.replace(/\u200d/gm,'');
 		var split = text.trim().split(/\s+/);
-		if (split.length > 0 && split[0].length>2) {
-			return text;
+		if (split.length > 0 && (split[0].length>2 || split.length > 1)) {
+			if (split.length == 1 || (split.length == 2 && split[0] == split[1])) {		
+			
+				return [text];
+			} else {
+				console.log("there")
+				return [split[split.length-1],text]
+			}
 		}
-		return "";
+		return [];
 	},
 	tokenize: function (key) {
 		var tidied = key.def.trim().replace(/(<[^\:])|(>)/g,'').replace(/\[.*$/g,' [..]')
@@ -40,6 +47,7 @@ SentenceTokenizer.prototype = {
 		currentToken._$ = key;
 	},
 	getSuggestions: function (string) {
+
 		string = string.trim()
 		//if (string.indexOf(" ")==-1) {
 			if (this.tokens[string] && this.tokens[string]._$) {
@@ -50,6 +58,8 @@ SentenceTokenizer.prototype = {
 			//}
 		//}
 		var split = string.trim().split(/\s+/),
+			splitLength = split.length,
+			lastSplit = split[split.length-1]
 			results = [],
 			currentTrigger = split.concat().join(" ");
 
@@ -82,9 +92,11 @@ SentenceTokenizer.prototype = {
 			}
 		}
 		crawl(this.tokens,split);
-		if (split.length>1) {//more than one word
-			split = [split[split.length-1]];
+
+		if (splitLength>1) {//more than one word
+			split = [lastSplit]
 			currentTrigger = split.concat().join(" ")
+
 			crawl(this.tokens)
 		}
 		

@@ -9,7 +9,7 @@ TokenTokenizer.prototype = {
 		this.tokenDefinitions.push(def);
 		this.tokenDefinitions.sort();
 	},
-	getTrigger: function (rangeOrText,event) {
+	getTriggers: function (rangeOrText,event) {
 		if (event) {
 			if (event.keyCode == 188 && event.shiftKey) {
 				return "<";
@@ -20,9 +20,9 @@ TokenTokenizer.prototype = {
 		text = text.replace(/\u200d/gm,'');
 		text = text.trim().match(/(<)[^>]*>?$/mg);
 		if (text) {
-			return text[text.length-1];
+			return [text[text.length-1]];
 		}
-		return "";
+		return [];
 	},
 	getSuggestions: function (what) {
 		var suggestions = [];
