@@ -109,7 +109,9 @@ function AutoSuggestContainer(id, tokenizer) {
 		this.hide();
 	},
 	scrollHandler: function (event) {
-		//this.scrollBy(this.editableDocument.body.scrollTop,this.editableDocument.body.scrollLeft)
+		if (this.startingRange) {
+		this.moveToRange(this.editableDocument,this.startingRange);
+		}//this.scrollBy(this.editableDocument.body.scrollTop,this.editableDocument.body.scrollLeft)
 	},
 	focusHandler: function (event) {
 		if (event.currentTarget == this.element) {
@@ -192,7 +194,7 @@ function AutoSuggestContainer(id, tokenizer) {
 				return;
 			}
 			range.setStart(node,Math.max(0,node.data.lastIndexOf(triggers[0].trim())))
-			this.moveToRange(this.editableDocument,latestRange);
+			this.moveToRange(this.editableDocument,this.startingRange);
 			var suggestions = [];
 			for (var i=0;i<triggers.length;i++) {
 				suggestions = suggestions.concat(this.tokenizer.getSuggestions(triggers[i]))
