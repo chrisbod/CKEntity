@@ -38,6 +38,7 @@ function AutoSuggestContainer(id, tokenizer) {
 		this.editableDocument = editableElement.ownerDocument;
 		this.editableDocument.addEventListener("keydown",this,true);
 		this.editableDocument.addEventListener("scroll",this,true)
+		this.editableDocument.defaultView.addEventListener("click",this,true)
 		this.scrollTop = this.editableDocument.body.scrollTop
 		this.scrollLeft = this.editableDocument.body.scrollLeft
 
@@ -101,12 +102,11 @@ function AutoSuggestContainer(id, tokenizer) {
 
 		return this[event.type+"Handler"](event)
 	},
-	clickHandler: function (ev) {
-		var p = (ev.target||event.srcElement);
-		if (p!=this) {
-			this.clicked(p);
-			this.hide();
+	clickHandler: function (event) {
+		if (this.element.contains(event.target||event)) {
+			this.clicked(event.target)
 		}
+		this.hide();
 	},
 	scrollHandler: function (event) {
 		//this.scrollBy(this.editableDocument.body.scrollTop,this.editableDocument.body.scrollLeft)
