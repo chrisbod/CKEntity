@@ -231,7 +231,6 @@ select{
       position: absolute;
       top: 0.5ex;
       left: 0.5ex;
-      sdisplay: none;
     }
    /* .paper-layout input[type=radio][value=''] {
       position: relative;
@@ -243,7 +242,7 @@ select{
     }
     .paper-layout input[checked] + span,
     .paper-layout input:checked + span {
-      background-color: #cccccc;
+      background-color: #eeeeee;
       
     }
     .paper-layout input[type=radio][value=''] + span {
