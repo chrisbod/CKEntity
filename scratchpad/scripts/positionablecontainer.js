@@ -31,7 +31,9 @@ PositionableContainer.prototype = {
 	moveToRange: function (ownerDocument,range) {
 		var rect = range.getClientRects(),
 			frameRect = ownerDocument.defaultView.frameElement.getBoundingClientRect();
-		this.moveTo(frameRect.left+rect[0].left,frameRect.top+rect[rect.length-1].bottom);
+		if (rect[0]) {
+			this.moveTo(frameRect.left+rect[0].left,frameRect.top+rect[rect.length-1].bottom);
+		}
 	},
 	build: function () {
 		this.element = document.createElement("div");
