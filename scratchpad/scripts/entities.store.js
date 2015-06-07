@@ -71,6 +71,7 @@ TokenStore.prototype.createTemplatableNodeFromEntity = function (key,id,readOnly
 	if (readOnly) {
 		editSpan.setAttribute("data-read-only","true")
 	}
+	editSpan.tabIndex=-1
 	return node;
 }
 
@@ -121,6 +122,7 @@ TranslationStore.prototype.createTemplatableNodeFromEntity = function (key,id) {
 	editSpan.appendChild(document.createTextNode("\u200d"))
 	editSpan.appendChild(node)
 	editSpan.appendChild(document.createTextNode("\u200d"))
+	editSpan.tabIndex = -1;
 	return editSpan;
 }
 TranslationStore.prototype.parseTextMarkup = function (string) {
@@ -129,7 +131,7 @@ TranslationStore.prototype.parseTextMarkup = function (string) {
 		.replace(/>/g,'\x03')
 		.replace(/\[([^:]+):/g,'<span class="entity-wrapper" data-entity-node="conditional">&zwj;<conditional contenteditable="false" data-conditional-ref="$1"><span class="args conditional" contenteditable="false">[</span><span class="contents" contenteditable="false">')
 		.replace(/\]/g,'</span><span class="conditional end" contenteditable="false">]</span></conditional>&zwj;</span>')
-		.replace(/\x02([^:]+):(\w+)/g,'<span class="entity-wrapper" data-entity-node="token">&zwj;<token data-ref="$1" data-id="$2">$2')
+		.replace(/\x02([^:]+):(\w+)/g,'<span class="entity-wrapper" data-entity-node="token" tabindex="-1" contenteditable="false">&zwj;<token data-ref="$1" data-id="$2">$2')
 		.replace(/\x03/g,'"</token></span>') + '</span><span class="translation end" contenteditable="false">}</span>';
 }
 
@@ -177,5 +179,6 @@ TokenStore.prototype.createTemplatableNodeFromEntity = function (key,id,readOnly
 	if (readOnly) {
 		editSpan.setAttribute("data-read-only","true")
 	}
+	editSpan.tabIndex = -1;
 	return editSpan;
 }

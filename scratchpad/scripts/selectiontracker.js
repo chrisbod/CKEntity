@@ -331,6 +331,7 @@ SelectionTracker.getInstance = function () {
 		},
 		downArrowDownHandler: function (event) {
 			event.stopPropagation()
+			this.document.activeElement.blur()
 			var cursorDetails = this.getCursorDetails();
 			if (this.selectedNode) {//start of Element
 				var selection = this.document.getSelection()
@@ -341,7 +342,7 @@ SelectionTracker.getInstance = function () {
 		},
 		upArrowDownHandler: function (event) {
 			event.stopPropagation();
-			//return
+			this.document.activeElement.blur()
 			if (event.shiftKey) {
 
 				//return
@@ -483,6 +484,7 @@ SelectionTracker.getInstance = function () {
 			
 		},
 		leftArrowDownHandler: function (event) {
+			this.document.activeElement.blur()
 			if (event.shiftKey) return
 			event.stopPropagation();
 			
@@ -526,6 +528,7 @@ SelectionTracker.getInstance = function () {
 		},
 		rightArrowDownHandler: function (event) {
 			event.stopPropagation();
+			this.document.activeElement.blur()
 			if (event.shiftKey) return
 
 			var cursorDetails = this.getCursorDetails();
