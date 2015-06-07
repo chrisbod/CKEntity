@@ -85,7 +85,6 @@ TranslationStore.prototype =  new EntityStore()
 TranslationStore.prototype.templatableNodes = null;
 TranslationStore.prototype.createTemplatableNodeFromEntity = function (key,id) {
 	var node = document.createElement("translation");
-	node.setAttribute("contenteditable", false);
 	node.setAttribute("data-args","key:'"+id+"'")
 	node.innerHTML = this.parseTextMarkup(key);
 	var conditionals = node.querySelectorAll("conditional")
@@ -126,13 +125,13 @@ TranslationStore.prototype.createTemplatableNodeFromEntity = function (key,id) {
 	return editSpan;
 }
 TranslationStore.prototype.parseTextMarkup = function (string) {
-	return '<span class="args translation" contenteditable="false">{</span><span class="contents">'+string
+	return '<span class="args translation">{</span><span class="contents">'+string
 		.replace(/</g,'\x02')
 		.replace(/>/g,'\x03')
-		.replace(/\[([^:]+):/g,'<span class="entity-wrapper" data-entity-node="conditional">&zwj;<conditional contenteditable="false" data-conditional-ref="$1"><span class="args conditional" contenteditable="false">[</span><span class="contents" contenteditable="false">')
-		.replace(/\]/g,'</span><span class="conditional end" contenteditable="false">]</span></conditional>&zwj;</span>')
-		.replace(/\x02([^:]+):(\w+)/g,'<span class="entity-wrapper" data-entity-node="token" tabindex="-1" contenteditable="false">&zwj;<token data-ref="$1" data-id="$2">$2')
-		.replace(/\x03/g,'"</token></span>') + '</span><span class="translation end" contenteditable="false">}</span>';
+		.replace(/\[([^:]+):/g,'<span class="entity-wrapper" data-entity-node="conditional" tabIndex="-1">&zwj;<conditional data-conditional-ref="$1"><span class="args conditional" contenteditable="false">[</span><span class="contents">')
+		.replace(/\]/g,'</span><span class="conditional end">]</span></conditional>&zwj;</span>')
+		.replace(/\x02([^:]+):(\w+)/g,'<span class="entity-wrapper" data-entity-node="token" tabIndex="-1">&zwj;<token data-ref="$1" data-id="$2">$2')
+		.replace(/\x03/g,'"</token></span>') + '</span><span class="translation end">}</span>';
 }
 
 function TokenStore() {
@@ -148,21 +147,20 @@ TokenStore.prototype.parseTextMarkup = function () {
 }
 TokenStore.prototype.createTemplatableNodeFromEntity = function (key,id,readOnly) {
 	var node = document.createElement("token")
-	node.setAttribute("contenteditable", "false");//this seems to trigger a strange drag and drop bug
+	//node.setAttribute("contenteditable", "false");//this seems to trigger a strange drag and drop bug
 	
 	node.setAttribute("data-args","type: '"+id+"'")
 	node.setAttribute("class",id)
 	if (readOnly) {
 		node.setAttribute("data-read-only","true")
 	}
-	node.innerHTML = '<span contenteditable="false">'+key.replace(/(\<)|(\>)/gm,'')+'<span>';
+	node.innerHTML = '<span>'+key.replace(/(\<)|(\>)/gm,'')+'<span>';
 	var rules = document.createElement("span")
 	rules.className = "args token";
 	rules.innerText = "<";
-	rules.setAttribute("contenteditable", false);
+	
 	rules.setAttribute("data-args","type: '"+id+"'")
 	var end = document.createElement("span");
-	end.setAttribute("contenteditable", false);
 	end.className = "token end"
 	end.innerText = ">";
 	node.appendChild(end);
