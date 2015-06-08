@@ -75,6 +75,9 @@ LanguageStore.prototype = {
 		logic.forEach(function (logicTag) {
 			logicTag.id = this.crossRefs[logicTag.tagId]
 		},this)
+		logic.sort(function (a,b) {
+		return a.text > b.text ? 1 : -1
+		})
 		this.loadTranslations(languageId,callback)
 	},
 	loadCrossRefs: function (id,callback) {
