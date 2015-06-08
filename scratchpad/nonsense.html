@@ -367,72 +367,43 @@ CKEDITOR.plugins.add("funky",{
 	</form>
 
 
+	<div class="tooltip hidden"   data-bind="attr: {'class': 'tooltip' + (active() ? ' active' : ' hidden')}" id="entity-edit">
+			
 
-		<div class="dialog paper-layout token" data-bind="ckeditorDialog: active" id="tokenDialog">
-		
-		<form id="test" data-bind="submit: update">
+				<header data-bind="text:title()">
+					
+				</header>
+				<fieldset>
+					<!--ko if: canEditRules -->
+					<button data-bind="click: launchRulesDialog">Rules</button>
+					<!--/ko-->
+					<!--ko if: canEditProperties-->
+					<button data-bind="click: launchPropertiesDialog">Properties</button>
+					<!--/ko-->
+				</fieldset>
 			
+		</div>
+
+		<div class="dialog logicDialog logic"  data-bind="ckeditorDialog: active" id="previewDialog">
 			
-				
-				
-				
+		<form id="rules" data-bind="submit: update">
+			
 			<section>
-				<ul data-bind="foreach: groups">
-					<li>
-						<div data-bind="text: label"></div>
-						<!--tried using a switch here but had scoping issues-->
-						<div data-bind="foreach: controls">
-							<!--ko if: type == 'checkbox' -->
-							
-								<label class="clear">
-									<input type="checkbox" data-bind="value:value, attr:{name:value}, checked: $root.values()[value]">
-									<span data-bind="text:text"></span>
-								</label>
-							
-							<!--/ko-->
-							<!--ko if: type == 'radio' -->
-							<label class="clear">
-								<input type="radio" data-bind="attr:{name: $parent.id}" value=""/>
-								<span>clear</span>
-							</label>
-								
-									<!--ko foreach: options -->
-											<label>
-												<input type="radio" data-bind="value:value, name:$parent.id, checked: $root.values()[$parent.id] == value">
-												<span data-bind="text:text"></span>
-												
-											</label>
-										<!--/ko-->
-							
-							<!--/ko-->
-							<!--ko if: type == 'select' -->
-							
-								<select data-bind="minimumSelected: 0, attr:{name:id }, options: options, optionsText: 'text', 	optionsValue: 'value', value: $root.values()[id], onclick: $root.checkSelect()">
-								</select>
-							
-							<!--/ko-->
-							<!--ko if: type == 'text' -->
-							
-								<label>
-									<div data-bind="text: (typeof label != 'undefined' ?  label : '')"></div>
-								<input type="text" data-bind="attr:{name:id, placeholder: (typeof placeholder != 'undefined' ?  placeholder : '')}, value: value "/>
-								</label>
-							
-							<!--/ko-->
-							<!--ko if: type == 'textarea' -->
-							
-								<label>
-									<div data-bind="text: (typeof label != 'undefined' ?  label : '')"></div>
-								<textarea data-bind="attr:{name:id,placeholder:(typeof placeholder != 'undefined' ?  placeholder : '')}, value: value"></textarea>
-								</label>
-							
-							<!--/ko-->
-						</div>
-					</li>
-				</ul>     
+			<fieldset class="container-content">
+				
+					<ul data-bind="foreach: logic">
+						<li>
+							<strong data-bind="text:text"></strong>
+							<select size="4" data-bind="minimumSelected: 0,attr:{name:id }, options: items , optionsText: 'text', 	optionsValue: 'value', value: $root.values()[id]">
+							</select>
+						</li>
+					</ul>
+				</fieldset>
 			</section>
+			
 			</form>
 		</div>
+		
 		<div class="dialog paper-layout"  data-bind="ckeditorDialog: active" id="logicDialog">
 			
 		<form id="rules" data-bind="submit: update">
@@ -446,7 +417,7 @@ CKEDITOR.plugins.add("funky",{
 						<div data-bind="text:text"></div>
 						
 						<div class="radio">
-						<label class="clear">
+						<label>
 							<input type="radio" data-bind="attr:{name: id}" value=""/>
 							<span>clear</span>
 						</label>	
@@ -469,50 +440,120 @@ CKEDITOR.plugins.add("funky",{
 			</form>
 		</div>
 
-		<div class="tooltip hidden"   data-bind="attr: {'class': 'tooltip' + (active() ? ' active' : ' hidden')}" id="entity-edit">
-			
+		
 
-				<header data-bind="text:title()">
-					
-				</header>
-				<fieldset>
-					<!--ko if: canEditRules -->
-					<button data-bind="click: launchRulesDialog">Rules</button>
-					<!--/ko-->
-					<!--ko if: canEditProperties-->
-					<button data-bind="click: launchPropertiesDialog">Properties</button>
-					<!--/ko-->
-				</fieldset>
-			
+
+		
+
+		<div class="dialog paper-layout token" data-bind="ckeditorDialog: active" id="tokenDialog">
+		
+		<form id="test" data-bind="submit: update">
+			<div data-bind="foreach: groups">
+				<div data-bind="text:label"></div>
+				
+				<div data-bind="foreach: controls">
+					CONTROL
+				<!--ko if: type == 'radio' -->
+					<div class="radio">
+						RADIO
+					<label>
+						<input type="radio" data-bind="attr:{name: id}" value=""/>
+						<span>clear</span>
+					</label>	
+						<!--ko foreach:options-->
+
+						<label>
+							<input type="radio" data-bind="attr:{name: $parent.id}, value: value, checked:$root.values()[$parent.id]"/>
+							<span data-bind="text: text"></span>
+						</label>
+						<!--/ko-->
+					</div>
+				<!--/ko-->
+				<!--ko if: type == 'checkbox' -->
+					<div class="checkbox">
+						CHECKBOX
+						<!--ko foreach:options-->
+						<label>
+							<input type="checkbox" data-bind="attr:{name: value}, value: value, checked:$root.values()[value]"/>
+							<span data-bind="text: text"></span>
+						</label>
+						<!--/ko-->
+					</div>
+				<!--/ko-->
+				<!-- if: type == 'select' -->
+				<div class="select">
+					SELECT
+				<select data-bind="attr:{name:$parent.id }, options: options , optionsText: 'text', 	optionsValue: 'value', value: $root.values()[id]">
+							</select>
+				</div>
+				<!--/ko-->				
+				</div>
+			</div>
+		</form>
 		</div>
 
+		<!--
 
-		<div class="dialog logicDialog"  data-bind="ckeditorDialog: active" id="previewDialog">
-			
-		<form id="rules" data-bind="submit: update">
-			
-			<section>
-			<fieldset class="container-content">
+<div>
+
+	<!-- if: type == 'select' -->
+				<select data-bind="minimumSelected: 0, attr:{name:id }, options: options, optionsText: 'text', 	optionsValue: 'value', value: $root.values()[id], onclick: $root.checkSelect()">
+							</select>
 				
-					<ul data-bind="foreach: logic">
+				<!--/ko-->
+				<div data-bind="foreach: groups">
+					<strong data-bind="text: label"></strong>
+					<!--tried using a switch here but had scoping issues-->
+					<ul data-bind="foreach: controls">
+						<!--ko if: type == 'checkbox' -->
 						<li>
-							<strong data-bind="text:text"></strong>
-							<select size="4" data-bind="minimumSelected: 0,attr:{name:id }, options: items , optionsText: 'text', 	optionsValue: 'value', value: $root.values()[id]">
+							<label>
+								<input type="checkbox" data-bind="value:value, attr:{name:value}, checked: $root.values()[value]">
+								<span data-bind="text:text"></span>
+							</label>
+						</li>
+						<!--/ko-->
+						<!--ko if: type == 'radio' -->
+						<li>
+							<select size="4" data-bind="attr:{name:$parent.id }, options: options , optionsText: 'text', 	optionsValue: 'value', value: $root.values()[id]">
+							</select>
+								<!--ul data-bind="foreach: options" class="radio-list">
+									<li>
+										<label>
+											<input type="radio" data-bind="value:value, name:$parent.id, checked: $root.values()[$parent.id] == value">
+											<span data-bind="text:text"></span><br>
+											<span data-bind="text:(JSON.stringify($root.values()))"></span>
+										</label>
+									</li>
+								</ul-->
+						</li>
+						<!--/ko-->
+						<!--ko if: type == 'select' -->
+						<li>
+							<select data-bind="minimumSelected: 0, attr:{name:id }, options: options, optionsText: 'text', 	optionsValue: 'value', value: $root.values()[id], onclick: $root.checkSelect()">
 							</select>
 						</li>
+						<!--/ko-->
+						<!--ko if: type == 'text' -->
+						<li>
+							<label>
+								<div data-bind="text: (typeof label != 'undefined' ?  label : '')"></div>
+							<input type="text" data-bind="attr:{name:id, placeholder: (typeof placeholder != 'undefined' ?  placeholder : '')}, value: value "/>
+							</label>
+						</li>
+						<!--/ko-->
+						<!--ko if: type == 'textarea' -->
+						<li>
+							<label>
+								<div data-bind="text: (typeof label != 'undefined' ?  label : '')"></div>
+							<textarea data-bind="attr:{name:id,placeholder:(typeof placeholder != 'undefined' ?  placeholder : '')}, value: value"></textarea>
+							</label>
+						</li>
+						<!--/ko-->
 					</ul>
-				</fieldset>
-			</section>
-			
-			</form>
-		</div>
+				</div>     
+			</div>
 
-		<script>
-
-
-			
-					
-
-		</script>
+	-->
 </body>
 </html>

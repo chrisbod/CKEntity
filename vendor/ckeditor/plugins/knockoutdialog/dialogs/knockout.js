@@ -34,6 +34,7 @@ CKEDITOR.dialog.add( 'knockoutDialog', function( editor ) {
 	var enterBlocker = new EnterBlocker();
 	var knockoutNode;
 	var data;
+	var dialogWrapper;
 	return {
 
 		// Basic properties of the dialog window: title, minimum size.
@@ -105,13 +106,15 @@ CKEDITOR.dialog.add( 'knockoutDialog', function( editor ) {
 							newWidth = Math.max(window.innerWidth/2,size.width)-40
 						this.resize(newWidth,size.height);
 						this.move((window.innerWidth-newWidth)/2,(window.innerHeight-size.height)/2)
-
-
-					}
+					} 
 
 					
 				}
 			}
+		},
+		onHide: function () {
+			document.getElementById("knockoutWrapper").style.height = ""
+			this.resize(360,100)
 		},
 		// This method is invoked once a user clicks the OK button, confirming the dialog.
 		onOk: function() {

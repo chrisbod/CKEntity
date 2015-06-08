@@ -40,11 +40,7 @@ div.dialog fieldset {
   border: 1px solid black;
   border-bottom-width: 1px;
 }
-.dialog section:last-child {
-    text-align: right;
-    background-color: #eeeeee;
-    border-top-width: 0;
-}
+
 .dialog form input[type=radio] + label,
 .dialog form input[type=checkbox] + label{
     display: inline;
@@ -171,29 +167,6 @@ select{
       border-right-width: 0;
       white-space: normal;
     }
-    .paper-layout li:last-child > div {
-      sborder-bottom-width:0;
-    }
-    /*.paper-layout input[type=radio][value=''] {
-        display: none;
-    }
-    .paper-layout input[type=radio][value=''] + span {
-           background-color: #ddd;
-  padding: 0;
-  width: 1em;
-  border: 1px solid #aaa;
-  height: 1em;
-  box-sizing: border-box;
-  line-height: 100%;
-  text-align: center;
-  color: transparent;
-  margin: 0ex 0.5ex;
-  border-radius: 50%;
-
-    }
-    .paper-layout .radio label:first-child:after {
-      content:' \00a0 ';
-    }*/
     .paper-layout label span {
       display: inline-block;
       border-radius: 1ex;
@@ -210,7 +183,7 @@ select{
     .paper-layout .radio label:after {
       content:'/ ';
     }
-    .paper-layout .radio label:first-child {
+    .paper-layout label.clear{
       float: right;
       margin-top: -0.5ex;
     }
@@ -250,6 +223,8 @@ select{
       border: 1px solid #ccc;
       padding-left: 1ex;
     }
+
+
 
 
 .tooltip {
@@ -305,7 +280,7 @@ select{
       -webkit-appearance: none;
  }
 
-            #tokenDialog div > strong,
+            
             .dialog ul li strong {
                  display: block;
                 padding: 1ex;
@@ -335,46 +310,7 @@ select option::checked
   color: -internal-active-list-box-selection-text;
 }
 
-#tokenDialog {
 
-}
-#tokenDialog form {
-             display: -webkit-flex;
-             display: flex;
-              -webkit-flex-direction: column;
-              flex-direction: column;
-            height: 100%;
-            max-height: 100%;
-        }
-        #tokenDialog form > section {
-            flex-grow: 0;
-        }
-            #tokenDialog ul {
-               overflow-y: auto;
-               display: -webkit-flex;
-               display: flex;
-               -webkit-align-items: left;
-               align-items: left;
-               -webkit-justify-content: left;
-               justify-content: left;
-               /* You can set flex-wrap and flex-direction individually */
-               -webkit-flex-direction: row;
-               flex-direction: row;
-               -webkit-flex-wrap: wrap;
-               flex-wrap: wrap;
-               /* Or do it all in one line with flex flow */
-               -webkit-flex-flow: row wrap;
-               flex-flow: row wrap;
-               /* tweak the where items line up on the row */
-               /* valid values are: flex-start, flex-end, space-between, space-around, stretch */
-               -webkit-align-content: flex-end;
-               align-content: flex-end;
-            }
-
-            #tokenDialog ul li {
-                flex-grow: 1;
-  
-            }
 
 table.cke_single_page table[role=presentation][style*='width: 600px'] {
   width: auto !important;
