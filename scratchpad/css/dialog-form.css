@@ -149,7 +149,7 @@ select{
     border-width:0px 0px 0px 1px;
 }
 
-.paper-layout form ul {display: table; list-style-type: none; border-top: 1px solid #cccccc; padding: 0; box-sizing: border-box; width: auto; margin: 1ex;}
+.paper-layout form ul {display: table; list-style-type: none; border-top: 1px solid #cccccc; padding: 0; width: 100%;}
 .paper-layout form li {display: table-row; padding: 0; margin: 0; }
 .paper-layout form li > div {
     display: table-cell;
@@ -375,12 +375,8 @@ select option::checked
                 flex-grow: 1;
   
             }
-body .cke_dialog_ui_vbox_child {
-  padding: 0;
-}
-body .cke_dialog_contents_body {
-  padding:0;
-}
-body .cke_dialog_ui_html {
-  overflow: auto;
+
+table.cke_single_page table[role=presentation][style*='width: 600px'] {
+  width: auto !important;
+  min-width: 600px;
 }

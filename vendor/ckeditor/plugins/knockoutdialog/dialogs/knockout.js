@@ -38,7 +38,7 @@ CKEDITOR.dialog.add( 'knockoutDialog', function( editor ) {
 
 		// Basic properties of the dialog window: title, minimum size.
 		title: 'Entity Properties',
-		minWidth: 300,
+		minWidth: 360,
 		minHeight: 100,
 
 
@@ -79,8 +79,7 @@ CKEDITOR.dialog.add( 'knockoutDialog', function( editor ) {
 					while (element) {
 						if (element.style.width) {
 
-							console.log(parseInt(element.style.width))
-							element.style.width = 600+"px"
+							//element.style.width = 600+"px"
 							break;
 						} else {
 							element = element.parentNode
@@ -88,11 +87,29 @@ CKEDITOR.dialog.add( 'knockoutDialog', function( editor ) {
 					}
 
 					var rect = this.parts.dialog.$.getBoundingClientRect();
-					var overspill = rect.bottom-window.innerHeight
+					var overspill = (rect.bottom-window.innerHeight)
 					if (overspill>0) {
 
 						wrapper.style.height = (wrapper.offsetHeight - overspill) + "px"
 					}
+					var scrollElement = wrapper;
+					while (scrollElement) {
+						if (scrollElement.getAttribute("name") == "knockout") {
+							scrollElement = scrollElement.parentNode;
+							break;
+						} 
+						scrollElement = scrollElement.parentNode;
+					}
+					if (scrollElement.scrollHeight > scrollElement.offsetHeight) {
+						var size = this.getSize(),
+							newWidth = Math.max(window.innerWidth/2,size.width)-40
+						this.resize(newWidth,size.height);
+						this.move((window.innerWidth-newWidth)/2,(window.innerHeight-size.height)/2)
+
+
+					}
+
+					
 				}
 			}
 		},
