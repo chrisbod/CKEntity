@@ -20,7 +20,7 @@ CKEDITOR.dialog.add( 'knockoutDialog', function( editor ) {
 			}
 		}
 	}
-
+console.log("here")
 
 	function reflowDialog(dialogContentsElement,dialogContainer) {
 		dialogContentsElement.style.maxWidth = "";
@@ -38,7 +38,7 @@ CKEDITOR.dialog.add( 'knockoutDialog', function( editor ) {
 	return {
 
 		// Basic properties of the dialog window: title, minimum size.
-		title: 'Entity Properties',
+		title: 'Wall Street Docs',
 		minWidth: 360,
 		minHeight: 100,
 

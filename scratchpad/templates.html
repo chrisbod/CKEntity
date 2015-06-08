@@ -1,0 +1,538 @@
+<!DOCTYPE html>
+<!--
+Copyright (c) 2003-2015, CKSource - Frederico Knabben. All rights reserved.
+For licensing, see LICENSE.md or http://ckeditor.com/license
+-->
+<html>
+<head>
+	<meta charset="utf-8">
+	<title>XHTML Compliant Output &mdash; CKEditor Sample</title>
+	<meta name="ckeditor-sample-required-plugins" content="sourcearea">
+	<script src="../vendor/jquery/jquery-1.11.2.min.js">
+
+ 
+	</script>
+	<meta name="ckeditor-sample-required-plugins" content="sourcearea">
+	<script src="../vendor/ckeditor/ckeditor.js"></script>
+	<script src="../vendor/ckeditor/plugins/wallstreetdocs/plugin.js"></script>
+	<script src="scripts/selectcontrol.js"></script>
+	<script src="scripts/entities.js"></script>
+	<script src="scripts/entities.store.js"></script>
+	<script src="scripts/entities.languagestore.js"></script>
+	<script src="scripts/selectiontracker.js"></script>
+	<script src="scripts/entities.paste.js"></script>
+	<script src="scripts/entities.conditional.collapser.js"></script>
+	<script src="scripts/entities.markupmanager.js"></script>
+	<script src="scripts/entities.usergenerated.js"></script>
+	<script src="scripts/entities.edit.knockout.viewmodels.js"></script>
+	<script src="scripts/documenttranslator.js"></script>
+	<script src="scripts/intent.js"></script>
+	<script src="scripts/positionablecontainer.js"></script>
+	<script src="scripts/autosuggest.container.js"></script>
+	<script src="scripts/entities.tooltip.js"></script>
+	<script src="scripts/sentencetokenizer.js"></script>
+	<script src="scripts/tokentokenizer.js"></script>
+	<script src="scripts/headerandfooterhandler.js"></script>
+	<script src="scripts/radiodeselect.js"></script>
+	<script src="scripts/templates.js"></script>
+	<script src="../vendor/knockout/knockout-3.3.0.js"></script>
+	<link href="css/autosuggest.css" rel="stylesheet">
+	<link href="css/dialog-form.css" rel="stylesheet">
+	<link href="css/tooltip.css" rel="stylesheet">
+	<link href="css/kid.css" rel="stylesheet">
+</head>
+<body>
+			<style>
+			body {
+				font-family: Arial, Helvetica, sans-serif;
+			}
+				span.rules {
+					display: inline-block;
+					color: rgba(0,0,0,0);
+					width: 0;
+					overflow: hidden;
+				}
+
+			
+
+			</style>
+
+	
+	
+		<script>
+
+
+		//window.addEventListener("contextmenu", function (e){event.stopPropagation()},true)
+		
+	var translationContainer = new AutoSuggestContainer("translation-menu");
+	var tokenContainer = new AutoSuggestContainer("token-menu");
+	tokenContainer.getLastSentenceFromRange = function (range) {
+		var token =  range.toString().match(/(?:\s*)(<)[^>]*$/);
+		if (token) {
+			return token[1]
+		}
+		return null;
+	}
+	var languageStore = new LanguageStore("json/tokens","json/logic","json/translations");
+	EntitiesHelper.prototype.languageStore = languageStore;//NASTY....
+	var conditionalCollapser = ConditionalCollapser.getInstance()
+	var entityTooltip = new EntityTooltip()
+	var userConditionalManager = new UserConditionalManager();
+	var pasteManager = new EntityPasteManager()
+
+	//var markupManager = new EntityMarkupManager()
+	var entitiesSelection = SelectionTracker.getInstance()
+
+	var translator = new DocumentTranslator(languageStore)
+	var headersAndFooters = new HeaderAndFooterHandler();
+	var templateService = TemplateService.getInstance("https://www.firelex.com/priip/api/template/","admin","roadtospell")
+
+
+function build(editor,editPanel,language)  {
+	//allow context menu when appropriate
+
+	editPanel.addEventListener("contextmenu", function (event) {
+		/*var path = event.path;
+		for (var i=0;i<path.length;i++) {
+			if (/li|table/i.test(path[i].tagName)) {
+				return
+			}
+		}*/
+		event.stopPropagation()
+	},true);
+	
+
+	function updateAutosuggests(lang) {
+		translationContainer.build(languageStore.getTranslationStoreByLanguage(lang),languageStore.getSentenceTokenizerByLanguage(lang))
+		tokenContainer.build(languageStore.getTokenStoreByLanguage(lang),languageStore.getTokenTokenizerByLanguage(lang))
+
+	}
+	languageStore.installLanguage(language, function (languageDefinition) {
+		if (language != languageStore.currentLanguage) {
+			translator.translate(editPanel,languageDefinition.id)
+			languageStore.setCurrentLanguage(languageDefinition.id);
+			updateAutosuggests(languageDefinition.id)
+		}
+		
+		
+	});
+
+
+	entityTooltip.init(editPanel,document.querySelector("#entity-edit"));
+	userConditionalManager.init(editPanel)
+	conditionalCollapser.init(editPanel)
+	//markupManager.init(editPanel)
+	pasteManager.init(editPanel)
+	entitiesSelection.init(editPanel)
+	translationContainer.setEditableElement(editPanel);
+	tokenContainer.setEditableElement(editPanel);
+	headersAndFooters.init(editPanel)
+	//new RadioDeselect().init(document)
+
+
+
+}
+$(function () {
+
+
+
+	CKEDITOR.replace( 'documentSource', {
+				title: false,
+				disableNativeSpellChecker: false,
+				allowedContent: true,
+				fullPage: true,
+				allowedContent: true,
+				extraPlugins: 'tab,wysiwygarea,wallstreetdocs,wordpaste,documentlang,knockoutdialog,pagebreaktag,wsdpreview,wsdtoolbar',
+				removePlugins: 'elementspath,magicline,pastetext,pastefromword,clipboard,forms,scayt',
+				language_list: [ 'en:English', 'fr:French', 'de:German'],
+				removeButtons: 'Source,Preview,Print,Save,NewPage,DocProps,Templates,SpellChecker,CreateDiv,Flash,Smiley,PageBreak,Iframe,Format,About,Language,SpellChecker',
+				skin: 'flat',
+				on :
+   {
+      // Maximize the editor on start-up.
+      'instanceReady' : function( evt )
+      {
+         evt.editor.execCommand( 'maximize' );
+      }
+   } 
+
+			});
+			var editor = CKEDITOR.instances.documentSource;
+			console.log(editor.config)
+			window.SAVESHIM = new SaveShim(document.forms[0])
+			var lastDoc = localStorage.getItem("lastDoc")
+			if (lastDoc) {
+				editor.setData(localStorage.getItem(lastDoc))
+			} else {
+				$.ajax('kid/kid.html', {
+				success: function (data) {
+					
+					editor.setData(data, function () {
+						//var editDocument = CKEDITOR.instances.documentSource.window.$.document
+
+						//build()
+
+					})
+
+
+
+				}
+			})
+			}
+			
+
+			
+
+
+	
+	
+
+
+})
+
+function SaveShim(form) {
+	if (form) {
+		this.init(form)
+	}
+}
+window.CURRENTDOC = "kid"
+SaveShim.prototype = {
+	init: function (form) {
+
+		this.form = form;
+		this.form.submit = function () {
+			var source = this.elements[0].value
+			localStorage.setItem(window.CURRENTDOC,source)
+		}
+	},
+	handleEvent: function (event) {
+		return this[event.type+"Handler"](event)
+	},
+	submitHandler: function (event) {
+		console.log(event.target)
+		event.preventDefault()
+		return false
+	}
+
+
+}
+		</script>
+		<script>
+		
+		function DeselectEnabler() {
+
+		}
+		DeselectEnabler.getInstance = function () {
+			if (!this.instance) {
+				this.instance = new this()
+			} 
+			return this.instance;
+		}
+
+		DeselectEnabler.prototype = {
+			watchSelect: function (element) {
+				element.addEventListener("focus",this,true);
+				element.addEventListener("blur",this,true);
+				element.addEventListener("click",this,true);
+				element.addEventListener("change",this,true)
+			},
+			handleEvent: function (event) {
+				this[event.type+"Handler"](event)
+			},
+			focusHandler: function (event) {
+				this.currentSelect = event.target;
+				this.selectedOptions = []
+				for (var i=0;i<event.target.options.length;i++) {
+					if (event.target.options[i].selected) {
+						event.target.options[i].className = "checked"
+						this.selectedOptions[i] = event.target.options[i];
+					} else {
+						event.target.options[i].className = ""
+					}
+				}
+
+			},
+			changeHandler: function (event) {
+				this.changed = true
+				for (var i=0;i<event.target.options.length;i++) {
+					if (event.target.options[i].selected) {
+						event.target.options[i].className = "checked"
+						this.selectedOptions[i] = event.target.options[i];
+					} else {
+						delete this.selectedOptions[i]
+					}
+				}
+			},
+			blurHandler: function (event) {
+				this.currentSelect = null;
+				this.selectedOptions = null;
+				this.changed = false;
+			},
+			clickHandler: function (event) {
+				if (this.changed == false && this.selectedOptions && this.selectedOptions[event.target.index]) {
+					this.selectedOptions[event.target.index].selected = false;
+					this.selectedOptions[event.target.index].className = "";
+				}
+				this.changed = false;
+			}
+
+		}
+		ko.bindingHandlers.minimumSelected = {
+    init: function(element, valueAccessor, allBindings, viewModel, bindingContext) {
+    	DeselectEnabler.getInstance().watchSelect(element) 
+    	//console.log(init)
+    },
+    update: function(element, valueAccessor, allBindings, viewModel, bindingContext) {
+    	//console.log("update")
+    	
+        // This will be called once when the binding is first applied to an element,
+        // and again whenever any observables/computeds that are accessed change
+        // Update the DOM element based on the supplied values here
+        //console.log(arguments)
+       
+    },
+    handleEvent: function (event) {
+    	console.log(event.target)
+    }
+};
+
+
+
+CKEDITOR.plugins.add("funky",{
+	requires: 'menubutton',
+	init: function (editor) {
+		//editor.addMenuGroup("templates",1);
+		/*editor.ui.addButton(
+			'Mook',
+		{
+
+			label: "ook",
+			command: "mook",
+			text: "zoo"
+
+		}
+
+
+			)*/
+
+
+			// Initialize groups for menu.
+
+
+
+			var tags =[]
+
+			 tags[0]=["kid", "KID", "KID"];
+     		 tags[1]=["societe_general", "socgen", "socgen"];
+			editor.ui.add( 'docs', CKEDITOR.UI_RICHCOMBO, {
+				label: "Load File",
+				command: 'loadDoc',
+				text: "Documents",
+				multiSelect: false,
+				panel: {
+					css: [editor.config.contentsCss, 'css/combo.css']
+
+
+				},
+				init: function () {
+					for (var this_tag in tags){
+		                  this.add(tags[this_tag][0], tags[this_tag][1], tags[this_tag][2]);
+		               }
+		             panel = this.panel
+				},
+				onClick: function(value) {
+					$.ajax(value+'.html', {
+				success: function (data) {
+					window.CURRENTDOC = value
+					editor.setData(data, function () {
+						
+						//var editDocument = CKEDITOR.instances.documentSource.window.$.document
+
+						//build()
+
+					});
+					
+				}
+			});
+				
+		
+	}
+});
+
+}});
+		</script>
+		<form action="javascript:;" method="GET">
+
+		<textarea id="documentSource" style="width: 100%; height: 100ex">
+
+
+		</textarea>
+	</form>
+
+
+
+		<div class="dialog paper-layout token" data-bind="ckeditorDialog: active" id="tokenDialog">
+		
+		<form id="test" data-bind="submit: update">
+			
+			
+				
+				
+				
+			<section>
+				<ul data-bind="foreach: groups">
+					<li>
+						<div data-bind="text: label"></div>
+						<!--tried using a switch here but had scoping issues-->
+						<div data-bind="foreach: controls">
+							<!--ko if: type == 'checkbox' -->
+							
+								<label class="clear">
+									<input type="checkbox" data-bind="value:value, attr:{name:value}, checked: $root.values()[value]">
+									<span data-bind="text:text"></span>
+								</label>
+							
+							<!--/ko-->
+							<!--ko if: type == 'radio' -->
+							<label class="clear">
+								<input type="radio" data-bind="attr:{name: $parent.id}" value=""/>
+								<span>clear</span>
+							</label>
+								
+									<!--ko foreach: options -->
+											<label>
+												<input type="radio" data-bind="value:value, name:$parent.id, checked: $root.values()[$parent.id] == value">
+												<span data-bind="text:text"></span>
+												
+											</label>
+										<!--/ko-->
+							
+							<!--/ko-->
+							<!--ko if: type == 'select' -->
+							
+								<select data-bind="minimumSelected: 0, attr:{name:id }, options: options, optionsText: 'text', 	optionsValue: 'value', value: $root.values()[id], onclick: $root.checkSelect()">
+								</select>
+							
+							<!--/ko-->
+							<!--ko if: type == 'text' -->
+							
+								<label>
+									<div data-bind="text: (typeof label != 'undefined' ?  label : '')"></div>
+								<input type="text" data-bind="attr:{name:id, placeholder: (typeof placeholder != 'undefined' ?  placeholder : '')}, value: value "/>
+								</label>
+							
+							<!--/ko-->
+							<!--ko if: type == 'textarea' -->
+							
+								<label>
+									<div data-bind="text: (typeof label != 'undefined' ?  label : '')"></div>
+								<textarea data-bind="attr:{name:id,placeholder:(typeof placeholder != 'undefined' ?  placeholder : '')}, value: value"></textarea>
+								</label>
+							
+							<!--/ko-->
+						</div>
+					</li>
+				</ul>     
+			</section>
+			</form>
+		</div>
+		<div class="dialog paper-layout"  data-bind="ckeditorDialog: active" id="logicDialog">
+			
+		<form id="rules" data-bind="submit: update">
+			
+			<section>
+			<fieldset class="container-content">
+				
+					<ul data-bind="foreach: logic">
+						
+						<li>
+						<div data-bind="text:text"></div>
+						
+						<div class="radio">
+						<label class="clear">
+							<input type="radio" data-bind="attr:{name: id}" value=""/>
+							<span>clear</span>
+						</label>	
+							<!--ko foreach:items-->
+						<label>
+							<input type="radio" data-bind="attr:{name: $parent.id}, value: value, checked:$root.values()[$parent.id]" data-deselectable/>
+							<span data-bind="text: text"></span>
+						</label>
+							<!--/ko-->
+						
+						</div>
+						
+					</li>
+
+					
+					</ul>
+				</fieldset>
+			</section>
+			
+			</form>
+		</div>
+
+		<div class="tooltip hidden"   data-bind="attr: {'class': 'tooltip' + (active() ? ' active' : ' hidden')}" id="entity-edit">
+			
+
+				<header data-bind="text:title()">
+					
+				</header>
+				<fieldset>
+					<!--ko if: canEditRules -->
+					<button data-bind="click: launchRulesDialog">Rules</button>
+					<!--/ko-->
+					<!--ko if: canEditProperties-->
+					<button data-bind="click: launchPropertiesDialog">Properties</button>
+					<!--/ko-->
+				</fieldset>
+			
+		</div>
+
+
+		<div class="dialog logicDialog"  data-bind="ckeditorDialog: active" id="previewDialog">
+			
+		<form id="rules" data-bind="submit: update">
+			
+			<section>
+			<fieldset class="container-content">
+				
+					<ul data-bind="foreach: logic">
+						<li>
+							<strong data-bind="text:text"></strong>
+							<select size="4" data-bind="minimumSelected: 0,attr:{name:id }, options: items , optionsText: 'text', 	optionsValue: 'value', value: $root.values()[id]">
+							</select>
+						</li>
+					</ul>
+				</fieldset>
+			</section>
+			
+			</form>
+		</div>
+
+		<div  class="paper-layout" id="templateList"  data-bind="ckeditorDialog: active">
+			<form onsubmit="return false">
+			<div >
+					<header>
+						Available Templates
+					</header>
+					<section>
+			<!--ko foreach: templates()-->
+				
+
+						<label class="template-name">
+								<input type="radio" data-bind="checkedValue: $data,checked: $parent.selected" name="templateId">
+								<span data-bind="text: templateName"></span>
+								<span data-bind="text: latestVersion"></span>
+						</label>
+			<!--/ko-->
+					</section>
+			
+			</div>
+			<button data-bind="click:createNewTemplate">Create New</button>
+			<!--button data-bind="click:loadTemplate">Load</button-->
+			<button data-bind="click:deleteTemplate">Delete</button>
+			</form>	
+		</div>
+</body>
+</html>
