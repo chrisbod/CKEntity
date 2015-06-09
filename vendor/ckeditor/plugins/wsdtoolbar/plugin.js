@@ -64,13 +64,13 @@
 				icon: "save",
 				title: "Save"
 			} );
-			editor.ui.addButton && editor.ui.addButton( 'WsdSaveAs', {
+		/*	editor.ui.addButton && editor.ui.addButton( 'WsdSaveAs', {
 				
 				command: 'wsdsaveas',
 				toolbar: 'document,70',
 				icon: CKEDITOR.plugins.getPath('wsdtoolbar') + 'images/saveas.png',
 				title: "SaveAs"
-			} );
+			} );*/
 		}
 	})
 })()

@@ -46,7 +46,8 @@ TemplateService.prototype = {
 		//https://www.firelex.com/priip/api/template/get/1004/content.json
 		$.ajax(this.path+"get/"+templateId+"/content.json",{
 			success: this.setCurrentTemplate.bind(this,callback),
-			error: this.handleError.bind(this,{templateId:templateId})
+			error: this.handleError.bind(this,{templateId:templateId}),
+			contentType: "application/json"
 	})
 	},
 	setCurrentTemplate: function (callback, data) {
@@ -65,6 +66,7 @@ TemplateService.prototype = {
 					data:body,
 					contentType: "application/json"
 					
+					
 			})
 		}
 		
@@ -73,7 +75,8 @@ TemplateService.prototype = {
 	saveTemplate: function (callback,data) {
 		$.ajax(this.path+"update/"+data.templateId+"/"+encodeURI(data.templateName)+".json",{
 			success: callback,
-			error: this.handleError.bind(this,this.currentTemplate)
+			error: this.handleError.bind(this,this.currentTemplate),
+			contentType: "application/json",
 		});
 	},
 	saveCurrentTemplate: function (callback,html) {
@@ -94,7 +97,8 @@ TemplateService.prototype = {
 		$.ajax(this.path+"delete/"+templateId,{
 			method: "POST",
 			success: callback,
-			error: this.handleError.bind(this,{templateId:templateId})
+			error: this.handleError.bind(this,{templateId:templateId}),
+			contentType: "application/json",
 	})
 	}
 }
