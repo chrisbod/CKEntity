@@ -20,7 +20,6 @@ CKEDITOR.dialog.add( 'knockoutDialog', function( editor ) {
 			}
 		}
 	}
-console.log("here")
 
 	function reflowDialog(dialogContentsElement,dialogContainer) {
 		dialogContentsElement.style.maxWidth = "";
@@ -66,7 +65,14 @@ console.log("here")
 				enterBlocker.attach(wrapper)
 				knockoutNode = data.element;
 				//console.log(data.element.getBoundingClientRect())
+
 				wrapper.appendChild(data.element);
+				if (data.viewModel.editorButtonsToHide) {
+					data.viewModel.editorButtonsToHide.forEach(function (buttonId) {
+						document.getElementById(this.getButton(buttonId).domId).style.display='none';
+					},this)
+
+				}
 				
 
 

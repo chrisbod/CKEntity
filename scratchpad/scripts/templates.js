@@ -9,7 +9,7 @@ TemplateService.getInstance = function (path) {
 }
 TemplateService.DEFAULT_PATH = "https://www.firelex.com/priip/api/template/";
 TemplateService.prototype = {
-	getDefaultTemplateBody: function (callback,failure) {
+	getDefaultTemplateBody: function (callback) {
 		if (this.defaultTemplateBody) {
 			setTimeout(callback.bind(null,this.defaultTemplateBody));//make a sync
 		} else {
@@ -24,9 +24,10 @@ TemplateService.prototype = {
 			callback(html)
 		}
 	},
-	getTemplateList: function (callback) {
+	getTemplateList: function (details) {
 		$.ajax(this.path+"list.json",{
-			success: callback
+			success: details.success,
+			error: details.error
 	})
 	},
 	loadTemplate: function (callback,templateId) {
@@ -76,7 +77,12 @@ TemplateService.prototype = {
 			this.templates = ko.observableArray();
 			this.selected = ko.observable();
 			this.selectedId = ko.observable();
-			this.active = ko.observable(false)
+			this.active = ko.observable(false);
+			this.errorMessage = ko.observable("");
+			this.creating = ko.observable(false);
+			this.templateName = ko.observable("");
+
+			//this.editorButtonsToHide = ['ok','cancel']
 			if (templates) {
 				this.allTemplatesLoaded(templates)
 			}
@@ -84,53 +90,90 @@ TemplateService.prototype = {
 
 		TemplateListViewModel.prototype = {
 			defaultName: "New Document",
+			error: function (message,errorDetails) {
+				this.errorMessage(message)
+			},
 			loadTemplates: function () {
-				this.service.getTemplateList(this.allTemplatesLoaded.bind(this))
+				this.service.getTemplateList({
+					success: this.allTemplatesLoaded.bind(this),
+					error: this.error.bind(this,"Error retreiving template list")
+				})
 			},
 			allTemplatesLoaded: function (templates) {
+				templates.sort(function (a,b) {
+					return a.templateName.toLowerCase() > b.templateName.toLowerCase() ? 1 : -1
+				})
 				this.templates(templates)
-				this.selected(this.templates()[0])
-				this.selectedId(this.templates()[0].templateId)
+				this.select(templates[0])
 			},
 			select: function (template) {
-				if (!template) {
-					template = this.templates()[0]
-				}
-				if (template) {
-					this.selectedId(template.templateId);
-					this.selected(template)
-				} else {
-					this.selectedId("")
-					this.selected(null)
-				}
+				this.creating(false)
+				this.selectedId(template.templateId);
+				this.selected(template)
 			},
-			copyTemplate: function () {
-
-			},
+			deselect: function () {
+				this.selectedId(this.templates()[0].id)
+				this.selected(this.templates()[0])
+			},	
+			
 			loadTemplate: function () {
+				this.creating(false)
 				this.service.loadTemplate(this.templateLoaded.bind(this),this.selected().templateId)
 			},
 			templateLoaded: function (templateData) {
 				console.log(templateData)
 			},
-			createNewTemplate:function () {
-				this.service.createNewTemplate(this.templateCreated.bind(this),prompt("New Name"))
+			copyTemplate: function () {
+				this.creating(true);
+			},
+			createNewTemplate: function () {
+				this.creating(true);
 			},
 			templateCreated: function (newTemplate) {
+				this.creating(false)
 				this.templates.push(newTemplate);
 				this.select(newTemplate)
 				
 				//this.service.loadTemplate(this.selectedId(), this.templateLoaded.bind(this))
 			},
 			deleteTemplate: function () {
-				this.service.deleteTemplate(this.templateDeleted.bind(this,this.selected()),this.selected().templateId)
+				this.creating(false);
+				if (confirm("Are you sure you want to delete '"+this.selected().templateName+"'?")) {
+					this.service.deleteTemplate(this.templateDeleted.bind(this,this.selected()),this.selected().templateId)
+				}
 			},
 			templateDeleted: function (deletedTemplate) {
 				this.templates.remove(deletedTemplate);
 				
-				this.select()
+				this.deselect()
 			},
 			update: function () {//dummy method to handle the user clicking ok (update is the generic call made by the dialog)
+				this.loadTemplate()
+			},
+			clearError: function () {
+				this.errorMessage('')
+			},
+			newNameIsValid: function (name) {
+				var valid = true;
+				var existingTemplates = this.templates();
+				existingTemplates.forEach(function (template) {
+					if (template.templateName == name ) {
+						valid = false;
+					}
+				})
+				return valid;
+			},
+			nameInput: function (model,event) {
+				if (event.keyCode == 13) {//enter hit
+					if (this.newNameIsValid(event.target.value)) {
+						this.creating(false)
+						this.service.createNewTemplate(this.templateCreated.bind(this),event.target.value)
+					} else {
+						this.error("A template named '"+event.target.value+"' already exists")
+					}
 
+					
+				}
+				return true
 			}
 	}

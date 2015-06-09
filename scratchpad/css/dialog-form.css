@@ -317,13 +317,9 @@ table.cke_single_page table[role=presentation][style*='width: 600px'] {
   min-width: 600px;
 }
 
-#templateList  section {
-      display: table;
-      width: 100%;
-      box-sizing: border-box;
-    }
+
     #templateList section > label {
-      display: table-row;
+      display: block;
     }
     #templateList   header {
       background-color: #eee;
@@ -333,34 +329,10 @@ table.cke_single_page table[role=presentation][style*='width: 600px'] {
       display: none;
     }
     #templateList span {
-      display: table-cell;
+      display: block;
     }
     #templateList  input[type=radio]:checked ~ span {
       border-radius: 0;
       background-color: #eee;
     }
 
-  #templateList button {
-      align-items: flex-start;
-      text-align: center;
-      cursor: default;
-      color: buttontext;
-      padding: 2px 6px 3px;
-      border: 2px outset buttonface;
-      border-image-source: initial;
-      border-image-slice: initial;
-      border-image-width: initial;
-      border-image-outset: initial;
-      border-image-repeat: initial;
-      background-color: buttonface;
-      box-sizing: border-box;
-      float: right;
-
-}
-#templateList header {
-  padding: 2px 6px 3px;
-  cursor: default;
-  text-align: left;
-  background-color: #eeeeee;
-  border: 1px outset #999999;
-}

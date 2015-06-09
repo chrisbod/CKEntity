@@ -270,7 +270,7 @@ $(function () {
 		</div>
 		<div class="dialog paper-layout"  data-bind="ckeditorDialog: active" id="logicDialog">
 			
-		<form id="rules" data-bind="submit: update">
+		<form id="rules" data-bind="submit: newNameEnt">
 			
 			<section>
 			<fieldset class="container-content">
@@ -341,37 +341,137 @@ $(function () {
 			
 			</form>
 		</div>
+<style>
+#templateList form {
+	display: table;
+	width: 100%;
+	min-height: 300px;
+}
+	#templateList .columns {
+		display: table-row;
+	}
+	#templateList .columns > section {
+		display: table-cell;
+		padding: 1ex;
+	}
+	#templateList .columns > section:first-child {
+		width:25%;
+		border-right: 1px dotted silver;
+	}
+	#templateList .columns > section:last-child {
+	}
+	#templateList button {
+		display: block;
+		padding: 0.5ex;
+	}
+	  #templateList .template-list {
+    	min-height: 200px;
+    	position: relative;
+  	}
+  	#templateList .templates-wrapper {
+		overflow: auto;
+		  position: absolute;
+		  right: 0;
+		  width: 100%;
+		  height: 100%;
+		  box-sizing: border-box;
+		  padding: 0 1ex;
+		
+  	}
+  	#templateList .creating-new {
+  		position: absolute;
+  bottom: 36px;
+  right: 1px;
+  left: 1px;
+  background-color: #eeeeee;
+  padding: 0.5ex;
+  	}
+  		#templateList .creating-new input {
+  		  width: 100%;
+		  height: 3em;
+		  padding: 0.5ex;
+		  box-sizing: border-box;
+		  border: 1px solid #999;
+		  background-color: white;
+		  display: block;
+  		}
+  	#templateList .error {
+  		position: absolute;
+  		top:36px;
+  		left: 0;
+  		bottom: 36px;
+  		right: 0;
+  		background-color: white;
+  		text-align:center;
+  		padding: 2ex;
+  	}
+  		#templateList .error p {
+  			  text-align: center;
+  			  margin-top: 10ex;
+  		}
+  		#templateList .error button {
+align-items: flex-start;
+      text-align: center;
+      cursor: default;
+      color: buttontext;
+      padding: 2px 6px 3px;
+      border: 2px outset buttonface;
+      border-image-source: initial;
+      border-image-slice: initial;
+      border-image-width: initial;
+      border-image-outset: initial;
+      border-image-repeat: initial;
+      background-color: buttonface;
+      box-sizing: border-box;
 
+  		}
+
+</style>
 		<div  class="paper-layout" id="templateList"  data-bind="ckeditorDialog: active">
+			
 			<form onsubmit="return false">
-				<fieldset class="dialog-actions">
-					<button data-bind="click:createNewTemplate">New</button>
-					<button data-bind="click:deleteTemplate">Delete</button>	
-					<button data-bind="click:loadTemplate">Open</button>
-					<button data-bind="click:copyTemplate">Copy</button>
-				</fieldset>
-			<div >
-					<header>
-						Available Templates
-					</header>
+			
+			<div class="columns">
 					<section>
-			<!--ko foreach: templates()-->
-				
-
-						<label class="template-name">
-								<input type="radio" data-bind="checkedValue: $data,checked: $parent.selected" name="templateId">
-								<span data-bind="text: $data.templateName"></span>
-								
-						</label>
-			<!--/ko-->
+							<button data-bind="click:createNewTemplate">Create New</button>
+							<button data-bind="click:deleteTemplate">Delete</button>	
 					</section>
-					<fieldset>
-
-					</fieldset>
+					
+					<section class="template-list">
+						<section class="templates-wrapper" data-bind="event:{dblclick:loadTemplate}">
+							<!--ko foreach: templates()-->
+										<label class="template-name">
+												<input type="radio" data-bind="checkedValue: $data,checked: $parent.selected" name="templateId">
+												<span data-bind="text: $data.templateName"></span>
+												
+										</label>
+							<!--/ko-->
+						</section>
+					</section>
+					
+					
 			
 			</div>
+
 			
 			</form>	
-		</div>
+			<!--ko if: creating() == true -->
+					<section class="creating-new">
+						<input type="text" value="" placeholder="Enter new name" required="true" data-bind="event:{keypress:nameInput}">
+
+					</section>
+					<!--/ko-->
+			<!--ko if: errorMessage() != '' -->
+			<section class="error">
+				<p data-bind="text:errorMessage"></p>
+				<button class="ok-button" data-bind="click: clearError">Ok</button>
+			</section>
+			<!--/ko-->
+
+
+
+	</div>
+		
+					
 </body>
 </html>
