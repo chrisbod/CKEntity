@@ -19,13 +19,16 @@
 				}		
 			});
 			editor.addCommand( 'wsdopen', {
-				exec: function () {
-					
+				exec: function (editor,dialogConfig) {
 							if (!templateListViewModel) {
 								templateListViewModel = new TemplateListViewModel();
 								ko.applyBindings(templateListViewModel,document.getElementById("templateList"))
 							}
-							templateListViewModel.loadTemplates()		
+							templateListViewModel.loadTemplates();
+
+							if (dialogConfig) {
+								templateListViewModel.dialogConfig(dialogConfig)
+							}	
 							templateListViewModel.active(true)
 							
 						}

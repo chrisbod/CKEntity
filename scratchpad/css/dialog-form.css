@@ -317,7 +317,9 @@ table.cke_single_page table[role=presentation][style*='width: 600px'] {
   min-width: 600px;
 }
 
-
+  #templateList form {
+    height: 100%;
+  }
     #templateList section > label {
       display: block;
     }
@@ -336,9 +338,13 @@ table.cke_single_page table[role=presentation][style*='width: 600px'] {
       background-color: #eee;
     }
 
-#templateList form {
+#templateList {
+  height: 100%;
+}
+#templateList .form-container {
   display: table;
   width: 100%;
+  height: 100%;
   min-height: 300px;
 }
   #templateList .columns {
@@ -347,6 +353,7 @@ table.cke_single_page table[role=presentation][style*='width: 600px'] {
   #templateList .columns > section {
     display: table-cell;
     padding: 1ex;
+    height: 100%;
   }
   #templateList .columns > section:first-child {
     min-width: 25ex;
@@ -392,13 +399,12 @@ table.cke_single_page table[role=presentation][style*='width: 600px'] {
   padding: 0.5ex;
     }
       #templateList .creating-new input {
-        width: 100%;
-      height: 3em;
-      padding: 0.5ex;
-      box-sizing: border-box;
-      border: 1px solid #999;
-      background-color: white;
-      display: block;
+        width: 75%;
+        height: 3em;
+        padding: 0.5ex;
+        box-sizing: border-box;
+        border: 1px solid #999;
+        background-color: white;
       }
     #templateList .error {
       position: absolute;
@@ -422,7 +428,8 @@ table.cke_single_page table[role=presentation][style*='width: 600px'] {
         text-align: center;
         margin: 1em auto;
       }
-      #templateList .error button {
+      #templateList .error button,
+      #templateList .creating-new button {/*reset garbage from ckeditor*/
       text-align: center;
       cursor: default;
       color: buttontext;
@@ -436,4 +443,8 @@ table.cke_single_page table[role=presentation][style*='width: 600px'] {
       background-color: buttonface;
       box-sizing: border-box;
 
+      }
+      #templateList .creating-new button {
+        width: 24%;
+        height: 3em;
       }

@@ -96,8 +96,7 @@ TemplateService.prototype = {
 			this.errorDetails = ko.observable("")
 			this.creating = ko.observable(false);
 			this.templateName = ko.observable("");
-
-			//this.editorButtonsToHide = ['ok','cancel']
+			this.dialogConfig = ko.observable()
 			if (templates) {
 				this.allTemplatesLoaded(templates)
 			}
@@ -107,7 +106,7 @@ TemplateService.prototype = {
 			defaultName: "New Document",
 			error: function (message,errorDetails) {
 				this.errorMessage(message)
-				if (errorDetails.message) {
+				if (errorDetails && errorDetails.message) {
 					this.errorDetails(errorDetails.message)
 				}
 			},
@@ -152,12 +151,23 @@ TemplateService.prototype = {
 			createNewTemplate: function () {
 				this.deselect()
 				this.creating(true);
-
+			},
+			createTemplate: function (callback) {
+				var name = this.templateName(),
+					validity = this.validateName(name)
+				if (validity === true) {
+					this.creating(false)
+					this.service.createNewTemplate(callback,name)
+						
+					} else {
+						this.error(validity)
+					}
 			},
 			templateCreated: function (newTemplate) {
 				this.creating(false)
 				this.templates.push(newTemplate);
 				this.select(newTemplate)
+				this.templateName('')
 				
 				//this.service.loadTemplate(this.selectedId(), this.templateLoaded.bind(this))
 			},
@@ -179,27 +189,26 @@ TemplateService.prototype = {
 				this.errorMessage('')
 				this.errorDetails('')
 			},
-			newNameIsValid: function (name) {
-				var valid = true;
+			validateName: function (name) {
+				var validity = true;
+				if (name.trim()=="") {
+					validity =  "Name cannot be empty"
+				}
 				var existingTemplates = this.templates();
 				existingTemplates.forEach(function (template) {
 					if (template.templateName == name ) {
-						valid = false;
+						validity = "A template named '"+name+"' already exists"
 					}
 				})
-				return valid;
+				return validity;
 			},
 			nameInput: function (model,event) {
-				if (event.keyCode == 13) {//enter hit
-					if (this.newNameIsValid(event.target.value)) {
-						this.creating(false)
-						this.service.createNewTemplate(this.templateCreated.bind(this),event.target.value)
-					} else {
-						this.error("A template named '"+event.target.value+"' already exists")
-					}
-
-					
+				if (event.keyCode == 13) {//enter hit{
+					this.createTemplate(this.templateCreated.bind(this))			
 				}
 				return true
+			},
+			templateCreateButton: function () {
+				this.createTemplate(this.templateCreated.bind(this))
 			}
 	}

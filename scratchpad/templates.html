@@ -92,12 +92,6 @@ function build(editor,editPanel,language)  {
 	//allow context menu when appropriate
 
 	editPanel.addEventListener("contextmenu", function (event) {
-		/*var path = event.path;
-		for (var i=0;i<path.length;i++) {
-			if (/li|table/i.test(path[i].tagName)) {
-				return
-			}
-		}*/
 		event.stopPropagation()
 	},true);
 	
@@ -158,9 +152,12 @@ $(function () {
 					evt.editor.setReadOnly(true)
 					evt.editor.setData(data, setTimeout.bind(null,function () {
 						evt.editor.setReadOnly(false)
-						evt.editor.execCommand('wsdopen')
-						
-
+						evt.editor.execCommand('wsdopen',{
+							buttonsToHide: ['ok','cancel'],
+							removeOpacity: true,
+							disableClose: true,
+							expandToFit: true
+						})
 					},100))
 
 
@@ -343,11 +340,12 @@ $(function () {
 		<div  class="paper-layout" id="templateList"  data-bind="ckeditorDialog: active">
 			
 			<form onsubmit="return false">
-			
+				<div class="form-container">
 			<div class="columns">
 					<section>
 							<button data-bind="click:createNewTemplate">Create New</button>
-							<button data-bind="click:deleteTemplate">Delete</button>	
+							<button data-bind="click:deleteTemplate">Delete</button>
+							<button data-bind="click:loadTemplate">Load Selected</button>		
 					</section>
 					
 					<section class="template-list">
@@ -364,13 +362,14 @@ $(function () {
 					
 					
 			
-			</div>
-
 			
-			</form>	
+
+			</div>
+			
 			<!--ko if: creating() == true -->
 					<section class="creating-new">
-						<input type="text" value="" placeholder="Enter new name" required="true" data-bind="event:{keypress:nameInput}, hasFocus:creating() == true">
+						<input type="text" value="" placeholder="Enter new name" required="true" data-bind="event:{keypress:nameInput}, hasFocus:creating() == true, textInput:templateName">
+						<button data-bind="event: {click:templateCreateButton}">Create</button>
 
 					</section>
 					<!--/ko-->
@@ -381,6 +380,8 @@ $(function () {
 				<button class="ok-button" data-bind="click: clearError">Ok</button>
 			</section>
 			<!--/ko-->
+		</div>
+			</form>	
 
 
 

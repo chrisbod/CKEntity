@@ -34,6 +34,67 @@ CKEDITOR.dialog.add( 'knockoutDialog', function( editor ) {
 	var knockoutNode;
 	var data;
 	var dialogWrapper;
+	var storedConfig
+
+
+	function configureDialog(dialog,config) {
+
+		if (config.buttonsToHide) {
+				config.buttonsToHide.forEach(function (buttonId) {
+					document.getElementById(dialog.getButton(buttonId).domId).style.display='none';
+				},dialog)
+		}
+		if (config.removeOpacity) {
+			document.querySelector("div.cke_dialog_background_cover").style.opacity = "0"
+			restoreOpacity = true
+		}
+		if (config.disableClose) {
+			dialog.getElement().$.querySelector("a.cke_dialog_close_button").style.display = "none"
+		}
+		if (config.expandToFit) {
+			var wrapper = document.getElementById("knockoutWrapper");
+			while (wrapper) {
+				wrapper.style.height = "100%";
+				if (wrapper.getAttribute("name") == "knockout") {
+					wrapper = null;
+					break;
+				}
+				wrapper = wrapper.parentNode
+			}
+		}
+		storedConfig = config;	
+	}
+
+	function removeDialogConfiguration(dialog) {
+		var config = storedConfig;
+		if (config) {
+			if (config.buttonsToHide) {
+				config.buttonsToHide.forEach(function (buttonId) {
+					document.getElementById(dialog.getButton(buttonId).domId).style.display='';
+				},dialog)
+			}
+			if (config.removeOpacity) {
+				document.querySelector("div.cke_dialog_background_cover").style.opacity = "0.5"
+				restoreOpacity = true
+			}
+			if (config.disableClose) {
+				dialog.getElement().$.querySelector("a.cke_dialog_close_button").style.display = ""
+			}
+			if (config.expandToFit) {
+			var wrapper = document.getElementById("knockoutWrapper");
+			while (wrapper) {
+				wrapper.style.height = "";
+				if (wrapper.getAttribute("name") == "knockout") {
+					wrapper = null;
+					break;
+				}
+				wrapper = wrapper.parentNode
+			}
+		}
+		}
+		storedConfig = null;
+	}
+
 	return {
 
 		// Basic properties of the dialog window: title, minimum size.
@@ -67,11 +128,9 @@ CKEDITOR.dialog.add( 'knockoutDialog', function( editor ) {
 				//console.log(data.element.getBoundingClientRect())
 
 				wrapper.appendChild(data.element);
-				if (data.viewModel.editorButtonsToHide) {
-					data.viewModel.editorButtonsToHide.forEach(function (buttonId) {
-						document.getElementById(this.getButton(buttonId).domId).style.display='none';
-					},this)
+				if (data.dialogConfig||data.viewModel.dialogConfig()) {
 
+					configureDialog(this,data.dialogConfig||data.viewModel.dialogConfig())
 				}
 				
 
@@ -99,8 +158,9 @@ CKEDITOR.dialog.add( 'knockoutDialog', function( editor ) {
 					var overspill = (rect.bottom-window.innerHeight)
 					if (overspill>0) {
 
-						wrapper.style.height = (wrapper.offsetHeight - overspill) + "px"
+						wrapper.style.minHeight = (wrapper.offsetHeight - overspill) + "px"
 					}
+					wrapper.style.height = "100%"
 					var scrollElement = wrapper;
 					while (scrollElement) {
 						if (scrollElement.getAttribute("name") == "knockout") {
@@ -120,12 +180,16 @@ CKEDITOR.dialog.add( 'knockoutDialog', function( editor ) {
 					
 				}
 				this.resize(width,size.height);
-					this.move((window.innerWidth-width)/2,(window.innerHeight-size.height)/2)
+				this.move((window.innerWidth-width)/2,(window.innerHeight-size.height)/2)
 			}
 		},
 		onHide: function () {
-			document.getElementById("knockoutWrapper").style.height = ""
+			document.getElementById("knockoutWrapper").style.height = "";
+			if (restoreOpacity) {
+				document.querySelector("div.cke_dialog_background_cover").style.opacity = "0.5";
+			}
 			this.resize(360,100)
+			removeDialogConfiguration()
 		},
 		// This method is invoked once a user clicks the OK button, confirming the dialog.
 		onOk: function() {
