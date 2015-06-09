@@ -78,7 +78,7 @@ TemplateService.prototype = {
 		$.ajax(this.path+"delete/"+templateId,{
 			method: "POST",
 			success: callback,
-			error: this.handleError.bind(this,{templateId:data.templateId})
+			error: this.handleError.bind(this,{templateId:templateId})
 	})
 	}
 }
