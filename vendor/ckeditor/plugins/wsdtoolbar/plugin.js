@@ -15,7 +15,10 @@
 				}		
 			});*/
 			editor.addCommand( 'wsdsave', {
-				exec: function () {
+				exec: function (editor,config) {
+					TemplateService.getInstance().saveCurrentTemplate(config&&config.callback||function (data) {
+						alert("Template '"+data.templateName+"' successfully saved")
+					},editor.getData())
 				}		
 			});
 			editor.addCommand( 'wsdopen', {

@@ -149,9 +149,10 @@ $(function () {
          evt.editor.execCommand( 'maximize' );
          $.ajax('templates/empty.html', {
 				success: function (data) {
-					evt.editor.setReadOnly(true)
+					evt.editor.setReadOnly(true);
 					evt.editor.setData(data, setTimeout.bind(null,function () {
 						evt.editor.setReadOnly(false)
+						
 						evt.editor.execCommand('wsdopen',{
 							buttonsToHide: ['ok','cancel'],
 							removeOpacity: true,

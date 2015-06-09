@@ -9,6 +9,8 @@ TemplateService.getInstance = function (path) {
 }
 TemplateService.DEFAULT_PATH = "https://www.firelex.com/priip/api/template/";
 TemplateService.prototype = {
+	username: "admin",
+	password: "roadtospell",
 	getDefaultTemplateBody: function (callback) {
 		if (this.defaultTemplateBody) {
 			setTimeout(callback.bind(null,this.defaultTemplateBody));//make a sync
@@ -43,9 +45,13 @@ TemplateService.prototype = {
 	loadTemplate: function (callback,templateId) {
 		//https://www.firelex.com/priip/api/template/get/1004/content.json
 		$.ajax(this.path+"get/"+templateId+"/content.json",{
-			success: callback,
+			success: this.setCurrentTemplate.bind(this,callback),
 			error: this.handleError.bind(this,{templateId:templateId})
 	})
+	},
+	setCurrentTemplate: function (callback, data) {
+		this.currentTemplate = data;
+		callback(data)
 	},
 	createNewTemplate: function (callback,name,body) {
 		if (!body) {
@@ -65,9 +71,19 @@ TemplateService.prototype = {
 	
 	},
 	saveTemplate: function (callback,data) {
-		$.ajax(this.path+"update/"+templateId+"/"+encodeURI(data.templateName)+".json",{
+		$.ajax(this.path+"update/"+data.templateId+"/"+encodeURI(data.templateName)+".json",{
 			success: callback,
-			error: this.handleError.bind(this,{templateName:data.templateName})
+			error: this.handleError.bind(this,this.currentTemplate)
+		});
+	},
+	saveCurrentTemplate: function (callback,html) {
+		this.currentTemplate.templateContent = html;
+		$.ajax(this.path+"update/"+this.currentTemplate.templateId+"/"+encodeURI(this.currentTemplate.templateName)+".json",{
+			method: "POST",
+			success: callback,
+			error: this.handleError.bind(this,this.currentTemplate),
+			data: this.currentTemplate.templateContent,
+			contentType: "application/json"
 	})
 	},
 	saveTemplateAs: function (callback,templateName, data) {
@@ -143,8 +159,8 @@ TemplateService.prototype = {
 				this.service.loadTemplate(this.templateLoaded.bind(this),this.selected().templateId)
 			},
 			templateLoaded: function (templateData) {
-				this.active(false)
-				CKEDITOR.currentInstance.setData(templateData.templateContent, function () {
+				this.active(false);
+				CKEDITOR.instances.documentSource.setData(templateData.templateContent, function () {
 					CKEDITOR.dialog.getCurrent().hide()
 				})
 
