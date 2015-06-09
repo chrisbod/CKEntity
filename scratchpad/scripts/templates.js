@@ -55,7 +55,7 @@ TemplateService.prototype = {
 			$.ajax(this.path+"insert/"+encodeURI(name)+".json",{
 					method: "POST",
 					success: callback,
-					error: this.handleError.bind(this,{templateName:templateName}),
+					error: this.handleError.bind(this,{templateName:name}),
 					data:body,
 					contentType: "application/json"
 					
