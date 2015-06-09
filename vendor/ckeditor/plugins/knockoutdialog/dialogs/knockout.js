@@ -189,7 +189,7 @@ CKEDITOR.dialog.add( 'knockoutDialog', function( editor ) {
 				document.querySelector("div.cke_dialog_background_cover").style.opacity = "0.5";
 			}
 			this.resize(360,100)
-			removeDialogConfiguration()
+			removeDialogConfiguration(this)
 		},
 		// This method is invoked once a user clicks the OK button, confirming the dialog.
 		onOk: function() {

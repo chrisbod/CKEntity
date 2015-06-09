@@ -143,7 +143,12 @@ TemplateService.prototype = {
 				this.service.loadTemplate(this.templateLoaded.bind(this),this.selected().templateId)
 			},
 			templateLoaded: function (templateData) {
-				console.log(templateData)
+				this.active(false)
+				CKEDITOR.currentInstance.setData(templateData.templateContent, function () {
+					CKEDITOR.dialog.getCurrent().hide()
+				})
+
+				
 			},
 			copyTemplate: function () {
 				this.creating(true);
