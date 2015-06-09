@@ -336,3 +336,96 @@ table.cke_single_page table[role=presentation][style*='width: 600px'] {
       background-color: #eee;
     }
 
+#templateList form {
+  display: table;
+  width: 100%;
+  min-height: 300px;
+}
+  #templateList .columns {
+    display: table-row;
+  }
+  #templateList .columns > section {
+    display: table-cell;
+    padding: 1ex;
+  }
+  #templateList .columns > section:first-child {
+    min-width: 25ex;
+    border-right: 1px dotted #999;
+  }
+  #templateList .columns > section:last-child {
+    min-width: 70ex;
+  }
+  #templateList section:first-child  button {
+    display: block;
+    padding: 1ex;
+    margin-bottom: 1ex;
+    width: 100%;
+    box-sizing: border-box;
+  }
+    #templateList .template-list {
+      min-height: 200px;
+      position: relative;
+    }
+    #templateList .templates-wrapper {
+    overflow: auto;
+      position: absolute;
+      right: 0;
+      width: 100%;
+      height: 100%;
+      box-sizing: border-box;
+      padding: 0 1ex;
+    
+    }
+    #templateList .templates-wrapper label span {
+      background-image: url(../img/doc.png);
+      background-repeat: no-repeat;
+      padding-left: 24px;
+      background-position: 2px 4px;
+      min-height: 20px;
+    }
+    #templateList .creating-new {
+      position: absolute;
+  bottom: 36px;
+  right: 1px;
+  left: 1px;
+  background-color: #eeeeee;
+  padding: 0.5ex;
+    }
+      #templateList .creating-new input {
+        width: 100%;
+      height: 3em;
+      padding: 0.5ex;
+      box-sizing: border-box;
+      border: 1px solid #999;
+      background-color: white;
+      display: block;
+      }
+    #templateList .error {
+      position: absolute;
+      top:36px;
+      left: 0;
+      bottom: 36px;
+      right: 0;
+      background-color: white;
+      text-align:center;
+      padding: 2ex;
+    }
+      #templateList .error p {
+          text-align: center;
+          margin-top: 10ex;
+      }
+      #templateList .error button {
+      text-align: center;
+      cursor: default;
+      color: buttontext;
+      padding: 2px 6px 3px;
+      border: 2px outset buttonface;
+      border-image-source: initial;
+      border-image-slice: initial;
+      border-image-width: initial;
+      border-image-outset: initial;
+      border-image-repeat: initial;
+      background-color: buttonface;
+      box-sizing: border-box;
+
+      }

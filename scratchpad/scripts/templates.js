@@ -108,12 +108,17 @@ TemplateService.prototype = {
 			},
 			select: function (template) {
 				this.creating(false)
-				this.selectedId(template.templateId);
-				this.selected(template)
+				if (!template) {
+					template = this.templates()[0]
+				}
+				
+					this.selectedId(template.templateId);
+					this.selected(template)
+
 			},
 			deselect: function () {
-				this.selectedId(this.templates()[0].id)
-				this.selected(this.templates()[0])
+				this.selectedId('')
+				this.selected({})
 			},	
 			
 			loadTemplate: function () {
@@ -127,7 +132,9 @@ TemplateService.prototype = {
 				this.creating(true);
 			},
 			createNewTemplate: function () {
+				this.deselect()
 				this.creating(true);
+
 			},
 			templateCreated: function (newTemplate) {
 				this.creating(false)
@@ -145,7 +152,7 @@ TemplateService.prototype = {
 			templateDeleted: function (deletedTemplate) {
 				this.templates.remove(deletedTemplate);
 				
-				this.deselect()
+				this.select()
 			},
 			update: function () {//dummy method to handle the user clicking ok (update is the generic call made by the dialog)
 				this.loadTemplate()
