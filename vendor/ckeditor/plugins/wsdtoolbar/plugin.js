@@ -20,6 +20,7 @@
 			});
 			editor.addCommand( 'wsdopen', {
 				exec: function () {
+					
 							if (!templateListViewModel) {
 								templateListViewModel = new TemplateListViewModel();
 								ko.applyBindings(templateListViewModel,document.getElementById("templateList"))

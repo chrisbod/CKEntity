@@ -153,32 +153,27 @@ $(function () {
       'instanceReady' : function( evt )
       {
          evt.editor.execCommand( 'maximize' );
-      }
-   } 
-
-			});
-			var editor = CKEDITOR.instances.documentSource;
-			console.log(editor.config)
-			
-			var lastDoc = localStorage.getItem("lastDoc")
-			if (lastDoc) {
-				editor.setData(localStorage.getItem(lastDoc))
-			} else {
-				$.ajax('kid/kid.html', {
+         $.ajax('templates/empty.html', {
 				success: function (data) {
-					
-					editor.setData(data, function () {
-						//var editDocument = CKEDITOR.instances.documentSource.window.$.document
+					evt.editor.setReadOnly(true)
+					evt.editor.setData(data, setTimeout.bind(null,function () {
+						evt.editor.setReadOnly(false)
+						evt.editor.execCommand('wsdopen')
+						
 
-						//build()
-
-					})
+					},100))
 
 
 
 				}
 			})
-			}
+
+
+
+      }
+   } 
+
+			});
 			
 
 			
@@ -188,7 +183,7 @@ $(function () {
 	
 
 
-})
+});
 
 
 		</script>
@@ -382,6 +377,7 @@ $(function () {
 			<!--ko if: errorMessage() != '' -->
 			<section class="error">
 				<p data-bind="text:errorMessage"></p>
+				<pre data-bind="text:errorDetails"></pre>
 				<button class="ok-button" data-bind="click: clearError">Ok</button>
 			</section>
 			<!--/ko-->

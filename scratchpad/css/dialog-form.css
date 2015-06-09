@@ -410,9 +410,17 @@ table.cke_single_page table[role=presentation][style*='width: 600px'] {
       text-align:center;
       padding: 2ex;
     }
-      #templateList .error p {
-          text-align: center;
+    #templateList .error p {
+      text-align: center;
+      margin: 1em;
+    }
+      #templateList .error p:first-child {
           margin-top: 10ex;
+      }
+      #templateList .error pre {
+        display: block;
+        text-align: center;
+        margin: 1em auto;
       }
       #templateList .error button {
       text-align: center;

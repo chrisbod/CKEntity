@@ -27,13 +27,24 @@ TemplateService.prototype = {
 	getTemplateList: function (details) {
 		$.ajax(this.path+"list.json",{
 			success: details.success,
-			error: details.error
+			error: this.handleError.bind(this,details)
 	})
+	},
+	handleError: function (details,jResponse) {
+		var errorDetails = {}
+		if (jResponse.statusText == "error") {
+			errorDetails.message = "You may not be authenticated"
+		}
+		if (details.error) {
+			details.error(errorDetails,jResponse)
+		}
+		
 	},
 	loadTemplate: function (callback,templateId) {
 		//https://www.firelex.com/priip/api/template/get/1004/content.json
 		$.ajax(this.path+"get/"+templateId+"/content.json",{
-			success: callback
+			success: callback,
+			error: this.handleError.bind(this,{templateId:templateId})
 	})
 	},
 	createNewTemplate: function (callback,name,body) {
@@ -44,6 +55,7 @@ TemplateService.prototype = {
 			$.ajax(this.path+"insert/"+encodeURI(name)+".json",{
 					method: "POST",
 					success: callback,
+					error: this.handleError.bind(this,{templateName:templateName}),
 					data:body,
 					contentType: "application/json"
 					
@@ -54,7 +66,8 @@ TemplateService.prototype = {
 	},
 	saveTemplate: function (callback,data) {
 		$.ajax(this.path+"update/"+templateId+"/"+encodeURI(data.templateName)+".json",{
-			success: callback
+			success: callback,
+			error: this.handleError.bind(this,{templateName:data.templateName})
 	})
 	},
 	saveTemplateAs: function (callback,templateName, data) {
@@ -64,7 +77,8 @@ TemplateService.prototype = {
 	deleteTemplate: function (callback, templateId) {
 		$.ajax(this.path+"delete/"+templateId,{
 			method: "POST",
-			success: callback
+			success: callback,
+			error: this.handleError.bind(this,{templateId:data.templateId})
 	})
 	}
 }
@@ -79,6 +93,7 @@ TemplateService.prototype = {
 			this.selectedId = ko.observable();
 			this.active = ko.observable(false);
 			this.errorMessage = ko.observable("");
+			this.errorDetails = ko.observable("")
 			this.creating = ko.observable(false);
 			this.templateName = ko.observable("");
 
@@ -92,6 +107,9 @@ TemplateService.prototype = {
 			defaultName: "New Document",
 			error: function (message,errorDetails) {
 				this.errorMessage(message)
+				if (errorDetails.message) {
+					this.errorDetails(errorDetails.message)
+				}
 			},
 			loadTemplates: function () {
 				this.service.getTemplateList({
@@ -159,6 +177,7 @@ TemplateService.prototype = {
 			},
 			clearError: function () {
 				this.errorMessage('')
+				this.errorDetails('')
 			},
 			newNameIsValid: function (name) {
 				var valid = true;

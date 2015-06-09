@@ -79,7 +79,9 @@ CKEDITOR.dialog.add( 'knockoutDialog', function( editor ) {
 				var rect = this.parts.dialog.$.getBoundingClientRect();
 				var overspill = rect.bottom-window.innerHeight,
 					windowWidth = window.innerWidth,
-					widthLeft = windowWidth - (rect.width+100)
+					widthLeft = windowWidth - (rect.width+100),
+					size = this.getSize(),
+					width = size.width
 				if (overspill>0) {
 	
 					var element = wrapper.parentNode;
@@ -107,15 +109,18 @@ CKEDITOR.dialog.add( 'knockoutDialog', function( editor ) {
 						} 
 						scrollElement = scrollElement.parentNode;
 					}
+					size = this.getSize(),
+					width = size.width;
 					if (scrollElement.scrollHeight > scrollElement.offsetHeight) {
-						var size = this.getSize(),
-							newWidth = Math.max(window.innerWidth/2,size.width)-40
-						this.resize(newWidth,size.height);
-						this.move((window.innerWidth-newWidth)/2,(window.innerHeight-size.height)/2)
+						width = Math.max(window.innerWidth/2,size.width)-40
+						
+						
 					} 
-
+					
 					
 				}
+				this.resize(width,size.height);
+					this.move((window.innerWidth-width)/2,(window.innerHeight-size.height)/2)
 			}
 		},
 		onHide: function () {
