@@ -1,7 +1,7 @@
 ( function() {
 	// Register a plugin named "".
 	var launchingEditor,
-	model
+		templateListViewModel;
 	CKEDITOR.plugins.add( 'wsdtoolbar', {
 			onLoad: function() {
 
@@ -20,20 +20,20 @@
 			});
 			editor.addCommand( 'wsdopen', {
 				exec: function () {
-
-					templateService.getTemplateList(
-						function (data) {
-							var model = new TemplateListViewModel(templateService,data)
-							ko.applyBindings(model,document.getElementById("templateList"))
-							model.active(true)
+							if (!templateListViewModel) {
+								templateListViewModel = new TemplateListViewModel();
+								ko.applyBindings(templateListViewModel,document.getElementById("templateList"))
+							}
+							templateListViewModel.loadTemplates()		
+							templateListViewModel.active(true)
 							
 						}
 
-					)
 					
 					
-				}		
-			});
+					
+				})		
+			
 			// Register the toolbar buttons.
 			editor.ui.addButton && editor.ui.addButton( 'WsdOpen', {
 				

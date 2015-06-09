@@ -85,7 +85,7 @@ For licensing, see LICENSE.md or http://ckeditor.com/license
 
 	var translator = new DocumentTranslator(languageStore)
 	var headersAndFooters = new HeaderAndFooterHandler();
-	var templateService = TemplateService.getInstance("https://www.firelex.com/priip/api/template/","admin","roadtospell")
+	var templateService = TemplateService.getInstance("https://www.firelex.com/priip/api/template/")
 
 
 function build(editor,editPanel,language)  {
@@ -159,7 +159,7 @@ $(function () {
 			});
 			var editor = CKEDITOR.instances.documentSource;
 			console.log(editor.config)
-			window.SAVESHIM = new SaveShim(document.forms[0])
+			
 			var lastDoc = localStorage.getItem("lastDoc")
 			if (lastDoc) {
 				editor.setData(localStorage.getItem(lastDoc))
@@ -190,177 +190,9 @@ $(function () {
 
 })
 
-function SaveShim(form) {
-	if (form) {
-		this.init(form)
-	}
-}
-window.CURRENTDOC = "kid"
-SaveShim.prototype = {
-	init: function (form) {
 
-		this.form = form;
-		this.form.submit = function () {
-			var source = this.elements[0].value
-			localStorage.setItem(window.CURRENTDOC,source)
-		}
-	},
-	handleEvent: function (event) {
-		return this[event.type+"Handler"](event)
-	},
-	submitHandler: function (event) {
-		console.log(event.target)
-		event.preventDefault()
-		return false
-	}
-
-
-}
 		</script>
-		<script>
 		
-		function DeselectEnabler() {
-
-		}
-		DeselectEnabler.getInstance = function () {
-			if (!this.instance) {
-				this.instance = new this()
-			} 
-			return this.instance;
-		}
-
-		DeselectEnabler.prototype = {
-			watchSelect: function (element) {
-				element.addEventListener("focus",this,true);
-				element.addEventListener("blur",this,true);
-				element.addEventListener("click",this,true);
-				element.addEventListener("change",this,true)
-			},
-			handleEvent: function (event) {
-				this[event.type+"Handler"](event)
-			},
-			focusHandler: function (event) {
-				this.currentSelect = event.target;
-				this.selectedOptions = []
-				for (var i=0;i<event.target.options.length;i++) {
-					if (event.target.options[i].selected) {
-						event.target.options[i].className = "checked"
-						this.selectedOptions[i] = event.target.options[i];
-					} else {
-						event.target.options[i].className = ""
-					}
-				}
-
-			},
-			changeHandler: function (event) {
-				this.changed = true
-				for (var i=0;i<event.target.options.length;i++) {
-					if (event.target.options[i].selected) {
-						event.target.options[i].className = "checked"
-						this.selectedOptions[i] = event.target.options[i];
-					} else {
-						delete this.selectedOptions[i]
-					}
-				}
-			},
-			blurHandler: function (event) {
-				this.currentSelect = null;
-				this.selectedOptions = null;
-				this.changed = false;
-			},
-			clickHandler: function (event) {
-				if (this.changed == false && this.selectedOptions && this.selectedOptions[event.target.index]) {
-					this.selectedOptions[event.target.index].selected = false;
-					this.selectedOptions[event.target.index].className = "";
-				}
-				this.changed = false;
-			}
-
-		}
-		ko.bindingHandlers.minimumSelected = {
-    init: function(element, valueAccessor, allBindings, viewModel, bindingContext) {
-    	DeselectEnabler.getInstance().watchSelect(element) 
-    	//console.log(init)
-    },
-    update: function(element, valueAccessor, allBindings, viewModel, bindingContext) {
-    	//console.log("update")
-    	
-        // This will be called once when the binding is first applied to an element,
-        // and again whenever any observables/computeds that are accessed change
-        // Update the DOM element based on the supplied values here
-        //console.log(arguments)
-       
-    },
-    handleEvent: function (event) {
-    	console.log(event.target)
-    }
-};
-
-
-
-CKEDITOR.plugins.add("funky",{
-	requires: 'menubutton',
-	init: function (editor) {
-		//editor.addMenuGroup("templates",1);
-		/*editor.ui.addButton(
-			'Mook',
-		{
-
-			label: "ook",
-			command: "mook",
-			text: "zoo"
-
-		}
-
-
-			)*/
-
-
-			// Initialize groups for menu.
-
-
-
-			var tags =[]
-
-			 tags[0]=["kid", "KID", "KID"];
-     		 tags[1]=["societe_general", "socgen", "socgen"];
-			editor.ui.add( 'docs', CKEDITOR.UI_RICHCOMBO, {
-				label: "Load File",
-				command: 'loadDoc',
-				text: "Documents",
-				multiSelect: false,
-				panel: {
-					css: [editor.config.contentsCss, 'css/combo.css']
-
-
-				},
-				init: function () {
-					for (var this_tag in tags){
-		                  this.add(tags[this_tag][0], tags[this_tag][1], tags[this_tag][2]);
-		               }
-		             panel = this.panel
-				},
-				onClick: function(value) {
-					$.ajax(value+'.html', {
-				success: function (data) {
-					window.CURRENTDOC = value
-					editor.setData(data, function () {
-						
-						//var editDocument = CKEDITOR.instances.documentSource.window.$.document
-
-						//build()
-
-					});
-					
-				}
-			});
-				
-		
-	}
-});
-
-}});
-		</script>
 		<form action="javascript:;" method="GET">
 
 		<textarea id="documentSource" style="width: 100%; height: 100ex">
@@ -512,6 +344,12 @@ CKEDITOR.plugins.add("funky",{
 
 		<div  class="paper-layout" id="templateList"  data-bind="ckeditorDialog: active">
 			<form onsubmit="return false">
+				<fieldset class="dialog-actions">
+					<button data-bind="click:createNewTemplate">New</button>
+					<button data-bind="click:deleteTemplate">Delete</button>	
+					<button data-bind="click:loadTemplate">Open</button>
+					<button data-bind="click:copyTemplate">Copy</button>
+				</fieldset>
 			<div >
 					<header>
 						Available Templates
@@ -522,16 +360,17 @@ CKEDITOR.plugins.add("funky",{
 
 						<label class="template-name">
 								<input type="radio" data-bind="checkedValue: $data,checked: $parent.selected" name="templateId">
-								<span data-bind="text: templateName"></span>
-								<span data-bind="text: latestVersion"></span>
+								<span data-bind="text: $data.templateName"></span>
+								
 						</label>
 			<!--/ko-->
 					</section>
+					<fieldset>
+
+					</fieldset>
 			
 			</div>
-			<button data-bind="click:createNewTemplate">Create New</button>
-			<!--button data-bind="click:loadTemplate">Load</button-->
-			<button data-bind="click:deleteTemplate">Delete</button>
+			
 			</form>	
 		</div>
 </body>
