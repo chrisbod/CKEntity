@@ -128,12 +128,11 @@ CKEDITOR.dialog.add( 'knockoutDialog', function( editor ) {
 				//console.log(data.element.getBoundingClientRect())
 
 				wrapper.appendChild(data.element);
-				if (data.dialogConfig||data.viewModel.dialogConfig()) {
+				if (data.dialogConfig||data.viewModel.dialogConfig) {
 
 					configureDialog(this,data.dialogConfig||data.viewModel.dialogConfig())
 				}
 				
-
 
 				var rect = this.parts.dialog.$.getBoundingClientRect();
 				var overspill = rect.bottom-window.innerHeight,
@@ -189,7 +188,9 @@ CKEDITOR.dialog.add( 'knockoutDialog', function( editor ) {
 				document.querySelector("div.cke_dialog_background_cover").style.opacity = "0.5";
 			}
 			this.resize(360,100)
-			removeDialogConfiguration(this)
+			document.body.appendChild(data.element)
+			removeDialogConfiguration(this);
+
 		},
 		// This method is invoked once a user clicks the OK button, confirming the dialog.
 		onOk: function() {

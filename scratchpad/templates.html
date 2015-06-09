@@ -152,7 +152,7 @@ $(function () {
 					evt.editor.setReadOnly(true);
 					evt.editor.setData(data, setTimeout.bind(null,function () {
 						evt.editor.setReadOnly(false)
-						
+
 						evt.editor.execCommand('wsdopen',{
 							buttonsToHide: ['ok','cancel'],
 							removeOpacity: true,
@@ -263,7 +263,7 @@ $(function () {
 		</div>
 		<div class="dialog paper-layout"  data-bind="ckeditorDialog: active" id="logicDialog">
 			
-		<form id="rules" data-bind="submit: newNameEnt">
+		<form id="rules" data-bind="submit: update">
 			
 			<section>
 			<fieldset class="container-content">
