@@ -345,8 +345,10 @@ $(function () {
 			<div class="columns">
 					<section>
 							<button data-bind="click:createNewTemplate">Create New</button>
+
 							<button data-bind="click:deleteTemplate">Delete</button>
-							<button data-bind="click:loadTemplate">Load Selected</button>		
+							<button data-bind="click:loadTemplate">Load Selected</button>
+							<button data-bind="click:duplicateSelectedTemplate">Copy Selected</button>	
 					</section>
 					
 					<section class="template-list">
@@ -368,9 +370,16 @@ $(function () {
 			</div>
 			
 			<!--ko if: creating() == true -->
-					<section class="creating-new">
+					<section class="creating">
 						<input type="text" value="" placeholder="Enter new name" required="true" data-bind="event:{keypress:nameInput}, hasFocus:creating() == true, textInput:templateName">
 						<button data-bind="event: {click:templateCreateButton}">Create</button>
+
+					</section>
+					<!--/ko-->
+					<!--ko if: duplicating() == true -->
+					<section class="creating">
+						<input type="text" placeholder="Enter new name" required="true" data-bind="event:{keypress:nameInput}, hasFocus:duplicating() == true, textInput:templateName">
+						<button data-bind="event: {click:templateDuplicateButton}">Copy</button>
 
 					</section>
 					<!--/ko-->

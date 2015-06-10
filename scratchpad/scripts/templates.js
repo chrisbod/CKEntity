@@ -72,6 +72,17 @@ TemplateService.prototype = {
 		
 	
 	},
+	duplicateTemplate: function (callback,oldTemplateId,newTemplateName) {
+		$.ajax(this.path+"get/"+oldTemplateId+"/content.json",{
+			success: this.templateToDuplicateLoaded.bind(this,callback,newTemplateName),
+			error: this.handleError.bind(this,{templateId:oldTemplateId}),
+			contentType: "application/json"
+	})
+	},
+	templateToDuplicateLoaded: function (callback,newTemplateName,templateData) {
+
+		this.createNewTemplate(callback,newTemplateName,templateData.templateContent);
+	},
 	saveTemplate: function (callback,data) {
 		$.ajax(this.path+"update/"+data.templateId+"/"+encodeURI(data.templateName)+".json",{
 			success: callback,
@@ -115,6 +126,7 @@ TemplateService.prototype = {
 			this.errorMessage = ko.observable("");
 			this.errorDetails = ko.observable("")
 			this.creating = ko.observable(false);
+			this.duplicating = ko.observable(false);
 			this.templateName = ko.observable("");
 			this.dialogConfig = ko.observable()
 			if (templates) {
@@ -136,10 +148,11 @@ TemplateService.prototype = {
 					error: this.error.bind(this,"Error retreiving template list")
 				})
 			},
-			allTemplatesLoaded: function (templates) {
-				templates.sort(function (a,b) {
+			templateSorter: function (a,b) {
 					return a.templateName.toLowerCase() > b.templateName.toLowerCase() ? 1 : -1
-				})
+				},
+			allTemplatesLoaded: function (templates) {
+				templates.sort(this.templateSorter)
 				this.templates(templates)
 				this.select(templates[0])
 			},
@@ -177,6 +190,9 @@ TemplateService.prototype = {
 				this.deselect()
 				this.creating(true);
 			},
+			duplicateSelectedTemplate: function (callback) {
+				this.duplicating(true);
+			},
 			createTemplate: function (callback) {
 				var name = this.templateName(),
 					validity = this.validateName(name)
@@ -188,9 +204,22 @@ TemplateService.prototype = {
 						this.error(validity)
 					}
 			},
+			duplicateTemplate: function (callback) {
+				var name = this.templateName(),
+					validity = this.validateName(name)
+				if (validity === true) {
+					this.duplicating(false);
+					this.service.duplicateTemplate(callback,this.selected().templateId,name)
+						
+					} else {
+						this.error(validity)
+					}
+			},
 			templateCreated: function (newTemplate) {
-				this.creating(false)
+				this.creating(false);
+				this.duplicating(false)
 				this.templates.push(newTemplate);
+				this.templates.sort(this.templateSorter)
 				this.select(newTemplate)
 				this.templateName('')
 				
@@ -235,5 +264,8 @@ TemplateService.prototype = {
 			},
 			templateCreateButton: function () {
 				this.createTemplate(this.templateCreated.bind(this))
+			},
+			templateDuplicateButton: function () {
+				this.duplicateTemplate(this.templateCreated.bind(this))
 			}
 	}

@@ -390,7 +390,7 @@ table.cke_single_page table[role=presentation][style*='width: 600px'] {
       background-position: 2px 4px;
       min-height: 20px;
     }
-    #templateList .creating-new {
+    #templateList .creating {
       position: absolute;
   bottom: 36px;
   right: 1px;
@@ -398,7 +398,7 @@ table.cke_single_page table[role=presentation][style*='width: 600px'] {
   background-color: #eeeeee;
   padding: 0.5ex;
     }
-      #templateList .creating-new input {
+      #templateList .creating input {
         width: 75%;
         height: 3em;
         padding: 0.5ex;
