@@ -139,7 +139,7 @@ $(function () {
 				extraPlugins: 'tab,wysiwygarea,wallstreetdocs,wordpaste,documentlang,knockoutdialog,pagebreaktag,wsdpreview,wsdtoolbar',
 				removePlugins: 'elementspath,magicline,pastetext,pastefromword,clipboard,forms,scayt',
 				language_list: [ 'en:English', 'fr:French', 'de:German'],
-				removeButtons: 'Source,Preview,Print,Save,NewPage,DocProps,Templates,SpellChecker,CreateDiv,Flash,Smiley,PageBreak,Iframe,Format,About,Language,SpellChecker',
+				removeButtons: 'Source,Preview,Print,Save,NewPage,DocProps,Templates,SpellChecker,CreateDiv,Flash,Smiley,PageBreak,Iframe,About,Language,SpellChecker',
 				skin: 'flat',
 				on :
    {
@@ -220,13 +220,13 @@ $(function () {
 							<!--/ko-->
 							<!--ko if: type == 'radio' -->
 							<label class="clear">
-								<input type="radio" data-bind="attr:{name: $parent.id}" value=""/>
+								<input type="radio" data-bind="attr:{name: id}" value=""/>
 								<span>clear</span>
 							</label>
 								
 									<!--ko foreach: options -->
 											<label>
-												<input type="radio" data-bind="value:value, name:$parent.id, checked: $root.values()[$parent.id] == value">
+												<input type="radio" data-bind="value:value, attr:{name:$parent.id}, checked: $root.values()[$parent.id]">
 												<span data-bind="text:text"></span>
 												
 											</label>
@@ -280,7 +280,7 @@ $(function () {
 						</label>	
 							<!--ko foreach:items-->
 						<label>
-							<input type="radio" data-bind="attr:{name: $parent.id}, value: value, checked:$root.values()[$parent.id]" data-deselectable/>
+							<input type="radio" data-bind="attr:{name: $parent.id}, checkedValue: value, value: value, checked:$root.values()[$parent.id]" data-deselectable/>
 							<span data-bind="text: text"></span>
 						</label>
 							<!--/ko-->
