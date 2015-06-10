@@ -1,7 +1,8 @@
-function LanguageStore(tokenPath,logicPath,translationPath) {
+function LanguageStore(tokenPath,logicPath,translationPath,tokenListPath) {
 	this.languages = {};
 	this.tokenPath = tokenPath;
 	this.logicPath = logicPath;
+	this.tokenListPath = tokenListPath;
 	this.translationPath = translationPath;
 	this.crossRefs = {}
 }
@@ -60,7 +61,7 @@ LanguageStore.prototype = {
 		//;
 	},
 	loadLogic: function (languageId,callback) {
-		$.ajax(this.logicPath+"."+languageId+".json", {
+		$.ajax(this.logicPath+languageId.toUpperCase()+".json", {
 			mimeType: "application/json",
 			success: this.logicLoaded.bind(this,languageId,callback)
 		})
@@ -81,19 +82,21 @@ LanguageStore.prototype = {
 		this.loadTranslations(languageId,callback)
 	},
 	loadCrossRefs: function (id,callback) {
-		$.ajax("json/tag.xref.json", {
+		$.ajax(this.tokenListPath, {
 			mimeType: "application/json",
 			success: this.crossRefsLoaded.bind(this,id,callback)
 		})
 	},
 	crossRefsLoaded: function (id,callback,crossRefs) {
+		console.log(crossRefs)
 		crossRefs.forEach(function (crossRef) {
+			
 			this.crossRefs[crossRef.tagId] = crossRef.tagName
 		},this)
 		this.loadTokens(id,callback)
 	},
 	loadTokens: function (languageId,callback) {
-		$.ajax(this.tokenPath+"."+languageId+".json", {
+		$.ajax(this.tokenPath+languageId.toUpperCase()+".json", {
 			mimeType: "application/json",
 			success: this.tokensLoaded.bind(this,languageId,callback)
 		})
@@ -106,7 +109,9 @@ LanguageStore.prototype = {
 		}
 		var store = this.languages[id].tokenStore;
 		this.languages[id].tokenDefinitions = tokens;
+		console.log(tokens)
 		tokens.forEach(function (token) {
+
 			token.type = this.crossRefs[token.tagId]
 			token.id = token.tagId;
 			var readOnly = (!token.groups || !token.groups.length) && (!token.items || !token.items.length)
@@ -115,7 +120,7 @@ LanguageStore.prototype = {
 		this.loadLogic(id,callback)
 	},
 	loadTranslations: function (languageId, callback) {
-		$.ajax(this.translationPath+"."+languageId+".json", {
+		$.ajax(this.translationPath+languageId.toUpperCase()+".json", {
 			mimeType: "application/json",
 			success: this.translationsLoaded.bind(this,languageId,callback)
 		});
