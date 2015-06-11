@@ -77,7 +77,7 @@ For licensing, see LICENSE.md or http://ckeditor.com/license
 
 
 
-	var languageStore = new LanguageStore("json/tokens.","json/logic.","json/translations.","json/tag.xref");
+	var languageStore = new LanguageStore("https://www.firelex.com/priip/api/tag/token_data/get-all/content/","https://www.firelex.com/priip/api/tag/token_data/get-all/logic/","https://www.firelex.com/priip/api/translation/list/language/","https://www.firelex.com/priip/api/tag/list");
 	EntitiesHelper.prototype.languageStore = languageStore;//NASTY....
 	var conditionalCollapser = ConditionalCollapser.getInstance()
 	var entityTooltip = new EntityTooltip()
@@ -106,16 +106,18 @@ function build(editor,editPanel,language)  {
 
 	}
 	languageStore.installLanguage(language, function (languageDefinition) {
+
 		if (language != languageStore.currentLanguage) {
-			translator.translate(editPanel,languageDefinition.id)
+			console.log("new language")
 			languageStore.setCurrentLanguage(languageDefinition.id);
+			translator.translate(editPanel,languageDefinition.id)
 			updateAutosuggests(languageDefinition.id)
 		}
 		
 		
 	});
 
-
+	console.log("init")
 	entityTooltip.init(editPanel,document.querySelector("#entity-edit"));
 	userConditionalManager.init(editPanel)
 	conditionalCollapser.init(editPanel)

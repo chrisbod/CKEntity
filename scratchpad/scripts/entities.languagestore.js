@@ -9,13 +9,21 @@ function LanguageStore(tokenPath,logicPath,translationPath,allTagsListPath) {
 LanguageStore.prototype = {
 	currentLanguage: "",
 	setCurrentLanguage: function (language) {
-		this.currentLanguage = language
+		this.currentLanguage = language;
 	},
 	installLanguage: function (language,callback) {
-		if (!this.languages[language]) {
-			this.addLanguage(language,callback)
+		if (this.languages[language]) {//language has been requested already
+			if (this.languages[language].complete) {//language is fully loaded
+				this.languageCompleteCallback = null; // remove any pending callback as its stale
+				callback(this.languages[language]);
+				return;
+			} else {//still loading so drop previous callbacks
+				this.languageCompleteCallback = callback;
+			}
 		} else {
-			callback(this.languages[language])
+			this.languageCompleteCallback = callback;
+			this.currentlyLoadingLanguage = language;
+			this.addLanguage(language);
 		}
 	},
 	getTokenDefinitionsByLanguage: function (language) {
@@ -45,7 +53,8 @@ LanguageStore.prototype = {
 	getCurrentTokenDefinitions: function () {
 		return this.languages[this.currentLanguage].tokenDefinitions;
 	},
-	addLanguage: function (id,callback) {
+	addLanguage: function (id) {
+		this.currentlyLoadingLanguage = id;
 		var tokenStore =  new TokenStore();
 		this.languages[id] = {
 			id: id,
@@ -55,18 +64,19 @@ LanguageStore.prototype = {
 			tokenDefinitions: null,
 			translationDefinitions: null,
 			sentenceTokenizer: new SentenceTokenizer(),
-			tokenTokenizer:  new TokenTokenizer()
+			tokenTokenizer:  new TokenTokenizer(),
+			complete: false
 		};
-		this.loadCrossRefs(id,callback)
+		this.loadCrossRefs(id)
 		//;
 	},
-	loadLogic: function (languageId,callback) {
+	loadLogic: function (languageId) {
 		$.ajax(this.logicPath+languageId.toUpperCase()+".json", {
 			mimeType: "application/json",
-			success: this.logicLoaded.bind(this,languageId,callback)
+			success: this.logicLoaded.bind(this,languageId)
 		})
 	},
-	logicLoaded: function (languageId,callback,logic) {
+	logicLoaded: function (languageId,logic) {
 		if (!this.logicLength) {
 			this.logicLength = logic.length
 		} else if (this.logicLength != logic.length) {
@@ -79,27 +89,27 @@ LanguageStore.prototype = {
 		logic.sort(function (a,b) {
 		return a.text > b.text ? 1 : -1
 		})
-		this.loadTranslations(languageId,callback)
+		this.loadTranslations(languageId)
 	},
 	loadCrossRefs: function (id,callback) {
 		$.ajax(this.allTagsListPath+".json", {
 			mimeType: "application/json",
-			success: this.crossRefsLoaded.bind(this,id,callback)
+			success: this.crossRefsLoaded.bind(this,id)
 		})
 	},
-	crossRefsLoaded: function (id,callback,crossRefs) {
+	crossRefsLoaded: function (id,crossRefs) {
 		crossRefs.forEach(function (crossRef) {
 			this.crossRefs[crossRef.tagId] = crossRef.tagName
 		},this)
-		this.loadTokens(id,callback)
+		this.loadTokens(id)
 	},
-	loadTokens: function (languageId,callback) {
+	loadTokens: function (languageId) {
 		$.ajax(this.tokenPath+languageId.toUpperCase()+".json", {
 			mimeType: "application/json",
-			success: this.tokensLoaded.bind(this,languageId,callback)
+			success: this.tokensLoaded.bind(this,languageId)
 		})
 	},
-	tokensLoaded: function (id,callback,tokens) {
+	tokensLoaded: function (id,tokens) {
 		if (!this.tokensLength) {
 			this.tokensLength = tokens.length
 		} else if (this.tokensLength != tokens.length) {
@@ -113,15 +123,15 @@ LanguageStore.prototype = {
 			var readOnly = (!token.groups || !token.groups.length) && (!token.items || !token.items.length)
 			this.languages[id].tokenStore.addEntity('<'+token.text+'>',this.crossRefs[token.tagId],readOnly)
 		},this);
-		this.loadLogic(id,callback)
+		this.loadLogic(id)
 	},
-	loadTranslations: function (languageId, callback) {
+	loadTranslations: function (languageId) {
 		$.ajax(this.translationPath+languageId.toUpperCase()+".json", {
 			mimeType: "application/json",
-			success: this.translationsLoaded.bind(this,languageId,callback)
+			success: this.translationsLoaded.bind(this,languageId)
 		});
 	},
-	translationsLoaded: function (languageId,callback,translations) {
+	translationsLoaded: function (languageId,translations) {
 		if (!this.translationsLength) {
 			this.translationsLength = translations.length
 		} else if (this.translationsLength != translations.length) {
@@ -131,8 +141,12 @@ LanguageStore.prototype = {
 			this.languages[languageId].translationStore.addEntity(translation.text,translation.parentTranslationId || translation.translationId)
 		},this)
 		this.languages[languageId].translationDefinitions = translations;
-		if (callback) {
-			callback(this.languages[languageId])
+		this.languages[languageId].complete = true;
+		this.currentlyLoadingLanguage = null;
+		if (this.currentlyLoadingLanguage == languageId) {
+			if (this.languageCompleteCallback) {
+				this.languageCompleteCallback(this.languages[languageId])
+			}
 		}
 	}
 }
