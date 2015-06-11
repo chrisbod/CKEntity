@@ -995,4 +995,28 @@
   "language" : "EN",
   "text" : "issuer",
   "tagId" : 1074
+}, {
+  "language" : "EN",
+  "text" : "cap (absolute value)",
+  "tagId" : 1081
+}, {
+  "language" : "EN",
+  "text" : "cap (percentage)",
+  "tagId" : 1082
+}, {
+  "language" : "EN",
+  "text" : "cap (percentage)",
+  "tagId" : 1077
+}, {
+  "language" : "EN",
+  "text" : "initialize",
+  "tagId" : 1080
+}, {
+  "language" : "EN",
+  "text" : "cap (percentage)",
+  "tagId" : 1075
+}, {
+  "language" : "EN",
+  "text" : "cap (percentage)",
+  "tagId" : 1076
 } ]

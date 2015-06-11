@@ -13,7 +13,7 @@
 	var allowedContent = 'span[!lang,!dir]',
 		requiredContent = 'span[lang,dir]',
 		changing = false;
-	var currentEditorLanguageId = CKEDITOR.lang.detect();
+	var currentEditorLanguageId = CKEDITOR.lang.detect().replace(/-\w+$/,'');
 
 	CKEDITOR.plugins.add( 'documentlang', {
 		requires: 'menubutton',

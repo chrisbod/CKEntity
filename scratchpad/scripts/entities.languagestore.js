@@ -1,8 +1,9 @@
-function LanguageStore(tokenPath,logicPath,translationPath) {
+function LanguageStore(tokenPath,logicPath,translationPath,allTagsListPath) {
 	this.languages = {};
 	this.tokenPath = tokenPath;
 	this.logicPath = logicPath;
 	this.translationPath = translationPath;
+	this.allTagsListPath = allTagsListPath;
 	this.crossRefs = {}
 }
 LanguageStore.prototype = {
@@ -60,7 +61,7 @@ LanguageStore.prototype = {
 		//;
 	},
 	loadLogic: function (languageId,callback) {
-		$.ajax(this.logicPath+"."+languageId+".json", {
+		$.ajax(this.logicPath+languageId.toUpperCase()+".json", {
 			mimeType: "application/json",
 			success: this.logicLoaded.bind(this,languageId,callback)
 		})
@@ -81,7 +82,7 @@ LanguageStore.prototype = {
 		this.loadTranslations(languageId,callback)
 	},
 	loadCrossRefs: function (id,callback) {
-		$.ajax("json/tag.xref.json", {
+		$.ajax(this.allTagsListPath+".json", {
 			mimeType: "application/json",
 			success: this.crossRefsLoaded.bind(this,id,callback)
 		})
@@ -93,7 +94,7 @@ LanguageStore.prototype = {
 		this.loadTokens(id,callback)
 	},
 	loadTokens: function (languageId,callback) {
-		$.ajax(this.tokenPath+"."+languageId+".json", {
+		$.ajax(this.tokenPath+languageId.toUpperCase()+".json", {
 			mimeType: "application/json",
 			success: this.tokensLoaded.bind(this,languageId,callback)
 		})
@@ -115,7 +116,7 @@ LanguageStore.prototype = {
 		this.loadLogic(id,callback)
 	},
 	loadTranslations: function (languageId, callback) {
-		$.ajax(this.translationPath+"."+languageId+".json", {
+		$.ajax(this.translationPath+languageId.toUpperCase()+".json", {
 			mimeType: "application/json",
 			success: this.translationsLoaded.bind(this,languageId,callback)
 		});

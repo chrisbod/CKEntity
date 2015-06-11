@@ -73,7 +73,11 @@ For licensing, see LICENSE.md or http://ckeditor.com/license
 		}
 		return null;
 	}
-	var languageStore = new LanguageStore("json/tokens","json/logic","json/translations");
+	/*var languageStore = new LanguageStore("https://www.firelex.com/priip/api/tag/token_data/get-all/content/","https://www.firelex.com/priip/api/tag/token_data/get-all/logic/","https://www.firelex.com/priip/api/translation/list/language/","https://www.firelex.com/priip/api/tag/list");*/
+
+
+
+	var languageStore = new LanguageStore("json/tokens.","json/logic.","json/translations.","json/tag.xref");
 	EntitiesHelper.prototype.languageStore = languageStore;//NASTY....
 	var conditionalCollapser = ConditionalCollapser.getInstance()
 	var entityTooltip = new EntityTooltip()
