@@ -91,7 +91,6 @@ TranslationStore.prototype.createTemplatableNodeFromEntity = function (key,id) {
 	for (var i=0;i<conditionals.length;i++) {
 		var conditional = conditionals[i];
 		var args = "key:'"+id+"',conditional:'"+conditional.getAttribute("data-conditional-ref")+"'"
-
 		conditional.setAttribute("data-args",args);
 		conditional.firstChild.setAttribute("data-args",args);
 		conditional.lastElementChild.setAttribute("data-args",args);
@@ -107,7 +106,7 @@ TranslationStore.prototype.createTemplatableNodeFromEntity = function (key,id) {
 		if (tokens[i].parentNode.className == "contents") {
 			token.setAttribute(
 				"data-args",
-				token.getAttribute("data-args")+",key:'"+id+"',conditional:'"+tokens[i].parentNode.parentNode.getAttribute("data-conditional-ref")+"',token:'"+ref+"'"
+				"key:'"+id+"',conditional:'"+tokens[i].parentNode.parentNode.getAttribute("data-conditional-ref")+"',token:'"+ref+"'"
 			);
 		} else {
 			token.setAttribute("data-args",token.getAttribute("data-args")+",key:'"+id+"',token:'"+ref+"'")
@@ -122,6 +121,7 @@ TranslationStore.prototype.createTemplatableNodeFromEntity = function (key,id) {
 	editSpan.appendChild(node)
 	editSpan.appendChild(document.createTextNode("\u200d"))
 	editSpan.tabIndex = -1;
+	console.log(editSpan.outerHTML)
 	return editSpan;
 }
 TranslationStore.prototype.parseTextMarkup = function (string) {
@@ -130,8 +130,8 @@ TranslationStore.prototype.parseTextMarkup = function (string) {
 		.replace(/>/g,'\x03')
 		.replace(/\[([^:]+):/g,'<span class="entity-wrapper" data-entity-node="conditional" tabIndex="-1">&zwj;<conditional data-conditional-ref="$1"><span class="args conditional" contenteditable="false">[</span><span class="contents">')
 		.replace(/\]/g,'</span><span class="conditional end">]</span></conditional>&zwj;</span>')
-		.replace(/\x02([^:]+):(\w+)/g,'<span class="entity-wrapper" data-entity-node="token" tabIndex="-1">&zwj;<token data-ref="$1" data-id="$2">$2')
-		.replace(/\x03/g,'"</token></span>') + '</span><span class="translation end">}</span>';
+		.replace(/\x02([^:]+):(\w+)/g,'&zwj;<token data-ref="$1" data-id="$2">$2')
+		.replace(/\x03/g,'"</token>') + '</span><span class="translation end">}</span>';
 }
 
 function TokenStore() {
@@ -159,7 +159,7 @@ TokenStore.prototype.createTemplatableNodeFromEntity = function (key,id,readOnly
 	rules.className = "args token";
 	rules.innerText = "<";
 	
-	rules.setAttribute("data-args","type: '"+id+"'")
+	
 	var end = document.createElement("span");
 	end.className = "token end"
 	end.innerText = ">";
