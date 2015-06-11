@@ -186,7 +186,7 @@ UserConditionalManager.prototype = {
 			svg.setAttribute("height",fullHeight+"px")
 	
      var pathPositions = "m "+firstRectLeft+",0 "+firstRectWidth+",0 0,"+(fullHeight-lastRectHeight)+" -"+(Math.max(0,fullWidth-lastRectWidth))+",0 0,"+lastRectHeight+" -"+lastRectWidth+",0 0,-"+(fullHeight-firstRectHeight)+" "+firstRectLeft+",0 0,-"+firstRectHeight
-    		console.log(pathPositions)
+  
 			svg.firstChild.setAttribute("d",pathPositions)
 			this.pathElement.style.visibility = ""
 		}
@@ -265,7 +265,6 @@ UserConditionalManager.prototype = {
 				currentEndIfs[index].setAttribute("data-user-conditional-id",ifId)
 			}
 		},this);
-		console.log(this.activeNodes.concat())
 		this.updatePath()
 		
 		
@@ -277,7 +276,7 @@ UserConditionalManager.prototype = {
 		if (!event.shiftKey) {
 			var id = "uc"+UserConditionalManager.count++
 			var ifNode = this.ifTemplate.cloneNode(true)
-			ifNode.setAttribute("data-user-conditional-id",id)
+			ifNode.setAttribute("data-user-conditional-id",id);
 			this.selectionTracker.insertEntityWrapperAtCursor(ifNode);
 			var spacer = document.createTextNode('\u00a0 ')
 			this.selectionTracker.insertEntityWrapperAtCursor(spacer);
@@ -324,6 +323,7 @@ UserConditionalManager.prototype = {
 		span.contentEditable = false;
 		var ifElement = document.createElement("if");
 		ifElement.contentEditable = false;
+		ifElement.setAttribute("data-args","")
 		span.appendChild(ifElement)
 		var img = document.createElement("img")
 		ifElement.appendChild(img)

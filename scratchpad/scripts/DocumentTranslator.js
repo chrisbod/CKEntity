@@ -52,8 +52,8 @@ DocumentTranslator.prototype = {
 		for (i=0;i<originalConditionals.length;i++) {
 			var args = this.entitiesHelper.getDataArguments(originalConditionals[i])
 			var node = lookup[args.conditional]
-			node.setAttribute("data-args",originalConditionals[i].getAttribute("data-args"))
-			node.firstElementChild.setAttribute("data-args",originalConditionals[i].getAttribute("data-args"))
+			node.setAttribute("data-args",originalConditionals[i].getAttribute("data-args")||'')
+			//node.firstElementChild.setAttribute("data-args",originalConditionals[i].getAttribute("data-args")||'')
 		}
 
 	}

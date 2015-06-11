@@ -137,13 +137,49 @@ EntitiesHelper.prototype = {
 	triggerConditionalEdit: function (tokenElement) {
 
 	},
+	getHighestEntityElement: function (element) {
+		var current = element,
+			last = element,
+			body = element.ownerDocument.body;
+		if (element.tagName == "IF") {//cant be nested
+			return element;
+		}
+		while (current && current!= body) {
+
+			if (this.isEntityElement(current)) {
+				last = current;
+			}
+			current = current.parentNode;
+		}
+		return last;
+
+	},
+	objectifyTranslation: function (translationElement) {
+		var translation = this.getDataArguments(translationElement)||{},
+			conditionalElements = translationElement.querySelectorAll("conditional"),
+			tokenElements = translationElement.querySelectorAll("token");
+		translation.conditionals = [].map.call(conditionalElements,this.getDataArguments,this);
+		translation.tokens = [].map.call(tokenElements,this.getDataArguments,this);
+		return translation
+
+	},
+	bubbleArgumentChange: function(element,values) {
+		var topLevelEntity = this.getHighestEntityElement(element);
+		var root;
+		switch (topLevelEntity.tagName) {
+			case "TRANSLATION": root = this.objectifyTranslation(topLevelEntity); break;
+			default: root = this.getDataArguments(element);
+		}
+		topLevelEntity.setAttribute("data-json", encodeURI(JSON.stringify(root)))
+	},
 	setDataArguments: function (element,values) {
 		var args = [];
 		for (var i in values) {
 			args.push(i+":'"+values[i]+"'");
 		}
 		element.setAttribute("data-args",args);
-		element.firstElementChild.setAttribute("data-args",args);
+//		element.firstElementChild.setAttribute("data-args",args);
+		this.bubbleArgumentChange(element,values)
 	},
 	setDataArgument: function (element,key,value) {
 		var values = this.getDataArguments(element);
@@ -159,7 +195,6 @@ EntitiesHelper.prototype = {
 		return this.getDataArguments(element).key;
 	},
 	getDataArguments: function (tokenElement) {
-
 		var args = tokenElement.getAttribute("data-args");
 		var values = (new Function("return {"+(args||'')+"}"))();
 		for (var i in values) {

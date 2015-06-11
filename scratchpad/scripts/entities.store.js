@@ -85,7 +85,7 @@ TranslationStore.prototype =  new EntityStore()
 TranslationStore.prototype.templatableNodes = null;
 TranslationStore.prototype.createTemplatableNodeFromEntity = function (key,id) {
 	var node = document.createElement("translation");
-	node.setAttribute("data-args","key:'"+id+"'")
+	node.setAttribute("data-args","id:'"+id+"'")
 	node.innerHTML = this.parseTextMarkup(key);
 	var conditionals = node.querySelectorAll("conditional")
 	for (var i=0;i<conditionals.length;i++) {
@@ -106,10 +106,10 @@ TranslationStore.prototype.createTemplatableNodeFromEntity = function (key,id) {
 		if (tokens[i].parentNode.className == "contents") {
 			token.setAttribute(
 				"data-args",
-				"key:'"+id+"',conditional:'"+tokens[i].parentNode.parentNode.getAttribute("data-conditional-ref")+"',token:'"+ref+"'"
+				"keyId:'"+id+"',id:'"+tokens[i].parentNode.parentNode.getAttribute("data-conditional-ref")+"',type:'"+ref+"'"
 			);
 		} else {
-			token.setAttribute("data-args",token.getAttribute("data-args")+",key:'"+id+"',token:'"+ref+"'")
+			token.setAttribute("data-args",token.getAttribute("data-args")+",id:'"+id+"',type:'"+ref+"'")
 		}
 		tokens[i].parentNode.replaceChild(token, tokens[i]);
 	}
