@@ -12,28 +12,36 @@ DocumentTranslator.prototype = {
 			tokenStore = this.languageStore.getTokenStoreByLanguage(language),
 			helper = this.entitiesHelper,
 			args, newNode;
+		
 		for (var i=0;i<tokens.length;i++) {
+
 			args = helper.getDataArguments(tokens[i]);
-			newNode = tokenStore.getEntityNode(args.name);
-			helper.setDataArguments(newNode.querySelector("token"),args);
-			tokens[i].parentNode.parentNode.replaceChild(newNode,tokens[i].parentNode);
+			newNode = tokenStore.getEntityNode(args.name).firstElementChild;
+			
+
+			newNode.setAttribute("data-args",tokens[i].getAttribute("data-args")||'')
+			newNode.setAttribute("data-json",tokens[i].getAttribute("data-json")||'')
+			tokens[i].parentNode.replaceChild(newNode,tokens[i]);
 			
 		}
 	},
 	translateKeys: function (element,language) {
+		
 		var keys = element.querySelectorAll("translation"),
 			translationStore = this.languageStore.getTranslationStoreByLanguage(language),
 			helper = this.entitiesHelper,
 			args, newNode;
 		for (var i=0;i<keys.length;i++) {
 			args = helper.getDataArguments(keys[i]);
-			newNode = translationStore.getEntityNode(args.id);
-			helper.setDataArguments(newNode,args);
+			newNode = translationStore.getEntityNode(args.id).firstElementChild;
+			newNode.setAttribute("data-args",keys[i].getAttribute("data-args")||'')
+			newNode.setAttribute("data-json",keys[i].getAttribute("data-json")||'')
 			this.synchronizeConditionals(newNode,keys[i],language)
-			keys[i].parentNode.parentNode.replaceChild(newNode,keys[i].parentNode)
+			keys[i].parentNode.replaceChild(newNode,keys[i])
 		}
 	},
 	synchronizeConditionals: function (newElement, oldElement, language) {
+		
 		var originalConditionals = oldElement.querySelectorAll("conditional:not(.user)"),
 			newConditionals = newElement.querySelectorAll("conditional:not(.user)"),
 			lookup = {};
