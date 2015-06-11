@@ -56,7 +56,6 @@ TokenStore.prototype.createTemplatableNodeFromEntity = function (key,id,readOnly
 	rules.className = "args token";
 	rules.innerText = "<";
 	rules.setAttribute("contenteditable", false);
-	rules.setAttribute("data-args","name: '"+id+"'")
 	var end = document.createElement("span")
 	end.innerText = ">";
 	node.appendChild(end)
@@ -102,15 +101,16 @@ TranslationStore.prototype.createTemplatableNodeFromEntity = function (key,id) {
 	var tokens = node.querySelectorAll("token"),
 		token;
 	for (var i=0;i<tokens.length;i++) {
-		token = this.tokenStore.getEntityNode(tokens[i].getAttribute("data-id"))
-		var ref = tokens[i].getAttribute("data-ref")
-		if (tokens[i].parentNode.className == "contents") {
+		token = this.tokenStore.getEntityNode(tokens[i].getAttribute("data-id")).firstElementChild;
+		token.removeAttribute("data-json")
+		var key = tokens[i].getAttribute("data-ref");
+		if (tokens[i].parentNode.parentNode.className == "contents") {//inside conditional
 			token.setAttribute(
 				"data-args",
-				"keyId:'"+id+"',id:'"+tokens[i].parentNode.parentNode.getAttribute("data-conditional-ref")+"',name:'"+ref+"'"
+				"key:'"+id+"',conditional:'"+tokens[i].parentNode.parentNode.getAttribute("data-conditional-ref")+"',name:'"+id+"'"
 			);
 		} else {
-			token.setAttribute("data-args",token.getAttribute("data-args")+",id:'"+id+"',name:'"+ref+"'")
+			token.setAttribute("data-args",token.getAttribute("data-args")+",key:'"+id+"',id:'"+key+"'")
 		}
 		tokens[i].parentNode.replaceChild(token, tokens[i]);
 	}
@@ -122,6 +122,7 @@ TranslationStore.prototype.createTemplatableNodeFromEntity = function (key,id) {
 	editSpan.appendChild(node)
 	editSpan.appendChild(document.createTextNode("\u200d"))
 	editSpan.tabIndex = -1;
+	console.log(editSpan.innerHTML)
 	return editSpan;
 }
 TranslationStore.prototype.parseTextMarkup = function (string) {
