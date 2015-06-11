@@ -24,7 +24,7 @@ TokenDialogViewModel.prototype = new EntityViewModel();
 TokenDialogViewModel.prototype.updateFromElement = function (element) {
 	this.element = element;
 	this.values(this.entitiesHelper.getDataArguments(element));
-	var tokenDefinition = this.entitiesHelper.getTokenDefinitionByType(this.values().type);
+	var tokenDefinition = this.entitiesHelper.getTokenDefinitionByType(this.values().name);
 	this.text(tokenDefinition.text.replace(/\&lt\;|\&gt\;|\<|\>/g,''));
 	this.tokenText(tokenDefinition.id);
 	this.groups(tokenDefinition.groups);

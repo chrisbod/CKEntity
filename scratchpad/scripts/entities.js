@@ -202,10 +202,10 @@ EntitiesHelper.prototype = {
 		}
 		return values;
 	},
-	getTokenDefinitionByType: function (type) {
+	getTokenDefinitionByType: function (name) {
 		var definitions = this.languageStore.getCurrentTokenDefinitions();
 		for (var i=0;i<definitions.length;i++) {
-			if (definitions[i].type == type) {
+			if (definitions[i].name == name) {
 				return definitions[i]
 			}
 		}

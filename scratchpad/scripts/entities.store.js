@@ -46,7 +46,7 @@ TokenStore.prototype.createTemplatableNodeFromEntity = function (key,id,readOnly
 	var node = document.createElement("token")
 	node.setAttribute("data-entity-node","token")
 	node.setAttribute("contenteditable", false);
-	node.setAttribute("data-args","type: '"+id+"'")
+	node.setAttribute("data-args","name: '"+id+"'")
 	if (readOnly) {
 		node.setAttribute("data-read-only","true")
 	}
@@ -56,7 +56,7 @@ TokenStore.prototype.createTemplatableNodeFromEntity = function (key,id,readOnly
 	rules.className = "args token";
 	rules.innerText = "<";
 	rules.setAttribute("contenteditable", false);
-	rules.setAttribute("data-args","type: '"+id+"'")
+	rules.setAttribute("data-args","name: '"+id+"'")
 	var end = document.createElement("span")
 	end.innerText = ">";
 	node.appendChild(end)
@@ -107,10 +107,10 @@ TranslationStore.prototype.createTemplatableNodeFromEntity = function (key,id) {
 		if (tokens[i].parentNode.className == "contents") {
 			token.setAttribute(
 				"data-args",
-				"keyId:'"+id+"',id:'"+tokens[i].parentNode.parentNode.getAttribute("data-conditional-ref")+"',type:'"+ref+"'"
+				"keyId:'"+id+"',id:'"+tokens[i].parentNode.parentNode.getAttribute("data-conditional-ref")+"',name:'"+ref+"'"
 			);
 		} else {
-			token.setAttribute("data-args",token.getAttribute("data-args")+",id:'"+id+"',type:'"+ref+"'")
+			token.setAttribute("data-args",token.getAttribute("data-args")+",id:'"+id+"',name:'"+ref+"'")
 		}
 		tokens[i].parentNode.replaceChild(token, tokens[i]);
 	}
@@ -149,8 +149,8 @@ TokenStore.prototype.createTemplatableNodeFromEntity = function (key,id,readOnly
 	var node = document.createElement("token")
 	//node.setAttribute("contenteditable", "false");//this seems to trigger a strange drag and drop bug
 	
-	node.setAttribute("data-args","type: '"+id+"'")
-	node.setAttribute("data-json",encodeURI('{"type":"'+id+'"}'));
+	node.setAttribute("data-args","name: '"+id+"'")
+	node.setAttribute("data-json",encodeURI('{"name":"'+id+'"}'));
 	node.setAttribute("class",id)
 	if (readOnly) {
 		node.setAttribute("data-read-only","true")
