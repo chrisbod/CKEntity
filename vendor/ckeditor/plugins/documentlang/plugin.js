@@ -32,7 +32,6 @@
 
 
 			function changeLanguage(editor,languageId) {
-				
 					  		currentEditorLanguageId = languageId
 					  		build(editor,editor.editable().$,currentEditorLanguageId);//horrible
 

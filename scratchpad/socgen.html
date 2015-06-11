@@ -200,7 +200,6 @@ SaveShim.prototype = {
 		}
 	},
 	handleEvent: function (event) {
-		debugger;
 		return this[event.type+"Handler"](event)
 	},
 	submitHandler: function (event) {

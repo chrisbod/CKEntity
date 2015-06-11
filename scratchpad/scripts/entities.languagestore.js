@@ -12,6 +12,7 @@ LanguageStore.prototype = {
 		this.currentLanguage = language;
 	},
 	installLanguage: function (language,callback) {
+
 		if (this.languages[language]) {//language has been requested already
 			if (this.languages[language].complete) {//language is fully loaded
 				this.languageCompleteCallback = null; // remove any pending callback as its stale
@@ -142,11 +143,12 @@ LanguageStore.prototype = {
 		},this)
 		this.languages[languageId].translationDefinitions = translations;
 		this.languages[languageId].complete = true;
-		this.currentlyLoadingLanguage = null;
 		if (this.currentlyLoadingLanguage == languageId) {
 			if (this.languageCompleteCallback) {
 				this.languageCompleteCallback(this.languages[languageId])
+				this.languageCompleteCallback = null;
 			}
 		}
+		this.currentlyLoadingLanguage = null;
 	}
 }

@@ -27,7 +27,7 @@ DocumentTranslator.prototype = {
 			args, newNode;
 		for (var i=0;i<keys.length;i++) {
 			args = helper.getDataArguments(keys[i]);
-			newNode = translationStore.getEntityNode(args.key);
+			newNode = translationStore.getEntityNode(args.id);
 			helper.setDataArguments(newNode,args);
 			this.synchronizeConditionals(newNode,keys[i],language)
 			keys[i].parentNode.parentNode.replaceChild(newNode,keys[i].parentNode)

@@ -98,6 +98,7 @@ function build(editor,editPanel,language)  {
 	editPanel.addEventListener("contextmenu", function (event) {
 		event.stopPropagation()
 	},true);
+	var oldLanguage = languageStore.currentLanguage;
 	
 
 	function updateAutosuggests(lang) {
@@ -106,18 +107,18 @@ function build(editor,editPanel,language)  {
 
 	}
 	languageStore.installLanguage(language, function (languageDefinition) {
-
-		if (language != languageStore.currentLanguage) {
-			console.log("new language")
+		// (oldLanguage &&  oldLanguage != languageStore.currentLanguage) {
+		if (oldLanguage != languageDefinition.id) {
 			languageStore.setCurrentLanguage(languageDefinition.id);
 			translator.translate(editPanel,languageDefinition.id)
-			updateAutosuggests(languageDefinition.id)
+
 		}
+			
+		updateAutosuggests(languageDefinition.id)
 		
 		
 	});
 
-	console.log("init")
 	entityTooltip.init(editPanel,document.querySelector("#entity-edit"));
 	userConditionalManager.init(editPanel)
 	conditionalCollapser.init(editPanel)

@@ -122,7 +122,6 @@ TranslationStore.prototype.createTemplatableNodeFromEntity = function (key,id) {
 	editSpan.appendChild(node)
 	editSpan.appendChild(document.createTextNode("\u200d"))
 	editSpan.tabIndex = -1;
-	console.log(editSpan.innerHTML)
 	return editSpan;
 }
 TranslationStore.prototype.parseTextMarkup = function (string) {
