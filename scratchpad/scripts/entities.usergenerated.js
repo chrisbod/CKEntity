@@ -324,6 +324,7 @@ UserConditionalManager.prototype = {
 		var ifElement = document.createElement("if");
 		ifElement.contentEditable = false;
 		ifElement.setAttribute("data-args","")
+		ifElement.setAttribute("data-json",encodeURI('{}'));
 		span.appendChild(ifElement)
 		var img = document.createElement("img")
 		ifElement.appendChild(img)

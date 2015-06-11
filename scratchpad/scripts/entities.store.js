@@ -85,7 +85,8 @@ TranslationStore.prototype =  new EntityStore()
 TranslationStore.prototype.templatableNodes = null;
 TranslationStore.prototype.createTemplatableNodeFromEntity = function (key,id) {
 	var node = document.createElement("translation");
-	node.setAttribute("data-args","id:'"+id+"'")
+	node.setAttribute("data-args","id:'"+id+"'");
+	node.setAttribute("data-json",encodeURI('{"id":"'+id+'"}'));
 	node.innerHTML = this.parseTextMarkup(key);
 	var conditionals = node.querySelectorAll("conditional")
 	for (var i=0;i<conditionals.length;i++) {
@@ -149,6 +150,7 @@ TokenStore.prototype.createTemplatableNodeFromEntity = function (key,id,readOnly
 	//node.setAttribute("contenteditable", "false");//this seems to trigger a strange drag and drop bug
 	
 	node.setAttribute("data-args","type: '"+id+"'")
+	node.setAttribute("data-json",encodeURI('{"type":"'+id+'"}'));
 	node.setAttribute("class",id)
 	if (readOnly) {
 		node.setAttribute("data-read-only","true")
