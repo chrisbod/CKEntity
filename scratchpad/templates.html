@@ -73,8 +73,7 @@ For licensing, see LICENSE.md or http://ckeditor.com/license
 		}
 		return null;
 	}
-	var templateService = TemplateService.getInstance("https://www.firelex.com/priip/api/template/")
-	var languageStore = new LanguageStore("https://firelex.com/priip/api/tag/token_data/get-all/content/","https://www.firelex.com/priip/api/tag/token_data/get-all/logic/","https://www.firelex.com/priip/api/translation/list/language/","https://www.firelex.com/priip/api/tag/list.json");
+	var languageStore = new LanguageStore("json/tokens","json/logic","json/translations");
 	EntitiesHelper.prototype.languageStore = languageStore;//NASTY....
 	var conditionalCollapser = ConditionalCollapser.getInstance()
 	var entityTooltip = new EntityTooltip()
@@ -86,7 +85,7 @@ For licensing, see LICENSE.md or http://ckeditor.com/license
 
 	var translator = new DocumentTranslator(languageStore)
 	var headersAndFooters = new HeaderAndFooterHandler();
-	
+	var templateService = TemplateService.getInstance("https://www.firelex.com/priip/api/template/")
 
 
 function build(editor,editPanel,language)  {
