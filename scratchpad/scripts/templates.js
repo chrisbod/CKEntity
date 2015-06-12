@@ -168,10 +168,16 @@ TemplateService.prototype = {
 			deselect: function () {
 				this.selectedId('')
 				this.selected({})
-			},	
+			},
+			cancelCreation: function () {
+				this.creating(false)
+				this.duplicating(false)
+				return true
+			},
 			
 			loadTemplate: function () {
 				this.creating(false)
+				this.duplicating(false)
 				this.service.loadTemplate(this.templateLoaded.bind(this),this.selected().templateId)
 			},
 			templateLoaded: function (templateData) {
@@ -183,13 +189,21 @@ TemplateService.prototype = {
 				
 			},
 			copyTemplate: function () {
-				this.creating(true);
+				if (this.selectedId()=='') {
+					this.select()
+				}
+				this.creating(false)
+				this.duplicating(true)
 			},
 			createNewTemplate: function () {
 				this.deselect()
 				this.creating(true);
+				this.duplicating(false)
 			},
 			duplicateSelectedTemplate: function (callback) {
+				if (this.selectedId()=='') {
+					this.select()
+				}
 				this.duplicating(true);
 			},
 			createTemplate: function (callback) {

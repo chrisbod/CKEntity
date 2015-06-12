@@ -345,7 +345,7 @@ $(function () {
 					</section>
 					
 					<section class="template-list">
-						<section class="templates-wrapper" data-bind="event:{dblclick:loadTemplate}">
+						<section class="templates-wrapper" data-bind="event:{dblclick:loadTemplate,click:cancelCreation}">
 							<!--ko foreach: templates()-->
 							
 										<label class="template-name">
