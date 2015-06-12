@@ -12,12 +12,13 @@
     min-height: 100%;
 }
 
-.cke_dialog_ui_vbox.cke_dialog_page_contents {
-  height: 100%;
+#logicDialog {
+  min-width: 400px;
 }
-.cke_dialog_ui_vbox.cke_dialog_page_contents > table {
-  height: 100%;
+#tokenDialog {
+  width: 400px;
 }
+
 
 select option::before {
   
