@@ -22,12 +22,13 @@ DocumentTranslator.prototype = {
 		for (var i=0;i<tokens.length;i++) {
 
 			args = helper.getDataArguments(tokens[i]);
-			newNode = tokenStore.getEntityNode(args.name).firstElementChild;
-			
+			if (!args.key) {
+				newNode = tokenStore.getEntityNode(args.name).firstElementChild;
 
-			newNode.setAttribute("data-args",tokens[i].getAttribute("data-args")||'')
-			newNode.setAttribute("data-json",tokens[i].getAttribute("data-json")||'')
-			tokens[i].parentNode.replaceChild(newNode,tokens[i]);
+				newNode.setAttribute("data-args",tokens[i].getAttribute("data-args")||'')
+				newNode.setAttribute("data-json",tokens[i].getAttribute("data-json")||'')
+				tokens[i].parentNode.replaceChild(newNode,tokens[i]);
+			}
 			
 		}
 	},
@@ -42,18 +43,18 @@ DocumentTranslator.prototype = {
 			newNode = translationStore.getEntityNode(args.id).firstElementChild;
 			newNode.setAttribute("data-args",keys[i].getAttribute("data-args")||'')
 			newNode.setAttribute("data-json",keys[i].getAttribute("data-json")||'')
-			this.synchronizeConditionals(newNode,keys[i],language)
-			keys[i].parentNode.replaceChild(newNode,keys[i])
+			this.synchronizeConditionals(newNode,keys[i])
+			this.synchronizeTokens(newNode,keys[i])
+			keys[i].parentNode.replaceChild(newNode,keys[i]);
+
 		}
 	},
-	synchronizeConditionals: function (newElement, oldElement, language) {
+	synchronizeConditionals: function (newElement, oldElement) {
 		
-		var originalConditionals = oldElement.querySelectorAll("conditional:not(.user)"),
-			newConditionals = newElement.querySelectorAll("conditional:not(.user)"),
+		var originalConditionals = oldElement.querySelectorAll("conditional"),
+			newConditionals = newElement.querySelectorAll("conditional"),
 			lookup = {};
-		if (originalConditionals.length!=newConditionals.length) {
-			throw new Error("Non matching keys")
-		}
+		
 		for (var i = 0;i<newConditionals.length;i++) {
 			var args = this.entitiesHelper.getDataArguments(newConditionals[i])
 			if (lookup[args.conditional]) {
@@ -68,6 +69,27 @@ DocumentTranslator.prototype = {
 			var node = lookup[args.conditional]
 			node.setAttribute("data-args",originalConditionals[i].getAttribute("data-args")||'')
 			//node.firstElementChild.setAttribute("data-args",originalConditionals[i].getAttribute("data-args")||'')
+		}
+
+	},
+	synchronizeTokens: function (newElement, oldElement) {
+		var newTokens = newElement.querySelectorAll("token"),
+			oldTokens = oldElement.querySelectorAll("token"),
+			idLookup = {},
+			id,
+			args;
+		for (var i=0;i<oldTokens.length;i++) {
+
+			args = this.entitiesHelper.getDataArguments(oldTokens[i]);
+			
+			
+			idLookup[args.id] = oldTokens[i].getAttribute("data-args");
+		}
+
+		for (var i=0;i<newTokens.length;i++) {
+			args = this.entitiesHelper.getDataArguments(newTokens[i]);
+			id = args.id;
+			newTokens[i].setAttribute("data-args",idLookup[id]||'')
 		}
 
 	}
