@@ -29,9 +29,7 @@
 							}
 							templateListViewModel.loadTemplates();
 
-							if (dialogConfig) {
-								templateListViewModel.dialogConfig(dialogConfig)
-							}	
+							
 							templateListViewModel.active(true)
 							
 						}

@@ -149,12 +149,7 @@ $(function () {
 					evt.editor.setData(data, setTimeout.bind(null,function () {
 						evt.editor.setReadOnly(false)
 
-						evt.editor.execCommand('wsdopen',{
-							buttonsToHide: ['ok','cancel'],
-							removeOpacity: true,
-							disableClose: true,
-							expandToFit: true
-						})
+						evt.editor.execCommand('wsdopen')
 					},100))
 
 

@@ -128,7 +128,6 @@ TemplateService.prototype = {
 			this.creating = ko.observable(false);
 			this.duplicating = ko.observable(false);
 			this.templateName = ko.observable("");
-			this.dialogConfig = ko.observable()
 			if (templates) {
 				this.allTemplatesLoaded(templates)
 			}

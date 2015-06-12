@@ -34,7 +34,8 @@ CKEDITOR.dialog.add( 'knockoutDialog', function( editor ) {
 	var knockoutNode;
 	var data;
 	var dialogWrapper;
-	var storedConfig
+	var storedConfig,
+	restoreOpacity
 
 
 	function configureDialog(dialog,config) {
