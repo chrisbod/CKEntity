@@ -385,21 +385,21 @@ body .cke_dialog_footer {
       border-radius: 5px;
 
   }
-  #templateList section:first-child button:hover,
-  #templateList section:first-child button:focus
+  #templateList section button:hover,
+  #templateList section button:focus
    {
     background-color: #d5e1f2;
    }
-   #templateList section:first-child button.template-create {
+   #templateList section button.template-create {
      background-image: url(../img/template-new.png)
    }
-   #templateList section:first-child button.template-delete {
+   #templateList section button.template-delete {
     background-image: url(../img/template-delete.png)
    }
-   #templateList section:first-child button.template-copy {
+   #templateList section button.template-copy {
      background-image: url(../img/template-copy.png)
    }
-   #templateList section:first-child button.template-open {
+   #templateList section button.template-open {
      background-image: url(../img/template-open.png)
    }
 
@@ -446,20 +446,20 @@ body .cke_dialog_footer {
       font-size: 90%;
       border-radius: 0;
     }
-    #templateList  input[type=radio]:checked + label span.image-highlight{
+    #templateList  input[type=radio]:checked +  span.image-highlight{
       background-color: #d5e1f2;
     }
     #templateList  label:hover span.image-highlight {
       background-color: #d5e1f2;
     }
-     #templateList input[type=radio] + label {
+     #templateList  label.template-name {
         width: 86px;
      }
 
     
     #templateList .creating {
       position: absolute;
-  bottom: 36px;
+  bottom: 53px;
   right: 1px;
   left: 1px;
   background-color: #eeeeee;

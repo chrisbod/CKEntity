@@ -335,8 +335,9 @@ $(function () {
 				<div class="form-container">
 			<div class="columns">
 					<section>
+						<button class="template-open" data-bind="click:loadTemplate">Open</button>
 							<button class="template-copy" data-bind="click:duplicateSelectedTemplate">Copy</button>
-							<button class="template-open" data-bind="click:loadTemplate">Open</button>
+							
 							<button class="template-create" data-bind="click:createNewTemplate">Create</button>
 							<button class="template-delete" data-bind="click:deleteTemplate">Delete</button>
 							
@@ -346,8 +347,9 @@ $(function () {
 					<section class="template-list">
 						<section class="templates-wrapper" data-bind="event:{dblclick:loadTemplate}">
 							<!--ko foreach: templates()-->
-							<input type="radio" data-bind="checkedValue: $data,checked: $parent.selected" name="templateId">
+							
 										<label class="template-name">
+											<input type="radio" data-bind="checkedValue: $data,checked: $parent.selected" name="templateId">
 												<span class="image-highlight"></span>	
 												<span class="template-text" data-bind="text: $data.templateName"></span>
 										</label>
