@@ -340,24 +340,14 @@ table.cke_single_page table[role=presentation][style*='width: 600px'] {
       background-color: #eee;
       text-align: center;
     }
-    #templateList  input[type=radio] {
-      visibility: hidden;
-      display: block;
-      width: 100%;
-      height: 20ex;
-      position: static;
-
-    }
-    #templateList span {
-      display: block;
-      white-space: normal;
-      text-align: center;
-    }
-    #templateList  input[type=radio]:checked ~ span {
-      border-radius: 0;
-      background-color: #eee;
-    }
-
+body .cke_dialog_title {
+   background-color: #666666;
+   color: white;
+    font-weight: bold;
+}
+body .cke_dialog_footer {
+  background-color: #666666;
+}
 #templateList {
   height: 100%;
 }
@@ -372,23 +362,48 @@ table.cke_single_page table[role=presentation][style*='width: 600px'] {
   }
   #templateList .columns > section {
     display: table-cell;
-    padding: 1ex;
     height: 100%;
+      padding-right: 6px;
   }
   #templateList .columns > section:first-child {
-    min-width: 25ex;
     border-right: 1px dotted #999;
   }
   #templateList .columns > section:last-child {
     min-width: 70ex;
   }
-  #templateList section:first-child  button {
-    display: block;
-    padding: 1ex;
-    margin-bottom: 1ex;
-    width: 100%;
-    box-sizing: border-box;
+  #templateList section:first-child button {
+      box-sizing: border-box;
+      display: block;
+      margin: 6px 0;
+      width: 100%;
+      height: 48px;
+      padding-left: 48px;
+      padding-right: 24px;
+      background-repeat: no-repeat;
+      background-position: 6px 6px;
+      min-width: 120px;
+      border-radius: 5px;
+
   }
+  #templateList section:first-child button:hover,
+  #templateList section:first-child button:focus
+   {
+    background-color: #d5e1f2;
+   }
+   #templateList section:first-child button.template-create {
+     background-image: url(../img/template-new.png)
+   }
+   #templateList section:first-child button.template-delete {
+    background-image: url(../img/template-delete.png)
+   }
+   #templateList section:first-child button.template-copy {
+     background-image: url(../img/template-copy.png)
+   }
+   #templateList section:first-child button.template-open {
+     background-image: url(../img/template-open.png)
+   }
+
+
     #templateList .template-list {
       min-height: 200px;
       position: relative;
@@ -401,23 +416,47 @@ table.cke_single_page table[role=presentation][style*='width: 600px'] {
       height: 100%;
       box-sizing: border-box;
       padding: 0 1ex;
+        white-space: normal;
+        display: flex;
+        flex-flow: row wrap;
     
     }
-     #templateList .templates-wrapper label {
-      display: block;
-      float: left;
-      width: 20ex;
-      margin: 0;
-    }
+     #templateList  input[type=radio] {
+      display: none;
 
-     }
-    #templateList .templates-wrapper label span {
-      background-image: url(../img/doc.png);
-      background-repeat: no-repeat;
-      padding: 0.5ex;
-      text-align: center;
-      display:block;
     }
+    #templateList span.image-highlight {
+      display: block;
+      width: 48px;
+      min-width: 48px;
+      margin: 6px auto;
+      min-height: 48px;
+      height: 48px;
+      box-sizing: border-box;
+      background-image: url(../img/template.png);
+      background-position: 6px 6px;
+      background-repeat: no-repeat;
+    }
+    #templateList span.template-text {
+      display: block;
+      white-space: normal;
+      text-align: center;
+      padding: 0;
+      width: auto;
+      font-size: 90%;
+      border-radius: 0;
+    }
+    #templateList  input[type=radio]:checked + label span.image-highlight{
+      background-color: #d5e1f2;
+    }
+    #templateList  label:hover span.image-highlight {
+      background-color: #d5e1f2;
+    }
+     #templateList input[type=radio] + label {
+        width: 86px;
+     }
+
+    
     #templateList .creating {
       position: absolute;
   bottom: 36px;
