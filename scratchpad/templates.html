@@ -33,7 +33,7 @@ For licensing, see LICENSE.md or http://ckeditor.com/license
 	<script src="scripts/sentencetokenizer.js"></script>
 	<script src="scripts/tokentokenizer.js"></script>
 	<script src="scripts/headerandfooterhandler.js"></script>
-	<script src="scripts/radiodeselect.js"></script>
+	<script src="scripts/languagehandler.js"></script>
 	<script src="scripts/templates.js"></script>
 	<script src="../vendor/knockout/knockout-3.3.0.js"></script>
 	<link href="css/autosuggest.css" rel="stylesheet">
@@ -64,6 +64,19 @@ For licensing, see LICENSE.md or http://ckeditor.com/license
 
 		//window.addEventListener("contextmenu", function (e){event.stopPropagation()},true)
 		
+	
+	/*var languageStore = new LanguageStore("https://www.firelex.com/priip/api/tag/token_data/get-all/content/","https://www.firelex.com/priip/api/tag/token_data/get-all/logic/","https://www.firelex.com/priip/api/translation/list/language/","https://www.firelex.com/priip/api/tag/list");*/
+
+
+
+	var conditionalCollapser = ConditionalCollapser.getInstance()
+	var entityTooltip = new EntityTooltip()
+	var userConditionalManager = new UserConditionalManager();
+	var pasteManager = new EntityPasteManager()
+
+	//var markupManager = new EntityMarkupManager()
+	var entitiesSelection = SelectionTracker.getInstance()
+
 	var translationContainer = new AutoSuggestContainer("translation-menu");
 	var tokenContainer = new AutoSuggestContainer("token-menu");
 	tokenContainer.getLastSentenceFromRange = function (range) {
@@ -73,21 +86,17 @@ For licensing, see LICENSE.md or http://ckeditor.com/license
 		}
 		return null;
 	}
-	/*var languageStore = new LanguageStore("https://www.firelex.com/priip/api/tag/token_data/get-all/content/","https://www.firelex.com/priip/api/tag/token_data/get-all/logic/","https://www.firelex.com/priip/api/translation/list/language/","https://www.firelex.com/priip/api/tag/list");*/
 
+	var languageHandler = LanguageHandler.getInstance();
+	languageHandler.setPaths("https://www.firelex.com/priip/api/tag/token_data/get-all/content/","https://www.firelex.com/priip/api/tag/token_data/get-all/logic/","https://www.firelex.com/priip/api/translation/list/language/","https://www.firelex.com/priip/api/tag/list");
 
+	languageHandler.onTranslate = function (lang) {
+		translationContainer.build(this.languageStore.getTranslationStoreByLanguage(lang),this.languageStore.getSentenceTokenizerByLanguage(lang));
+		tokenContainer.build(this.languageStore.getTokenStoreByLanguage(lang),this.languageStore.getTokenTokenizerByLanguage(lang));
+	}
 
-	var languageStore = new LanguageStore("https://www.firelex.com/priip/api/tag/token_data/get-all/content/","https://www.firelex.com/priip/api/tag/token_data/get-all/logic/","https://www.firelex.com/priip/api/translation/list/language/","https://www.firelex.com/priip/api/tag/list");
-	EntitiesHelper.prototype.languageStore = languageStore;//NASTY....
-	var conditionalCollapser = ConditionalCollapser.getInstance()
-	var entityTooltip = new EntityTooltip()
-	var userConditionalManager = new UserConditionalManager();
-	var pasteManager = new EntityPasteManager()
+	EntitiesHelper.prototype.languageStore = languageHandler.languageStore;//NASTY....
 
-	//var markupManager = new EntityMarkupManager()
-	var entitiesSelection = SelectionTracker.getInstance()
-
-	var translator = new DocumentTranslator(languageStore)
 	var headersAndFooters = new HeaderAndFooterHandler();
 	var templateService = TemplateService.getInstance("https://www.firelex.com/priip/api/template/")
 
@@ -98,27 +107,7 @@ function build(editor,editPanel,language)  {
 	editPanel.addEventListener("contextmenu", function (event) {
 		event.stopPropagation()
 	},true);
-	var oldLanguage = languageStore.currentLanguage;
 	
-
-	function updateAutosuggests(lang) {
-		translationContainer.build(languageStore.getTranslationStoreByLanguage(lang),languageStore.getSentenceTokenizerByLanguage(lang))
-		tokenContainer.build(languageStore.getTokenStoreByLanguage(lang),languageStore.getTokenTokenizerByLanguage(lang))
-
-	}
-	languageStore.installLanguage(language, function (languageDefinition) {
-		// (oldLanguage &&  oldLanguage != languageStore.currentLanguage) {
-		if (oldLanguage != languageDefinition.id) {
-			languageStore.setCurrentLanguage(languageDefinition.id);
-			translator.translate(editPanel,languageDefinition.id)
-
-		}
-			
-		updateAutosuggests(languageDefinition.id)
-		
-		
-	});
-
 	entityTooltip.init(editPanel,document.querySelector("#entity-edit"));
 	userConditionalManager.init(editPanel)
 	conditionalCollapser.init(editPanel)

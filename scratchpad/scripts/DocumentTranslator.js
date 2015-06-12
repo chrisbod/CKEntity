@@ -1,8 +1,14 @@
 function DocumentTranslator(languageStore) {
-	this.languageStore = languageStore;
 	this.entitiesHelper = new EntitiesHelper();
 }
+DocumentTranslator.getInstance = function (languageStore) {
+	if (!this.instance) {
+		this.instance = new this()
+	}
+	return this.instance;
+}
 DocumentTranslator.prototype = {
+	languageStore: null,
 	translate: function (elementToTranslate,languageId) {
 		this.translateTokens(elementToTranslate,languageId);
 		this.translateKeys(elementToTranslate,languageId);

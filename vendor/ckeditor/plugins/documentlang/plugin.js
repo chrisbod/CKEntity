@@ -31,13 +31,7 @@
 				i;
 
 
-			function changeLanguage(editor,languageId) {
-					  		currentEditorLanguageId = languageId
-					  		build(editor,editor.editable().$,currentEditorLanguageId);//horrible
-
-
-					 
-			}
+			
 			editor.on( 'contentDom', function() {
 					  var editable = editor.editable();
 					  build(editor,editable.$,currentEditorLanguageId);//horrible
@@ -51,36 +45,15 @@
 					    
 					})
 			editor.on("contentDom", function () {
-			var doc = editor.editable().$.ownerDocument;
-						  var language = doc.querySelector("html[lang]");
-					if (!changing) {
-						  //entities.css
-						  
-						  if (language) {
-						  	var documentLanguage = language.getAttribute("lang");
-						  	if (documentLanguage!=currentEditorLanguageId) {
-						  		
-						  		changeLanguage(editor,documentLanguage)
-						  	}
-						  	
-						  }
-					} else {
-						var language =language.setAttribute("lang",currentEditorLanguageId);
-						changing = false
-					}
-				})
+				LanguageHandler.getInstance().documentLoaded(editor)
+			})
 
 			// Registers command.
 			editor.addCommand( 'documentlanguage', {
 				exec: function( editor, languageId ) {
-					if (currentEditorLanguageId!=languageId) {
-						currentEditorLanguageId = languageId
-						changing = true
-						document.querySelector(".cke_button__documentlanguage_label").innerText = currentEditorLanguageId
-						changeLanguage(editor,languageId)
-
-					}
-					
+					document.querySelector(".cke_button__documentlanguage_label").innerText = languageId.toUpperCase();
+					LanguageHandler.getInstance().languageRequested(editor,languageId);
+					currentEditorLanguageId = languageId
 					
 				},
 				refresh: function( editor ) {
@@ -119,16 +92,14 @@
 			editor.addMenuItems( items );
 
 			editor.ui.add( 'DocumentLanguage', CKEDITOR.UI_MENUBUTTON, {
-				label: currentEditorLanguageId,
+				label: currentEditorLanguageId.toUpperCase(),
 				command: 'documentlanguage',
-				text: currentEditorLanguageId,
+				text: currentEditorLanguageId.toUpperCase(),
 				init: function () {
 					
 				},
 				onMenu: function() {
 					var activeItems = {};
-						//currentLanguagedElement = plugin.getCurrentLangElement( editor );
-						
 					for ( var prop in items ) {
 						
 						activeItems[ prop ] = CKEDITOR.TRISTATE_OFF;
@@ -138,14 +109,6 @@
 						
 
 					}
-					//console.log(editor)
-
-
-					//activeItems.language_remove = currentLanguagedElement ? CKEDITOR.TRISTATE_OFF : CKEDITOR.TRISTATE_DISABLED;
-
-					//if ( currentLanguagedElement )
-						//activeItems[ 'language_' + currentLanguagedElement.getAttribute( 'lang' ) ] = CKEDITOR.TRISTATE_ON;
-
 					return activeItems;
 				}
 			} );
