@@ -45,7 +45,8 @@
 					    
 					})
 			editor.on("contentDom", function () {
-				LanguageHandler.getInstance().documentLoaded(editor)
+				LanguageHandler.getInstance().documentLoaded(editor);
+				document.querySelector(".cke_button__documentlanguage_label").style.fontWeight = "bold"
 			})
 
 			// Registers command.
@@ -94,11 +95,14 @@
 			editor.ui.add( 'DocumentLanguage', CKEDITOR.UI_MENUBUTTON, {
 				label: currentEditorLanguageId.toUpperCase(),
 				command: 'documentlanguage',
+				toolbar: 'document,100',
 				text: currentEditorLanguageId.toUpperCase(),
 				init: function () {
 					
 				},
 				onMenu: function() {
+					document.querySelector(".cke_button__documentlanguage_label").innerText = currentEditorLanguageId.toUpperCase();
+					
 					var activeItems = {};
 					for ( var prop in items ) {
 						

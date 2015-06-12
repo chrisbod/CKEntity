@@ -158,13 +158,13 @@ CKEDITOR.dialog.add( 'knockoutDialog', function( editor ) {
 					var overspill = (rect.bottom-window.innerHeight)
 					if (overspill>0) {
 
-						wrapper.style.minHeight = (wrapper.offsetHeight - overspill) + "px"
+						wrapper.style.height = (wrapper.offsetHeight - overspill) + "px"
 					}
-					wrapper.style.height = "100%"
+					//wrapper.style.height = "100%"
 					var scrollElement = wrapper;
 					while (scrollElement) {
-						if (scrollElement.getAttribute("name") == "knockout") {
-							scrollElement = scrollElement.parentNode;
+						if (scrollElement.className == "cke_dialog_contents_body") {
+							scrollElement
 							break;
 						} 
 						scrollElement = scrollElement.parentNode;
@@ -172,9 +172,14 @@ CKEDITOR.dialog.add( 'knockoutDialog', function( editor ) {
 					size = this.getSize(),
 					width = size.width;
 					if (scrollElement.scrollHeight > scrollElement.offsetHeight) {
-						width = Math.max(window.innerWidth/2,size.width)-40
+						console.log(scrollElement.scrollHeight,scrollElement.offsetHeight)
+						//width = Math.max(window.innerWidth/2,size.width)
 						
-						
+					} 
+					if (scrollElement.scrollWidth > scrollElement.clientWidth) {
+
+						width = Math.max(window.innerWidth/1.5,scrollElement.scrollWidth)
+						scrollElement.style.minWidth = width+"px"
 					} 
 					
 					

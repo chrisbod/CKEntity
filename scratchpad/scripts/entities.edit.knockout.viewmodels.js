@@ -46,7 +46,6 @@ LogicDialogViewModel.prototype.updateFromElement = function (element) {
 	this.text(element.innerText||"If")
 	this.values(this.entitiesHelper.getDataArguments(element));
 	this.logic(this.entitiesHelper.getCurrentLogicDefinitions());
-	console.log(this.logic(),this.values())
 }
 
 function TokenTooltipViewModel(element) {

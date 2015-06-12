@@ -24,7 +24,6 @@ SentenceTokenizer.prototype = {
 			
 				return [text];
 			} else {
-				console.log("there")
 				return [split[split.length-1],text]
 			}
 		}
