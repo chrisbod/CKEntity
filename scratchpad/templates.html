@@ -328,10 +328,131 @@ $(function () {
 			
 			</form>
 		</div>
-<style>
+	<div id="knockoutTemplates">
+
+		<div class="dialog paper-layout token" data-bind="ckeditorDialog: active" id="tokenDialog">
+		
+		<form id="test" data-bind="submit: update">
+			
+			
+				
+				
+				
+			<section>
+				<ul data-bind="foreach: groups">
+					<li>
+						<div data-bind="text: label"></div>
+						<!--tried using a switch here but had scoping issues-->
+						<div data-bind="foreach: controls">
+							<!--ko if: type == 'checkbox' -->
+							
+								<label class="clear">
+									<input type="checkbox" data-bind="value:value, attr:{name:value}, checked: $root.values()[value]">
+									<span data-bind="text:text"></span>
+								</label>
+							
+							<!--/ko-->
+							<!--ko if: type == 'radio' -->
+							<label class="clear">
+								<input type="radio" data-bind="attr:{name: id}" value=""/>
+								<span>clear</span>
+							</label>
+								
+									<!--ko foreach: options -->
+											<label>
+												<input type="radio" data-bind="value:value, attr:{name:$parent.id}, checked: $root.values()[$parent.id]">
+												<span data-bind="text:text"></span>
+												
+											</label>
+										<!--/ko-->
+							
+							<!--/ko-->
+							<!--ko if: type == 'select' -->
+							
+								<select data-bind="minimumSelected: 0, attr:{name:id }, options: options, optionsText: 'text', 	optionsValue: 'value', value: $root.values()[id], onclick: $root.checkSelect()">
+								</select>
+							
+							<!--/ko-->
+							<!--ko if: type == 'text' -->
+							
+								<label>
+									<div data-bind="text: (typeof label != 'undefined' ?  label : '')"></div>
+								<input type="text" data-bind="attr:{name:id, placeholder: (typeof placeholder != 'undefined' ?  placeholder : '')}, value: value "/>
+								</label>
+							
+							<!--/ko-->
+							<!--ko if: type == 'textarea' -->
+							
+								<label>
+									<div data-bind="text: (typeof label != 'undefined' ?  label : '')"></div>
+								<textarea data-bind="attr:{name:id,placeholder:(typeof placeholder != 'undefined' ?  placeholder : '')}, value: value"></textarea>
+								</label>
+							
+							<!--/ko-->
+						</div>
+					</li>
+				</ul>     
+			</section>
+			</form>
+		</div>
+		<div class="dialog paper-layout"  data-bind="ckeditorDialog: active" id="logicDialog">
+			
+		<form id="rules" data-bind="submit: update">
+			
+			<section>
+			<fieldset class="container-content">
+				
+					<ul data-bind="foreach: logic">
+						
+						<li>
+						<div data-bind="text:text"></div>
+						
+						<div class="radio">
+						<label class="clear">
+							<input type="radio" data-bind="attr:{name: id}" value=""/>
+							<span>clear</span>
+						</label>	
+							<!--ko foreach:items-->
+						<label>
+							<input type="radio" data-bind="attr:{name: $parent.id}, checkedValue: value, value: value, checked:$root.values()[$parent.id]" data-deselectable/>
+							<span data-bind="text: text"></span>
+						</label>
+							<!--/ko-->
+						
+						</div>
+						
+					</li>
+
+					
+					</ul>
+				</fieldset>
+			</section>
+			
+			</form>
+		</div>
+
+		
 
 
-</style>
+		<div class="dialog logicDialog"  data-bind="ckeditorDialog: active" id="previewDialog">
+			
+		<form id="rules" data-bind="submit: update">
+			
+			<section>
+			<fieldset class="container-content">
+				
+					<ul data-bind="foreach: logic">
+						<li>
+							<strong data-bind="text:text"></strong>
+							<select size="4" data-bind="minimumSelected: 0,attr:{name:id }, options: items , optionsText: 'text', 	optionsValue: 'value', value: $root.values()[id]">
+							</select>
+						</li>
+					</ul>
+				</fieldset>
+			</section>
+			
+			</form>
+		</div>
 		<div  class="paper-layout" id="templateList"  data-bind="ckeditorDialog: active">
 			
 			<form onsubmit="return false">
@@ -393,7 +514,23 @@ $(function () {
 
 
 	</div>
-		
+</div>	
+<div class="tooltip hidden"   data-bind="attr: {'class': 'tooltip' + (active() ? ' active' : ' hidden')}" id="entity-edit">
+			
+
+				<header data-bind="text:title()">
+					
+				</header>
+				<fieldset>
+					<!--ko if: canEditRules -->
+					<button data-bind="click: launchRulesDialog">Rules</button>
+					<!--/ko-->
+					<!--ko if: canEditProperties-->
+					<button data-bind="click: launchPropertiesDialog">Properties</button>
+					<!--/ko-->
+				</fieldset>
+			
+		</div>
 					
 </body>
 </html>
