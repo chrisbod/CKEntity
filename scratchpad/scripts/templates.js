@@ -280,5 +280,7 @@ TemplateService.prototype = {
 			},
 			templateDuplicateButton: function () {
 				this.duplicateTemplate(this.templateCreated.bind(this))
-			}
+			},
+			dialogName: "templateList"
 	}
+	knockoutDialogFactory.addDialog("templateList", "Template List", 600, 300)

@@ -47,40 +47,28 @@ var launchingEditor = null
 }
 	
 CKEDITOR.plugins.add( 'knockoutdialog', {
-
-	
-
 	// The plugin initialization logic goes inside this method.
 	init: function( editor ) {
-		launchingEditor = editor
-		// Define an editor command that opens our dialog window.
-		var dialog = new CKEDITOR.dialogCommand( 'knockoutDialog' );
-		
-		
-		editor.addCommand( 'knockoutdialog', dialog  );
+		launchingEditor = editor	
+		knockoutDialogFactory.registerDialogs(editor)
 		editor.addCommand('launchKnockDialog',{
                         exec : function(editor,data) {
-                        	
                         	launchingEditor = editor,
                         	dialogArguments = data
-                        	
                         	editor.getKnockoutDialogArguments = function () {//horrific
                         		//delete editor.getKnockoutDialogArguments;
                         		return data
                         	}
-                        	editor.execCommand("knockoutdialog",editor)
+                        	editor.execCommand(data.viewModel.dialogName,editor)
 
-                        }
-              
+                        }              
          })
-
-		// Register our dialog file -- this.path is the plugin folder path.
-		CKEDITOR.dialog.add( 'knockoutDialog', this.path + 'dialogs/knockout.js' );
+		 
+		
 	}
 });
 
 
 
 })();
-// Register the plugin within the editor.
 

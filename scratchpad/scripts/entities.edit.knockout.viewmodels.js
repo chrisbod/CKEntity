@@ -20,7 +20,8 @@ function TokenDialogViewModel(element) {
 	this.active = ko.observable(false);
 	this.groups = ko.observableArray([]);
 }
-TokenDialogViewModel.prototype = new EntityViewModel();			
+TokenDialogViewModel.prototype = new EntityViewModel();
+
 TokenDialogViewModel.prototype.updateFromElement = function (element) {
 	this.element = element;
 	this.values(this.entitiesHelper.getDataArguments(element));
@@ -29,6 +30,10 @@ TokenDialogViewModel.prototype.updateFromElement = function (element) {
 	this.tokenText(tokenDefinition.id);
 	this.groups(tokenDefinition.groups);
 }
+TokenDialogViewModel.prototype.dialogName = "tokenDialog";
+knockoutDialogFactory.addDialog("tokenDialog", "Token Properties", 300, 100)
+
+
 
 
 function LogicDialogViewModel(element) {
@@ -47,6 +52,9 @@ LogicDialogViewModel.prototype.updateFromElement = function (element) {
 	this.values(this.entitiesHelper.getDataArguments(element));
 	this.logic(this.entitiesHelper.getCurrentLogicDefinitions());
 }
+
+LogicDialogViewModel.prototype.dialogName = "logicDialog";
+knockoutDialogFactory.addDialog("logicDialog", "Display Logic", 600, 400)
 
 function TokenTooltipViewModel(element) {
 	this.title = ko.observable("");
