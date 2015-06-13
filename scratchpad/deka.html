@@ -324,22 +324,7 @@ function launchEditor() {
 			</form>
 		</div>
 
-		<div class="tooltip hidden"   data-bind="attr: {'class': 'tooltip' + (active() ? ' active' : ' hidden')}" id="entity-edit">
-			
-
-				<header data-bind="text:title()">
-					
-				</header>
-				<fieldset>
-					<!--ko if: canEditRules -->
-					<button data-bind="click: launchRulesDialog">Rules</button>
-					<!--/ko-->
-					<!--ko if: canEditProperties-->
-					<button data-bind="click: launchPropertiesDialog">Properties</button>
-					<!--/ko-->
-				</fieldset>
-			
-		</div>
+		
 
 
 		<div class="dialog logicDialog"  data-bind="ckeditorDialog: active" id="previewDialog">
@@ -423,6 +408,22 @@ function launchEditor() {
 
 	</div>
 </div>	
+<div class="tooltip hidden"   data-bind="attr: {'class': 'tooltip' + (active() ? ' active' : ' hidden')}" id="entity-edit">
+			
+
+				<header data-bind="text:title()">
+					
+				</header>
+				<fieldset>
+					<!--ko if: canEditRules -->
+					<button data-bind="click: launchRulesDialog">Rules</button>
+					<!--/ko-->
+					<!--ko if: canEditProperties-->
+					<button data-bind="click: launchPropertiesDialog">Properties</button>
+					<!--/ko-->
+				</fieldset>
+			
+		</div>
 					
 </body>
 </html>

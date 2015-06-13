@@ -31,7 +31,7 @@ TokenDialogViewModel.prototype.updateFromElement = function (element) {
 	this.groups(tokenDefinition.groups);
 }
 TokenDialogViewModel.prototype.dialogName = "tokenDialog";
-knockoutDialogFactory.addDialog("tokenDialog", "Token Properties", 300, 100)
+knockoutDialogFactory.addDialog("tokenDialog", "Token Properties", 350, 150)
 
 
 
