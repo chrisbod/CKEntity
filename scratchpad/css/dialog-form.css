@@ -7,6 +7,9 @@
     font-size: 100%;
 }
 
+#knockoutTemplates {
+  display: none;
+}
 
 
 

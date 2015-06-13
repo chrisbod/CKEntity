@@ -46,17 +46,17 @@ var knockoutDialogFactory = {
 					if (restoreOpacity) {
 						document.querySelector("div.cke_dialog_background_cover").style.opacity = "0.5";
 					}
-					document.body.appendChild(data.element)
+					document.getElementById("knockoutTemplates").appendChild(data.element)
 
 				},
 				// This method is invoked once a user clicks the OK button, confirming the dialog.
 				onOk: function() {
-					document.body.appendChild(data.element);
+					document.getElementById("knockoutTemplates").appendChild(data.element)
 					data.onOkay()
 					
 				},
 				onCancel: function () {
-					document.body.appendChild(data.element);
+					document.getElementById("knockoutTemplates").appendChild(data.element)
 					data.onCancel()
 				}
 			};

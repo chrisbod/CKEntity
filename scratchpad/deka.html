@@ -1,0 +1,428 @@
+<!DOCTYPE html>
+<!--
+Copyright (c) 2003-2015, CKSource - Frederico Knabben. All rights reserved.
+For licensing, see LICENSE.md or http://ckeditor.com/license
+-->
+<html>
+<head>
+	<meta charset="utf-8">
+	<title>Deka Investments Demo</title>
+	<meta name="ckeditor-sample-required-plugins" content="sourcearea">
+	<script src="../vendor/jquery/jquery-1.11.2.min.js">
+
+ 
+	</script>
+	<meta name="ckeditor-sample-required-plugins" content="sourcearea">
+	<script src="../vendor/ckeditor/ckeditor.js"></script>
+	<script src="../vendor/knockout/knockout-3.3.0.js"></script>
+	<script src="../vendor/ckeditor/plugins/wallstreetdocs/plugin.js"></script>
+	<script src="scripts/selectcontrol.js"></script>
+	<script src="scripts/entities.js"></script>
+	<script src="scripts/entities.store.js"></script>
+	<script src="scripts/entities.languagestore.js"></script>
+	<script src="scripts/selectiontracker.js"></script>
+	<script src="scripts/entities.paste.js"></script>
+	<script src="scripts/entities.conditional.collapser.js"></script>
+	<script src="scripts/entities.markupmanager.js"></script>
+	<script src="scripts/entities.usergenerated.js"></script>
+	<script src="scripts/knockoutdialogfactory.js"></script>
+	<script src="scripts/entities.edit.knockout.viewmodels.js"></script>
+
+	<script src="scripts/documenttranslator.js"></script>
+	<script src="scripts/intent.js"></script>
+	<script src="scripts/positionablecontainer.js"></script>
+	<script src="scripts/autosuggest.container.js"></script>
+	<script src="scripts/entities.tooltip.js"></script>
+	<script src="scripts/sentencetokenizer.js"></script>
+	<script src="scripts/tokentokenizer.js"></script>
+	<script src="scripts/headerandfooterhandler.js"></script>
+	<script src="scripts/languagehandler.js"></script>
+	<script src="scripts/templates.js"></script>
+	
+	<link href="css/autosuggest.css" rel="stylesheet">
+	<link href="css/dialog-form.css" rel="stylesheet">
+	<link href="css/tooltip.css" rel="stylesheet">
+	<link href="css/kid.css" rel="stylesheet">
+</head>
+<body>
+			<style>
+			#documentSource {
+				width: 100%;
+				height: 100%;
+			}
+			body {
+				font-family: Arial, Helvetica, sans-serif;
+				margin: 0;
+			}
+				span.rules {
+					display: inline-block;
+					color: rgba(0,0,0,0);
+					width: 0;
+					overflow: hidden;
+				}
+
+			
+
+			</style>
+
+	
+	
+		<script>
+
+
+		//window.addEventListener("contextmenu", function (e){event.stopPropagation()},true)
+		
+	
+	/*var languageStore = new LanguageStore("https://www.firelex.com/priip/api/tag/token_data/get-all/content/","https://www.firelex.com/priip/api/tag/token_data/get-all/logic/","https://www.firelex.com/priip/api/translation/list/language/","https://www.firelex.com/priip/api/tag/list");*/
+
+
+
+	var conditionalCollapser = ConditionalCollapser.getInstance()
+	var entityTooltip = new EntityTooltip()
+	var userConditionalManager = new UserConditionalManager();
+	var pasteManager = new EntityPasteManager()
+
+	//var markupManager = new EntityMarkupManager()
+	var entitiesSelection = SelectionTracker.getInstance()
+
+	var translationContainer = new AutoSuggestContainer("translation-menu");
+	var tokenContainer = new AutoSuggestContainer("token-menu");
+	tokenContainer.getLastSentenceFromRange = function (range) {
+		var token =  range.toString().match(/(?:\s*)(<)[^>]*$/);
+		if (token) {
+			return token[1]
+		}
+		return null;
+	}
+
+	var languageHandler = LanguageHandler.getInstance();
+	languageHandler.setPaths("https://www.firelex.com/priip/api/tag/token_data/get-all/content/","https://www.firelex.com/priip/api/tag/token_data/get-all/logic/","https://www.firelex.com/priip/api/translation/list/language/","https://www.firelex.com/priip/api/tag/list");
+
+	languageHandler.onTranslate = function (lang) {
+		translationContainer.build(this.languageStore.getTranslationStoreByLanguage(lang),this.languageStore.getSentenceTokenizerByLanguage(lang));
+		tokenContainer.build(this.languageStore.getTokenStoreByLanguage(lang),this.languageStore.getTokenTokenizerByLanguage(lang));
+	}
+
+	EntitiesHelper.prototype.languageStore = languageHandler.languageStore;//NASTY....
+
+	var headersAndFooters = new HeaderAndFooterHandler();
+	var templateService = TemplateService.getInstance("https://www.firelex.com/priip/api/template/")
+
+
+function build(editor,editPanel,language)  {
+	//allow context menu when appropriate
+	editPanel.addEventListener("contextmenu", function (event) {
+		event.stopPropagation()
+	},true);
+	
+	entityTooltip.init(editPanel,document.querySelector("#entity-edit"));
+	userConditionalManager.init(editPanel)
+	conditionalCollapser.init(editPanel)
+	//markupManager.init(editPanel)
+	pasteManager.init(editPanel)
+	entitiesSelection.init(editPanel)
+	translationContainer.setEditableElement(editPanel);
+	tokenContainer.setEditableElement(editPanel);
+	headersAndFooters.init(editPanel)
+	//new RadioDeselect().init(document)
+
+
+
+}
+function launchEditor() {
+	var rect = document.getElementById("documentSource").getBoundingClientRect()
+
+
+
+	CKEDITOR.replace( 'documentSource', {
+				title: false,
+				disableNativeSpellChecker: false,
+				allowedContent: true,
+				fullPage: true,
+				allowedContent: true,
+				height: rect.height-100,
+				extraPlugins: 'tab,wysiwygarea,wallstreetdocs,wordpaste,documentlang,knockoutdialog,pagebreaktag,wsdpreview,wsdtoolbar',
+				removePlugins: 'elementspath,magicline,pastetext,pastefromword,clipboard,forms,scayt',
+				language_list: [ 'en:English', 'de:German'],
+				removeButtons: 'Source,Preview,Print,Save,NewPage,DocProps,Templates,SpellChecker,CreateDiv,Flash,Smiley,PageBreak,Iframe,About,Language,SpellChecker',
+				skin: 'office2013',
+				on :
+   {
+      // Maximize the editor on start-up.
+      'instanceReady' : function( evt )
+      {
+        // evt.editor.execCommand( 'maximize' );
+         $.ajax('img/deka/deka.html', {
+				success: function (data) {
+					evt.editor.setReadOnly(true);
+					evt.editor.setData(data, setTimeout.bind(null,function () {
+						evt.editor.setReadOnly(false)
+
+						evt.editor.execCommand('wsdopen')
+					},100))
+
+
+
+				}
+			})
+
+
+
+      }
+   } 
+
+			});
+			
+
+			
+}
+
+
+		</script>
+		
+
+		<section id="deka" style="  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  top: 0;">
+			<section style="margin: 0 auto;  height: 100%; width: 75%">
+				
+				<form action="javascript:;" method="GET" style="  position: relative;
+  padding: 20px; height: 100%">
+  			<header style="background-image: url(img/deka/landscape.jpg); background-repeat: no-repeat; height: 230px; margin-bottom: 20px">
+  				<img src="img/deka/logo.png" style="width: 230px; float: right"/>
+  			</header>
+  			<section style="  position: absolute;
+  right: 0;
+  left: 0;
+  padding: 20px;
+  bottom: 40px;
+  top: 260px;">
+				<textarea id="documentSource" style="background-image: url('img/deka/background.jpg'); background-size: cover; border-width:0; cursor: default" onclick="launchEditor()">
+
+
+				</textarea>
+			</section>
+		</form>
+			</section>
+			
+		</section>
+		
+			
+			
+			
+		
+
+
+
+
+
+
+
+
+	<div id="knockoutTemplates">
+
+		<div class="dialog paper-layout token" data-bind="ckeditorDialog: active" id="tokenDialog">
+		
+		<form id="test" data-bind="submit: update">
+			
+			
+				
+				
+				
+			<section>
+				<ul data-bind="foreach: groups">
+					<li>
+						<div data-bind="text: label"></div>
+						<!--tried using a switch here but had scoping issues-->
+						<div data-bind="foreach: controls">
+							<!--ko if: type == 'checkbox' -->
+							
+								<label class="clear">
+									<input type="checkbox" data-bind="value:value, attr:{name:value}, checked: $root.values()[value]">
+									<span data-bind="text:text"></span>
+								</label>
+							
+							<!--/ko-->
+							<!--ko if: type == 'radio' -->
+							<label class="clear">
+								<input type="radio" data-bind="attr:{name: id}" value=""/>
+								<span>clear</span>
+							</label>
+								
+									<!--ko foreach: options -->
+											<label>
+												<input type="radio" data-bind="value:value, attr:{name:$parent.id}, checked: $root.values()[$parent.id]">
+												<span data-bind="text:text"></span>
+												
+											</label>
+										<!--/ko-->
+							
+							<!--/ko-->
+							<!--ko if: type == 'select' -->
+							
+								<select data-bind="minimumSelected: 0, attr:{name:id }, options: options, optionsText: 'text', 	optionsValue: 'value', value: $root.values()[id], onclick: $root.checkSelect()">
+								</select>
+							
+							<!--/ko-->
+							<!--ko if: type == 'text' -->
+							
+								<label>
+									<div data-bind="text: (typeof label != 'undefined' ?  label : '')"></div>
+								<input type="text" data-bind="attr:{name:id, placeholder: (typeof placeholder != 'undefined' ?  placeholder : '')}, value: value "/>
+								</label>
+							
+							<!--/ko-->
+							<!--ko if: type == 'textarea' -->
+							
+								<label>
+									<div data-bind="text: (typeof label != 'undefined' ?  label : '')"></div>
+								<textarea data-bind="attr:{name:id,placeholder:(typeof placeholder != 'undefined' ?  placeholder : '')}, value: value"></textarea>
+								</label>
+							
+							<!--/ko-->
+						</div>
+					</li>
+				</ul>     
+			</section>
+			</form>
+		</div>
+		<div class="dialog paper-layout"  data-bind="ckeditorDialog: active" id="logicDialog">
+			
+		<form id="rules" data-bind="submit: update">
+			
+			<section>
+			<fieldset class="container-content">
+				
+					<ul data-bind="foreach: logic">
+						
+						<li>
+						<div data-bind="text:text"></div>
+						
+						<div class="radio">
+						<label class="clear">
+							<input type="radio" data-bind="attr:{name: id}" value=""/>
+							<span>clear</span>
+						</label>	
+							<!--ko foreach:items-->
+						<label>
+							<input type="radio" data-bind="attr:{name: $parent.id}, checkedValue: value, value: value, checked:$root.values()[$parent.id]" data-deselectable/>
+							<span data-bind="text: text"></span>
+						</label>
+							<!--/ko-->
+						
+						</div>
+						
+					</li>
+
+					
+					</ul>
+				</fieldset>
+			</section>
+			
+			</form>
+		</div>
+
+		<div class="tooltip hidden"   data-bind="attr: {'class': 'tooltip' + (active() ? ' active' : ' hidden')}" id="entity-edit">
+			
+
+				<header data-bind="text:title()">
+					
+				</header>
+				<fieldset>
+					<!--ko if: canEditRules -->
+					<button data-bind="click: launchRulesDialog">Rules</button>
+					<!--/ko-->
+					<!--ko if: canEditProperties-->
+					<button data-bind="click: launchPropertiesDialog">Properties</button>
+					<!--/ko-->
+				</fieldset>
+			
+		</div>
+
+
+		<div class="dialog logicDialog"  data-bind="ckeditorDialog: active" id="previewDialog">
+			
+		<form id="rules" data-bind="submit: update">
+			
+			<section>
+			<fieldset class="container-content">
+				
+					<ul data-bind="foreach: logic">
+						<li>
+							<strong data-bind="text:text"></strong>
+							<select size="4" data-bind="minimumSelected: 0,attr:{name:id }, options: items , optionsText: 'text', 	optionsValue: 'value', value: $root.values()[id]">
+							</select>
+						</li>
+					</ul>
+				</fieldset>
+			</section>
+			
+			</form>
+		</div>
+		<div  class="paper-layout" id="templateList"  data-bind="ckeditorDialog: active">
+			
+			<form onsubmit="return false">
+				<div class="form-container">
+			<div class="columns">
+					<section>
+						<button class="template-open" data-bind="click:loadTemplate">Open</button>
+							<button class="template-copy" data-bind="click:duplicateSelectedTemplate">Copy</button>
+							
+							<button class="template-create" data-bind="click:createNewTemplate">Create</button>
+							<button class="template-delete" data-bind="click:deleteTemplate">Delete</button>
+							
+							
+					</section>
+					
+					<section class="template-list">
+						<section class="templates-wrapper" data-bind="event:{dblclick:loadTemplate,click:cancelCreation}">
+							<!--ko foreach: templates()-->
+							
+										<label class="template-name">
+											<input type="radio" data-bind="checkedValue: $data,checked: $parent.selected" name="templateId">
+												<span class="image-highlight"></span>	
+												<span class="template-text" data-bind="text: $data.templateName"></span>
+										</label>
+							<!--/ko-->
+						</section>
+					</section>
+					
+					
+			
+			
+
+			</div>
+			
+			<!--ko if: creating() == true -->
+					<section class="creating">
+						<input type="text" value="" placeholder="Enter new name" required="true" data-bind="event:{keypress:nameInput}, hasFocus:creating() == true, textInput:templateName">
+						<button data-bind="event: {click:templateCreateButton}">Create</button>
+
+					</section>
+					<!--/ko-->
+					<!--ko if: duplicating() == true -->
+					<section class="creating">
+						<input type="text" placeholder="Enter new name" required="true" data-bind="event:{keypress:nameInput}, hasFocus:duplicating() == true, textInput:templateName">
+						<button data-bind="event: {click:templateDuplicateButton}">Copy</button>
+
+					</section>
+					<!--/ko-->
+			<!--ko if: errorMessage() != '' -->
+			<section class="error">
+				<p data-bind="text:errorMessage"></p>
+				<pre data-bind="text:errorDetails"></pre>
+				<button class="ok-button" data-bind="click: clearError">Ok</button>
+			</section>
+			<!--/ko-->
+		</div>
+			</form>	
+
+
+
+	</div>
+</div>	
+					
+</body>
+</html>
