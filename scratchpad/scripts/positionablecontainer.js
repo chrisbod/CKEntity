@@ -4,12 +4,10 @@ function PositionableContainer() {
 PositionableContainer.prototype = {
 	visible: false,
 	moveTo: function (x,y) {
-		if (x > window.innerWidth/2) {
-			this.element.style.left = x/2+"px";
-		} else {
-			this.element.style.left = x+"px";
-		}
+
+		this.element.style.left = x+"px";
 		this.element.style.top = y+"px";
+
 		this.configureMetrics();
 	},
 	moveToElement: function (element) {
@@ -31,8 +29,12 @@ PositionableContainer.prototype = {
 	moveToRange: function (ownerDocument,range) {
 		var rect = range.getClientRects(),
 			frameRect = ownerDocument.defaultView.frameElement.getBoundingClientRect();
+			console.log(frameRect.left+rect[0].left)
 		if (rect[0]) {
+			console.log(frameRect,rect[0])
 			this.moveTo(frameRect.left+rect[0].left,frameRect.top+rect[rect.length-1].bottom);
+		} else {
+			console.log("here")
 		}
 	},
 	build: function () {
@@ -42,7 +44,8 @@ PositionableContainer.prototype = {
 		document.body.appendChild(this.element)
 	},
 	hide: function () {
-		this.element.style.visibility = "";
+		this.element.style.visibility = "hidden";
+		//this.element.setAttribute("style","")
 		this.visible = false;
 	},
 	show: function () {

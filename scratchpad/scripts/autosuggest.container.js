@@ -1,8 +1,11 @@
 
-function AutoSuggestContainer(id, tokenizer) {
+function AutoSuggestContainer(id, minWidth) {
 	this.element = document.createElement("div")
 	this.element.className = "autosuggest-container";
 	this.element.id = id;
+	if (minWidth) {
+		this.element.style.minWidth = minWidth
+	}
 	this.element.addEventListener("click", this, true);
 	this.element.addEventListener("mouseover", this);
 	this.element.addEventListener("keydown",this, true);
@@ -194,7 +197,7 @@ function AutoSuggestContainer(id, tokenizer) {
 				return;
 			}
 			range.setStart(node,Math.max(0,node.data.lastIndexOf(triggers[0].trim())))
-			this.moveToRange(this.editableDocument,this.startingRange);
+			this.moveToRange(this.editableDocument,range);
 			var suggestions = [];
 			for (var i=0;i<triggers.length;i++) {
 				suggestions = suggestions.concat(this.tokenizer.getSuggestions(triggers[i]))
@@ -338,11 +341,20 @@ function AutoSuggestContainer(id, tokenizer) {
 	configureMetrics: function () {
 		var rect = this.element.getBoundingClientRect(),
 			viewBottom = window.innerHeight;
+
 		if (rect.bottom>viewBottom) {
 			this.element.style.bottom = "0px"
 		} else {
 			this.element.style.bottom = ""
 		}
+		if (rect.right > window.innerWidth) {
+			var overspill = window.innerWidth - rect.right;
+			//console.log(this.element.style.left)
+			var left = parseInt(this.element.style.left) + overspill;
+				this.element.style.left = left + "px"
+		}
+		//console.log(this.element.getBoundingClientRect().right,window.innerWidth)
+		
 	},
 });
 
