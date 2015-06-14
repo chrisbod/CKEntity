@@ -91,13 +91,94 @@
 				title: 'Translations',
 				icon: CKEDITOR.plugins.getPath('wsdtoolbar') + 'images/translations.png'
 			});
-		/*	editor.ui.addButton && editor.ui.addButton( 'WsdSaveAs', {
-				
-				command: 'wsdsaveas',
-				toolbar: 'document,70',
-				icon: CKEDITOR.plugins.getPath('wsdtoolbar') + 'images/saveas.png',
-				title: "SaveAs"
-			} );*/
+			var currentZoom = zoom.getCurrentPercentageZoom()
+			var zoomLevels = {
+				fitToPage: {
+					label: "Fit to Window",
+					role: 'menuitemcheckbox',
+					group: 'zoom',
+					order: 1,
+					onClick: function () {
+						currentZoom = "fitToPage";
+						zoom.fitToWindow()
+					}
+				},
+				"50%": {
+					label: "50%",
+					role: 'menuitemcheckbox',
+					group: 'zoom',
+					order: 2,
+					onClick: function () {
+						zoom.setPercentageZoom(currentZoom = "50%")
+					}
+				},
+				"75%": {
+					label: "75%",
+					role: 'menuitemcheckbox',
+					group: 'zoom',
+					order: 3,
+					onClick: function () {
+						zoom.setPercentageZoom(currentZoom = "75%")
+					}
+				},
+				"100%": {
+					label: "100%",
+					role: 'menuitemcheckbox',
+					group: 'zoom',
+					order: 4,
+					onClick: function () {
+						zoom.setPercentageZoom(currentZoom = "100%")
+					}
+				},
+				"150%": {
+					label: "150%",
+					role: 'menuitemcheckbox',
+					group: 'zoom',
+					order: 5,
+					onClick: function () {
+						zoom.setPercentageZoom(currentZoom = "150%")
+					}
+				},
+				"200%": {
+					label: "200%",
+					role: 'menuitemcheckbox',
+					group: 'zoom',
+					order: 6,
+					onClick: function () {
+						zoom.setPercentageZoom(currentZoom = "200%")
+					}
+				}
+			}
+			editor.addMenuGroup( 'zoom', 1 );
+			editor.addMenuItems( zoomLevels );
+			editor.ui.add( 'DocumentZoom', CKEDITOR.UI_MENUBUTTON, {
+				label: "Zoom",
+				//command: 'zoom',
+				toolbar: 'wallstreetdocs',
+				text: "Zoom",
+				icon: CKEDITOR.plugins.getPath('wsdtoolbar') + 'images/zoom.png',
+				init: function () {
+					
+				},
+				onMenu: function() {
+					var zoomZoom = zoom.getCurrentPercentageZoom()
+					if (zoomZoom in zoomLevels) {
+						currentZoom = zoomZoom
+					} 
+					var activeItems = {};
+					
+					for ( var prop in zoomLevels ) {
+						
+						activeItems[ prop ] = CKEDITOR.TRISTATE_OFF;
+					}
+					if (currentZoom) {
+						activeItems[ currentZoom ] = CKEDITOR.TRISTATE_ON;
+						
+
+					}
+					return activeItems;
+				}
+			} );
 		}
 	})
 })()

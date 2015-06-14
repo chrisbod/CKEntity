@@ -108,6 +108,48 @@ For licensing, see LICENSE.md or http://ckeditor.com/license
 	var headersAndFooters = new HeaderAndFooterHandler();
 	var templateService = TemplateService.getInstance("https://www.firelex.com/priip/api/template/")
 
+function ZoomControl() {}
+ZoomControl.getInstance = function () {
+	if (!this.instance) {
+		this.instance = new this();
+	}
+	return this.instance;
+}
+ZoomControl.prototype = {
+	zoomLevel: 1,
+	init: function (element) {
+		this.element = element;
+		this.window = element.ownerDocument.defaultView;
+		if (element.style.zoom) {
+			this.zoomLevel = this.window.getComputedStyle(element,null).zoom 
+		}
+	},
+	getWindowSize: function () {
+		return this.window.document.documentElement.getBoundingClientRect()
+		//return {width:window.innerWidth,height: window.innerHeight}
+	},
+	getElementSize: function () {
+		return this.element.getBoundingClientRect();
+	},
+	getCurrentProportion: function () {
+		var windowSize = this.getWindowSize(),
+			elementSize = this.getElementSize();
+		return elementSize.width/windowSize.width;
+	},
+	getCurrentPercentageZoom: function () {
+		return (this.zoomLevel*100)+"%";
+	},
+	fitToWindow: function () {
+		var prop = Math.floor(100/this.getCurrentProportion())/102
+		this.element.style.zoom = this.zoomLevel = prop;
+	},
+	setPercentageZoom: function (percent) {
+		this.element.style.zoom = this.zoomLevel = parseFloat(percent)/100;
+	}
+}
+
+var zoom = ZoomControl.getInstance()
+
 
 function build(editor,editPanel,language)  {
 	//allow context menu when appropriate
@@ -125,7 +167,8 @@ function build(editor,editPanel,language)  {
 	tokenContainer.setEditableElement(editPanel);
 	headersAndFooters.init(editPanel)
 	//new RadioDeselect().init(document)
-
+	zoom.init(editPanel)
+	//zoom.setPercentageZoom(50)
 
 
 }
@@ -177,8 +220,11 @@ function launchEditor() {
 			
 }
 $(function () {
-	launchEditor()
+	launchEditor();
+
 })
+
+
 
 
 		</script>
