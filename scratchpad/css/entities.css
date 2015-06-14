@@ -1,5 +1,5 @@
 span.rules {
-	color: red;
+	color: #d75633;
 
 }
 
@@ -15,7 +15,7 @@ span.entity-wrapper:focus {
 if img, endif img {
 	width: 1em;
 	height: 1em;
-	border: 1px dotted red;
+	border: 1px dotted #d75633;
 	border-radius: 0.2ex;
 	box-sizing: border-box;
 	vertical-align: text-bottom;
@@ -66,12 +66,12 @@ token {
 	
 }
 translation .contents {
-	border-bottom: 1px dotted green;
+	border-bottom: 1px dotted #79a697;
 }
 
 
 .editing token {
-	color: green;
+	color: #79a697;
 }
 
 translation {
@@ -92,7 +92,7 @@ token > span {
 }
 
 token {
-	color: green;	
+	color: #79a697;	
 }
 token[data-read-only] {
 	color: inherit;
@@ -124,7 +124,7 @@ span[data-entity-node=token]::selection,
 token::selection,
 token span::selection
 {
-	background-color: green;
+	background-color: #79a697;
 	color: white;
 }
 
@@ -199,13 +199,13 @@ conditional[data-args*=hidden] .contents {
 .conditional.user .contents {
 	position:relative;
 	z-index: 1000;
-	outline: 1px dotted green;
+	outline: 1px dotted #79a697;
 }
 
 .conditional.user {
 	
 	display: inline;
-	color: green;
+	color: #79a697;
 	position: relative;
 }
 .entity-wrapper > .conditional:before {

@@ -45,10 +45,11 @@ div.autosuggest-container a.focussed   {
 
 
 #token-menu a {
-	color: green;
+	color: #79a697;
+	 font-weight: bold;
 }
 #token-menu a.focussed {
-	background-color: green;
+	background-color: #79a697;
 	color: white;
 }
 #token-menu a {
@@ -62,7 +63,7 @@ token > span {
 }
 
 token {
-	color: red;	
+	color: #d75633;	
 }
 token > span {
 	display: inline;

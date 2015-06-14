@@ -69,20 +69,27 @@
 			editor.addCommand( 'openentities', {
 				exec: function (editor) {
 						tokenContainer.showAll()
-							
-						
-
-					
-					
-					
 				}
 			});
 
 			editor.ui.addButton('wsdEntity', {
 				command: 'openentities',
 				toolbar: 'wallstreetdocs',
-				title: 'Entity',
-				icon: "save"
+				title: 'Entities',
+				icon: CKEDITOR.plugins.getPath('wsdtoolbar') + 'images/entities.png'
+			});
+
+			editor.addCommand( 'opentranslations', {
+				exec: function (editor) {
+						translationContainer.showAll()
+				}
+			});
+
+			editor.ui.addButton('wsdTranslation', {
+				command: 'opentranslations',
+				toolbar: 'wallstreetdocs',
+				title: 'Translations',
+				icon: CKEDITOR.plugins.getPath('wsdtoolbar') + 'images/translations.png'
 			});
 		/*	editor.ui.addButton && editor.ui.addButton( 'WsdSaveAs', {
 				
