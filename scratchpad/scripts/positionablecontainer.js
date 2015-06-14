@@ -4,17 +4,18 @@ function PositionableContainer() {
 PositionableContainer.prototype = {
 	visible: false,
 	moveTo: function (x,y) {
+
 		this.element.style.left = x+"px";
 		this.element.style.top = y+"px";
+
 		this.configureMetrics();
 	},
 	moveToElement: function (element) {
-
 		var rect = element.getBoundingClientRect();
 		
-		this.moveTo(rect.left,rect.top);
-		this.configureMetrics();
-		
+		this.moveTo(rect.left,rect.top+rect.height);
+		this.configureMetrics(element);
+		this.inputElement = element;
 	},
 	moveToCursorBottomLeft: function (cursorContainer) {
 		var selection = cursorContainer.document.getSelection().getRangeAt(0)
@@ -26,20 +27,18 @@ PositionableContainer.prototype = {
 		this.configureMetrics();
 	},
 	moveToRange: function (ownerDocument,range) {
-
 		var rect = range.getClientRects(),
 			frameRect = ownerDocument.defaultView.frameElement.getBoundingClientRect();
-			if (rect[0]) {
-				this.moveTo(frameRect.left+rect[0],frameRect.top+rect[rect.length-1].bottom);
-			}
-		/*if (rect.length>0) {
-			this.moveTo(frameRect.left+rect[0],frameRect.top+rect[rect.length-1].bottom);
+		if (rect[0]) {
+			this.moveTo(frameRect.left+rect[0].left,frameRect.top+rect[rect.length-1].bottom);
 		} else {
-			rect = (range.startContainer.nodeType == 3 ? range.startContainer.parentNode :  range.startContainer).getBoundingClientRect()
-			console.log(range)
-			this.moveTo(frameRect.left+rect.left,frameRect.top+rect.top);
-		} */
-		
+			rect = range.startContainer;
+			if (rect.nodeType == 3) {
+				rect = rect.parentNode
+			}
+			rect = rect.getBoundingClientRect()
+			this.moveTo(frameRect.left+rect.left,frameRect.top+rect.top+20);
+		}
 	},
 	build: function () {
 		this.element = document.createElement("div");
@@ -48,7 +47,8 @@ PositionableContainer.prototype = {
 		document.body.appendChild(this.element)
 	},
 	hide: function () {
-		this.element.style.visibility = "";
+		this.element.style.visibility = "hidden";
+		//this.element.setAttribute("style","")
 		this.visible = false;
 	},
 	show: function () {
