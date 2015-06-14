@@ -36,7 +36,9 @@ var knockoutDialogFactory = {
 						wrapper.appendChild(data.element);
 						var element = wrapper;
 						while (element.className != "cke_dialog_contents_body") {
+							element.style.height = "100%"
 							element = element.parentNode;
+
 						}
 						element.style.display = "block";
 						element.style.marginTop = 0;
