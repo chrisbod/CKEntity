@@ -85,7 +85,7 @@ For licensing, see LICENSE.md or http://ckeditor.com/license
 	//var markupManager = new EntityMarkupManager()
 	var entitiesSelection = SelectionTracker.getInstance()
 
-	var translationContainer = new AutoSuggestContainer("translation-menu");
+	var translationContainer = new AutoSuggestContainer("translation-menu","10em");
 	var tokenContainer = new AutoSuggestContainer("token-menu");
 	tokenContainer.getLastSentenceFromRange = function (range) {
 		var token =  range.toString().match(/(?:\s*)(<)[^>]*$/);

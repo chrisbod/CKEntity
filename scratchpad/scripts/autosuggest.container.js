@@ -9,6 +9,7 @@ function AutoSuggestContainer(id, minWidth) {
 	this.element.addEventListener("click", this, true);
 	this.element.addEventListener("mouseover", this);
 	this.element.addEventListener("keydown",this, true);
+	this.element.ownerDocument.addEventListener("click",this,true)
 	this.selectionTracker = SelectionTracker.getInstance();
 
 }

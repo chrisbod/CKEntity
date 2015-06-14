@@ -4,10 +4,8 @@ function PositionableContainer() {
 PositionableContainer.prototype = {
 	visible: false,
 	moveTo: function (x,y) {
-
 		this.element.style.left = x+"px";
 		this.element.style.top = y+"px";
-
 		this.configureMetrics();
 	},
 	moveToElement: function (element) {
