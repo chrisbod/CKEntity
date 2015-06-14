@@ -176,9 +176,15 @@ function launchEditor() {
 
 			
 }
+$(function () {
+	launchEditor()
+})
 
 
 		</script>
+
+
+		
 		
 
 		<section id="deka" style="  position: absolute;
@@ -186,26 +192,34 @@ function launchEditor() {
   right: 0;
   bottom: 0;
   top: 0;">
-			<section style="margin: 0 auto;  height: 100%; width: 75%">
-				
-				<form action="javascript:;" method="GET" style="  position: relative;
-  padding: 20px; height: 100%">
-  			<header style="background-image: url(img/deka/landscape.jpg); background-repeat: no-repeat; height: 230px; margin-bottom: 20px">
-  				<img src="img/deka/logo.png" style="width: 230px; float: right"/>
+			<table cellpadding="0" cellspacing="0" style="width: 1424px; height: 100%; margin: 0 auto; max-width: 100%">
+			<tr>
+				<td style="height: 230px">
+					<header style="background-image: url(img/deka/landscape.jpg); background-repeat: no-repeat; height: 230px; margin: 0 auto; width: 1424px ">
+  				<img src="img/deka/logo.png" style="width: 230px; margin-left: 1174px; "/>
   			</header>
-  			<section style="  position: absolute;
-  right: 0;
+				</td>
+
+			</tr>
+			<tr style="background-color: transparent">
+				<td style="position: relative">
+					<form action="javascript:;" method="GET" style="  position: absolute;
   left: 0;
-  padding: 20px;
-  bottom: 40px;
-  top: 260px;">
-				<textarea id="documentSource" style="background-image: url('img/deka/background.jpg'); background-size: cover; border-width:0; cursor: default" onclick="launchEditor()">
+  top: 0;
+  right: 20px;
+  bottom: 0;">
+
+				<textarea id="documentSource" style="background-size: cover; border-width:0; cursor: default">
 
 
 				</textarea>
-			</section>
 		</form>
-			</section>
+
+				</td>
+
+			</tr>
+
+		</table>
 			
 		</section>
 		
