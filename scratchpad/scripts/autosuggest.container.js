@@ -194,7 +194,7 @@ function AutoSuggestContainer(id, tokenizer) {
 				return;
 			}
 			range.setStart(node,Math.max(0,node.data.lastIndexOf(triggers[0].trim())))
-			this.moveToRange(this.editableDocument,this.startingRange);
+			this.moveToRange(this.editableDocument,latestRange);
 			var suggestions = [];
 			for (var i=0;i<triggers.length;i++) {
 				suggestions = suggestions.concat(this.tokenizer.getSuggestions(triggers[i]))
@@ -336,6 +336,7 @@ function AutoSuggestContainer(id, tokenizer) {
 
 	},
 	configureMetrics: function () {
+
 		var rect = this.element.getBoundingClientRect(),
 			viewBottom = window.innerHeight;
 		if (rect.bottom>viewBottom) {
