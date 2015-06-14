@@ -62,6 +62,28 @@
 				icon: "save",
 				title: "Save"
 			} );
+
+			editor.ui.addToolbarGroup('wallstreetdocs')
+
+
+			editor.addCommand( 'openentities', {
+				exec: function (editor) {
+						tokenContainer.showAll()
+							
+						
+
+					
+					
+					
+				}
+			});
+
+			editor.ui.addButton('wsdEntity', {
+				command: 'openentities',
+				toolbar: 'wallstreetdocs',
+				title: 'Entity',
+				icon: "save"
+			});
 		/*	editor.ui.addButton && editor.ui.addButton( 'WsdSaveAs', {
 				
 				command: 'wsdsaveas',

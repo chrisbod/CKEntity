@@ -34,5 +34,10 @@ TokenTokenizer.prototype = {
 		},this)
 		return suggestions;
 
+	},
+	getAll: function() {
+		return this.tokenDefinitions.map(function (def) {
+			return {trigger:'',suggestion:this.tokens[def]}
+		}, this)
 	}
 }

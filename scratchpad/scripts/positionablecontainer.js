@@ -9,11 +9,12 @@ PositionableContainer.prototype = {
 		this.configureMetrics();
 	},
 	moveToElement: function (element) {
+
 		var rect = element.getBoundingClientRect();
 		
-		this.moveTo(rect.left,rect.top+rect.height);
-		this.configureMetrics(element);
-		this.inputElement = element;
+		this.moveTo(rect.left,rect.top);
+		this.configureMetrics();
+		
 	},
 	moveToCursorBottomLeft: function (cursorContainer) {
 		var selection = cursorContainer.document.getSelection().getRangeAt(0)
@@ -28,10 +29,17 @@ PositionableContainer.prototype = {
 
 		var rect = range.getClientRects(),
 			frameRect = ownerDocument.defaultView.frameElement.getBoundingClientRect();
-			console.log(rect,frameRect)
-		if (rect[0]) {
-			this.moveTo(frameRect.left+rect[0].left,frameRect.top+rect[rect.length-1].bottom);
-		}
+			if (rect[0]) {
+				this.moveTo(frameRect.left+rect[0],frameRect.top+rect[rect.length-1].bottom);
+			}
+		/*if (rect.length>0) {
+			this.moveTo(frameRect.left+rect[0],frameRect.top+rect[rect.length-1].bottom);
+		} else {
+			rect = (range.startContainer.nodeType == 3 ? range.startContainer.parentNode :  range.startContainer).getBoundingClientRect()
+			console.log(range)
+			this.moveTo(frameRect.left+rect.left,frameRect.top+rect.top);
+		} */
+		
 	},
 	build: function () {
 		this.element = document.createElement("div");

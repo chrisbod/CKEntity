@@ -194,7 +194,7 @@ function AutoSuggestContainer(id, tokenizer) {
 				return;
 			}
 			range.setStart(node,Math.max(0,node.data.lastIndexOf(triggers[0].trim())))
-			this.moveToRange(this.editableDocument,latestRange);
+			this.moveToRange(this.editableDocument,this.startingRange);
 			var suggestions = [];
 			for (var i=0;i<triggers.length;i++) {
 				suggestions = suggestions.concat(this.tokenizer.getSuggestions(triggers[i]))
@@ -209,6 +209,12 @@ function AutoSuggestContainer(id, tokenizer) {
 			event.stopPropagation();
 			event.preventDefault();
 		}
+	},
+	showAll: function () {
+		var range = this.editableDocument.getSelection().getRangeAt(0);
+		this.moveToRange(this.editableDocument,range);
+		this.showByKeys(this.tokenizer.getAll())
+
 	},
 	getCurrentNode: function (range) {
 		
